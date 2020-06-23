@@ -111,7 +111,7 @@ def get_years_ids(soup):
     catIDs = []
     for element in year_elements:
         link = element.attrs['href']
-        year = re.search(r"(?<=\()20\d{2}(?=,)", link).group(0)
+        year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
         catID = re.findall(r"\d+(?=,.*')", link)[1]
         catIDs.append(catID)
         years_catID[year] = catIDs
@@ -239,9 +239,9 @@ def write_to_csv(document_links):
 def get_metadata(key, document, regex, list, dict):
     """
     Performs error handling in the case that certain metadata elements are not extractable from a given URL.
-    
+
     Input: Elements needed to extract metadata
-    Returns: A dictionary 
+    Returns: A dictionary
     """
     try:
         item = re.search(regex, document).group(0)
