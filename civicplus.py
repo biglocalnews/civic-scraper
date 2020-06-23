@@ -214,26 +214,11 @@ def write_to_csv(document_links):
     doc_format_list = []
 
     for document in document_links:
-
-        place = re.search(r"(?<=-)\w+(?=\.)", document).group(0)
-        place_list.append(place)
-        dict['place'] = place_list
-
-        state_or_province = re.search(r"(?<=//)\w{2}(?=-)", document).group(0)
-        state_or_province_list.append(state_or_province)
-        dict['state_or_province'] = state_or_province_list
-
-        date = re.search(r"(?<=_)\w{8}(?=-)", document).group(0)
-        date_list.append(date)
-        dict['date'] = date_list
-
-        doc_type = re.search(r"(?<=e/)\w+(?=/_)", document).group(0)
-        doc_type_list.append(doc_type)
-        dict['doc_type'] = doc_type_list
-
-        meeting_id = re.search(r"(?<=/_).+$", document).group(0)
-        meeting_id_list.append(meeting_id)
-        dict['meeting_id'] = meeting_id_list
+        dict = get_metadata('place', document, r"(?<=-)\w+(?=\.)", place_list, dict)
+        dict = get_metadata('state_or_province', document, r"(?<=//)\w{2}(?=-)", state_or_province_list, dict)
+        dict = get_metadata('date', document,r"(?<=_)\w{8}(?=-)", date_list, dict)
+        dict = get_metadata('doc_type', document, r"(?<=e/)\w+(?=/_)", doc_type_list, dict)
+        dict = get_metadata('meeting_id', document, r"(?<=/_).+$", meeting_id_list, dict)
 
         url_list.append(document)
         dict['url'] = url_list
@@ -250,6 +235,25 @@ def write_to_csv(document_links):
         pd.DataFrame.from_dict(data=dict).to_csv(DOCUMENTS, mode='a', header=False)
     else:
         pd.DataFrame.from_dict(data=dict).to_csv(DOCUMENTS, header=True)
+
+def get_metadata(key, document, regex, list, dict):
+    """
+    Performs error handling in the case that certain metadata elements are not extractable from a given URL.
+    
+    Input: Elements needed to extract metadata
+    Returns: A dictionary 
+    """
+    try:
+        item = re.search(regex, document).group(0)
+        list.append(item)
+        dict[key] = list
+        return dict
+    except AttributeError as error:
+        print("AttributeError in get_metadata.")
+        missing_field = "no_{}".format(key)
+        list.append(missing_field)
+        dict[key] = list
+        return dict
 
 def download_documents(document_links):
     """
