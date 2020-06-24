@@ -29,6 +29,10 @@ import re
 logger = logging.getLogger(__name__)
 
 class CivicPlusSite:
+    """
+    In its current configuration, the CivicPlusSite object downloads all documents
+    from a given website in a given date range.
+    """
 
     base_url = "civicplus.com/AgendaCenter"
 
