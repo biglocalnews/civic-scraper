@@ -12,6 +12,7 @@ Output: .csv of metadata related to documents available for download, downloaded
 """
 # Libraries
 
+import datetime
 import bs4
 import requests
 import re
@@ -22,6 +23,7 @@ from os import path
 
 CIVICPLUS_URLS = 'civicplus_urls.csv'
 DOCUMENTS = 'aw-data-documents.csv'
+ERROR_LOG = 'civicplus_timeout.csv'
 
 # Code
 
@@ -41,8 +43,8 @@ def main():
         page = page_list[i]
         document_stubs = get_all_docs(years_ids, page)
         document_links = make_document_links(url, document_stubs)
-        write_to_csv(document_links)
-        download_documents(document_links)
+        metadata = write_to_csv(document_links)
+        download_documents(metadata)
 
 def get_url_list(csv):
     """
@@ -142,10 +144,14 @@ def get_all_docs(years_ids, page):
         ids = years_ids[year]
         for id in ids:
             payload = {'year': year, 'catID': id, 'term': '', 'prevVersionScreen': 'false'}
-            response = requests.post(page, params=payload)
-            soup = make_soup(response.text)
-            end_links = get_links(soup)
-            all_links.append(end_links)
+            try:
+                response = requests.post(page, params=payload)
+                soup = make_soup(response.text)
+                end_links = get_links(soup)
+                all_links.append(end_links)
+            except:
+                print("The url ", url, " timed out.")
+                return " "
 
     # Remove lists for which no links have been found
     for list in all_links:
@@ -198,6 +204,7 @@ def write_to_csv(document_links):
     writes this metadata dictionary to a csv.
 
     Input: A list of document URLs
+    Returns: A dictionary of metadata
     Output: A csv
     """
 
@@ -213,21 +220,33 @@ def write_to_csv(document_links):
     scraper_list = []
     doc_format_list = []
 
-    for document in document_links:
-        dict = get_metadata('place', document, r"(?<=-)\w+(?=\.)", place_list, dict)
-        dict = get_metadata('state_or_province', document, r"(?<=//)\w{2}(?=-)", state_or_province_list, dict)
-        dict = get_metadata('date', document,r"(?<=_)\w{8}(?=-)", date_list, dict)
-        dict = get_metadata('doc_type', document, r"(?<=e/)\w+(?=/_)", doc_type_list, dict)
-        dict = get_metadata('meeting_id', document, r"(?<=/_).+$", meeting_id_list, dict)
+    if len(document_links) > 0:
 
-        url_list.append(document)
-        dict['url'] = url_list
+        for document in document_links:
+            dict = get_metadata('place', document, r"(?<=-)\w+(?=\.)", place_list, dict)
+            dict = get_metadata('state_or_province', document, r"(?<=//)\w{2}(?=-)", state_or_province_list, dict)
+            dict = get_metadata('date', document, r"(?<=_)\w{8}(?=-)", date_list, dict)
+            dict = get_metadata('doc_type', document, r"(?<=e/)\w+(?=/_)", doc_type_list, dict)
+            dict = get_metadata('meeting_id', document, r"(?<=/_).+$", meeting_id_list, dict)
 
-        scraper_list.append('civicplus')
-        dict['scraper'] = scraper_list
+            url_list.append(document)
+            dict['url'] = url_list
 
-        doc_format_list.append('pdf')
-        dict['doc_format'] = doc_format_list
+            scraper_list.append('civicplus')
+            dict['scraper'] = scraper_list
+
+            doc_format_list.append('pdf')
+            dict['doc_format'] = doc_format_list
+
+    else:
+        dict['place'] = ['no_doc_links']
+        dict['state_or_province'] = ['no_doc_links']
+        dict['date'] = ['no_doc_links']
+        dict['doc_type'] = ['no_doc_links']
+        dict['meeting_id'] = ['no_doc_links']
+        dict['url'] = ['no_doc_links']
+        dict['scraper'] = ['civicplus']
+        dict['doc_format'] = ['pdf']
 
     # Write the dictionary to a .csv
 
@@ -235,6 +254,8 @@ def write_to_csv(document_links):
         pd.DataFrame.from_dict(data=dict).to_csv(DOCUMENTS, mode='a', header=False)
     else:
         pd.DataFrame.from_dict(data=dict).to_csv(DOCUMENTS, header=True)
+
+    return dict
 
 def get_metadata(key, document, regex, list, dict):
     """
@@ -255,20 +276,26 @@ def get_metadata(key, document, regex, list, dict):
         dict[key] = list
         return dict
 
-def download_documents(document_links):
+def download_documents(metadata):
     """
     Downloads documents discovered by the previous functions
 
-    Input: A list of URLs to documents
+    Input: The metadata dictionary
     Output: .pdfs of each document
     """
-    for document in document_links:
-        place = re.search(r"(?<=-)\w+(?=\.)", document).group(0)
-        state_or_province = re.search(r"(?<=//)\w{2}(?=-)", document).group(0)
-        meeting_id = re.search(r"(?<=/_).+$", document).group(0)
-        file_name = "{}_{}_{}.pdf".format(place, state_or_province, meeting_id)
-        response = requests.get(document, allow_redirects=True)
-        open(file_name, 'wb').write(response.content)
+
+    places = metadata['place']
+    state_or_provinces = metadata['state_or_province']
+    meeting_ids = metadata['meeting_id']
+    documents = metadata['url']
+
+    for index in range(len(places)):
+        file_name = "{}_{}_{}.pdf".format(places[index], state_or_provinces[index], meeting_ids[index])
+        document = documents[index]
+        print("document: ", document)
+        if document != 'no_doc_links':
+            response = requests.get(document, allow_redirects=True)
+            open(file_name, 'wb').write(response.content)
 
 if __name__ == "__main__":
     main()
