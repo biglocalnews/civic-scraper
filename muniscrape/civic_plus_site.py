@@ -196,7 +196,7 @@ class CivicPlusSite:
 
         # Make the metadata dictionary
 
-        dict = {}
+        meta = {}
         place_list = []
         state_or_province_list = []
         date_list = []
@@ -209,33 +209,33 @@ class CivicPlusSite:
         if len(document_links) > 0:
 
             for document in document_links:
-                dict = self._get_metadata('place', document, r"(?<=-)\w+(?=\.)", place_list, dict)
-                dict = self._get_metadata('state_or_province', document, r"(?<=//)\w{2}(?=-)", state_or_province_list,
-                                    dict)
-                dict = self._get_metadata('date', document, r"(?<=_)\w{8}(?=-)", date_list, dict)
-                dict = self._get_metadata('doc_type', document, r"(?<=e/)\w+(?=/_)", doc_type_list, dict)
-                dict = self._get_metadata('meeting_id', document, r"(?<=/_).+$", meeting_id_list, dict)
+                meta = self._get_metadata('place', document, r"(?<=-)\w+(?=\.)", place_list, meta)
+                meta = self._get_metadata('state_or_province', document, r"(?<=//)\w{2}(?=-)", state_or_province_list,
+                                    meta)
+                meta = self._get_metadata('date', document, r"(?<=_)\w{8}(?=-)", date_list, meta)
+                meta = self._get_metadata('doc_type', document, r"(?<=e/)\w+(?=/_)", doc_type_list, meta)
+                meta = self._get_metadata('meeting_id', document, r"(?<=/_).+$", meeting_id_list, meta)
 
                 url_list.append(document)
-                dict['url'] = url_list
+                meta['url'] = url_list
 
                 scraper_list.append('civicplus')
-                dict['scraper'] = scraper_list
+                meta['scraper'] = scraper_list
 
                 doc_format_list.append('pdf')
-                dict['doc_format'] = doc_format_list
+                meta['doc_format'] = doc_format_list
 
         else:
-            dict['place'] = ['no_doc_links']
-            dict['state_or_province'] = ['no_doc_links']
-            dict['date'] = ['no_doc_links']
-            dict['doc_type'] = ['no_doc_links']
-            dict['meeting_id'] = ['no_doc_links']
-            dict['url'] = ['no_doc_links']
-            dict['scraper'] = ['civicplus']
-            dict['doc_format'] = ['pdf']
+            meta['place'] = ['no_doc_links']
+            meta['state_or_province'] = ['no_doc_links']
+            meta['date'] = ['no_doc_links']
+            meta['doc_type'] = ['no_doc_links']
+            meta['meeting_id'] = ['no_doc_links']
+            meta['url'] = ['no_doc_links']
+            meta['scraper'] = ['civicplus']
+            meta['doc_format'] = ['pdf']
 
-        return dict
+        return meta
 
     def _make_document_links(self, document_stubs):
         """
@@ -256,7 +256,7 @@ class CivicPlusSite:
 
 
     # TODO: Consider other uses for this metadata
-    def _get_metadata(self, key, document, regex, list, dict):
+    def _get_metadata(self, key, document, regex, list, meta):
         """
         Performs error handling in the case that certain metadata elements are not extractable from a given URL.
 
@@ -266,14 +266,14 @@ class CivicPlusSite:
         try:
             item = re.search(regex, document).group(0)
             list.append(item)
-            dict[key] = list
-            return dict
+            meta[key] = list
+            return meta
         except AttributeError as error:
             print("AttributeError in get_metadata.")
             missing_field = "no_{}".format(key)
             list.append(missing_field)
-            dict[key] = list
-            return dict
+            meta[key] = list
+            return meta
 
     def download_documents(self, metadata):
         """
