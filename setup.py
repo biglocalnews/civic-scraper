@@ -5,10 +5,8 @@ from setuptools import setup, find_packages
 
 requirements = [
     'bs4',
-    'click',
     'requests',
     'retrying',
-    'selenium',
 ]
 
 test_requirements = [
@@ -24,7 +22,7 @@ setup(
     description="Command-line tool for scraping government agendas, minutes and other public records.",
     #long_description=__doc__,
     author="Amy DiPierro",
-    TKKauthor_email='zstumgoren@gmail.com',
+    TKKauthor_email='adipier1@gmail.com',
     url='https://github.com/biglocalnews/civic-scraper',
     packages=find_packages(),
     include_package_data=True,
