@@ -18,8 +18,8 @@ import civic_plus_site as cps
 import document
 
 # Initialize a CivicPlusSite object by passing it a subdomain
-cp_site_args = {'subdomain': 'pa-westchester2'}
-cp_scraper = cps.CivicPlusSite(**cp_site_args)
+subdomain = 'pa-westchester2'
+cp_scraper = cps.CivicPlusSite(cp_site_args)
 
 # Scrape the provided subdomain to get a list of documents matching specified parameters
 cp_scraper_args = {

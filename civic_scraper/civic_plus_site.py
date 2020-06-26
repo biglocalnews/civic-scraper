@@ -40,7 +40,7 @@ class CivicPlusSite:
         self.runtime = str(datetime.date(datetime.utcnow())).replace('-', '')
 
     # Public interface (used by calling code)
-    def scrape(self, start_date, end_date):
+    def scrape(self, start_date='', end_date=''):
         if start_date == '':
             start_date = self.runtime
         if end_date == '':
