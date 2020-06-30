@@ -20,10 +20,10 @@ Returns: A list of documents found on that subdomain in the given time range
 import logging
 import re
 from datetime import datetime
-
 import bs4
 import requests
 from retrying import retry
+import csv
 
 #TODO: Get logger to work
 logger = logging.getLogger(__name__)
@@ -54,6 +54,50 @@ class CivicPlusSite:
         logger.info("END SCRAPE - {}".format(self.url))
         print(self._make_document_links(filtered_stubs))
         return self._make_document_links(filtered_stubs)
+
+    def download_csv(self, url_list, subdomain):
+        """
+        Downloads a csv file for a given subdomain and url_list.
+
+        Input: A list of document urls, a subdomain
+        Output: A csv of metadata related to all documents returned for that subdomain
+        """
+
+        # Extracting metadata
+        metadata = []
+        document = []
+        for url in url_list:
+            place = self._get_doc_metadata(r"(?<=-)\w+(?=\.)", url)
+            document.append(place)
+            state_or_province = self._get_doc_metadata(r"(?<=//)\w{2}(?=-)", url)
+            document.append(state_or_province)
+            meeting_date = self._get_doc_metadata(r"(?<=_)\w{8}(?=-)", url)
+            document.append(meeting_date)
+            committee = None
+            document.append(committee)
+            doc_format = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)", url)
+            document.append(doc_format)
+            meeting_id = self._get_doc_metadata(r"(?<=/_).+$", url)
+            document.append(meeting_id)
+            site_type = 'civicplus'
+            document.append(site_type)
+            doc_type = 'pdf'
+            document.append(doc_type)
+            document.append(url)
+            metadata.append(document)
+            document = []
+
+        # Initializing the .csv
+        file_name = "{}.csv".format(subdomain)
+        file = open(file_name, 'w')
+        header = ['place', 'state_or_province', 'meeting_date', 'committee', 'doc_format', 'meeting_id', 'site_type', 'doc_type', 'url']
+
+        # Writing the .csv
+        with file:
+            write = csv.writer(file)
+            write.writerow(header)
+            write.writerows(metadata)
+
 
     # Private methods
 
@@ -235,6 +279,18 @@ class CivicPlusSite:
             url_list.append(text)
 
         return url_list
+
+    def _get_doc_metadata(self, regex, url):
+        """
+        Extracts metadata from a provided document URL.
+
+        Input: Regex to extract metadata
+        Returns: Extracted metadata as a string or "no_data" if no metadata is extracted
+        """
+        try:
+            return re.search(regex, url).group(0)
+        except AttributeError as error:
+            return "no_data"
 
 if __name__ == '__main__':
     subdomain = input("Enter subdomain: ")
