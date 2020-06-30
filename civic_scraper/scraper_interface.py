@@ -18,8 +18,8 @@ import civic_plus_site as cps
 import document
 
 # Initialize a CivicPlusSite object by passing it a subdomain
-subdomain = 'pa-westchester2'
-cp_scraper = cps.CivicPlusSite(cp_site_args)
+cp_site_args = {'subdomain': 'pa-westchester2'}
+cp_scraper = cps.CivicPlusSite(**cp_site_args)
 
 # Scrape the provided subdomain to get a list of documents matching specified parameters
 cp_scraper_args = {
@@ -27,6 +27,9 @@ cp_scraper_args = {
     'end_date': '20151014'
 }
 document_list = cp_scraper.scrape(**cp_scraper_args)
+
+# Download csv list
+cp_scraper.download_csv(document_list, **cp_site_args)
 
 # Download each document in the list returned by the CivicPlusSite object
 for doc in document_list:
