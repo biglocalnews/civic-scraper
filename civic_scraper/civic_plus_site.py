@@ -36,11 +36,14 @@ class CivicPlusSite:
     base_url = "civicplus.com"
 
     def __init__(self, subdomain):
+        """
+        Creates a CivicPlusSite object
+        """
         self.url = "https://{}.{}/AgendaCenter".format(subdomain, self.base_url)
         self.runtime = str(datetime.date(datetime.utcnow())).replace('-', '')
 
     # Public interface (used by calling code)
-    def scrape(self, start_date='', end_date=''):
+    def scrape(self, start_date, end_date):
         if start_date == '':
             start_date = self.runtime
         if end_date == '':
@@ -75,13 +78,13 @@ class CivicPlusSite:
             document.append(meeting_date)
             committee = None
             document.append(committee)
-            doc_format = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)", url)
+            doc_format = 'pdf'
             document.append(doc_format)
             meeting_id = self._get_doc_metadata(r"(?<=/_).+$", url)
             document.append(meeting_id)
             site_type = 'civicplus'
             document.append(site_type)
-            doc_type = 'pdf'
+            doc_type = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)", url)
             document.append(doc_type)
             document.append(url)
             metadata.append(document)
