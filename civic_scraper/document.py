@@ -1,81 +1,60 @@
-"""
-TITLE: Document
-AUTHOR: Amy DiPierro
-VERSION: 2020-06-26
-USAGE: From the command line, type 'python3 document.py' followed by link.
+import datetime
 
-The code here creates a Document object. Document objects have one public method at
-present: download(target_dir).
 
-The script can be run from the command line as follows:
+class Document(object):
 
-    python3 document.py link
-
-where link is a URL or series of URLs separated by spaces.
-
-Example calls:
-
-    python3 document.py https://pa-westchester2.civicplus.com/AgendaCenter/ViewFile/Agenda/_10132015-240
-    python3 document.py https://pa-westchester2.civicplus.com/AgendaCenter/ViewFile/Agenda/_10132015-240 https://pa-westchester2.civicplus.com/AgendaCenter/ViewFile/Agenda/_09162015-228
-
-Input: A link to a single CivicPlus document (such as an agenda or minutes)
-Output: A directory of the form placename-stateorprovincename with a pdf of the document
-"""
-import re
-import requests
-import os.path
-
-class Document:
-
-    def __init__(self, link):
+    def __init__(
+            self,
+            url: str,
+            doc_name: str = None,
+            committee_name: str = None,
+            place_name: str = None,
+            doc_type: str = None,
+            meeting_date: datetime.date = None,
+            meeting_time: datetime.time = None,
+            doc_format: str = None,
+            meeting_id: str = None,
+            scraped_by: str = None,
+    ):
         """
-        Creates a Document object
+        Create an instance of the Document class.
         """
-        self.link = link
-        self.place = self._get_doc_metadata(r"(?<=-)\w+(?=\.)")
-        self.state_or_province = self._get_doc_metadata(r"(?<=//)\w{2}(?=-)")
-        self.date = self._get_doc_metadata(r"(?<=_)\w{8}(?=-)")
-        self.doc_type = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)")
-        self.meeting_id = self._get_doc_metadata(r"(?<=/_).+$")
-        self.scraper = 'civicplus'
-        self.doc_format = 'pdf'
 
-    def download(self, target_dir=None):
+        self.url = url
+        self.doc_name = doc_name
+        self.committee_name = committee_name
+        self.place_name = place_name
+        self.doc_type = doc_type
+        self.meeting_date = meeting_date
+        self.meeting_time = meeting_time
+        self.doc_format = doc_format
+        self.meeting_id = meeting_id
+        self.scraped_by = scraped_by
+
+    def download(self, target_path):
         """
-        Downloads a document into a target directory.
-
-        Input: Target directory name (target_dir)
-        Output: pdf of document in target directory
+        Download the document to target_path.
         """
-        file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.doc_type, self.meeting_id)
-        document = self.link
-        if document != 'no_doc_links':
-            print("Downloading document: ", document)
-            response = requests.get(document, allow_redirects=True)
-            if not os.path.isdir(target_dir):
-                print("Making directory...")
-                os.mkdir(target_dir)
-            full_path = os.path.join(target_dir, file_name)
-            open(full_path, 'wb').write(response.content)
+        # write me!
+        raise NotImplementedError
 
-    # Private methods
 
-    def _get_doc_metadata(self, regex):
+class DocumentList(object):
+
+    def __init__(self, documents):
+        self.documents = documents
+
+    def download_documents(self, target_dir):
         """
-        Extracts metadata from a provided document URL.
-
-        Input: Regex to extract metadata
-        Returns: Extracted metadata as a string or "no_data" if no metadata is extracted
+        Write documents to target_dir
         """
-        try:
-            return re.search(regex, self.link).group(0)
-        except AttributeError as error:
-            return "no_data"
+        # write me!
+        raise NotImplementedError
 
-if __name__ == '__main__':
-    import sys
-    import os
-    for index in range(1, len(sys.argv)):
-        link = sys.argv[index]
-        document = Document(link=link)
-        document.download(target_dir=os.getcwd())
+    def download_metadata(self, target_path):
+        """
+        Download metadata about the document list to a csv at target_path.
+        """
+        # write me!
+        raise NotImplementedError
+

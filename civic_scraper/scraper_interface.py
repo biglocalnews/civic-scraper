@@ -15,7 +15,7 @@ Output: A directory of the form placename-stateorprovincename with a pdf of the 
 """
 
 import civic_plus_site as cps
-import document
+import civic_plus_document
 
 # Initialize a CivicPlusSite object by passing it a subdomain
 cp_site_args = {'subdomain': 'pa-westchester2'}
@@ -33,6 +33,6 @@ cp_scraper.download_csv(document_list, **cp_site_args)
 
 # Download each document in the list returned by the CivicPlusSite object
 for doc in document_list:
-    file = document.Document(doc)
+    file = civic_plus_document.Document(doc)
     target_dir = "{}_{}/".format(file.place, file.state_or_province)
     file.download(target_dir)
