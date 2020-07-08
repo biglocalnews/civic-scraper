@@ -24,6 +24,8 @@ import requests
 import os.path
 import string
 
+## TODO: eliminate this class and migrate code to scrapers/granicus.py
+
 class GranicusDocument:
 
     def __init__(self, link):

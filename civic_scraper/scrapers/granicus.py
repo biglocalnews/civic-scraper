@@ -2,7 +2,7 @@
 TITLE: GranicusSite
 AUTHOR: Amy DiPierro
 VERSION: 2020-07-06
-USAGE: From the command line, type 'python3 granicus_site.py' Then enter an optional start and end date
+USAGE: From the command line, type 'python3 granicus.py' Then enter an optional start and end date
         in the form YYMMDD when prompted.
 
 This script scrapes agendas, minutes and other documents and multimedia from Granicus websites.
@@ -19,11 +19,12 @@ import bs4
 import requests
 from retrying import retry
 import csv
+from civic_scraper.scrapers.site import Site
 
 # Code
 
 # granicus object class
-class GranicusSite:
+class GranicusSite(Site):
     """
     An object with the public methods scrape() and download_csv().
     """

@@ -62,7 +62,7 @@ class DocumentList(object):
         # write me!
         raise NotImplementedError
 
-    def write_metadata(self, target_path):
+    def to_csv(self, target_path):
         """
         Write metadata about the document list to a csv at target_path.
         """
