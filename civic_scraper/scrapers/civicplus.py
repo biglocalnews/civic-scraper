@@ -3,16 +3,17 @@ TITLE: CivicPlusSite
 AUTHOR: Amy DiPierro
 VERSION: 2020-06-26
 USAGE: From the command line, type 'python3 civicplus.py'
-        then enter a required subdomain and option start date and end date,
-        where a subdomain is a string corresponding to the first
-        portion of each subdomain and start date and end date are written in the
-        form yyyymmdd. Subdomain is required, but start date and end date have default values.
+        then enter a required url and option start date and end date,
+        where a url is a string corresponding to the first
+        portion of each ulr and start date and end date are written in the
+        form yyyymmdd. Url is required, but start date and end date have default values.
+
+Urls should be of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
 
 This script scrapes agendas and minutes from CivicPlus Agenda Center websites.
-It is an object-oriented rewrite of civicplus.py
 
-Input: A CivicPlus subdomain
-Returns: A list of documents found on that subdomain in the given time range
+Input: A CivicPlus url
+Returns: A list of documents found on that url in the given time range
 
 """
 # Libraries
@@ -38,11 +39,11 @@ class CivicPlusSite(Site):
     """
     base_url = "civicplus.com"
 
-    def __init__(self, subdomain):
+    def __init__(self, base_url):
         """
         Creates a CivicPlusSite object
         """
-        self.url = "https://{}.{}/AgendaCenter".format(subdomain, self.base_url)
+        self.url = base_url
         self.runtime = str(datetime.date(datetime.utcnow())).replace('-', '')
 
     # Public interface (used by calling code)
@@ -63,25 +64,25 @@ class CivicPlusSite(Site):
 
     def get_metadata(self, url_list):
         """
-        Downloads a csv file for a given subdomain and url_list.
+        Downloads a csv file for a given AgendaCenter URL and url_list.
 
         Input: A list of document urls
-        Output: A csv of metadata related to all documents returned for that subdomain
+        Output: A csv of metadata related to all documents returned for that URL
         """
 
         # Extracting metadata
         metadata = []
         document = {}
-        for url in url_list:
-            document['place'] = self._get_doc_metadata(r"(?<=-)\w+(?=\.)", url)
-            document['state_or_province'] = self._get_doc_metadata(r"(?<=//)\w{2}(?=-)", url)
-            document['meeting_date'] = self._get_doc_metadata(r"(?<=_)\w{8}(?=-)", url)
+        for link in url_list:
+            document['place'] = self._get_doc_metadata(r"(?<=-)\w+(?=\.)", link)
+            document['state_or_province'] = self._get_doc_metadata(r"(?<=//)\w{2}(?=-)", link)
+            document['meeting_date'] = self._get_doc_metadata(r"(?<=_)\w{8}(?=-)", link)
             document['meeting_time'] = None
             document['committee_name'] = None
             document['doc_format'] = 'pdf'
-            document['meeting_id'] = self._get_doc_metadata(r"(?<=/_).+$", url)
-            document['doc_type'] = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)", url)
-            document['url'] = url
+            document['meeting_id'] = self._get_doc_metadata(r"(?<=/_).+$", link)
+            document['doc_type'] = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)", link)
+            document['url'] = link
             document['scraped_by'] = 'civicplus_v20200709'
             metadata.append(document)
             document = {}
@@ -270,23 +271,23 @@ class CivicPlusSite(Site):
 
         return url_list
 
-    def _get_doc_metadata(self, regex, url):
+    def _get_doc_metadata(self, regex, doc_link):
         """
         Extracts metadata from a provided document URL.
 
         Input: Regex to extract metadata
         Returns: Extracted metadata as a string or "no_data" if no metadata is extracted
         """
+        print(doc_link)
         try:
-            return re.search(regex, url).group(0)
+            return re.search(regex, doc_link).group(0)
         except AttributeError as error:
             return "no_data"
 
 if __name__ == '__main__':
-    subdomain = input("Enter subdomain: ")
+    base_url = input("Enter a CivicPlus url: ")
     start_date = input("Enter start date (or nothing): ")
     end_date = input("Enter end date (or nothing): ")
-    site = CivicPlusSite(subdomain)
-    url_list = site.scrape(start_date=start_date, end_date=end_date)
-    print(site.get_metadata(url_list))
-    # site.download_csv(url_list, subdomain)
+    site = CivicPlusSite(base_url)
+    url_dict = site.scrape(start_date=start_date, end_date=end_date)
+    print(url_dict)
