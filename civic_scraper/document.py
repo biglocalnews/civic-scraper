@@ -102,11 +102,7 @@ class DocumentList(object):
             document = Document(**item)
             document.download()
 
-<<<<<<< HEAD
-    def to_csv(self, target_path):
-=======
-    def write_metadata(self, target_path=os.getcwd()):
->>>>>>> master
+    def to_csv(self, target_path=os.getcwd()):
         """
         Write metadata about the document list to a csv at target_path.
         """
@@ -117,19 +113,18 @@ class DocumentList(object):
                 document.append_metadata(write_header=True)
             document.append_metadata()
 
-
-if __name__ == '__main__':
-    import datetime
-    import granicus_site as gs
-    import civic_plus_site as cps
-
-    site = cps.CivicPlusSite(subdomain="pa-westchester2")
-    metadata = site.scrape(start_date="20200601", end_date="20200801")
-
-    civic_plus = DocumentList(metadata)
-    civic_plus.to_csv()
-
-    civic_plus.download_documents()
+# DELETED FOR NOW
+# if __name__ == '__main__':
+#     import datetime
+#     from . import SUPPORTED_SCRAPERS
+#
+#     site = cp.CivicPlusSite(subdomain="pa-westchester2")
+#     metadata = site.scrape(start_date="20200601", end_date="20200801")
+#
+#     civic_plus = DocumentList(metadata)
+#     civic_plus.to_csv()
+#
+#     civic_plus.download_documents()
 
     # site = gs.GranicusSite(subdomain="sanmateocounty")
     # metadata = site.scrape(start_date="20200601", end_date="20200801")
