@@ -31,6 +31,8 @@ class Document(object):
         Create an instance of the Document class.
         """
 
+        # TODO: here, write input checking that verifies the format of each
+        #  input
         self.url = url
         self.doc_name = doc_name
         self.committee_name = committee_name
@@ -124,6 +126,8 @@ class DocumentList(object):
         """
         Write metadata about the document list to a csv at target_path.
         """
+        # todo: make this so that it downloads to the target path
+        # todo: fix bug where first line of data is written twice
         for index in range(len(self.document_args)):
             # print(self.documents[index])
             document = Document(**self.document_args[index])
