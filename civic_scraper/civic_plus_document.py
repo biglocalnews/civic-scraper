@@ -25,6 +25,9 @@ import re
 import requests
 import os.path
 
+
+## TODO: eliminate this class and migrate code to scrapers/civicplus.py
+
 class CivicPlusDocument:
 
     def __init__(self, link):

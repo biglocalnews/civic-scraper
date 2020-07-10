@@ -2,7 +2,7 @@
 TITLE: CivicPlusSite
 AUTHOR: Amy DiPierro
 VERSION: 2020-06-26
-USAGE: From the command line, type 'python3 civic_plus_site.py'
+USAGE: From the command line, type 'python3 civicplus.py'
         then enter a required subdomain and option start date and end date,
         where a subdomain is a string corresponding to the first
         portion of each subdomain and start date and end date are written in the
@@ -24,11 +24,14 @@ import bs4
 import requests
 from retrying import retry
 import csv
+from civic_scraper.scrapers.site import Site
+
 
 #TODO: Get logger to work
 logger = logging.getLogger(__name__)
 
-class CivicPlusSite:
+
+class CivicPlusSite(Site):
     """
     In its current configuration, the CivicPlusSite object returns a list of all documents
     from a given website in a given date range.

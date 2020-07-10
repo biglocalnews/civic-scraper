@@ -14,6 +14,8 @@ Input: A link to a single CivicPlus document (such as an agenda or minutes)
 Output: A directory of the form placename-stateorprovincename with a pdf of the document
 """
 
+## TODO: this interface is outmoded; perhaps get rid of this file.
+
 import civic_plus_site as cps
 import civic_plus_document
 

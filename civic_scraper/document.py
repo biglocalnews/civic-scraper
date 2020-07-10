@@ -102,7 +102,11 @@ class DocumentList(object):
             document = Document(**item)
             document.download()
 
+<<<<<<< HEAD
+    def to_csv(self, target_path):
+=======
     def write_metadata(self, target_path=os.getcwd()):
+>>>>>>> master
         """
         Write metadata about the document list to a csv at target_path.
         """
@@ -123,7 +127,7 @@ if __name__ == '__main__':
     metadata = site.scrape(start_date="20200601", end_date="20200801")
 
     civic_plus = DocumentList(metadata)
-    civic_plus.write_metadata()
+    civic_plus.to_csv()
 
     civic_plus.download_documents()
 
