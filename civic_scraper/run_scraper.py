@@ -25,7 +25,7 @@ python run_scraper.py \
 """
 
 import json
-from . import SUPPORTED_SCRAPERS
+from civic_scraper.scrapers import SUPPORTED_SCRAPERS
 
 
 def run_scraper(
@@ -62,11 +62,11 @@ def run_scraper(
     site = scraper(endpoint)
 
     # scrape the specified site
-    try:
-        doc_list = site.scrape(**scraper_args)
-    except Exception:
-        raise Exception('Unable to scrape with args: '
-                        '{}'.format(scraper_args))
+    # try:
+    doc_list = site.scrape(**scraper_args)
+    # except Exception:
+    #     raise Exception('Unable to scrape with args: '
+    #                     '{}'.format(scraper_args))
 
     # write results to the specified file location
     try:

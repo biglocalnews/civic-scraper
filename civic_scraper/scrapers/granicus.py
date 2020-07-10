@@ -2,12 +2,15 @@
 TITLE: GranicusSite
 AUTHOR: Amy DiPierro
 VERSION: 2020-07-06
-USAGE: From the command line, type 'python3 granicus.py' Then enter a URL pointing to a Granicus website and
-        an optional start and end date in the form YYMMDD when prompted.
+USAGE: From the command line, type 'python3 granicus.py' Then enter a URL
+    pointing to a Granicus website and an optional start and end date in the
+    form YYMMDD when prompted.
 
-This script scrapes agendas, minutes and other documents and multimedia from Granicus websites.
+This script scrapes agendas, minutes and other documents and multimedia from
+Granicus websites.
 
-Input: A Granicus URL, for example "https://marin.granicus.com/ViewPublisher.php?view_id=33"
+Input: A Granicus URL, for example
+    "https://marin.granicus.com/ViewPublisher.php?view_id=33"
 Returns: A list of documents found at that address in the given time range
 
 """
@@ -18,7 +21,8 @@ import datetime
 import bs4
 import requests
 from retrying import retry
-from civic_scraper.scrapers.site import Site
+from civic_scraper.scrapers import Site
+from civic_scraper.document import DocumentList
 
 # Code
 
@@ -42,8 +46,6 @@ class GranicusSite(Site):
         html = self._get_html()
         soup = self._make_soup(html)
         return self._get_all_docs(soup, start_date, end_date)
-    
-    # Then, we're going to want to make a document class for granicus docs
 
     # Private methods
 
@@ -92,8 +94,8 @@ class GranicusSite(Site):
     )
     def _get_all_docs(self, soup, start_date, end_date):
         """
-        Given a dictionary and page URL, harvests all of the links and metadata from
-        the response to that request.
+        Given a dictionary and page URL, harvests all of the links and metadata
+        from the response to that request.
 
         Input: soup
         Returns: A list of dicts of metadata and doc urls
@@ -277,8 +279,9 @@ class GranicusSite(Site):
                 row_dict['url'] = "http:{}".format(captions)  # url
                 if captions is not None:
                     metadata.append(row_dict)
-        
-        return metadata
+
+
+        return DocumentList(metadata)
 
 if __name__ == '__main__':
     url = input("Enter Granicus URL: ")

@@ -1,7 +1,15 @@
+"""
+TITLE: run_scraper.py
+AUTHOR: Chris Stock & Amy DiPierro
+VERSION: 2020-07-10
+DESCRIPTION: Defines the Document and DocumentList classes.
+"""
+
 import datetime
 import csv
-import requests
 import os
+import requests
+
 
 class Document(object):
 
@@ -89,26 +97,36 @@ class Document(object):
             if self.url is not None:
                 dict_writer.writerow(metadata_dict)
 
+
 class DocumentList(object):
 
-    def __init__(self, documents):
-        self.documents = documents
+    def __init__(self, document_args):
+        """
 
-    def download_documents(self, target_path=os.getcwd()):
+        Args:
+            document_args:
+        """
+        # store the list of document metadata dictionaries
+        self.document_args = document_args
+
+        # make a list of Document instances
+        self.documents = [Document(**args) for args in document_args]
+
+    def download_documents(self, target_dir=os.getcwd()):
         """
         Write documents to target_path
         """
-        for item in self.documents:
+        for item in self.document_args:
             document = Document(**item)
-            document.download()
+            document.download(target_dir)
 
     def to_csv(self, target_path=os.getcwd()):
         """
         Write metadata about the document list to a csv at target_path.
         """
-        for index in range(len(self.documents)):
+        for index in range(len(self.document_args)):
             # print(self.documents[index])
-            document = Document(**self.documents[index])
+            document = Document(**self.document_args[index])
             if index == 0:
                 document.append_metadata(write_header=True)
             document.append_metadata()

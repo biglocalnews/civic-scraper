@@ -27,6 +27,7 @@ from retrying import retry
 import csv
 from civic_scraper.scrapers.site import Site
 
+from civic_scraper.document import DocumentList
 
 #TODO: Get logger to work
 logger = logging.getLogger(__name__)
@@ -87,7 +88,8 @@ class CivicPlusSite(Site):
             metadata.append(document)
             document = {}
 
-        return metadata
+        doc_list = DocumentList(metadata)
+        return doc_list
 
     # Private methods
 
