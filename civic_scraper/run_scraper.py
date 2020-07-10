@@ -13,7 +13,7 @@ doc_list = run_scraper(
     scraper_type='civicplus',
     endpoint='http://pa-westchester2.civicplus.com/AgendaCenter',
     scraper_args={"start_date": "20150909", "end_date": "20151014"},
-    target_path=doc_list.to_csv('path/to/target.csv')
+    target_path='path/to/target.csv'
 )
 
 From the command line:
