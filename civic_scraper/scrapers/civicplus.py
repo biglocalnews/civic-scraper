@@ -58,52 +58,35 @@ class CivicPlusSite(Site):
         document_stubs = self._get_all_docs(post_params)
         filtered_stubs = self._filter_docs(document_stubs, start_date, end_date)
         logger.info("END SCRAPE - {}".format(self.url))
-        print(self._make_document_links(filtered_stubs))
-        return self._make_document_links(filtered_stubs)
+        links = self._make_document_links(filtered_stubs)
+        return self.get_metadata(links)
 
-    def download_csv(self, url_list, subdomain):
+    def get_metadata(self, url_list):
         """
         Downloads a csv file for a given subdomain and url_list.
 
-        Input: A list of document urls, a subdomain
+        Input: A list of document urls
         Output: A csv of metadata related to all documents returned for that subdomain
         """
 
         # Extracting metadata
         metadata = []
-        document = []
+        document = {}
         for url in url_list:
-            place = self._get_doc_metadata(r"(?<=-)\w+(?=\.)", url)
-            document.append(place)
-            state_or_province = self._get_doc_metadata(r"(?<=//)\w{2}(?=-)", url)
-            document.append(state_or_province)
-            meeting_date = self._get_doc_metadata(r"(?<=_)\w{8}(?=-)", url)
-            document.append(meeting_date)
-            committee = None
-            document.append(committee)
-            doc_format = 'pdf'
-            document.append(doc_format)
-            meeting_id = self._get_doc_metadata(r"(?<=/_).+$", url)
-            document.append(meeting_id)
-            site_type = 'civicplus'
-            document.append(site_type)
-            doc_type = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)", url)
-            document.append(doc_type)
-            document.append(url)
+            document['place'] = self._get_doc_metadata(r"(?<=-)\w+(?=\.)", url)
+            document['state_or_province'] = self._get_doc_metadata(r"(?<=//)\w{2}(?=-)", url)
+            document['meeting_date'] = self._get_doc_metadata(r"(?<=_)\w{8}(?=-)", url)
+            document['meeting_time'] = None
+            document['committee_name'] = None
+            document['doc_format'] = 'pdf'
+            document['meeting_id'] = self._get_doc_metadata(r"(?<=/_).+$", url)
+            document['doc_type'] = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)", url)
+            document['url'] = url
+            document['scraped_by'] = 'civicplus_v20200709'
             metadata.append(document)
-            document = []
+            document = {}
 
-        # Initializing the .csv
-        file_name = "{}.csv".format(subdomain)
-        file = open(file_name, 'w')
-        header = ['place', 'state_or_province', 'meeting_date', 'committee', 'doc_format', 'meeting_id', 'site_type', 'doc_type', 'url']
-
-        # Writing the .csv
-        with file:
-            write = csv.writer(file)
-            write.writerow(header)
-            write.writerows(metadata)
-
+        return metadata
 
     # Private methods
 
@@ -120,6 +103,7 @@ class CivicPlusSite(Site):
         Input: Link of the website we want to scrape.
         Returns: HTML of the website as text.
         """
+
         try:
             response = requests.get(self.url)
             return response.text
@@ -303,4 +287,6 @@ if __name__ == '__main__':
     start_date = input("Enter start date (or nothing): ")
     end_date = input("Enter end date (or nothing): ")
     site = CivicPlusSite(subdomain)
-    site.scrape(start_date=start_date, end_date=end_date)
+    url_list = site.scrape(start_date=start_date, end_date=end_date)
+    print(site.get_metadata(url_list))
+    # site.download_csv(url_list, subdomain)

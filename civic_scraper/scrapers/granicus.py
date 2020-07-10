@@ -14,12 +14,15 @@ Returns: A list of documents found on that subdomain in the given time range
 # Libraries
 
 import re
-from datetime import datetime
+import datetime
 import bs4
 import requests
 from retrying import retry
+<<<<<<< HEAD:civic_scraper/scrapers/granicus.py
 import csv
 from civic_scraper.scrapers.site import Site
+=======
+>>>>>>> master:civic_scraper/granicus_site.py
 
 # Code
 
@@ -32,7 +35,7 @@ class GranicusSite(Site):
 
     def __init__(self, subdomain):
         self.url = "https://{}.{}/ViewPublisher.php?view_id=1".format(subdomain, self.base_url)
-        self.runtime = str(datetime.date(datetime.utcnow())).replace('-', '')
+        self.runtime = datetime.datetime.utcnow().strftime("%Y%m%d")
 
     # Public interface (used by calling code)
     def scrape(self, start_date, end_date):
@@ -42,28 +45,7 @@ class GranicusSite(Site):
             end_date = self.runtime
         html = self._get_html()
         soup = self._make_soup(html)
-        return self._get_all_docs(soup, subdomain, start_date, end_date)
-        
-        # TODO: Add date filter
-    
-    def download_csv(self, metadata, subdomain):
-        """
-        Downloads a csv file for a given subdomain and url_list.
-
-        Input: A list of lists of metadata
-        Output: A csv of metadata
-        """
-
-        # Initializing the .csv
-        file_name = "{}.csv".format(subdomain)
-        file = open(file_name, 'w')
-        header = ['place', 'state_or_province', 'meeting_date', 'committee', 'doc_format', 'meeting_id', 'site_type', 'doc_type', 'url']
-
-        # Writing the .csv
-        with file:
-            write = csv.writer(file)
-            write.writerow(header)
-            write.writerows(metadata)
+        return self._get_all_docs(soup, start_date, end_date)
     
     # Then, we're going to want to make a document class for granicus docs
 
@@ -85,8 +67,13 @@ class GranicusSite(Site):
         try:
             response = requests.get(self.url)
             if response.text.strip() == "Page not found.":
+                print("Page not found 1")
                 self.url = "https://{}.{}/ViewPublisher.php?view_id=2".format(subdomain, self.base_url)
                 response = requests.get(self.url)
+                if response.text.strip() == "Page not found.":
+                    print("Page not found 2")
+                    self.url = "https://{}.{}/ViewPublisher.php?view_id=33".format(subdomain, self.base_url)
+                    response = requests.get(self.url)
             return response.text
         except:
             print("The url", self.url, "could not be reached.")
@@ -107,13 +94,13 @@ class GranicusSite(Site):
         wait_exponential_multiplier=1000,
         wait_exponential_max=10000
     )
-    def _get_all_docs(self, soup, subdomain, start_date, end_date):
+    def _get_all_docs(self, soup, start_date, end_date):
         """
         Given a dictionary and page URL, harvests all of the links and metadata from
         the response to that request.
 
         Input: soup
-        Returns: A list of lists of metadata and doc urls
+        Returns: A list of dicts of metadata and doc urls
         """
         # Get metadata
         # rows = soup.find_all(class_="listItem")
@@ -126,9 +113,9 @@ class GranicusSite(Site):
             items = row.find_all("td")
             
             # Initialize item variables in row
-            place = subdomain
+            place = re.search(r"(?<=\//).*(?=\.g)", self.url).group(0)
             state_or_province = None
-            meeting_name = None
+            committee_name = None
             date = None
             duration = None
             agenda = None
@@ -137,127 +124,163 @@ class GranicusSite(Site):
             audio = None
             video2 = None
             agenda_packet = None
-            site_type = "granicus"
-            row_list = []
+            captions = None
+            scraped_by = "granicus"
+            year = None
+            month = None
+            day = None
+            short_date = None
+            row_dict = {}
 
             for item in items:
-                
-                if re.search(r"Name", str(item)) != None:
-                    meeting_name = item.text.strip()
-                elif re.search(r"Date", str(item)) != None:
+
+                if re.search(r"Name", str(item)) is not None:
+                    committee_name = item.text.strip()
+                elif re.search(r"Date", str(item)) is not None:
                     date = item.text.strip()
-                elif re.search(r"Duration", str(item)) != None:
+                elif re.search(r"Duration", str(item)) is not None:
                     duration = item.text.strip()
                 elif item.text.strip() == "Agenda":
                     agenda = str(item.a["href"]).replace("&amp;", "")
-                elif item.text.strip() == "Minutes":
+                elif re.search("Minutes", item.text.strip()) is not None:
                     minutes = str(item.a["href"]).replace("&amp;", "")
                 elif item.text.strip() == "Video":
                     video = item.a["onclick"]
-                elif item.text.strip() == "MP3 Audio":
+                elif re.search("MP3", item.text.strip()) is not None:
                     audio = item.a["href"]
-                elif item.text.strip() == "MP4 Video":
+                elif re.search("MP4", item.text.strip()) is not None:
                     video2 = item.a["href"]
                 elif item.text.strip() == "Agenda Packet":
                     agenda_packet = str(item.a["href"]).replace("&amp;", "")
-            
-            # Make meeting id
-            meeting_id = "{}_{}_{}_{}_{}".format(subdomain, site_type, meeting_name, date, duration)
+                elif re.search("Captions|captions", item.text.strip()) is not None:
+                    captions = str(item.a["href"])
 
             # Convert date to int
-            try:
-                short_date = re.search(r"\D+.*\d{4}", date).group(0)
-            except:
-                short_date = date
-            
-            print("short_date: ", short_date)
+            if re.search(r"\D+.*\d{4}", str(date)) is not None:
+                short_date = re.search(r"\D+.*\d{4}", str(date)).group(0)
+            elif re.search(r"(?<=\/)\d{2}$", str(date)) is not None:
+                year = int("20{}".format(re.search(r"(?<=\/)\d{2}$", str(date)).group(0)))
+                month = int(re.search(r"(?<=\d)\d{2}(?=\/)", str(date)).group(0))
+                day = int(re.search(r"(?<=\/)\d{2}(?=\/)", str(date)).group(0))
+            else:
+                short_date = None
 
-            try:
-                filter_date = int(datetime.strftime(datetime.strptime(short_date, "%b %d, %Y"), "%Y%m%d"))
-            except:
-                filter_date = int(str(datetime.date(datetime.utcnow())).replace('-', ''))
-            
-            print("filter_date: ", filter_date)
+            if short_date is not None:
+                filter_date = int(datetime.datetime.strftime(datetime.datetime.strptime(short_date, "%b %d, %Y"), "%Y%m%d"))
+            elif year is not None:
+                filter_date = datetime.date(year, month, day).strftime("%Y%m%d")
+            else:
+                filter_date = datetime.datetime.utcnow().strftime("%Y%m%d")
+
+            # Make meeting id
+            meeting_id = "{}_{}_{}_{}_{}".format(place, scraped_by, committee_name, filter_date, duration)
 
             # Filter by date
-            if int(start_date) <= filter_date <= int(end_date):
+            if int(start_date) <= int(filter_date) <= int(end_date):
            
                 # Add agenda to row list
-                row_list.append(place)
-                row_list.append(state_or_province)
-                row_list.append(date)
-                row_list.append(meeting_name)
-                row_list.append("pdf") # doc_format
-                row_list.append(meeting_id)
-                row_list.append(site_type)
-                row_list.append("agenda") # doc_type
-                row_list.append(agenda) # url
-                metadata.append(row_list)
+                row_dict['place'] = place
+                row_dict['state_or_province'] = state_or_province
+                row_dict['meeting_date'] = date
+                row_dict['meeting_time'] = None
+                row_dict['committee_name'] = committee_name
+                row_dict['doc_format'] = 'pdf'
+                row_dict['meeting_id'] = meeting_id
+                row_dict['scraped_by'] = scraped_by
+                row_dict['doc_type'] = 'agenda' # doc_type
+                row_dict['url'] = "http:{}".format(agenda) # url
+                if agenda is not None:
+                    metadata.append(row_dict)
 
                 # Add minutes to row list
-                row_list = []
-                row_list.append(place)
-                row_list.append(state_or_province)
-                row_list.append(date)
-                row_list.append(meeting_name)
-                row_list.append("pdf") # doc_format
-                row_list.append(meeting_id)
-                row_list.append(site_type)
-                row_list.append("minutes") # doc_type
-                row_list.append(minutes) # url
-                metadata.append(row_list)
+                row_dict = {}
+                row_dict['place'] = place
+                row_dict['state_or_province'] = state_or_province
+                row_dict['meeting_date'] = date
+                row_dict['meeting_time'] = None
+                row_dict['committee_name'] = committee_name
+                row_dict['doc_format'] = 'pdf'
+                row_dict['meeting_id'] = meeting_id
+                row_dict['scraped_by'] = scraped_by
+                row_dict['doc_type'] = 'agenda'  # doc_type
+                row_dict['url'] = "http:{}".format(minutes)  # url
+                if minutes is not None:
+                    metadata.append(row_dict)
 
                 # Add video to row list
-                row_list = []
-                row_list.append(place)
-                row_list.append(state_or_province)
-                row_list.append(date)
-                row_list.append(meeting_name)
-                row_list.append("video") # doc_format
-                row_list.append(meeting_id)
-                row_list.append(site_type)
-                row_list.append("video") # doc_type
-                row_list.append(video) # url
-                metadata.append(row_list)
+                row_dict = {}
+                row_dict['place'] = place
+                row_dict['state_or_province'] = state_or_province
+                row_dict['meeting_date'] = date
+                row_dict['meeting_time'] = None
+                row_dict['committee_name'] = committee_name
+                row_dict['doc_format'] = 'video'
+                row_dict['meeting_id'] = meeting_id
+                row_dict['scraped_by'] = scraped_by
+                row_dict['doc_type'] = 'video'  # doc_type
+                row_dict['url'] = video  # url
+                if video is not None:
+                    metadata.append(row_dict)
                 
                 # Add audio to row list
-                row_list = []
-                row_list.append(place)
-                row_list.append(state_or_province)
-                row_list.append(date)
-                row_list.append(meeting_name)
-                row_list.append("mp3") # doc_format
-                row_list.append(meeting_id)
-                row_list.append(site_type)
-                row_list.append("audio") # doc_type
-                row_list.append(audio) # url
-                metadata.append(row_list)
+                row_dict = {}
+                row_dict['place'] = place
+                row_dict['state_or_province'] = state_or_province
+                row_dict['meeting_date'] = date
+                row_dict['meeting_time'] = None
+                row_dict['committee_name'] = committee_name
+                row_dict['doc_format'] = 'mp3'
+                row_dict['meeting_id'] = meeting_id
+                row_dict['scraped_by'] = scraped_by
+                row_dict['doc_type'] = 'audio'  # doc_type
+                row_dict['url'] = audio  # url
+                if audio is not None:
+                    metadata.append(row_dict)
 
                 # Add video2 to row list
-                row_list = []
-                row_list.append(place)
-                row_list.append(state_or_province)
-                row_list.append(date)
-                row_list.append(meeting_name)
-                row_list.append("mp4") # doc_format
-                row_list.append(meeting_id)
-                row_list.append(site_type)
-                row_list.append("video") # doc_type
-                row_list.append(video2) # url
-                metadata.append(row_list)
+                row_dict = {}
+                row_dict['place'] = place
+                row_dict['state_or_province'] = state_or_province
+                row_dict['meeting_date'] = date
+                row_dict['meeting_time'] = None
+                row_dict['committee_name'] = committee_name
+                row_dict['doc_format'] = 'mp4'
+                row_dict['meeting_id'] = meeting_id
+                row_dict['scraped_by'] = scraped_by
+                row_dict['doc_type'] = 'video'  # doc_type
+                row_dict['url'] = video2  # url
+                if video2 is not None:
+                    metadata.append(row_dict)
                 
                 # Add agenda_packet to row list
-                row_list = []
-                row_list.append(place)
-                row_list.append(state_or_province)
-                row_list.append(date)
-                row_list.append(meeting_name)
-                row_list.append("pdf") # doc_format
-                row_list.append(meeting_id)
-                row_list.append(site_type)
-                row_list.append("agenda_packet") # doc_type
-                row_list.append(agenda_packet) # url
-                metadata.append(row_list)
+                row_dict = {}
+                row_dict['place'] = place
+                row_dict['state_or_province'] = state_or_province
+                row_dict['meeting_date'] = date
+                row_dict['meeting_time'] = None
+                row_dict['committee_name'] = committee_name
+                row_dict['doc_format'] = 'pdf'
+                row_dict['meeting_id'] = meeting_id
+                row_dict['scraped_by'] = scraped_by
+                row_dict['doc_type'] = 'agenda_packet'  # doc_type
+                row_dict['url'] = agenda_packet  # url
+                if agenda_packet is not None:
+                    metadata.append(row_dict)
+
+                # Add captions to row list
+                row_dict = {}
+                row_dict['place'] = place
+                row_dict['state_or_province'] = state_or_province
+                row_dict['meeting_date'] = date
+                row_dict['meeting_time'] = None
+                row_dict['committee_name'] = committee_name
+                row_dict['doc_format'] = 'html'
+                row_dict['meeting_id'] = meeting_id
+                row_dict['scraped_by'] = scraped_by
+                row_dict['doc_type'] = 'captions'  # doc_type
+                row_dict['url'] = captions  # url
+                if captions is not None:
+                    metadata.append(row_dict)
         
         return metadata
 
@@ -267,4 +290,4 @@ if __name__ == '__main__':
     end_date = input("Enter end date (or nothing): ")
     site = GranicusSite(subdomain)
     metadata = site.scrape(start_date=start_date, end_date=end_date)
-    site.download_csv(metadata, subdomain)
+    print(metadata)
