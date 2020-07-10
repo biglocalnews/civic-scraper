@@ -55,8 +55,8 @@ class CivicPlusSite:
         document_stubs = self._get_all_docs(post_params)
         filtered_stubs = self._filter_docs(document_stubs, start_date, end_date)
         logger.info("END SCRAPE - {}".format(self.url))
-        print(self._make_document_links(filtered_stubs))
-        return self._make_document_links(filtered_stubs)
+        links = self._make_document_links(filtered_stubs)
+        return self.get_metadata(links)
 
     def get_metadata(self, url_list):
         """
