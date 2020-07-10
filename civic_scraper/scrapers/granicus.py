@@ -2,13 +2,13 @@
 TITLE: GranicusSite
 AUTHOR: Amy DiPierro
 VERSION: 2020-07-06
-USAGE: From the command line, type 'python3 granicus.py' Then enter an optional start and end date
-        in the form YYMMDD when prompted.
+USAGE: From the command line, type 'python3 granicus.py' Then enter a URL pointing to a Granicus website and
+        an optional start and end date in the form YYMMDD when prompted.
 
 This script scrapes agendas, minutes and other documents and multimedia from Granicus websites.
 
-Input: A granicus subdomain
-Returns: A list of documents found on that subdomain in the given time range
+Input: A Granicus URL, for example "https://marin.granicus.com/ViewPublisher.php?view_id=33"
+Returns: A list of documents found at that address in the given time range
 
 """
 # Libraries
@@ -18,23 +18,19 @@ import datetime
 import bs4
 import requests
 from retrying import retry
-<<<<<<< HEAD:civic_scraper/scrapers/granicus.py
-import csv
 from civic_scraper.scrapers.site import Site
-=======
->>>>>>> master:civic_scraper/granicus_site.py
 
 # Code
 
-# granicus object class
+# Granicus object class
 class GranicusSite(Site):
     """
-    An object with the public methods scrape() and download_csv().
+    An object with the public method scrape().
     """
-    base_url = "granicus.com"
 
-    def __init__(self, subdomain):
-        self.url = "https://{}.{}/ViewPublisher.php?view_id=1".format(subdomain, self.base_url)
+    def __init__(self, url):
+        std_url = re.sub("(?<=view_id=)\d*", "1", url)
+        self.url = std_url
         self.runtime = datetime.datetime.utcnow().strftime("%Y%m%d")
 
     # Public interface (used by calling code)
@@ -68,11 +64,11 @@ class GranicusSite(Site):
             response = requests.get(self.url)
             if response.text.strip() == "Page not found.":
                 print("Page not found 1")
-                self.url = "https://{}.{}/ViewPublisher.php?view_id=2".format(subdomain, self.base_url)
+                self.url = re.sub("(?<=view_id=)\d*", "2", self.url)
                 response = requests.get(self.url)
                 if response.text.strip() == "Page not found.":
                     print("Page not found 2")
-                    self.url = "https://{}.{}/ViewPublisher.php?view_id=33".format(subdomain, self.base_url)
+                    self.url = re.sub("(?<=view_id=)\d*", "33", self.url)
                     response = requests.get(self.url)
             return response.text
         except:
@@ -278,16 +274,16 @@ class GranicusSite(Site):
                 row_dict['meeting_id'] = meeting_id
                 row_dict['scraped_by'] = scraped_by
                 row_dict['doc_type'] = 'captions'  # doc_type
-                row_dict['url'] = captions  # url
+                row_dict['url'] = "http:{}".format(captions)  # url
                 if captions is not None:
                     metadata.append(row_dict)
         
         return metadata
 
 if __name__ == '__main__':
-    subdomain = input("Enter subdomain: ")
+    url = input("Enter Granicus URL: ")
     start_date = input("Enter start date (or nothing): ")
     end_date = input("Enter end date (or nothing): ")
-    site = GranicusSite(subdomain)
+    site = GranicusSite(url)
     metadata = site.scrape(start_date=start_date, end_date=end_date)
     print(metadata)
