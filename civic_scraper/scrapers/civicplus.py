@@ -102,9 +102,11 @@ class CivicPlusSite(Site):
             headers = requests.head(link).headers
             asset['content_type'] = headers['content-type']
             asset['content_length'] = headers['content-length']
-            if asset_type in type_list and int(headers['content-length']) <= file_size:
+            if asset['asset_type'] in type_list and int(headers['content-length']) <= int(file_size):
                 metadata.append(asset)
             asset = {}
+
+        print("metadata: ", metadata)
 
         return AssetList(metadata)
 
