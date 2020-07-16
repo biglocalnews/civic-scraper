@@ -90,11 +90,11 @@ class Asset(object):
 
         asset_type_valid = False
         asset_type_list = ['agenda', 'minutes', 'video', 'audio', 'captions', 'agenda_packet']
-        while not doc_type_valid:
+        while not asset_type_valid:
             if asset_type in asset_type_list:
                 asset_type_valid = True
             else:
-                print("The asset_type is: ", doc_type)
+                print("The asset_type is: ", asset_type)
                 print("The value of asset_type must be one of the following: 'agenda', 'minutes', 'video', 'audio', 'captions', 'agenda_packet'.")
                 break
 
@@ -131,18 +131,18 @@ class Asset(object):
                 print("The format of scraped_by should be 'module.py_vYYYY-MM-DD'.")
                 break
 
-        valid_list = [url_valid, state_or_province_valid, doc_type_valid, meeting_date_valid, meeting_time_valid, meeting_id_valid, scraped_by_valid]
+        valid_list = [url_valid, state_or_province_valid, asset_type_valid, meeting_date_valid, meeting_time_valid, meeting_id_valid, scraped_by_valid]
 
         if False in valid_list:
-            print("Cannot initialize Document object. Invalid input.")
+            print("Cannot initialize Asset object. Invalid input.")
 
         else:
             self.url = url
-            self.doc_name = doc_name
+            self.asset_name = asset_name
             self.committee_name = committee_name
             self.place = place
             self.state_or_province = state_or_province
-            self.doc_type = doc_type
+            self.asset_type = asset_type
             self.meeting_date = meeting_date
             self.meeting_time = meeting_time
             self.meeting_id = meeting_id
@@ -152,15 +152,15 @@ class Asset(object):
 
     def download(self, target_path=os.getcwd()):
         """
-        Downloads a document into a target directory.
+        Downloads a asset into a target directory.
 
         Input: Target directory name (target_path)
-        Output: pdf of document in target directory
+        Output: pdf of asset in target directory
         """
-        file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.doc_type, self.meeting_date)
-        document = self.url
-        print("Downloading document: ", document)
-        response = requests.get(document, allow_redirects=True)
+        file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.asset_type, self.meeting_date)
+        asset = self.url
+        print("Downloading asset: ", asset)
+        response = requests.get(asset, allow_redirects=True)
         if not os.path.isdir(target_path):
             print("Making directory...")
             os.mkdir(target_path)
@@ -171,7 +171,7 @@ class Asset(object):
 
     def append_metadata(self, target_path=os.getcwd(), write_header=False):
         """
-        Append the document metadata in CSV format to target_path.
+        Append the asset metadata in CSV format to target_path.
         If write_header is True, first write a line containing the header
         names. If false, only write one line containing the values.
         """
@@ -183,7 +183,7 @@ class Asset(object):
             ('meeting_time', self.meeting_time),
             ('committee_name', self.committee_name),
             ('meeting_id', self.meeting_id),
-            ('doc_type', self.doc_type),
+            ('asset_type', self.asset_type),
             ('url', self.url),
             ('scraped_by', self.scraped_by),
             ('content_type', self.content_type),
@@ -208,32 +208,30 @@ class Asset(object):
                 dict_writer.writerow(metadata_dict)
 
 
-class DocumentList(object):
+class AssetList(object):
 
-    def __init__(self, document_args):
+    def __init__(self, asset_args):
         """
+        Initialize the AssetList
+        """
+        # Store the list of asset metadata dictionaries
+        self.asset_args = asset_args
 
-        Args:
-            document_args:
-        """
-        # Store the list of document metadata dictionaries
-        self.document_args = document_args
+        # Make a list of Asset instances
+        self.assets = [Asset(**args) for args in asset_args]
 
-        # Make a list of Document instances
-        self.documents = [Document(**args) for args in document_args]
-
-    def download_documents(self, target_dir=os.getcwd()):
+    def download_assets(self, target_dir=os.getcwd()):
         """
-        Write documents to target_path
+        Write assets to target_path.
         """
-        for item in self.documents:
+        for item in self.assets:
             item.download(target_dir)
 
     def to_csv(self, target_path=os.getcwd()):
         """
-        Write metadata about the document list to a csv at target_path.
+        Write metadata about the asset list to a csv at target_path.
         """
-        for index, value in enumerate(self.documents):
+        for index, value in enumerate(self.assets):
             if os.path.exists(target_path):
                 value.append_metadata(target_path)
             else:
@@ -248,6 +246,6 @@ if __name__ == '__main__':
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
     metadata = site.scrape("20200101", "20200501", type_list=['Minutes'])
 
-    # metadata.download_documents(target_dir="test.pdf")
+    # metadata.download_assets(target_dir="test.pdf")
     metadata.to_csv("test.csv")
 
