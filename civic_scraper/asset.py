@@ -216,6 +216,7 @@ class AssetList(object):
         """
         # Store the list of asset metadata dictionaries
         self.asset_args = asset_args
+        print("asset_args: ", asset_args)
 
         # Make a list of Asset instances
         self.assets = [Asset(**args) for args in asset_args]
@@ -231,10 +232,12 @@ class AssetList(object):
         """
         Write metadata about the asset list to a csv at target_path.
         """
+        dir_path = re.search(r"\w+\/\w+\/", target_path).group(0)
         for index, value in enumerate(self.assets):
-            if os.path.exists(target_path):
+            if os.path.exists(dir_path):
                 value.append_metadata(target_path)
             else:
+                os.makedirs(dir_path)
                 value.append_metadata(target_path, write_header=True)
 
 
