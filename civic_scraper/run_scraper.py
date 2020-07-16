@@ -4,12 +4,12 @@ AUTHOR: Chris Stock
 VERSION: 2020-07-08
 DESCRIPTION:
 Given a scraper type, an endpoint, and possibly scraping arguments,
-this script collects a list of documents on the site and writes
+this script collects a list of assets on the site and writes
 that list as a csv to a specified path.
 
 USAGE:
 Within Python:
-doc_list = run_scraper(
+asset_list = run_scraper(
     scraper_type='civicplus',
     endpoint='http://pa-westchester2.civicplus.com/AgendaCenter',
     scraper_args={"start_date": "20150909", "end_date": "20151014"},
@@ -21,7 +21,7 @@ python run_scraper.py \
     civicplus \
     http://pa-westchester2.civicplus.com/AgendaCenter \
     path/to/target.csv \
-    --scraper_args {\"start_date\": \"20150909\", \"end_date\": \"20151014\"}
+    --scraper_args '{\"start_date\": \"20150909\", \"end_date\": \"20151014\"}'
 """
 
 import json
@@ -36,7 +36,7 @@ def run_scraper(
     ):
     """
     Run a specified scraper on a specified site, possibly with arguments,
-    and write the resulting document list as a csv to a specified path
+    and write the resulting asset list as a csv to a specified path
 
     Args:
         scraper_type: the type of scraper ('legistar', 'civicplus')
@@ -48,10 +48,11 @@ def run_scraper(
             ({"start_date": "20150909", "end_date": "20151014"})
 
     Returns:
-        a DocumentList instance of the retrieved documents
+        a AssetList instance of the retrieved assets
     """
     # process arguments
     scraper_args = {} if scraper_args is None else scraper_args
+    print("scraper_args", scraper_args)
 
     # instantiate the specified scraper
     try:
@@ -63,51 +64,58 @@ def run_scraper(
 
     # scrape the specified site
     try:
-        doc_list = site.scrape(**scraper_args)
+        asset_list = site.scrape(**scraper_args)
     except Exception:
         raise Exception('Unable to scrape with args: '
                         '{}'.format(scraper_args))
 
     # write results to the specified file location
     try:
-        doc_list.to_csv(target_path)
+        asset_list.to_csv(target_path)
     except Exception:
-        raise Exception('Unable to write document list to path: '
+        raise Exception('Unable to write asset list to path: '
                         '{}'.format(target_path))
-    return doc_list
+    return asset_list
 
 if __name__ == '__main__':
     """
     Call run_scraper from the command line.
     """
+    asset_list = run_scraper(
+        scraper_type='civicplus',
+        endpoint='http://pa-westchester2.civicplus.com/AgendaCenter',
+        scraper_args={"start_date": "20150909", "end_date": "20151014", "file_size": 100, "type_list": ['agenda', 'minutes']},
+        target_path='path/to/target.csv'
+    )
 
-    # parse arguments
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        'scraper_type',
-        type=str
-    )
-    parser.add_argument(
-        'endpoint',
-        type=str,
-    )
-    parser.add_argument(
-        'target_path',
-        type=str,
-    )
-    parser.add_argument(
-        '--scraper_args',
-        type=json.loads,  # imports a dict from escaped JSON
-        default={},
-    )
-    args = parser.parse_args()
-
-    # call function
-    document_list = run_scraper(
-        scraper_type=args.scraper_type,
-        endpoint=args.endpoint,
-        target_path=args.target_path,
-        scraper_args=args.scraper_args,
-    )
+    # # parse arguments
+    # import argparse
+    # import json
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument(
+    #     'scraper_type',
+    #     type=str
+    # )
+    # parser.add_argument(
+    #     'endpoint',
+    #     type=str,
+    # )
+    # parser.add_argument(
+    #     'target_path',
+    #     type=str,
+    # )
+    # parser.add_argument(
+    #     '--scraper_args',
+    #     type=json.loads,  # imports a dict from escaped JSON
+    #     default={},
+    # )
+    # args = parser.parse_args()
+    #
+    # # call function
+    # asset_list = run_scraper(
+    #     scraper_type=args.scraper_type,
+    #     endpoint=args.endpoint,
+    #     target_path=args.target_path,
+    #     scraper_args=args.scraper_args,
+    # )
 
