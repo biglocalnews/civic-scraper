@@ -1,104 +1,113 @@
 """
 TITLE: CivicPlusSite
 AUTHOR: Amy DiPierro
-VERSION: 2020-06-26
-USAGE: From the command line, type 'python3 civicplus.py'
-        then enter a required url and option start date and end date,
-        where a url is a string corresponding to the first
-        portion of each ulr and start date and end date are written in the
-        form yyyymmdd. Url is required, but start date and end date have default values.
+VERSION: 2020-07-16
 
-Urls should be of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
+This module scrapes agendas and minutes from CivicPlus Agenda Center websites. It has one public method, scrape(),
+which returns a AssetList object.
 
-This script scrapes agendas and minutes from CivicPlus Agenda Center websites.
+From CLI:
+        From the command line, type 'python3 civicplus.py'
+        then enter a required url and optional start_date, end_date,
+        file_size and type_list as defined below.
 
-Input: A CivicPlus url
-Returns: A list of documents found on that url in the given time range
+From Python:
+        site = CivicPlusSite(url) # creates a CivicPlusSite object
+        site.scrape(start_date, end_date, file_size, type_list)
+
+Inputs of scrape():
+        url: str of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
+        start_date: str entered in the form YYYYMMDD
+        end_date: str entered in the form YYMMDD
+        file_size: int size of file in gigabytes
+        type_list: list of strings with one or more possible file types to download
+
+Returns of scrape(): AssetList object.
 
 """
 # Libraries
 
-import logging
 import re
 from datetime import datetime
+from datetime import time
+from datetime import date
 import bs4
 import requests
-from retrying import retry
-import csv
 from civic_scraper.scrapers.site import Site
 
-from civic_scraper.document import DocumentList
-
-#TODO: Get logger to work
-logger = logging.getLogger(__name__)
-
+from civic_scraper.asset import AssetList
 
 class CivicPlusSite(Site):
     """
-    In its current configuration, the CivicPlusSite object returns a list of all documents
-    from a given website in a given date range.
+    In its current configuration, the CivicPlusSite object returns a AssetList object
+    corresponding to the date range and URL that has been entered.
     """
-    base_url = "civicplus.com"
 
     def __init__(self, base_url):
         """
         Creates a CivicPlusSite object
+
+        Input: URL of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
         """
         self.url = base_url
         self.runtime = str(datetime.date(datetime.utcnow())).replace('-', '')
 
     # Public interface (used by calling code)
-    def scrape(self, start_date, end_date):
+    def scrape(self, start_date, end_date, file_size=100, type_list=['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']):
+        """
+        Input: start_date: str entered in the form YYYYMMDD
+                end_date: str entered in the form YYMMDD
+                file_size: int size of file in gigabytes
+                type_list: list of strings with one or more possible file types to download
+
+        Returns: AssetList object
+        """
         if start_date == '':
             start_date = self.runtime
         if end_date == '':
             end_date = self.runtime
-        logger.info("START SCRAPE - {}".format(self.url))
         html = self._get_html()
         soup = self._make_soup(html)
         post_params = self._get_post_params(soup, start_date, end_date)
-        document_stubs = self._get_all_docs(post_params)
-        filtered_stubs = self._filter_docs(document_stubs, start_date, end_date)
-        logger.info("END SCRAPE - {}".format(self.url))
-        links = self._make_document_links(filtered_stubs)
-        return self.get_metadata(links)
-
-    def get_metadata(self, url_list):
-        """
-        Downloads a csv file for a given AgendaCenter URL and url_list.
-
-        Input: A list of document urls
-        Output: A csv of metadata related to all documents returned for that URL
-        """
-
-        # Extracting metadata
-        metadata = []
-        document = {}
-        for link in url_list:
-            document['place'] = self._get_doc_metadata(r"(?<=-)\w+(?=\.)", link)
-            document['state_or_province'] = self._get_doc_metadata(r"(?<=//)\w{2}(?=-)", link)
-            document['meeting_date'] = self._get_doc_metadata(r"(?<=_)\w{8}(?=-)", link)
-            document['meeting_time'] = None
-            document['committee_name'] = None
-            document['doc_format'] = 'pdf'
-            document['meeting_id'] = self._get_doc_metadata(r"(?<=/_).+$", link)
-            document['doc_type'] = self._get_doc_metadata(r"(?<=e/)\w+(?=/_)", link)
-            document['url'] = link
-            document['scraped_by'] = 'civicplus_v20200709'
-            metadata.append(document)
-            document = {}
-
-        doc_list = DocumentList(metadata)
-        return doc_list
+        asset_stubs = self._get_all_assets(post_params)
+        filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
+        links = self._make_asset_links(filtered_stubs)
+        file_size = self._gb_to_bytes(file_size)
+        return self._get_metadata(links, file_size, type_list)
 
     # Private methods
 
-    @retry(
-        stop_max_attempt_number=3,
-        stop_max_delay=30000,
-        wait_exponential_multiplier=1000,
-        wait_exponential_max=10000
-    )
+    def _get_metadata(self, url_list, file_size, type_list):
+        """
+        Returns a list of AssetList objects.
+
+        Input: A list of URLs, a file_size limit (int), a list of asset types
+        Output: A AssetList object
+        """
+
+        metadata = []
+        asset = {}
+        for link in url_list:
+            asset['place'] = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link)
+            asset['state_or_province'] = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link)
+            meeting_date = self._get_asset_metadata(r"(?<=_)\w{8}(?=-)", link)
+            asset['meeting_date'] = date(int(meeting_date[4:]), int(meeting_date[:2]), int(meeting_date[2:4]))
+            asset['meeting_time'] = time()
+            asset['committee_name'] = None
+            asset['meeting_id'] = link
+            asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link)
+            asset['asset_type'] = asset_type.lower()
+            asset['url'] = link
+            asset['scraped_by'] = 'civicplus.py_v2020-07-09'
+            headers = requests.head(link).headers
+            asset['content_type'] = headers['content-type']
+            asset['content_length'] = headers['content-length']
+            if asset_type in type_list and int(headers['content-length']) <= file_size:
+                metadata.append(asset)
+            asset = {}
+
+        return AssetList(metadata)
+
     def _get_html(self):
         """
         Get HTML response.
@@ -106,13 +115,8 @@ class CivicPlusSite(Site):
         Input: Link of the website we want to scrape.
         Returns: HTML of the website as text.
         """
-
-        try:
-            response = requests.get(self.url)
-            return response.text
-        except:
-            print("The url", self.url, "could not be reached.")
-            return ""
+        response = requests.get(self.url)
+        return response.text
 
     def _make_soup(self, html):
         """
@@ -123,12 +127,12 @@ class CivicPlusSite(Site):
         """
         return bs4.BeautifulSoup(html, 'html.parser')
 
-    def _get_post_params(self, soup, start_date, end_date):
+    def _get_post_params(self, soup, start, end):
         """
         Given parsed html text grabs the bits of html -- a year and a cat_id -- needed
         for the POST request. Filters the list by the year in start_date and end_date.
 
-        Input: Parsed text
+        Input: Parsed text, start date (YYYYMMDD) and end date (YYYYMMDD)
         Returns: A dictionary of years and cat_ids
         """
         # Make the dictionary
@@ -138,8 +142,8 @@ class CivicPlusSite(Site):
         for element in year_elements:
             link = element.attrs['href']
             year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
-            start_year = re.search(r"^\d{4}", start_date).group(0)
-            end_year = re.search(r"^\d{4}", start_date).group(0)
+            start_year = re.search(r"^\d{4}", start).group(0)
+            end_year = re.search(r"^\d{4}", end).group(0)
             if start_year <= year <= end_year:
                 cat_id = re.findall(r"\d+(?=,.*')", link)[1]
                 cat_ids.append(cat_id)
@@ -157,19 +161,13 @@ class CivicPlusSite(Site):
 
         return years_cat_id_2
 
-    @retry(
-        stop_max_attempt_number=3,
-        stop_max_delay=30000,
-        wait_exponential_multiplier=1000,
-        wait_exponential_max=10000
-    )
-    def _get_all_docs(self, post_params):
+    def _get_all_assets(self, post_params):
         """
         Given a dictionary and page URL, makes a post request and harvests all of the links from
         the response to that request.
 
         Input: Dictionary of years and catIDs, page URL for POST request
-        Returns: A list of lists of document URL stubs
+        Returns: A list of lists of asset URL stubs
         """
         page = "{}/UpdateCategoryList".format(self.url)
         # Get links
@@ -184,7 +182,7 @@ class CivicPlusSite(Site):
                     end_links = self._get_links(soup)
                     all_links.append(end_links)
                 except:
-                    print("In get_all_docs: The POST request failed.")
+                    print("In get_all_assets: The POST request failed.")
 
         # Remove lists for which no links have been found
         for list in all_links:
@@ -200,10 +198,10 @@ class CivicPlusSite(Site):
 
     def _get_links(self, soup):
         """
-        Make a list of links to documents we want to download
+        Make a list of links to assets we want to download
 
         Input: Parsed text of website
-        Returns: The latter portion of links to documents to download
+        Returns: The latter portion of links to assets to download
         """
 
         links = soup.table.find_all('a')
@@ -213,39 +211,40 @@ class CivicPlusSite(Site):
                 end_links.append(link.get('href'))
                 end_links = list(filter(None, end_links))
                 for end_link in end_links:
-                    if ('true' in end_link) or ('http' in end_link) or ('Previous' in end_link) or ('DocumentCenter' in end_link):
+                    if ('true' in end_link) or ('http' in end_link) or ('Previous' in end_link) or ('AssetCenter' in end_link):
                         end_links.remove(end_link)
 
         return end_links
 
-    def _filter_docs(self, document_stubs, start_date, end_date):
+    def _filter_assets(self, asset_stubs, start, end):
         """
-        Filters documents to the provided date range.
+        Filters assets to the provided date range.
 
-        :param document_stubs: A list of document stubs
-        :param start_date: The earliest date of documents to return
-        :param end_date: The latest date of documents to return
-        :return: A list of document stubs filtered by date range
+        Inputs:
+        asset_stubs: A list of asset stubs
+        start: The earliest date of assets to return
+        end: The latest date of assets to return
+        Returns: A list of asset stubs filtered by date range
         """
         filtered_stubs = []
-        for list in document_stubs:
+        for list in asset_stubs:
             for stub in list:
                 if re.search(r"(?<=_)\d{2}(?=\d{6}-)", stub) is None:
-                    month = "no_month"
+                    month = datetime.utcnow().month
                 else:
                     month = re.search(r"(?<=_)\d{2}(?=\d{6}-)", stub).group(0)
                 if re.search(r"(?<=_\d{2})\d{2}(?=\d{4}-)", stub) is None:
-                    day = "no_day"
+                    day = datetime.utcnow().day
                 else:
                     day = re.search(r"(?<=_\d{2})\d{2}(?=\d{4}-)", stub).group(0)
                 if re.search(r"(?<=\d)\d{4}(?=-)", stub) is None:
-                    year = "no_year"
+                    year = datetime.utcnow().year
                 else:
                     year = re.search(r"(?<=\d)\d{4}(?=-)", stub).group(0)
                 date = "{}{}{}".format(year, month, day)
                 if "no" in date:
                     continue
-                if int(start_date) <= int(date) <= int(end_date):
+                if int(start) <= int(date) <= int(end):
                     filtered_stubs.append(stub)
 
         # Remove duplicates
@@ -256,35 +255,43 @@ class CivicPlusSite(Site):
 
         return filtered_stubs_deduped
 
-    def _make_document_links(self, document_stubs):
+    def _make_asset_links(self, asset_stubs):
         """
-        Combines a base URL and a list of partial document links (document_stubs)
+        Combines a base URL and a list of partial asset links (asset_stubs)
         to make full urls.
 
-        Input: A list of partial document links (document_stubs)
+        Input: A list of partial asset links (asset_stubs)
         Returns: A list of full URLs
         """
         url_list = []
 
-        for stub in document_stubs:
+        for stub in asset_stubs:
             stub = stub.replace("/AgendaCenter", "")
             text = "{}{}".format(self.url, stub)
             url_list.append(text)
 
         return url_list
 
-    def _get_doc_metadata(self, regex, doc_link):
+    def _get_asset_metadata(self, regex, asset_link):
         """
-        Extracts metadata from a provided document URL.
+        Extracts metadata from a provided asset URL.
 
         Input: Regex to extract metadata
         Returns: Extracted metadata as a string or "no_data" if no metadata is extracted
         """
-        print(doc_link)
+        print(asset_link)
         try:
-            return re.search(regex, doc_link).group(0)
+            return re.search(regex, asset_link).group(0)
         except AttributeError as error:
             return "no_data"
+
+    def _gb_to_bytes(self, file_size):
+        """
+        Converts file_size from gigabytes to bytes.
+        Input: File size in gigabytes. Default is 100 GB.
+        Returns: File size in bytes.
+        """
+        return file_size * 1000000
 
 if __name__ == '__main__':
     base_url = input("Enter a CivicPlus url: ")
