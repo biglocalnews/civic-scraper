@@ -21,7 +21,7 @@ import datetime
 import bs4
 import requests
 from civic_scraper.scrapers import Site
-from civic_scraper.asset import AssetList
+from civic_scraper.asset import AssetCollection
 
 # Code
 
@@ -170,7 +170,7 @@ class GranicusSite(Site):
                 self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="captions", url=captions)
                 self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="agenda_packet", url=agenda_packet)
 
-        return AssetList(metadata)
+        return AssetCollection(metadata)
 
     def _add_row(self, type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type, url):
         if asset_type in type_list:

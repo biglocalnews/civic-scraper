@@ -51,6 +51,7 @@ import os
 import requests
 import re
 from collections import OrderedDict
+from datetime import datetime
 
 class Asset(object):
 
@@ -169,11 +170,15 @@ class Asset(object):
         with open(full_path, 'wb') as file:
             file.write(response.content)
 
-    def append_metadata(self, target_path=os.getcwd(), write_header=False):
+        return full_path
+
+    def append_to_csv(self, path, write_header=False):
         """
         Append the asset metadata in CSV format to target_path.
         If write_header is True, first write a line containing the header
         names. If false, only write one line containing the values.
+
+        :param target_path: either a path to a
         """
         # Make the dictionary
         metadata_dict = OrderedDict([
@@ -190,17 +195,8 @@ class Asset(object):
             ('content_length', self.content_length),
         ])
 
-        # Initializing the .csv
-        if target_path.find(".csv") == -1:
-            file_name = "{}-{}.csv".format(self.place, self.state_or_province)
-            full_path = os.path.join(target_path, file_name)
-        else:
-            full_path = target_path
-
-        file = open(full_path, 'a')
-
         # Writing the .csv
-        with file:
+        with open(path, 'a') as file:
             dict_writer = csv.DictWriter(file, metadata_dict.keys())
             if write_header:
                 dict_writer.writeheader()
@@ -208,37 +204,75 @@ class Asset(object):
                 dict_writer.writerow(metadata_dict)
 
 
-class AssetList(object):
+class AssetCollection(object):
 
-    def __init__(self, asset_args):
+    def __init__(self, assets):
         """
-        Initialize the AssetList
+        Initialize AssetCollection
+        :param assets: a list of Asset instances.
         """
-        # Store the list of asset metadata dictionaries
-        self.asset_args = asset_args
-        print("asset_args: ", asset_args)
 
-        # Make a list of Asset instances
-        self.assets = [Asset(**args) for args in asset_args]
+        for asset in assets:
+            assert isinstance(asset, Asset)
 
-    def download_assets(self, target_dir=os.getcwd()):
+        self.assets = assets
+
+    def download(self, target_dir=os.getcwd()):
         """
-        Write assets to target_path.
+        Write assets to target_dir.
         """
+
+        downloaded_file_paths = []
         for item in self.assets:
-            item.download(target_dir)
+            downloaded_file_path = item.download(target_dir)
+            downloaded_file_paths.append(downloaded_file_path)
 
-    def to_csv(self, target_path=os.getcwd()):
+        return downloaded_file_paths
+
+    def to_csv(
+            self,
+            target_path=None,
+            target_dir=None,
+            appending=False,
+    ):
         """
-        Write metadata about the asset list to a csv at target_path.
+        Write metadata about the asset list to a csv.
+        If target_path is given, write a file to that path.
+        If target_dir is given, create a file in directoy target_dir
+        If neither are given, create a file in the current working directory
+        If both are given, write a file to target_path and ignore target_dir
+        If appending is True, append to any file that's already there.
+        if appending is False, overwrite any file that's already there.
+        If not, make directories and write a header first.
         """
-        dir_path = re.search(r"\w+\/\w+\/", target_path).group(0)
-        for index, value in enumerate(self.assets):
-            if os.path.exists(dir_path):
-                value.append_metadata(target_path)
-            else:
-                os.makedirs(dir_path)
-                value.append_metadata(target_path, write_header=True)
+        if target_path is None and target_dir is None:
+            target_dir = os.getcwd()
+        if target_path is not None:
+            path = os.path.abspath(target_path)
+        else:
+            file_name = '-'.join([
+                self.assets[0].scraped_by,
+                self.assets[0].place,
+                self.assets[0].state_or_province,
+                datetime.utcnow().isoformat()
+            ]) + '.csv'
+            path = os.path.join(target_dir, file_name)
+        path = os.path.abspath(path)
+
+        # determine whether the file is new or already exists
+        new_file = not os.path.exists(path)
+        if new_file:
+            containing_dir = os.path.split(path)[0]
+            os.makedirs(containing_dir, exist_ok=True)
+        elif not appending:
+            # if appending is False, remove whatever's already there
+            os.remove(path)
+            new_file = True
+
+        # write lines of data, including header if it's a new file
+        for i, asset in enumerate(self.assets):
+            write_header = (i == 0) and new_file
+            asset.append_to_csv(path, write_header=write_header)
 
 
 if __name__ == '__main__':
@@ -247,7 +281,7 @@ if __name__ == '__main__':
 
     cp = SUPPORTED_SCRAPERS['civicplus']
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
-    metadata = site.scrape("20200101", "20200501", type_list=['Minutes'])
+    metadata = site.scrape("20200101", "20200501", file_type_filter=['Minutes'])
 
     # metadata.download_assets(target_dir="test.pdf")
     metadata.to_csv("test.csv")

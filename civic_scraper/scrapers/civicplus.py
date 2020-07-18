@@ -12,7 +12,7 @@ From CLI:
         file_size and type_list as defined below.
 
 From Python:
-        site = CivicPlusSite(url) # creates a CivicPlusSite object
+        site = CivicPlusSite(base_url) # creates a CivicPlusSite object
         site.scrape(start_date, end_date, file_size, type_list)
 
 Inputs of scrape():
@@ -35,7 +35,9 @@ import bs4
 import requests
 from civic_scraper.scrapers.site import Site
 
-from civic_scraper.asset import AssetList
+from civic_scraper.asset import Asset, AssetCollection
+SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
+
 
 class CivicPlusSite(Site):
     """
@@ -53,15 +55,41 @@ class CivicPlusSite(Site):
         self.runtime = str(datetime.date(datetime.utcnow())).replace('-', '')
 
     # Public interface (used by calling code)
-    def scrape(self, start_date, end_date, file_size=100, type_list=['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']):
+    def scrape(
+            self,
+            start_date,
+            end_date,
+            file_size_filter=100,
+            file_type_filter=SUPPORTED_ASSET_TYPES,
+
+    ):
         """
         Input: start_date: str entered in the form YYYYMMDD
                 end_date: str entered in the form YYMMDD
-                file_size: int size of file in gigabytes
-                type_list: list of strings with one or more possible file types to download
+                file_size_filter: int size of file in gigabytes
+                file_type_filter: list of strings with one or more possible
+                file
+                types to
+                download
 
         Returns: AssetList object
         """
+        # TODO: think about workflow here. It may make make more sense for
+        #  the filtering on file type etc. to be applied at a downstream stage
+        #  like AssetList.download() than at the scraping stage itself. (It's
+        #  not costly to list the metadata for a big file, but it's costly
+        #  to automatically download big files)
+
+        # TODO: if the goal is to have a reasonable default maximum file
+        #  size to prevent accidentally starting large downloads, the default
+        #  should be in the range of 10-100 MB, not 100 GB. It might make
+        #  more sense for the units to be MB as well.
+
+        # TODO: for type_list and file_size, make it possible NOT to apply
+        #  the filters - so that if I don't want to filter, I don't
+        #  have to. One option: if file_size_filter is None, don't filter by
+        #  file size.
+
         if start_date == '':
             start_date = self.runtime
         if end_date == '':
@@ -72,8 +100,10 @@ class CivicPlusSite(Site):
         asset_stubs = self._get_all_assets(post_params)
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
         links = self._make_asset_links(filtered_stubs)
-        file_size = self._gb_to_bytes(file_size)
-        return self._get_metadata(links, file_size, type_list)
+        file_size_filter = self._gb_to_bytes(file_size_filter)
+        metadata = self._get_metadata(links, file_size_filter,
+                                      file_type_filter)
+        return metadata
 
     # Private methods
 
@@ -85,30 +115,28 @@ class CivicPlusSite(Site):
         Output: A AssetList object
         """
 
-        metadata = []
-        asset = {}
+        assets = []
+
         for link in url_list:
-            asset['place'] = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link)
-            asset['state_or_province'] = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link)
+            asset_args = {}
+            asset_args['place'] = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link)
+            asset_args['state_or_province'] = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link)
             meeting_date = self._get_asset_metadata(r"(?<=_)\w{8}(?=-)", link)
-            asset['meeting_date'] = date(int(meeting_date[4:]), int(meeting_date[:2]), int(meeting_date[2:4]))
-            asset['meeting_time'] = time()
-            asset['committee_name'] = None
-            asset['meeting_id'] = link
+            asset_args['meeting_date'] = date(int(meeting_date[4:]), int(meeting_date[:2]), int(meeting_date[2:4]))
+            asset_args['meeting_time'] = time()
+            asset_args['committee_name'] = None
+            asset_args['meeting_id'] = link
             asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link)
-            asset['asset_type'] = asset_type.lower()
-            asset['url'] = link
-            asset['scraped_by'] = 'civicplus.py_v2020-07-09'
+            asset_args['asset_type'] = asset_type.lower()
+            asset_args['url'] = link
+            asset_args['scraped_by'] = 'civicplus.py_v2020-07-09'
             headers = requests.head(link).headers
-            asset['content_type'] = headers['content-type']
-            asset['content_length'] = headers['content-length']
-            if asset['asset_type'] in type_list and int(headers['content-length']) <= int(file_size):
-                metadata.append(asset)
-            asset = {}
+            asset_args['content_type'] = headers['content-type']
+            asset_args['content_length'] = headers['content-length']
+            if asset_args['asset_type'] in type_list and int(headers['content-length']) <= int(file_size):
+                assets.append(Asset(**asset_args))
 
-        print("metadata: ", metadata)
-
-        return AssetList(metadata)
+        return AssetCollection(assets)
 
     def _get_html(self):
         """
@@ -277,11 +305,9 @@ class CivicPlusSite(Site):
     def _get_asset_metadata(self, regex, asset_link):
         """
         Extracts metadata from a provided asset URL.
-
         Input: Regex to extract metadata
         Returns: Extracted metadata as a string or "no_data" if no metadata is extracted
         """
-        print(asset_link)
         try:
             return re.search(regex, asset_link).group(0)
         except AttributeError as error:
@@ -293,7 +319,7 @@ class CivicPlusSite(Site):
         Input: File size in gigabytes. Default is 100 GB.
         Returns: File size in bytes.
         """
-        return file_size * 1000000
+        return file_size * 1e6
 
 if __name__ == '__main__':
     base_url = input("Enter a CivicPlus url: ")
