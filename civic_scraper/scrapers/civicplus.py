@@ -28,15 +28,12 @@ Returns of scrape(): AssetList object.
 # Libraries
 
 import re
-from datetime import datetime
-from datetime import time
-from datetime import date
+import datetime
 import bs4
 import requests
 from civic_scraper.scrapers.site import Site
 
 from civic_scraper.asset import Asset, AssetCollection
-SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
 
 
 class CivicPlusSite(Site):
@@ -52,44 +49,21 @@ class CivicPlusSite(Site):
         Input: URL of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
         """
         self.url = base_url
-        self.runtime = str(datetime.date(datetime.utcnow())).replace('-', '')
+        self.runtime = str(datetime.datetime.utcnow().date()).replace('-', '')
 
     # Public interface (used by calling code)
     def scrape(
             self,
             start_date,
-            end_date,
-            file_size_filter=100,
-            file_type_filter=SUPPORTED_ASSET_TYPES,
+            end_date
 
     ):
         """
         Input: start_date: str entered in the form YYYYMMDD
                 end_date: str entered in the form YYMMDD
-                file_size_filter: int size of file in gigabytes
-                file_type_filter: list of strings with one or more possible
-                file
-                types to
-                download
 
         Returns: AssetList object
         """
-        # TODO: think about workflow here. It may make make more sense for
-        #  the filtering on file type etc. to be applied at a downstream stage
-        #  like AssetList.download() than at the scraping stage itself. (It's
-        #  not costly to list the metadata for a big file, but it's costly
-        #  to automatically download big files)
-
-        # TODO: if the goal is to have a reasonable default maximum file
-        #  size to prevent accidentally starting large downloads, the default
-        #  should be in the range of 10-100 MB, not 100 GB. It might make
-        #  more sense for the units to be MB as well.
-
-        # TODO: for type_list and file_size, make it possible NOT to apply
-        #  the filters - so that if I don't want to filter, I don't
-        #  have to. One option: if file_size_filter is None, don't filter by
-        #  file size.
-
         if start_date == '':
             start_date = self.runtime
         if end_date == '':
@@ -100,18 +74,16 @@ class CivicPlusSite(Site):
         asset_stubs = self._get_all_assets(post_params)
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
         links = self._make_asset_links(filtered_stubs)
-        file_size_filter = self._gb_to_bytes(file_size_filter)
-        metadata = self._get_metadata(links, file_size_filter,
-                                      file_type_filter)
+        metadata = self._get_metadata(links)
         return metadata
 
     # Private methods
 
-    def _get_metadata(self, url_list, file_size, type_list):
+    def _get_metadata(self, url_list):
         """
         Returns a list of AssetList objects.
 
-        Input: A list of URLs, a file_size limit (int), a list of asset types
+        Input: A list of URLs
         Output: A AssetList object
         """
 
@@ -122,8 +94,8 @@ class CivicPlusSite(Site):
             asset_args['place'] = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link)
             asset_args['state_or_province'] = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link)
             meeting_date = self._get_asset_metadata(r"(?<=_)\w{8}(?=-)", link)
-            asset_args['meeting_date'] = date(int(meeting_date[4:]), int(meeting_date[:2]), int(meeting_date[2:4]))
-            asset_args['meeting_time'] = time()
+            asset_args['meeting_date'] = datetime.date(int(meeting_date[4:]), int(meeting_date[:2]), int(meeting_date[2:4]))
+            asset_args['meeting_time'] = datetime.time()
             asset_args['committee_name'] = None
             asset_args['meeting_id'] = link
             asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link)
@@ -133,8 +105,7 @@ class CivicPlusSite(Site):
             headers = requests.head(link).headers
             asset_args['content_type'] = headers['content-type']
             asset_args['content_length'] = headers['content-length']
-            if asset_args['asset_type'] in type_list and int(headers['content-length']) <= int(file_size):
-                assets.append(Asset(**asset_args))
+            assets.append(Asset(**asset_args))
 
         return AssetCollection(assets)
 
@@ -206,13 +177,12 @@ class CivicPlusSite(Site):
             ids = post_params[year]
             for cat_id in ids:
                 payload = {'year': year, 'catID': cat_id, 'term': '', 'prevVersionScreen': 'false'}
-                try:
-                    response = requests.post(page, params=payload)
+                response = requests.post(page, params=payload)
+                if response.status_code == 200:
                     soup = self._make_soup(response.text)
                     end_links = self._get_links(soup)
                     all_links.append(end_links)
-                except:
-                    print("In get_all_assets: The POST request failed.")
+
 
         # Remove lists for which no links have been found
         for list in all_links:
@@ -260,15 +230,15 @@ class CivicPlusSite(Site):
         for list in asset_stubs:
             for stub in list:
                 if re.search(r"(?<=_)\d{2}(?=\d{6}-)", stub) is None:
-                    month = datetime.utcnow().month
+                    month = datetime.datetime.utcnow().month
                 else:
                     month = re.search(r"(?<=_)\d{2}(?=\d{6}-)", stub).group(0)
                 if re.search(r"(?<=_\d{2})\d{2}(?=\d{4}-)", stub) is None:
-                    day = datetime.utcnow().day
+                    day = datetime.datetime.utcnow().day
                 else:
                     day = re.search(r"(?<=_\d{2})\d{2}(?=\d{4}-)", stub).group(0)
                 if re.search(r"(?<=\d)\d{4}(?=-)", stub) is None:
-                    year = datetime.utcnow().year
+                    year = datetime.datetime.utcnow().year
                 else:
                     year = re.search(r"(?<=\d)\d{4}(?=-)", stub).group(0)
                 date = "{}{}{}".format(year, month, day)
@@ -308,20 +278,12 @@ class CivicPlusSite(Site):
         Input: Regex to extract metadata
         Returns: Extracted metadata as a string or "no_data" if no metadata is extracted
         """
-        try:
+        if re.search(regex, asset_link) is not None:
             return re.search(regex, asset_link).group(0)
-        except AttributeError as error:
+        else:
             return "no_data"
 
-    def _gb_to_bytes(self, file_size):
-        """
-        Converts file_size from gigabytes to bytes.
-        Input: File size in gigabytes. Default is 100 GB.
-        Returns: File size in bytes.
-        """
-        return file_size * 1e6
-
-if __name__ == '__main__':
+ if __name__ == '__main__':
     base_url = input("Enter a CivicPlus url: ")
     start_date = input("Enter start date (or nothing): ")
     end_date = input("Enter end date (or nothing): ")
