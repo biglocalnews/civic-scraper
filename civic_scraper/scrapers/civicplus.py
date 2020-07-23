@@ -283,7 +283,8 @@ class CivicPlusSite(Site):
         else:
             return "no_data"
 
- if __name__ == '__main__':
+
+if __name__ == '__main__':
     base_url = input("Enter a CivicPlus url: ")
     start_date = input("Enter start date (or nothing): ")
     end_date = input("Enter end date (or nothing): ")
