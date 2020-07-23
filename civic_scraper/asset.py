@@ -39,19 +39,24 @@ From Python (example):
 
     cp = SUPPORTED_SCRAPERS['civicplus'] # Or choose another supported scraper
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter") # Or choose another url
-    metadata = site.scrape("20200101", "20200501", file_size=200, type_list=['Minutes']) # Choose start_date, end_date, file_size and type_list
-    metadata.download_assets(target_dir="test") # Downloads assets to the directory "test"
+    metadata = site.scrape("20200101", "20200501") # Choose start_date, end_date
+    metadata.download(target_dir="test") # Downloads assets to the directory "test". Can also choose optional file_size and file_type
     metadata.to_csv("test.csv") # Downloads csv titled "test.csv"
 
 """
 
-import datetime
+# Libraries
 import csv
 import os
 import requests
 import re
 from collections import OrderedDict
-from datetime import datetime
+import datetime
+
+# Parameters
+SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
+
+# Code
 
 class Asset(object):
 
@@ -90,27 +95,27 @@ class Asset(object):
                 break
 
         asset_type_valid = False
-        asset_type_list = ['agenda', 'minutes', 'video', 'audio', 'captions', 'agenda_packet']
         while not asset_type_valid:
-            if asset_type in asset_type_list:
+            if asset_type in SUPPORTED_ASSET_TYPES:
                 asset_type_valid = True
             else:
                 print("The asset_type is: ", asset_type)
-                print("The value of asset_type must be one of the following: 'agenda', 'minutes', 'video', 'audio', 'captions', 'agenda_packet'.")
+                print("The value of asset_type must be one of the following: ", SUPPORTED_ASSET_TYPES)
                 break
 
         meeting_date_valid = False
         while not meeting_date_valid:
-            if type(meeting_date) == datetime.date:
+            if type(meeting_date) is datetime.date:
                 meeting_date_valid = True
             else:
                 print("The meeting_date is: ", meeting_date)
+                print("The meeting_date type is: ", type(meeting_date))
                 print("The value of meeting_date must be an object of class datetime.date.")
                 break
 
         meeting_time_valid = False
         while not meeting_time_valid:
-            if type(meeting_time) == datetime.time:
+            if type(meeting_time) is datetime.time:
                 meeting_time_valid = True
             else:
                 print("The value of meeting_time must be an object of class datetime.time.")
@@ -151,26 +156,46 @@ class Asset(object):
             self.content_type = content_type
             self.content_length = content_length
 
-    def download(self, target_path=os.getcwd()):
+    def download(self, target_path=os.getcwd(), file_size=None,
+            asset_list=SUPPORTED_ASSET_TYPES):
         """
-        Downloads a asset into a target directory.
+        Downloads an asset into a target directory.
 
-        Input: Target directory name (target_path)
+        Input:
+            target_path: (str) target directory name
+            file_size: (int) size of file in megabytes. Default is None.
+            asset_type: (list of strings) one or more possible asset types to download. Default is all asset types.
         Output: pdf of asset in target directory
+        Returns: Full path to downloaded file
         """
         file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.asset_type, self.meeting_date)
         asset = self.url
-        print("Downloading asset: ", asset)
-        response = requests.get(asset, allow_redirects=True)
-        if not os.path.isdir(target_path):
-            print("Making directory...")
-            os.mkdir(target_path)
-        full_path = os.path.join(target_path, file_name)
+        file_size = self._mb_to_bytes(file_size)
 
-        with open(full_path, 'wb') as file:
-            file.write(response.content)
+        if file_size is None and self.asset_type in asset_list:
+            print("Downloading asset: ", asset)
+            response = requests.get(asset, allow_redirects=True)
+            if not os.path.isdir(target_path):
+                print("Making directory...")
+                os.mkdir(target_path)
+            full_path = os.path.join(target_path, file_name)
 
-        return full_path
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
+
+            return full_path
+        elif self.asset_type in asset_list and int(self.content_length) <= int(file_size):
+            print("Downloading asset: ", asset)
+            response = requests.get(asset, allow_redirects=True)
+            if not os.path.isdir(target_path):
+                print("Making directory...")
+                os.mkdir(target_path)
+            full_path = os.path.join(target_path, file_name)
+
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
+
+            return full_path
 
     def append_to_csv(self, path, write_header=False):
         """
@@ -202,6 +227,18 @@ class Asset(object):
                 dict_writer.writeheader()
             if self.url is not None:
                 dict_writer.writerow(metadata_dict)
+
+    def _mb_to_bytes(self, file_size):
+        """
+        Converts file_size from megabytes to bytes.
+        Input: File size in megabytes.
+        Returns: File size in bytes.
+        """
+        print("file_size: ", file_size)
+        if file_size is None:
+            return None
+        else:
+            return int(file_size) * 1e6
 
 
 class AssetCollection(object):
@@ -238,7 +275,7 @@ class AssetCollection(object):
         """
         Write metadata about the asset list to a csv.
         If target_path is given, write a file to that path.
-        If target_dir is given, create a file in directoy target_dir
+        If target_dir is given, create a file in directory target_dir
         If neither are given, create a file in the current working directory
         If both are given, write a file to target_path and ignore target_dir
         If appending is True, append to any file that's already there.
@@ -254,7 +291,7 @@ class AssetCollection(object):
                 self.assets[0].scraped_by,
                 self.assets[0].place,
                 self.assets[0].state_or_province,
-                datetime.utcnow().isoformat()
+                datetime.datetime.utcnow().isoformat()
             ]) + '.csv'
             path = os.path.join(target_dir, file_name)
         path = os.path.abspath(path)
@@ -281,8 +318,8 @@ if __name__ == '__main__':
 
     cp = SUPPORTED_SCRAPERS['civicplus']
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
-    metadata = site.scrape("20200101", "20200501", file_type_filter=['Minutes'])
+    metadata = site.scrape("20200101", "20200501")
 
-    # metadata.download_assets(target_dir="test.pdf")
+    metadata.download(target_dir="test")
     metadata.to_csv("test.csv")
 
