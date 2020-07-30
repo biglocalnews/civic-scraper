@@ -25,7 +25,7 @@ python run_scraper.py \
 """
 
 import json
-from civic_scraper.scrapers import SUPPORTED_SCRAPERS
+from civic_scraper.scrapers import SUPPORTED_SITES
 
 
 def run_scraper(
@@ -48,7 +48,7 @@ def run_scraper(
             ({"start_date": "20150909", "end_date": "20151014"})
 
     Returns:
-        a AssetList instance of the retrieved assets
+        a AssetCollection instance of the retrieved assets
     """
     # process arguments
     scraper_args = {} if scraper_args is None else scraper_args
@@ -56,7 +56,7 @@ def run_scraper(
 
     # instantiate the specified scraper
     try:
-        scraper = SUPPORTED_SCRAPERS[scraper_type]
+        scraper = SUPPORTED_SITES[scraper_type]
     except KeyError:
         raise ValueError('Unable to instantiate scraper: '
                          '{}'.format(scraper_type))
@@ -84,10 +84,10 @@ if __name__ == '__main__':
     asset_list = run_scraper(
         scraper_type='civicplus',
         endpoint='http://pa-westchester2.civicplus.com/AgendaCenter',
-        scraper_args={"start_date": "20150909", "end_date": "20151014", "file_size": 100, "type_list": ['agenda', 'minutes']},
+        scraper_args={"start_date": "20150909", "end_date": "20151014"},
         target_path='path/to/target.csv'
     )
-
+    print(asset_list)
     # # parse arguments
     # import argparse
     # import json

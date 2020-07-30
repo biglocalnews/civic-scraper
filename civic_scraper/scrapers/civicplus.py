@@ -4,12 +4,7 @@ AUTHOR: Amy DiPierro
 VERSION: 2020-07-16
 
 This module scrapes agendas and minutes from CivicPlus Agenda Center websites. It has one public method, scrape(),
-which returns a AssetList object.
-
-From CLI:
-        From the command line, type 'python3 civicplus.py'
-        then enter a required url and optional start_date, end_date,
-        file_size and type_list as defined below.
+which returns a AssetCollection object.
 
 From Python:
         site = CivicPlusSite(base_url) # creates a CivicPlusSite object
@@ -17,12 +12,10 @@ From Python:
 
 Inputs of scrape():
         url: str of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
-        start_date: str entered in the form YYYYMMDD
-        end_date: str entered in the form YYMMDD
-        file_size: int size of file in gigabytes
-        type_list: list of strings with one or more possible file types to download
+        start_date: (optional) str entered in the form YYYYMMDD
+        end_date: (optional) str entered in the form YYYYMMDD
 
-Returns of scrape(): AssetList object.
+Returns of scrape(): AssetCollection object.
 
 """
 # Libraries
@@ -38,7 +31,7 @@ from civic_scraper.asset import Asset, AssetCollection
 
 class CivicPlusSite(Site):
     """
-    In its current configuration, the CivicPlusSite object returns a AssetList object
+    In its current configuration, the CivicPlusSite object returns a AssetCollection object
     corresponding to the date range and URL that has been entered.
     """
 
@@ -54,19 +47,19 @@ class CivicPlusSite(Site):
     # Public interface (used by calling code)
     def scrape(
             self,
-            start_date,
-            end_date
+            start_date=None,
+            end_date=None
 
     ):
         """
         Input: start_date: str entered in the form YYYYMMDD
                 end_date: str entered in the form YYMMDD
 
-        Returns: AssetList object
+        Returns: AssetCollection object
         """
-        if start_date == '':
+        if start_date == None:
             start_date = self.runtime
-        if end_date == '':
+        if end_date == None:
             end_date = self.runtime
         html = self._get_html()
         soup = self._make_soup(html)
@@ -81,10 +74,10 @@ class CivicPlusSite(Site):
 
     def _get_metadata(self, url_list):
         """
-        Returns a list of AssetList objects.
+        Returns a list of AssetCollection objects.
 
         Input: A list of URLs
-        Output: A AssetList object
+        Output: A AssetCollection object
         """
 
         assets = []
@@ -285,9 +278,7 @@ class CivicPlusSite(Site):
 
 
 if __name__ == '__main__':
-    base_url = input("Enter a CivicPlus url: ")
-    start_date = input("Enter start date (or nothing): ")
-    end_date = input("Enter end date (or nothing): ")
+    base_url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter'
     site = CivicPlusSite(base_url)
-    url_dict = site.scrape(start_date=start_date, end_date=end_date)
+    url_dict = site.scrape()
     print(url_dict)

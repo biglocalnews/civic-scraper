@@ -6,7 +6,7 @@ DESCRIPTION: Defines the Asset and AssetList classes.
 
 Asset:
     Attributes:
-        url: str, the URL to download an asset. Ex: http://ca-eastpaloalto.civicplus.com/AgendaCenter
+        url: str, the URL to download an asset. Ex: https://ca-eastpaloalto.civicplus.com/AgendaCenter/ViewFile/Agenda/_04282020-1613
         asset_name: str, the title of an asset. Ex: City Council Special Budget Meeting - April 4, 2020
         committee_name: str, the name of the committee that generated the asset. Ex: City Council
         place: str, the name of the place associated with the asset in lowercase with spaces and punctuation removed. Ex: eastpaloalto
@@ -21,7 +21,7 @@ Asset:
 
     Public methods:
         download: downloads an asset to a given target_path
-        append_metadata: writes a new line to a csv containing metadata about a given asset
+        append_to_csv: writes a new line to a csv containing metadata about a given asset
 
 AssetList:
     Attributes:
@@ -29,7 +29,7 @@ AssetList:
 
     Public methods:
         download_assets: a wrapper around Asset.download, it downloads each asset instance in an AssetList
-        to_csv: a wrapper around append_metadata, it writes out a csv containing metadata about each asset instance
+        to_csv: a wrapper around append_to_csv, it writes out a csv containing metadata about each asset instance
                 in an AssetList
 
 
@@ -37,7 +37,7 @@ From Python (example):
 
     from civic_scraper.scrapers import SUPPORTED_SCRAPERS
 
-    cp = SUPPORTED_SCRAPERS['civicplus'] # Or choose another supported scraper
+    cp = SUPPORTED_SITES['civicplus'] # Or choose another supported scraper
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter") # Or choose another url
     metadata = site.scrape("20200101", "20200501") # Choose start_date, end_date
     metadata.download(target_dir="test") # Downloads assets to the directory "test". Can also choose optional file_size and file_type
@@ -156,16 +156,16 @@ class Asset(object):
             self.content_type = content_type
             self.content_length = content_length
 
-    def download(self, target_path=os.getcwd(), file_size=None,
+    def download(self, target_dir=os.getcwd(), file_size=None,
             asset_list=SUPPORTED_ASSET_TYPES):
         """
         Downloads an asset into a target directory.
 
         Input:
-            target_path: (str) target directory name
+            target_dir: (str) target directory name
             file_size: (int) size of file in megabytes. Default is None.
             asset_type: (list of strings) one or more possible asset types to download. Default is all asset types.
-        Output: pdf of asset in target directory
+        Output: asset in target directory
         Returns: Full path to downloaded file
         """
         file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.asset_type, self.meeting_date)
@@ -175,10 +175,10 @@ class Asset(object):
         if file_size is None and self.asset_type in asset_list:
             print("Downloading asset: ", asset)
             response = requests.get(asset, allow_redirects=True)
-            if not os.path.isdir(target_path):
+            if not os.path.isdir(target_dir):
                 print("Making directory...")
-                os.mkdir(target_path)
-            full_path = os.path.join(target_path, file_name)
+                os.mkdir(target_dir)
+            full_path = os.path.join(target_dir, file_name)
 
             with open(full_path, 'wb') as file:
                 file.write(response.content)
@@ -187,23 +187,23 @@ class Asset(object):
         elif self.asset_type in asset_list and int(self.content_length) <= int(file_size):
             print("Downloading asset: ", asset)
             response = requests.get(asset, allow_redirects=True)
-            if not os.path.isdir(target_path):
+            if not os.path.isdir(target_dir):
                 print("Making directory...")
-                os.mkdir(target_path)
-            full_path = os.path.join(target_path, file_name)
+                os.mkdir(target_dir)
+            full_path = os.path.join(target_dir, file_name)
 
             with open(full_path, 'wb') as file:
                 file.write(response.content)
 
             return full_path
 
-    def append_to_csv(self, path, write_header=False):
+    def append_to_csv(self, target_path, write_header=False):
         """
         Append the asset metadata in CSV format to target_path.
         If write_header is True, first write a line containing the header
         names. If false, only write one line containing the values.
 
-        :param target_path: either a path to a
+        :param target_path: A required path for the csv
         """
         # Make the dictionary
         metadata_dict = OrderedDict([
@@ -221,7 +221,7 @@ class Asset(object):
         ])
 
         # Writing the .csv
-        with open(path, 'a') as file:
+        with open(target_path, 'a') as file:
             dict_writer = csv.DictWriter(file, metadata_dict.keys())
             if write_header:
                 dict_writer.writeheader()
@@ -254,14 +254,16 @@ class AssetCollection(object):
 
         self.assets = assets
 
-    def download(self, target_dir=os.getcwd()):
+    def download(self, target_dir=os.getcwd(), file_size=None,
+        asset_list=SUPPORTED_ASSET_TYPES):
         """
         Write assets to target_dir.
         """
 
         downloaded_file_paths = []
+
         for item in self.assets:
-            downloaded_file_path = item.download(target_dir)
+            downloaded_file_path = item.download(target_dir, file_size, asset_list)
             downloaded_file_paths.append(downloaded_file_path)
 
         return downloaded_file_paths
@@ -314,12 +316,12 @@ class AssetCollection(object):
 
 if __name__ == '__main__':
 
-    from civic_scraper.scrapers import SUPPORTED_SCRAPERS
+    from civic_scraper.scrapers import SUPPORTED_SITES
 
-    cp = SUPPORTED_SCRAPERS['civicplus']
+    cp = SUPPORTED_SITES['civicplus']
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
     metadata = site.scrape("20200101", "20200501")
 
-    metadata.download(target_dir="test")
+    metadata.download(target_dir="test", asset_list='minutes')
     metadata.to_csv("test.csv")
 
