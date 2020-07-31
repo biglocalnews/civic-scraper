@@ -316,12 +316,13 @@ class AssetCollection(object):
 
 if __name__ == '__main__':
 
+    # The following is merely an example of how to call this code.
+
     from civic_scraper.scrapers import SUPPORTED_SITES
 
     cp = SUPPORTED_SITES['civicplus']
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
     metadata = site.scrape("20200101", "20200501")
 
-    metadata.download(target_dir="test", asset_list='minutes')
-    metadata.to_csv("test.csv")
-
+    metadata.download(target_dir="test", asset_list=['agenda'])
+    metadata.to_csv(target_dir="/Users/amydipierro/GitHub", appending=True)
