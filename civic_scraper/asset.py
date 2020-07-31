@@ -52,6 +52,10 @@ import requests
 import re
 from collections import OrderedDict
 import datetime
+import logging
+
+# Logging
+module_logger = logging.getLogger('spam_application.auxiliary')
 
 # Parameters
 SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
@@ -78,6 +82,8 @@ class Asset(object):
         """
         Create an instance of the Asset class.
         """
+        self.logger = logging.getLogger('spam_application.auxiliary.Auxiliary')
+        self.logger.info('creating an instance of Auxiliary')
         url_valid = False
         while not url_valid:
             if (url.find("http://") and url.find("https://")) != -1:
@@ -121,14 +127,6 @@ class Asset(object):
                 print("The value of meeting_time must be an object of class datetime.time.")
                 break
 
-        meeting_id_valid = False
-        while not meeting_id_valid:
-            if meeting_id == url:
-                meeting_id_valid = True
-            else:
-                print("The meeting_id must equal the URL.")
-                break
-
         scraped_by_valid = False
         while not scraped_by_valid:
             if re.match(r".+\.py_v\d{4}-\d{2}-\d{2}", scraped_by) != None:
@@ -168,6 +166,7 @@ class Asset(object):
         Output: asset in target directory
         Returns: Full path to downloaded file
         """
+        self.logger.info('downloading an asset')
         file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.asset_type, self.meeting_date)
         asset = self.url
         file_size = self._mb_to_bytes(file_size)
@@ -205,6 +204,7 @@ class Asset(object):
 
         :param target_path: A required path for the csv
         """
+        self.logger.info('appending row to csv')
         # Make the dictionary
         metadata_dict = OrderedDict([
             ('place', self.place),
@@ -227,6 +227,8 @@ class Asset(object):
                 dict_writer.writeheader()
             if self.url is not None:
                 dict_writer.writerow(metadata_dict)
+
+        self.logger.info('done appending row to csv')
 
     def _mb_to_bytes(self, file_size):
         """
@@ -317,12 +319,31 @@ class AssetCollection(object):
 if __name__ == '__main__':
 
     # The following is merely an example of how to call this code.
-
+    import logging
     from civic_scraper.scrapers import SUPPORTED_SITES
 
+    # create logger with 'spam_application'
+    logger = logging.getLogger('spam_application')
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    fh = logging.FileHandler('spam.log')
+    fh.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.ERROR)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+    # add the handlers to the logger
+    logger.addHandler(fh)
+    logger.addHandler(ch)
+
+    logger.info('creating an instance of auxiliary_module.Auxiliary')
     cp = SUPPORTED_SITES['civicplus']
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
     metadata = site.scrape("20200101", "20200501")
 
-    metadata.download(target_dir="test", asset_list=['agenda'])
+    # metadata.download(target_dir="test", asset_list=['agenda'])
     metadata.to_csv(target_dir="/Users/amydipierro/GitHub", appending=True)
+    logger.info('done with auxiliary_module.some_function()')
