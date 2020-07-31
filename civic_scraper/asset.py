@@ -270,6 +270,8 @@ class AssetCollection(object):
 
         return downloaded_file_paths
 
+    # TODO: Simplify interface by requiring a target_path
+    # and remove the target_dir option
     def to_csv(
             self,
             target_path=None,
