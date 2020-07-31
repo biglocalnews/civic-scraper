@@ -96,7 +96,7 @@ Here are more details on the parameters mentioned above:
 
 * `target_dir` (*str*) - Target download directory (default: current working directory).
 * `file_size` (*int*) - Limit downloads to files with max file size in megabytes. Default is `None`, in which case all files will be downloaded.
-* `asset_list` (*list of str*) -  Limit downloads to one more or more asset types (default: all types are downloaded). Valid options:
+* `asset_list` (*list of str*) -  Limit downloads to one or more asset types (default: all types are downloaded). Valid options:
   * `agenda`
   * `minutes`
   * `audio`
@@ -121,7 +121,6 @@ assets.to_csv(output_file)
 
 # Scrape and write all at once
 site.scrape(csv_export=output_file)
-
 ```
 
 You can choose to append to a pre-existing metadata file by using the `append` argument:
