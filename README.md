@@ -10,7 +10,7 @@ To invoke `civic-scraper` in Python code, follow the steps below.
 
 The first step to scraping public meetings is to create a `Site` object. (Note: At present, `civic-scraper` supports only websites using CivicPlus's Agenda Center, but in the future, it will support several types of websites where local governments post information about public meetings.)
 
-To create an instance of a `CivicPlusSite` object -- the subclass of `Site` specific to CivicPlus Agenda Center websites -- first select it from the dictionary of `SUPPORTED_SITES` specified in `__init__.py`.
+To create an instance of a `CivicPlusSite` object -- the subclass of `Site` specific to CivicPlus Agenda Center websites -- first select it from the dictionary of `SUPPORTED_SITES` specified in `__init__.py`. As an example, I'll continue to use `CivicPlusSite` throughout this README, but keep in mind that other subclasses of `Site` will be available in the future.
 
 ```
 from civic_scraper.scrapers import SUPPORTED_SITES
@@ -149,16 +149,16 @@ The column headers of the csv will be identical to the `asset_args` used to init
   
 ## Contents of this package at a glance.
 
-At present, this repository contains the following production-ready code:
+At present, this repository contains the following code:
 
 * **__init__.py**: Contains a dictionary of `SUPPORTED_SITES`, that is, of subclasses of `Site` available to be initialized.
-* **scrapers/site.py**: A `Site` base class, representing a given website that `civic-scraper` can scrape. This code is production-ready.
-* **scrapers/civicplus.py**: A subclass of `Site` specific to websites using the CivicPlus website type. This code is production-ready.
-* **asset.py**: A module with two classes, both production-ready: 
+* **scrapers/site.py**: A `Site` base class, representing a given website that `civic-scraper` can scrape. .
+* **scrapers/civicplus.py**: A subclass of `Site` specific to websites using the CivicPlus website type. 
+* **asset.py**: A module with two classes:
   * An `Asset` class modeling a specific asset, such as a meeting agenda, meeting minutes or meeting video, which is available for `civic-scraper` to scrape.
   * An `AssetCollection` class modeling all of the assets available for `civic-scraper` to scrape. It is a list of `Asset` instances.
 
-In the future, this repository will contain the code for a variety `Site` subclasses, each corresponding to a different public meeting website type.
+In the future, this repository will contain the code for a variety `Site` subclasses, each corresponding to a different public meeting website type. Please note that `granicus.py`, for example, is a work in progress.
 
 ### Command line invocation
 
