@@ -27,36 +27,34 @@ To use `civic-scraper` in your own Python code, follow the steps below.
 
 ### Scraping asset information
 
-Create an instance of `CivicPlusSite` by passing it the URL of for an
+Create an instance of `CivicPlusSite` by passing it the URL for an
 agency's Civic Plus Agenda Center site. Then call the `scrape`
 method.
 
-Below is an example for East Palo Alto, CA:
 
 ```
+# Example for East Palo Alto, CA
+
 from civic_scraper.scrapers import CivicPlusSite
 url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter'
 site = CivicPlusSite(url)
 assets = site.scrape()
 ```
 
-By default, `scrape` returns metadata about meeting minutes, agendas and video recordings posted on the current day.
-
-> However, it does not automatically download the assets!! See below
-> for details on how to download information.
+By default, `scrape` returns metadata about meeting minutes, agendas and video recordings posted on the current day. **However, it does not automatically download the assets!!** See below for details on how to [download files](#downloading-assets) and [export metadata](#exporting-asset-metadata-to-csv).
 
 Scraping can be modified to capture assets from varying time ranges by
-calling `scrape()` with the optional `start_date` and/or  `end_date` arguments. The
-value must be a string of the form `YYYYMMDD`.
+calling `scrape()` with the optional `start_date` and/or  `end_date` arguments. Their
+values must be strings of the form `YYYYMMDD`.
 
 ```
-# Scrape from January 1-30, 2020
+# Scrape info from January 1-30, 2020
 assets = site.scrape(start_date='20200101', end_date='20200130')
 ```
 
 ### Downloading assets
 
-There are two ways to download all of the file assets discovered by a scrape.
+There are two ways to download all file assets discovered by a scrape.
 
 ```
 # Scrape metadata first,
@@ -126,8 +124,7 @@ site.scrape(csv_export=output_file)
 
 ```
 
-You can choose to append to a pre-existing metadata file by using the
-`append` argument:
+You can choose to append to a pre-existing metadata file by using the `append` argument:
 
 ```
 output_file = '/tmp/asset_metadata.csv'
@@ -146,7 +143,7 @@ site.scrape(csv_export=output_file, append=True)
 Here are more details on the above arguments:
 
 * `target_path` (*str*) - Full path to output file (required).
-* `append` (*bool*) - An optional argument that allows `to_csv` to add data to an existing file. By default, a pre-existing file will be over-written.
+* `append` (*bool*) - Update a pre-existing file if set to `True`. By default, a pre-existing file will be over-written.
 
 The generated file contains the following information:
 
