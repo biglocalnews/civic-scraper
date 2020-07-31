@@ -9,7 +9,7 @@
 
 ## Overview
 
-`civi-scraper` is a Python package that helps identify and download agendas, minutes and more from local public agencies around the U.S.
+`civi-scraper` is a Python package that helps identify and download agendas, minutes and other file assets related to government meetings from local public agencies around the U.S.
 
 ## Setup
 
