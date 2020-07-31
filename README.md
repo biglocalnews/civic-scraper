@@ -31,6 +31,7 @@ site = cp(base_url)
 Note that if you've skipped step 1, you can initialize a CivicPlusSite directly like this:
 
 ```
+from civic_scraper.scrapers import CivicPlusSite
 base_url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter'
 site = CivicPlusSite(base_url)
 ```
@@ -76,19 +77,20 @@ where `asset_args` is a dictionary containing the following metadata about an `A
 When an `Asset` instance is created, this metadata is used to create the instance's attributes, which correspond to each key-value pair in the dictionary. For example, if you initialized an Asset like this...
 
 ```
+from civic_scraper.asset import Asset
+import datetime
 Asset(
-   {'url' = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter/ViewFile/Agenda/_04282020-1613'
-    'asset_name' = 'Budget Meeting'
-    'committee_name' = 'Budget Committee'
-    'place' = 'eastpaloalto'
-    'state_or_province' = 'ca',
-    'asset_type' = 'agenda',
-    'meeting_date' = datetime.date(2020, 4, 28),
-    'meeting_time' = datetime.time(12, 0),
-    'meeting_id' = #TODO,
-    'scraped_by' = 'civicplus.py_2020-07-16',
-    'content_length' = 1775883 
-   }
+    url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter/ViewFile/Agenda/_04282020-1613',
+    asset_name = 'Budget Meeting',
+    committee_name = 'Budget Committee',
+    place = 'eastpaloalto',
+    state_or_province = 'ca',
+    asset_type = 'agenda',
+    meeting_date = datetime.date(2020, 4, 28),
+    meeting_time = datetime.time(12, 0),
+    meeting_id = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter/ViewFile/Agenda/_04282020-1613',
+    scraped_by = 'civicplus.py_v2020-07-16',
+    content_length = 1775883 
 )
 ```
 
