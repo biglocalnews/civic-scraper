@@ -131,6 +131,21 @@ If you wish to write out metadata for an individual `Asset` instance, you can ca
 
 * `target_path`: str,  required file path to write out the csv
 * `write_header`: bool, a value indicating whether to write the header (dictionary key values) to a csv if True, or not to write the header if False (the default)
+
+The column headers of the csv will be identical to the `asset_args` used to initialize an `Asset` instance. For convenience, here they are again:
+
+* `url`: str, the URL to download an asset. Ex: https://ca-eastpaloalto.civicplus.com/AgendaCenter/ViewFile/Agenda/_04282020-1613
+* `asset_name`: str, the title of an asset. Ex: City Council Special Budget Meeting - April 4, 2020
+* `committee_name`: str, the name of the committee that generated the asset. Ex: City Council
+* `place`: str, the name of the place associated with the asset in lowercase with spaces and punctuation removed. Ex: eastpaloalto
+* `state_or_province`: str, the lowercase two-letter abbreviation for the state or province associated with an asset. Ex: ca
+* `asset_type`: str, one of the following strings: 'agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions'
+* `meeting_date`: datetime.date corresponding to the time the meeting was held or today if no date given
+* `meeting_time`: datetime.time corresponding to the time the meetings was held or midnight if no time given
+* `meeting_id`: #TODO: Decide the spec for this.
+* `scraped_by`: str, describes the module and version that produced the asset. Ex: 'civicplus.py_2020-07-16'
+* `content_type`: str, the file type of the asset as given by HTTP headers. Ex: 'application/pdf'
+* `content_length`: str, the size of the asset in bytes
   
 ## Contents of this package at a glance.
 
