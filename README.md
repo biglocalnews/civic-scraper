@@ -5,7 +5,7 @@
 - [Usage](#usage)
   - [Scraping asset information](#scraping-asset-information)
   - [Downloading assets](#downloading-assets)
-  - [Export asset metadata to csv](#export-asset-metadata-to-csv)
+  - [Exporting asset metadata to csv](#exporting-asset-metadata-to-csv)
 
 ## Overview
 
@@ -107,7 +107,7 @@ Here are more details on the parameters mentioned above:
   * `agenda_packet` - TK explanation
   * `captions` - TK explanation
 
-### Export asset metadata to csv
+### Exporting asset metadata to csv
 
 To bypass downloading of assets and instead generate a CSV of links to the assets and metadata about them:
 
