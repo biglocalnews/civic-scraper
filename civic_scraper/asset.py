@@ -260,14 +260,14 @@ class AssetCollection(object):
 
         return downloaded_file_paths
 
-    # TODO: Simplify interface by requiring a target_path
-    # and remove the target_dir option
     def to_csv(
             self,
             target_path=None,
             target_dir=None,
             appending=False,
     ):
+        # TODO: require target_dir
+        # TODO: remove target_path
         """
         Write metadata about the asset list to a csv.
         If target_path is given, write a file to that path.
