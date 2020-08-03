@@ -12,21 +12,25 @@ From Python:
 
 Inputs of scrape():
         url: str of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
-        start_date: (optional) str entered in the form YYYYMMDD
-        end_date: (optional) str entered in the form YYYYMMDD
+        start_date: (optional) str entered in the form YYYY-MM-DD
+        end_date: (optional) str entered in the form YYYY-MM-DD
 
 Returns of scrape(): AssetCollection object.
 
 """
 # Libraries
 
+import os
 import re
 import datetime
 import bs4
 import requests
-from civic_scraper.scrapers.site import Site
 
+from civic_scraper.scrapers.site import Site
 from civic_scraper.asset import Asset, AssetCollection
+
+# Parameters
+SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
 
 
 class CivicPlusSite(Site):
@@ -48,19 +52,23 @@ class CivicPlusSite(Site):
     def scrape(
             self,
             start_date=None,
-            end_date=None
-
+            end_date=None,
+            download=False,
+            target_dir=None,
+            file_size=None,
+            asset_list=SUPPORTED_ASSET_TYPES,
+            csv_export=None,
+            append=False
     ):
         """
-        Input: start_date: str entered in the form YYYYMMDD
-                end_date: str entered in the form YYMMDD
+        Input:
+            start_date: str entered in the form YYYY-MM-DD
+            end_date: str entered in the form YYYY-MM-DD
 
-        Returns: AssetCollection object
+        Returns:
+            AssetCollection object
         """
-        if start_date == None:
-            start_date = self.runtime
-        if end_date == None:
-            end_date = self.runtime
+
         html = self._get_html()
         soup = self._make_soup(html)
         post_params = self._get_post_params(soup, start_date, end_date)
@@ -68,7 +76,21 @@ class CivicPlusSite(Site):
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
         links = self._make_asset_links(filtered_stubs)
         metadata = self._get_metadata(links)
-        return metadata
+
+        if download and csv_export is not None:
+            metadata.download()
+            metadata.to_csv(target_path=csv_export, appending=append)
+        elif download and csv_export is None:
+            metadata.download()
+        elif not download and csv_export is not None:
+            metadata.to_csv(target_path=csv_export, appending=append)
+        elif target_dir is not None and csv_export is not None:
+            metadata.download(target_dir=target_dir, file_size=file_size, asset_list=asset_list)
+            metadata.to_csv(target_path=csv_export, appending=append)
+        elif target_dir is not None and csv_export is None:
+            metadata.download(target_dir=target_dir, file_size=file_size, asset_list=asset_list)
+        else:
+            return metadata
 
     # Private methods
 
@@ -88,7 +110,7 @@ class CivicPlusSite(Site):
             asset_args['state_or_province'] = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link)
             meeting_date = self._get_asset_metadata(r"(?<=_)\w{8}(?=-)", link)
             asset_args['meeting_date'] = datetime.date(int(meeting_date[4:]), int(meeting_date[:2]), int(meeting_date[2:4]))
-            asset_args['meeting_time'] = datetime.time()
+            asset_args['meeting_time'] = None
             asset_args['committee_name'] = None
             asset_args['meeting_id'] = link
             asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link)
@@ -121,14 +143,15 @@ class CivicPlusSite(Site):
         """
         return bs4.BeautifulSoup(html, 'html.parser')
 
-    def _get_post_params(self, soup, start, end):
+    def _get_post_params(self, soup, start_date, end_date):
         """
         Given parsed html text grabs the bits of html -- a year and a cat_id -- needed
-        for the POST request. Filters the list by the year in start_date and end_date.
+        for the POST request. Filters the list by the years in start_date and end_date.
 
-        Input: Parsed text, start date (YYYYMMDD) and end date (YYYYMMDD)
+        Input: Parsed text, start date (YYYY-MM-DD) and end date (YYYY-MM-DD)
         Returns: A dictionary of years and cat_ids
         """
+
         # Make the dictionary
         year_elements = soup.find_all(href=re.compile("changeYear"))
         years_cat_id = {}
@@ -136,9 +159,28 @@ class CivicPlusSite(Site):
         for element in year_elements:
             link = element.attrs['href']
             year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
-            start_year = re.search(r"^\d{4}", start).group(0)
-            end_year = re.search(r"^\d{4}", end).group(0)
-            if start_year <= year <= end_year:
+
+            if start_date is not None and end_date is not None:
+                start_year = re.search(r"^\d{4}", start_date).group(0)
+                end_year = re.search(r"^\d{4}", end_date).group(0)
+                if start_year <= year <= end_year:
+                    cat_id = re.findall(r"\d+(?=,.*')", link)[1]
+                    cat_ids.append(cat_id)
+                    years_cat_id[year] = cat_ids
+            elif start_date is not None and end_date is None:
+                start_year = re.search(r"^\d{4}", start_date).group(0)
+                if start_year <= year:
+                    cat_id = re.findall(r"\d+(?=,.*')", link)[1]
+                    cat_ids.append(cat_id)
+                    years_cat_id[year] = cat_ids
+            elif start_date is None and end_date is not None:
+                end_year = re.search(r"^\d{4}", end_date).group(0)
+                if end_year >= year:
+                    cat_id = re.findall(r"\d+(?=,.*')", link)[1]
+                    cat_ids.append(cat_id)
+                    years_cat_id[year] = cat_ids
+            # Case if start_date and end_date are both None
+            else:
                 cat_id = re.findall(r"\d+(?=,.*')", link)[1]
                 cat_ids.append(cat_id)
                 years_cat_id[year] = cat_ids
@@ -192,7 +234,6 @@ class CivicPlusSite(Site):
     def _get_links(self, soup):
         """
         Make a list of links to assets we want to download
-
         Input: Parsed text of website
         Returns: The latter portion of links to assets to download
         """
@@ -209,33 +250,46 @@ class CivicPlusSite(Site):
 
         return end_links
 
-    def _filter_assets(self, asset_stubs, start, end):
+    def _filter_assets(self, asset_stubs, start_date, end_date):
         """
         Filters assets to the provided date range.
 
         Inputs:
         asset_stubs: A list of asset stubs
-        start: The earliest date of assets to return
-        end: The latest date of assets to return
+        start_date: The earliest date of assets to return
+        end_date: The latest date of assets to return
         Returns: A list of asset stubs filtered by date range
         """
+        if start_date is not None and end_date is not None:
+            start = start_date.replace("-","")
+            end = end_date.replace("-", "")
+        elif start_date is not None and end_date is None:
+            start = start_date.replace("-", "")
+            end = self.runtime
+        elif start_date is None and end_date is not None:
+            start = "19000101"
+            end = end_date.replace("-", "")
+        else:
+            start = "19000101"
+            end = self.runtime
+
         filtered_stubs = []
         for list in asset_stubs:
             for stub in list:
                 if re.search(r"(?<=_)\d{2}(?=\d{6}-)", stub) is None:
-                    month = datetime.datetime.utcnow().month
+                    month = ""
                 else:
                     month = re.search(r"(?<=_)\d{2}(?=\d{6}-)", stub).group(0)
                 if re.search(r"(?<=_\d{2})\d{2}(?=\d{4}-)", stub) is None:
-                    day = datetime.datetime.utcnow().day
+                    day = ""
                 else:
                     day = re.search(r"(?<=_\d{2})\d{2}(?=\d{4}-)", stub).group(0)
                 if re.search(r"(?<=\d)\d{4}(?=-)", stub) is None:
-                    year = datetime.datetime.utcnow().year
+                    year = ""
                 else:
                     year = re.search(r"(?<=\d)\d{4}(?=-)", stub).group(0)
                 date = "{}{}{}".format(year, month, day)
-                if "no" in date:
+                if len(date) == 0:
                     continue
                 if int(start) <= int(date) <= int(end):
                     filtered_stubs.append(stub)
@@ -278,7 +332,8 @@ class CivicPlusSite(Site):
 
 
 if __name__ == '__main__':
-    base_url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter'
+    base_url = 'http://ab-slavelake.civicplus.com/AgendaCenter'
     site = CivicPlusSite(base_url)
-    url_dict = site.scrape()
-    print(url_dict)
+    url_dict = site.scrape(start_date='2020-06-01', target_dir="/Users/amydipierro/GitHub/tmp/", file_size=20, asset_list=['minutes'])
+
+
