@@ -1,7 +1,7 @@
 """
 TITLE: asset.py
 AUTHOR: Chris Stock & Amy DiPierro
-VERSION: 2020-07-16
+VERSION: 2020-07-31
 DESCRIPTION: Defines the Asset and AssetList classes.
 
 Asset:
@@ -53,12 +53,13 @@ import re
 from collections import OrderedDict
 import datetime
 import logging
-
-# Logging
-module_logger = logging.getLogger('spam_application.auxiliary')
+import sys
 
 # Parameters
 SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
+
+# Logging
+module_logger = logging.getLogger('civic_scraper.asset')
 
 # Code
 
@@ -82,8 +83,8 @@ class Asset(object):
         """
         Create an instance of the Asset class.
         """
-        self.logger = logging.getLogger('spam_application.auxiliary.Auxiliary')
-        self.logger.info('creating an instance of Auxiliary')
+        self.logger = logging.getLogger('civic_scraper.asset.Asset')
+        self.logger.info('creating an instance of Asset')
         url_valid = False
         while not url_valid:
             if (url.find("http://") and url.find("https://")) != -1:
@@ -109,24 +110,6 @@ class Asset(object):
                 print("The value of asset_type must be one of the following: ", SUPPORTED_ASSET_TYPES)
                 break
 
-        meeting_date_valid = False
-        while not meeting_date_valid:
-            if type(meeting_date) is datetime.date:
-                meeting_date_valid = True
-            else:
-                print("The meeting_date is: ", meeting_date)
-                print("The meeting_date type is: ", type(meeting_date))
-                print("The value of meeting_date must be an object of class datetime.date.")
-                break
-
-        meeting_time_valid = False
-        while not meeting_time_valid:
-            if type(meeting_time) is datetime.time:
-                meeting_time_valid = True
-            else:
-                print("The value of meeting_time must be an object of class datetime.time.")
-                break
-
         scraped_by_valid = False
         while not scraped_by_valid:
             if re.match(r".+\.py_v\d{4}-\d{2}-\d{2}", scraped_by) != None:
@@ -135,10 +118,11 @@ class Asset(object):
                 print("The format of scraped_by should be 'module.py_vYYYY-MM-DD'.")
                 break
 
-        valid_list = [url_valid, state_or_province_valid, asset_type_valid, meeting_date_valid, meeting_time_valid, meeting_id_valid, scraped_by_valid]
+        valid_list = [url_valid, state_or_province_valid, asset_type_valid, scraped_by_valid]
 
         if False in valid_list:
             print("Cannot initialize Asset object. Invalid input.")
+            sys.exit()
 
         else:
             self.url = url
@@ -166,7 +150,7 @@ class Asset(object):
         Output: asset in target directory
         Returns: Full path to downloaded file
         """
-        self.logger.info('downloading an asset')
+        self.logger.info('downloading an instance of Asset')
         file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.asset_type, self.meeting_date)
         asset = self.url
         file_size = self._mb_to_bytes(file_size)
@@ -183,6 +167,7 @@ class Asset(object):
                 file.write(response.content)
 
             return full_path
+
         elif self.asset_type in asset_list and int(self.content_length) <= int(file_size):
             print("Downloading asset: ", asset)
             response = requests.get(asset, allow_redirects=True)
@@ -236,11 +221,11 @@ class Asset(object):
         Input: File size in megabytes.
         Returns: File size in bytes.
         """
-        print("file_size: ", file_size)
+
         if file_size is None:
             return None
         else:
-            return int(file_size) * 1e6
+            return int(file_size) * 1e7
 
 
 class AssetCollection(object):
@@ -250,6 +235,8 @@ class AssetCollection(object):
         Initialize AssetCollection
         :param assets: a list of Asset instances.
         """
+        self.logger = logging.getLogger('civic_scraper.asset.AssetCollection')
+        self.logger.info('creating an instance of AssetCollection')
 
         for asset in assets:
             assert isinstance(asset, Asset)
@@ -261,12 +248,15 @@ class AssetCollection(object):
         """
         Write assets to target_dir.
         """
+        self.logger.info("running AssetCollection.download")
 
         downloaded_file_paths = []
 
         for item in self.assets:
             downloaded_file_path = item.download(target_dir, file_size, asset_list)
             downloaded_file_paths.append(downloaded_file_path)
+
+        self.logger.info("done running AssetCollection.download")
 
         return downloaded_file_paths
 
@@ -286,6 +276,7 @@ class AssetCollection(object):
         if appending is False, overwrite any file that's already there.
         If not, make directories and write a header first.
         """
+        self.logger.info("running AssetCollection.to_csv")
         if target_path is None and target_dir is None:
             target_dir = os.getcwd()
         if target_path is not None:
@@ -315,6 +306,8 @@ class AssetCollection(object):
             write_header = (i == 0) and new_file
             asset.append_to_csv(path, write_header=write_header)
 
+        self.logger.info("done running AssetCollection.to_csv")
+
 
 if __name__ == '__main__':
 
@@ -322,11 +315,10 @@ if __name__ == '__main__':
     import logging
     from civic_scraper.scrapers import SUPPORTED_SITES
 
-    # create logger with 'spam_application'
-    logger = logging.getLogger('spam_application')
+    logger = logging.getLogger('civic_scraper')
     logger.setLevel(logging.DEBUG)
     # create file handler which logs even debug messages
-    fh = logging.FileHandler('spam.log')
+    fh = logging.FileHandler('asset.log')
     fh.setLevel(logging.DEBUG)
     # create console handler with a higher log level
     ch = logging.StreamHandler()
@@ -339,11 +331,17 @@ if __name__ == '__main__':
     logger.addHandler(fh)
     logger.addHandler(ch)
 
-    logger.info('creating an instance of auxiliary_module.Auxiliary')
     cp = SUPPORTED_SITES['civicplus']
+    logger.info('creating an instance of civic_scraper.scrapers.CivicPlusSite')
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
+    logger.info('done creating an instance of civic_scraper.scrapers.CivicPlusSite')
+    logger.info('calling civic_scraper.scrapers.CivicPlusSite.scrape')
     metadata = site.scrape("20200101", "20200501")
+    logger.info('done calling civic_scraper.scrapers.CivicPlusSite.scrape')
 
+    # logger.info('downloading an instance of civic_scraper.scrapers.CivicPlusSite')
     # metadata.download(target_dir="test", asset_list=['agenda'])
+    # logger.info('done downloading an instance of civic_scraper.scrapers.CivicPlusSite')
+    logger.info('calling civic_scraper.Asset.to_csv')
     metadata.to_csv(target_dir="/Users/amydipierro/GitHub", appending=True)
-    logger.info('done with auxiliary_module.some_function()')
+    logger.info('done calling civic_scraper.Asset.to_csv')
