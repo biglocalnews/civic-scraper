@@ -23,12 +23,12 @@ python setup.py install
 
 To use `civic-scraper` in your own Python code, follow the steps below.
 
-> Note: At present, `civic-scraper` supports only websites using CivicPlus's Agenda Center, but in the future, it will support several types of websites where local governments post information about public meetings.
+> Note: At present, `civic-scraper` supports only websites using [CivicPlus's Agenda Center](https://www.civicplus.com/civicengage/civicengage/features), but in the future, it will support several types of websites where local governments post information about public meetings.
 
 ### Scraping asset information
 
 Create an instance of `CivicPlusSite` by passing it the URL for an
-agency's Civic Plus Agenda Center site. Then call the `scrape`
+agency's CivicPlus Agenda Center site. Then call the `scrape`
 method.
 
 
@@ -44,12 +44,12 @@ assets = site.scrape()
 By default, `scrape` returns metadata about meeting minutes, agendas and video recordings posted on the current day. **However, it does not automatically download the assets!!** See below for details on how to [download files](#downloading-assets) and [export metadata](#exporting-asset-metadata-to-csv).
 
 Scraping can be modified to capture assets from varying time ranges by
-calling `scrape()` with the optional `start_date` and/or  `end_date` arguments. Their
-values must be strings of the form `YYYYMMDD`.
+calling `scrape()` with the optional `start_date` and/or `end_date` arguments. Their
+values must be strings of the form `YYYY-MM-DD`.
 
 ```
 # Scrape info from January 1-30, 2020
-assets = site.scrape(start_date='20200101', end_date='20200130')
+assets = site.scrape(start_date='2020-01-01', end_date='2020-01-30')
 ```
 
 ### Downloading assets
@@ -94,16 +94,16 @@ site.scrape(
 
 Here are more details on the parameters mentioned above:
 
-* `target_dir` (*str*) - Target download directory (default: current working directory).
-* `file_size` (*int*) - Limit downloads to files with max file size in megabytes. Default is `None`, in which case all files will be downloaded.
-* `asset_list` (*list of str*) -  Limit downloads to one or more asset types (default: all types are downloaded). Valid options:
+* `target_dir` (*str*) - Target download directory. The default is the current working directory.
+* `file_size` (*int*) - Limit downloads to files with max file size in megabytes. The default is `None`, in which case all files will be downloaded.
+* `asset_list` (*list of str*) -  Limit downloads to one or more asset types. The default is to download all types of documents. Valid options:
   * `agenda`
   * `minutes`
   * `audio`
   * `video`
-  * `video2` - TK explanation
-  * `agenda_packet` - TK explanation
-  * `captions` - TK explanation
+  * `video2` - A second video format if two formats are provided.
+  * `agenda_packet` - The exhibits and ancillary documents attached to a meeting agenda.
+  * `captions` - The transcript of a meeting recording.
 
 ### Exporting asset metadata to csv
 
@@ -152,8 +152,8 @@ The generated file contains the following information:
 * `place` (*str*) - The name of the place associated with the asset in lowercase with spaces and punctuation removed. Ex: eastpaloalto
 * `state_or_province` (*str*) - The lowercase two-letter abbreviation for the state or province associated with an asset. Ex: ca
 * `asset_type` (*str*) - One of the following strings: `agenda`, `minutes`, `audio`, `video`, `video2`, `agenda_packet`, `captions`
-* `meeting_date` (*TK: human readable format*) Date of meeting or today if no date given (TODO: We should leave blank if date is not determined, rather than filling in current day)
-* `meeting_time` (*TK: human readable format*) corresponding to the time the meetings was held or midnight if no time given (TODO: We should leave blank if no time was obtained)
+* `meeting_date` (*str) - Date of meeting or blank if no meeting date given in the format YYYY-MM-DD.
+* `meeting_time` (*str*) - Time of meeting or blank if no time given.
 * `meeting_id`: TODO: Decide the spec for this.
 * `scraped_by` (*str*) - Module and version that produced the asset. Ex: `civicplus.py_2020-07-16` (TODO: We should use semantic versioning for this)
 * `content_type` (*str*) - The [MIME type][] of the asset. Ex: `application/pdf`
