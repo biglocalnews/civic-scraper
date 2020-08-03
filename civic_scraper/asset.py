@@ -243,6 +243,15 @@ class AssetCollection(object):
 
         self.assets = assets
 
+    def __iter__(self):
+        return iter(self.assets)
+
+    def __next__(self):
+        return next(self)
+
+    def __len__(self):
+        return len(self.assets)
+
     def download(self, target_dir=os.getcwd(), file_size=None,
         asset_list=SUPPORTED_ASSET_TYPES):
         """
@@ -266,8 +275,8 @@ class AssetCollection(object):
             target_dir=None,
             appending=False,
     ):
-        # TODO: require target_dir
-        # TODO: remove target_path
+        # TODO: Simplify interface by requiring a target_path
+        # and remove the target_dir option
         """
         Write metadata about the asset list to a csv.
         If target_path is given, write a file to that path.
@@ -338,7 +347,7 @@ if __name__ == '__main__':
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
     logger.info('done creating an instance of civic_scraper.scrapers.CivicPlusSite')
     logger.info('calling civic_scraper.scrapers.CivicPlusSite.scrape')
-    metadata = site.scrape("20200101", "20200501")
+    metadata = site.scrape("2020-01-01", "2020-05-01")
     logger.info('done calling civic_scraper.scrapers.CivicPlusSite.scrape')
 
     # logger.info('downloading an instance of civic_scraper.scrapers.CivicPlusSite')
