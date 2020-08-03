@@ -2,6 +2,7 @@
 Base Site class.
 """
 from civic_scraper.asset import AssetCollection
+SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
 
 class Site(object):
 
@@ -15,7 +16,7 @@ class Site(object):
             asset_list=SUPPORTED_ASSET_TYPES,
             csv_export=None,
             append=False
-    ): -> AssetCollection:
+    ) -> AssetCollection:
         """
         Scrape the site and return a AssetList instance.
         """
