@@ -1,9 +1,9 @@
 """
 TITLE: run_scraper.py
-AUTHOR: Chris Stock
-VERSION: 2020-07-08
+AUTHOR: Chris Stock and Amy DiPierro
+VERSION: 2020-08-24
 DESCRIPTION:
-Given a scraper type, an endpoint, and possibly scraping arguments,
+Given a scraper type, an endpoint, and scraping arguments,
 this script collects a list of assets on the site and writes
 that list as a csv to a specified path.
 
