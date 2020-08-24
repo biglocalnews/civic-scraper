@@ -12,7 +12,7 @@ Within Python:
 asset_list = run_scraper(
     scraper_type='civicplus',
     endpoint='http://pa-westchester2.civicplus.com/AgendaCenter',
-    scraper_args={"start_date": "20150909", "end_date": "20151014"},
+    scraper_args={"start_date": "2015-09-09", "end_date": "2015-10-14"},
     target_path='path/to/target.csv'
 )
 
@@ -21,7 +21,7 @@ python run_scraper.py \
     civicplus \
     http://pa-westchester2.civicplus.com/AgendaCenter \
     path/to/target.csv \
-    --scraper_args '{\"start_date\": \"20150909\", \"end_date\": \"20151014\"}'
+    --scraper_args '{"start_date": "2015-09-09", "end_date": "2015-10-14"}'
 """
 
 import json
@@ -44,7 +44,7 @@ def run_scraper(
             ('http://pa-westchester2.civicplus.com/AgendaCenter')
         target_path: the location to write the csv of results to
             ('path/to/target.csv')
-        scraper_args: a dict of additonal args to pass to Site.scrape()
+        scraper_args: a dict of additional args to pass to Site.scrape()
             ({"start_date": "20150909", "end_date": "20151014"})
 
     Returns:
@@ -64,58 +64,51 @@ def run_scraper(
 
     # scrape the specified site
     try:
-        asset_list = site.scrape(**scraper_args)
+        asset_collection = site.scrape(**scraper_args)
     except Exception:
         raise Exception('Unable to scrape with args: '
                         '{}'.format(scraper_args))
 
     # write results to the specified file location
     try:
-        asset_list.to_csv(target_path)
+        asset_collection.to_csv(target_path)
     except Exception:
         raise Exception('Unable to write asset list to path: '
                         '{}'.format(target_path))
-    return asset_list
+    return asset_collection
 
 if __name__ == '__main__':
     """
     Call run_scraper from the command line.
     """
-    asset_list = run_scraper(
-        scraper_type='civicplus',
-        endpoint='http://pa-westchester2.civicplus.com/AgendaCenter',
-        scraper_args={"start_date": "20150909", "end_date": "20151014"},
-        target_path='path/to/target.csv'
+    # parse arguments
+    import argparse
+    import json
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'scraper_type',
+        type=str
     )
-    print(asset_list)
-    # # parse arguments
-    # import argparse
-    # import json
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument(
-    #     'scraper_type',
-    #     type=str
-    # )
-    # parser.add_argument(
-    #     'endpoint',
-    #     type=str,
-    # )
-    # parser.add_argument(
-    #     'target_path',
-    #     type=str,
-    # )
-    # parser.add_argument(
-    #     '--scraper_args',
-    #     type=json.loads,  # imports a dict from escaped JSON
-    #     default={},
-    # )
-    # args = parser.parse_args()
-    #
-    # # call function
-    # asset_list = run_scraper(
-    #     scraper_type=args.scraper_type,
-    #     endpoint=args.endpoint,
-    #     target_path=args.target_path,
-    #     scraper_args=args.scraper_args,
-    # )
+    parser.add_argument(
+        'endpoint',
+        type=str,
+    )
+    parser.add_argument(
+        'target_path',
+        type=str,
+    )
+    parser.add_argument(
+        '--scraper_args',
+        type=json.loads,  # imports a dict from escaped JSON
+        default={},
+    )
+    args = parser.parse_args()
+
+    # call function
+    asset_list = run_scraper(
+        scraper_type=args.scraper_type,
+        endpoint=args.endpoint,
+        target_path=args.target_path,
+        scraper_args=args.scraper_args,
+    )
 
