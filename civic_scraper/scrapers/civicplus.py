@@ -20,7 +20,6 @@ Returns of scrape(): AssetCollection object.
 """
 # Libraries
 
-import os
 import re
 import datetime
 import bs4
@@ -30,7 +29,7 @@ from civic_scraper.scrapers.site import Site
 from civic_scraper.asset import Asset, AssetCollection
 
 # Parameters
-SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
+SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'agenda_packet', 'captions']
 
 
 class CivicPlusSite(Site):
