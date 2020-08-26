@@ -1,7 +1,7 @@
 """
 TITLE: asset.py
 AUTHOR: Chris Stock & Amy DiPierro
-VERSION: 2020-07-31
+VERSION: 2020-08-26
 DESCRIPTION: Defines the Asset and AssetList classes.
 
 Asset:
@@ -60,6 +60,7 @@ SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'agenda_packet',
 
 # Logging
 module_logger = logging.getLogger('civic_scraper.asset')
+
 
 # Code
 
@@ -138,58 +139,63 @@ class Asset(object):
             self.content_type = content_type
             self.content_length = content_length
 
-    def __repr__(self):
-        return f'Asset(url: {self.url}, asset_name: {self.asset_name}, committee_name: {self.committee_name}, place: {self.place}, state_or_province: {self.state_or_province},  asset_type: {self.asset_type}, meeting_date: {self.meeting_date}, meeting_time: {self.meeting_time}, meeting_id: {self.meeting_id}, scraped_by: {self.scraped_by}, content_type: {self.content_type}, content_length: {self.content_length})'
-
     def download(self, target_dir=os.getcwd(), file_size=None, asset_list=SUPPORTED_ASSET_TYPES):
-       """
+        """
        Downloads an asset into a target directory.
 
         Input:
-            target_dir: (str) target directory name
-            file_size: (int) size of file in megabytes. Default is None.
-            asset_type: (list of strings) one or more possible asset types to download. Default is all asset types.
+            target_dir: str, target directory name. Default is the current working directory.
+            file_size: int, size of file in megabytes. Default is None.
+            asset_type: list of strings, one or more possible asset types to download. Default is all asset types.
         Output: asset in target directory
         Returns: Full path to downloaded file
        """
-       self.logger.info('downloading an instance of Asset')
-       file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.asset_type, self.meeting_date)
-       asset = self.url
-       file_size = self._mb_to_bytes(file_size)
+        self.logger.info('downloading an instance of Asset')
+        file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.asset_type, self.meeting_date)
+        asset = self.url
+        file_size = self._mb_to_bytes(file_size)
 
-       if file_size is None and self.asset_type in asset_list:
-           print("Downloading asset: ", asset)
-           response = requests.get(asset, allow_redirects=True)
-           if not os.path.isdir(target_dir):
-               print("Making directory...")
-               os.mkdir(target_dir)
-           full_path = os.path.join(target_dir, file_name)
+        if file_size is None and self.asset_type in asset_list:
+            response = requests.get(asset, allow_redirects=True)
+            if not os.path.isdir(target_dir):
+                self.logger.info('Making directory for asset')
+                os.mkdir(target_dir)
+            full_path = os.path.join(target_dir, file_name)
 
-           with open(full_path, 'wb') as file:
-               file.write(response.content)
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
 
-           return full_path
+            self.logger.info('Asset downloaded')
 
-       elif self.asset_type in asset_list and int(self.content_length) <= int(file_size):
-           print("Downloading asset: ", asset)
-           response = requests.get(asset, allow_redirects=True)
-           if not os.path.isdir(target_dir):
-               print("Making directory...")
-               os.mkdir(target_dir)
-           full_path = os.path.join(target_dir, file_name)
+            return full_path
 
-           with open(full_path, 'wb') as file:
-               file.write(response.content)
+        elif self.asset_type in asset_list and int(self.content_length) <= int(file_size):
+            response = requests.get(asset, allow_redirects=True)
+            if not os.path.isdir(target_dir):
+                self.logger.info('Making directory for asset')
+                os.mkdir(target_dir)
+            full_path = os.path.join(target_dir, file_name)
 
-           return full_path
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
+
+            self.logger.info('Asset downloaded')
+
+            return full_path
 
     def append_to_csv(self, target_path, write_header=False):
         """
-        Append the asset metadata in CSV format to target_path.
+        Append the asset metadata in csv format to target_path.
         If write_header is True, first write a line containing the header
         names. If false, only write one line containing the values.
 
-        :param target_path: A required path for the csv
+        Input:
+            target_path: A required path for the csv
+            write_header: A flag indicating whether to write the csv header or not. Default is False.
+
+        Output: csv written to the target_path
+
+        Returns: Nothing.
         """
         self.logger.info('appending row to csv')
         # Make the dictionary
@@ -217,6 +223,9 @@ class Asset(object):
 
         self.logger.info('done appending row to csv')
 
+    def __repr__(self):
+        return f'Asset(url: {self.url}, asset_name: {self.asset_name}, committee_name: {self.committee_name}, place: {self.place}, state_or_province: {self.state_or_province},  asset_type: {self.asset_type}, meeting_date: {self.meeting_date}, meeting_time: {self.meeting_time}, meeting_id: {self.meeting_id}, scraped_by: {self.scraped_by}, content_type: {self.content_type}, content_length: {self.content_length})'
+
     def _mb_to_bytes(self, file_size):
         """
         Converts file_size from megabytes to bytes.
@@ -235,7 +244,9 @@ class AssetCollection(object):
     def __init__(self, assets):
         """
         Initialize AssetCollection
-        :param assets: a list of Asset instances.
+
+        Input:
+            assets: a list of Asset instances.
         """
         self.logger = logging.getLogger('civic_scraper.asset.AssetCollection')
         self.logger.info('creating an instance of AssetCollection')
@@ -258,9 +269,23 @@ class AssetCollection(object):
         return f'AssetCollection({self.assets})'
 
     def download(self, target_dir=os.getcwd(), file_size=None,
-        asset_list=SUPPORTED_ASSET_TYPES):
+                 asset_list=SUPPORTED_ASSET_TYPES):
         """
         Write assets to target_dir.
+
+        Input:
+            target_dir: str, the directory to which a user downloads assets.
+                        Default is the current working directory.
+            file_size: int, an optional parameter to limit the size of files
+                        to be downloaded given in megabytes. Default is None.
+            asset_list: list of strings, an optional parameter to limit the type
+                        of files to be downloaded. Default is all file types.
+                        Valid file types are: 'agenda', 'minutes', 'audio', 'video',
+                        'agenda_packet', and 'captions'.
+
+        Output: Downloaded assets.
+
+        Returns: List of file paths to downloaded assets.
         """
         self.logger.info("running AssetCollection.download")
 
@@ -279,15 +304,20 @@ class AssetCollection(object):
             target_path=None,
             appending=False,
     ):
-        # TODO: Simplify interface by requiring a target_path
-        # and remove the target_dir option
         """
         Write metadata about the asset list to a csv.
-        If target_path is given, write a file to that path.
-        If not given, create a file in the current working directory
-        If appending is True, append to any file that's already there.
-        if appending is False, overwrite any file that's already there.
-        If not, make directories and write a header first.
+
+        Input:
+            target_path: str, optional parameter giving the path to the csv to be created.
+                        If target_path is given, write a file to that path.
+                        If not given, create a file in the current working directory.
+            appending: bool, optional flag for whether or not to overwrite an existing csv.
+                        If appending is True, append to any file that's already there.
+                        If appending is False, overwrite any file that's already there.
+
+        Output: csv with metadata
+
+        Returns: Nothing.
         """
         self.logger.info("running AssetCollection.to_csv")
         if target_path is not None:
@@ -320,9 +350,7 @@ class AssetCollection(object):
 
         self.logger.info("done running AssetCollection.to_csv")
 
-
 if __name__ == '__main__':
-
     # The following is merely an example of how to call this code.
     import logging
     from civic_scraper.scrapers import SUPPORTED_SITES
@@ -351,10 +379,10 @@ if __name__ == '__main__':
     metadata = site.scrape("2020-01-01", "2020-05-01")
     logger.info('done calling civic_scraper.scrapers.CivicPlusSite.scrape')
 
-    # logger.info('downloading an instance of civic_scraper.scrapers.CivicPlusSite')
-    # metadata.download(target_dir="test", asset_list=['agenda'])
-    # logger.info('done downloading an instance of civic_scraper.scrapers.CivicPlusSite')
+    logger.info('downloading an instance of civic_scraper.scrapers.CivicPlusSite')
+    metadata.download(target_dir="test", asset_list=['agenda'])
+    logger.info('done downloading an instance of civic_scraper.scrapers.CivicPlusSite')
     logger.info('calling civic_scraper.Asset.to_csv')
     metadata.to_csv(target_path="/Users/amydipierro/GitHub/test.csv", appending=True)
     metadata.to_csv(appending=False)
-    # logger.info('done calling civic_scraper.Asset.to_csv')
+    logger.info('done calling civic_scraper.Asset.to_csv')
