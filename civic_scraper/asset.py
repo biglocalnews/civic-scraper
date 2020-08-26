@@ -14,7 +14,9 @@ Asset:
         asset_type: str, one of the following strings: 'agenda', 'minutes', 'audio', 'video', 'agenda_packet', 'captions'
         meeting_date: datetime.date corresponding to the time the meeting was held or today if no date given
         meeting_time: datetime.time corresponding to the time the meetings was held or midnight if no time given
-        meeting_id: #TODO: Decide the spec for this.
+        meeting_id: str, the name of the platform being scraped, state_or_province and place
+                    followed by the unique meeting ID the platform assigned to the meeting
+                    Ex: civicplus_ca_eastpaloalto_01272020-1589
         scraped_by: str, describes the module and version that produced the asset. Ex: 'civicplus.py_2020-07-16'
         content_type: str, the file type of the asset as given by HTTP headers. Ex: 'application/pdf'
         content_length: str, the size of the asset in bytes
@@ -39,9 +41,9 @@ From Python (example):
 
     cp = SUPPORTED_SITES['civicplus'] # Or choose another supported scraper
     site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter") # Or choose another url
-    metadata = site.scrape("20200101", "20200501") # Choose start_date, end_date
+    metadata = site.scrape("2020-01-01", "2020-05-01") # Optional: Choose start_date, end_date and other parameters
     metadata.download(target_dir="test") # Downloads assets to the directory "test". Can also choose optional file_size and file_type
-    metadata.to_csv("test.csv") # Downloads csv titled "test.csv"
+    metadata.to_csv(target_path="test.csv") # Downloads csv titled "test.csv"
 
 """
 
