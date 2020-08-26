@@ -1,19 +1,23 @@
 """
 TITLE: CivicPlusSite
 AUTHOR: Amy DiPierro
-VERSION: 2020-07-16
+VERSION: 2020-08-26
 
-This module scrapes agendas and minutes from CivicPlus Agenda Center websites. It has one public method, scrape(),
-which returns a AssetCollection object.
+DESCRIPTION: This module scrapes agendas and minutes from CivicPlus Agenda Center websites. It has one public method, scrape(),
+which returns an AssetCollection object.
 
-From Python:
-        site = CivicPlusSite(base_url) # creates a CivicPlusSite object
-        site.scrape(start_date, end_date, file_size, type_list)
+From Python (example):
+    base_url = 'http://ab-slavelake.civicplus.com/AgendaCenter'
+    site = CivicPlusSite(base_url)
+    url_dict = site.scrape(start_date='2020-06-01', target_dir="/Users/amydipierro/GitHub/tmp/", file_size=20, asset_list=['minutes'])
 
 Inputs of scrape():
         url: str of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
         start_date: (optional) str entered in the form YYYY-MM-DD
         end_date: (optional) str entered in the form YYYY-MM-DD
+        file_size: (optional) int, upper limit of size of file to be downloaded, in megabytes.
+        asset_list: (optional) list of str containing one or more of the following possible asset types:
+                    'agenda', 'minutes', 'audio', 'video', 'agenda_packet', 'captions'.
 
 Returns of scrape(): AssetCollection object.
 
@@ -34,8 +38,7 @@ SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'agenda_packet',
 
 class CivicPlusSite(Site):
     """
-    In its current configuration, the CivicPlusSite object returns a AssetCollection object
-    corresponding to the date range and URL that has been entered.
+    The CivicPlusSite object returns an AssetCollection object.
     """
 
     def __init__(self, base_url):
@@ -63,6 +66,15 @@ class CivicPlusSite(Site):
         Input:
             start_date: str entered in the form YYYY-MM-DD
             end_date: str entered in the form YYYY-MM-DD
+            download: bool, True to download assets identified by scraper. Default is False.
+            target_dir: str, optional parameter specifying directory to download assets. Default is None.
+            file_size: int, optional parameter limiting the size of assets to download, in megabytes. Default is None.
+            asset_list: list of str, optional parameter limiting the types of assets (e.g., agenda, audio, etc.)
+                        to be scraped. Default is None.
+            csv_export: str, optional parameter specifying path to download csv of scraped metadata.
+                        Default behavior is not to download a csv unless path is specified.
+            append: bool, True to append metadata to an existing csv, False to overwrite if csv already exists.
+                    Default is False.
 
         Returns:
             AssetCollection object
@@ -105,13 +117,16 @@ class CivicPlusSite(Site):
 
         for link in url_list:
             asset_args = {}
-            asset_args['place'] = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link)
-            asset_args['state_or_province'] = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link)
+            place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link)
+            asset_args['place'] = place
+            state_or_province = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link)
+            asset_args['state_or_province'] = state_or_province
             meeting_date = self._get_asset_metadata(r"(?<=_)\w{8}(?=-)", link)
             asset_args['meeting_date'] = datetime.date(int(meeting_date[4:]), int(meeting_date[:2]), int(meeting_date[2:4]))
             asset_args['meeting_time'] = None
             asset_args['committee_name'] = None
-            asset_args['meeting_id'] = link
+            meeting_number = self._get_asset_metadata(r"(?<=_)\d{8}-\d{4}", link)
+            asset_args['meeting_id'] = "civicplus_{}_{}_{}".format(state_or_province, place, meeting_number)
             asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link)
             asset_args['asset_type'] = asset_type.lower()
             asset_args['url'] = link
@@ -144,7 +159,7 @@ class CivicPlusSite(Site):
 
     def _get_post_params(self, soup, start_date, end_date):
         """
-        Given parsed html text grabs the bits of html -- a year and a cat_id -- needed
+        Given parsed html text, grabs the bits of html -- a year and a cat_id -- needed
         for the POST request. Filters the list by the years in start_date and end_date.
 
         Input: Parsed text, start date (YYYY-MM-DD) and end date (YYYY-MM-DD)
@@ -198,10 +213,10 @@ class CivicPlusSite(Site):
 
     def _get_all_assets(self, post_params):
         """
-        Given a dictionary and page URL, makes a post request and harvests all of the links from
+        Given a dictionary of post_params, makes a post request and harvests all of the links from
         the response to that request.
 
-        Input: Dictionary of years and catIDs, page URL for POST request
+        Input: Dictionary of years and catIDs
         Returns: A list of lists of asset URL stubs
         """
         page = "{}/UpdateCategoryList".format(self.url)
@@ -254,9 +269,9 @@ class CivicPlusSite(Site):
         Filters assets to the provided date range.
 
         Inputs:
-        asset_stubs: A list of asset stubs
-        start_date: The earliest date of assets to return
-        end_date: The latest date of assets to return
+            asset_stubs: A list of asset stubs
+            start_date: The earliest date of assets to return
+            end_date: The latest date of assets to return
         Returns: A list of asset stubs filtered by date range
         """
         if start_date is not None and end_date is not None:
@@ -331,6 +346,7 @@ class CivicPlusSite(Site):
 
 
 if __name__ == '__main__':
+    # The following code is for testing purposes only
     base_url = 'http://ab-slavelake.civicplus.com/AgendaCenter'
     site = CivicPlusSite(base_url)
     url_dict = site.scrape(start_date='2020-06-01', target_dir="/Users/amydipierro/GitHub/tmp/", file_size=20, asset_list=['minutes'])
