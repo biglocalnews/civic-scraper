@@ -101,7 +101,6 @@ Here are more details on the parameters mentioned above:
   * `minutes`
   * `audio`
   * `video`
-  * `video2` - A second video format if two formats are provided.
   * `agenda_packet` - The exhibits and ancillary documents attached to a meeting agenda.
   * `captions` - The transcript of a meeting recording.
 
@@ -151,11 +150,11 @@ The generated file contains the following information:
 * `committee_name` (*str*) - The name of the committee that generated the asset. Ex: City Council
 * `place` (*str*) - The name of the place associated with the asset in lowercase with spaces and punctuation removed. Ex: eastpaloalto
 * `state_or_province` (*str*) - The lowercase two-letter abbreviation for the state or province associated with an asset. Ex: ca
-* `asset_type` (*str*) - One of the following strings: `agenda`, `minutes`, `audio`, `video`, `video2`, `agenda_packet`, `captions`
-* `meeting_date` (*str) - Date of meeting or blank if no meeting date given in the format YYYY-MM-DD.
+* `asset_type` (*str*) - One of the following strings: `agenda`, `minutes`, `audio`, `video`, `agenda_packet`, `captions`
+* `meeting_date` (*str*) - Date of meeting or blank if no meeting date given in the format YYYY-MM-DD.
 * `meeting_time` (*str*) - Time of meeting or blank if no time given.
-* `meeting_id`: TODO: Decide the spec for this.
-* `scraped_by` (*str*) - Module and version that produced the asset. Ex: `civicplus.py_2020-07-16` (TODO: We should use semantic versioning for this)
+* `meeting_id`: (*str*) - Platform name, `state_or_province` and `place` followed by unique meeting ID assigned by platform. Ex: civicplus_ca_eastpaloalto_01272020-1589
+* `scraped_by` (*str*) - Module and version that produced the asset using [semantic versioning](https://semver.org). Ex: `civicplus.py_1.0.0`
 * `content_type` (*str*) - The [MIME type][] of the asset. Ex: `application/pdf`
 * `content_length` (*str*) - The size of the asset in bytes.
 
