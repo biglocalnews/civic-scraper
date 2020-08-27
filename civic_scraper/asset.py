@@ -17,7 +17,7 @@ Asset:
         meeting_id: str, the name of the platform being scraped, state_or_province and place
                     followed by the unique meeting ID the platform assigned to the meeting
                     Ex: civicplus_ca_eastpaloalto_01272020-1589
-        scraped_by: str, describes the module and version that produced the asset. Ex: 'civicplus.py_2020-07-16'
+        scraped_by: str, describes the module and version that produced the asset. Ex: 'civicplus.py_1.0.0'
         content_type: str, the file type of the asset as given by HTTP headers. Ex: 'application/pdf'
         content_length: str, the size of the asset in bytes
 
