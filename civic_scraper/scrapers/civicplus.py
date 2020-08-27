@@ -130,7 +130,7 @@ class CivicPlusSite(Site):
             asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link)
             asset_args['asset_type'] = asset_type.lower()
             asset_args['url'] = link
-            asset_args['scraped_by'] = 'civicplus.py_v2020-07-09'
+            asset_args['scraped_by'] = 'civicplus.py_v1.0.0'
             headers = requests.head(link).headers
             asset_args['content_type'] = headers['content-type']
             asset_args['content_length'] = headers['content-length']
