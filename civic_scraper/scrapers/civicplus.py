@@ -91,15 +91,20 @@ class CivicPlusSite(Site):
         if download and csv_export is not None and target_dir is None:
             metadata.download()
             metadata.to_csv(target_path=csv_export, appending=append)
+            return metadata
         elif download and csv_export is None and target_dir is None:
             metadata.download()
+            return metadata
         elif not download and csv_export is not None:
             metadata.to_csv(target_path=csv_export, appending=append)
+            return metadata
         elif target_dir is not None and csv_export is not None:
             metadata.download(target_dir=target_dir, file_size=file_size, asset_list=asset_list)
             metadata.to_csv(target_path=csv_export, appending=append)
+            return metadata
         elif target_dir is not None and csv_export is None:
             metadata.download(target_dir=target_dir, file_size=file_size, asset_list=asset_list)
+            return metadata
         else:
             return metadata
 
