@@ -88,10 +88,10 @@ class CivicPlusSite(Site):
         links = self._make_asset_links(filtered_stubs)
         metadata = self._get_metadata(links)
 
-        if download and csv_export is not None:
+        if download and csv_export is not None and target_dir is None:
             metadata.download()
             metadata.to_csv(target_path=csv_export, appending=append)
-        elif download and csv_export is None:
+        elif download and csv_export is None and target_dir is None:
             metadata.download()
         elif not download and csv_export is not None:
             metadata.to_csv(target_path=csv_export, appending=append)
