@@ -115,10 +115,10 @@ class Asset(object):
 
         scraped_by_valid = False
         while not scraped_by_valid:
-            if re.match(r".+\.py_v\d{4}-\d{2}-\d{2}", scraped_by) != None:
+            if re.match(r".+\.py_\d{1}\.\d{1}\.\d{1}", scraped_by) != None:
                 scraped_by_valid = True
             else:
-                print("The format of scraped_by should be 'module.py_vYYYY-MM-DD'.")
+                print("The format of scraped_by should be 'module.py_1.0.0'.")
                 break
 
         valid_list = [url_valid, state_or_province_valid, asset_type_valid, scraped_by_valid]
