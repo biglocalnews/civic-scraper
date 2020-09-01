@@ -195,7 +195,7 @@ class CivicPlusSite(Site):
         for element in year_elements:
             link = element.attrs['href']
             year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
-            meeting_name = re.search(r"(?<=aria-label=\").*(?=\d{4}\" href)", str(element)).group(0)
+            meeting_name = re.search(r"(?<=aria-label=\").*(?=\d{4}\" href)", str(element)).group(0).strip()
 
             if start_date is not None and end_date is not None:
                 start_year = re.search(r"^\d{4}", start_date).group(0)
