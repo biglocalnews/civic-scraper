@@ -227,17 +227,7 @@ class CivicPlusSite(Site):
                 cat_ids.append(cat_id_text)
                 years_cat_id[year] = cat_ids
 
-        # Remove duplicates
-        years_cat_id_2 = {}
-        cat_ids_2 = []
-        for year in years_cat_id:
-            id_list = years_cat_id[year]
-            for id in id_list:
-                if id not in cat_ids_2:
-                    cat_ids_2.append(id)
-            years_cat_id_2[year] = cat_ids_2
-
-        return years_cat_id_2
+        return years_cat_id
 
     def _get_all_assets(self, post_params):
         """
