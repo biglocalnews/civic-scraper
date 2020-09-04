@@ -147,7 +147,7 @@ class Asset(object):
 
         Input:
             target_dir: str, target directory name. Default is the current working directory.
-            file_size: int, size of file in megabytes. Default is None.
+            file_size: float, size of file in megabytes. Default is None.
             asset_type: list of strings, one or more possible asset types to download. Default is all asset types.
         Output: asset in target directory
         Returns: Full path to downloaded file
@@ -171,7 +171,7 @@ class Asset(object):
 
             return full_path
 
-        elif self.asset_type in asset_list and int(self.content_length) <= int(file_size):
+        elif self.asset_type in asset_list and float(self.content_length) <= float(file_size):
             response = requests.get(asset, allow_redirects=True)
             if not os.path.isdir(target_dir):
                 self.logger.info('Making directory for asset')
@@ -238,8 +238,7 @@ class Asset(object):
         if file_size is None:
             return None
         else:
-            return int(file_size) * 1e7
-
+            return float(file_size) * 1e6
 
 class AssetCollection(object):
 
@@ -278,7 +277,7 @@ class AssetCollection(object):
         Input:
             target_dir: str, the directory to which a user downloads assets.
                         Default is the current working directory.
-            file_size: int, an optional parameter to limit the size of files
+            file_size: float, an optional parameter to limit the size of files
                         to be downloaded given in megabytes. Default is None.
             asset_list: list of strings, an optional parameter to limit the type
                         of files to be downloaded. Default is all file types.
