@@ -405,12 +405,9 @@ class CivicPlusSite(Site):
         else:
             return "no_data"
 
-
 if __name__ == '__main__':
     # The following code is for testing purposes only
     base_url = 'http://mo-joplin.civicplus.com/AgendaCenter'
     site = CivicPlusSite(base_url)
     url_dict = site.scrape(start_date='2020-09-01')
     print(url_dict)
-
-
