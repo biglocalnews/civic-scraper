@@ -30,7 +30,7 @@ AssetList:
         asset_args: dict, a dictionary containing metadata corresponding to the attributes of an Asset object.
 
     Public methods:
-        download_assets: a wrapper around Asset.download, it downloads each asset instance in an AssetList
+        download: a wrapper around Asset.download, it downloads each asset instance in an AssetList
         to_csv: a wrapper around append_to_csv, it writes out a csv containing metadata about each asset instance
                 in an AssetList
 
@@ -141,49 +141,46 @@ class Asset(object):
             self.content_type = content_type
             self.content_length = content_length
 
-    def download(self, target_dir=os.getcwd(), file_size=None, asset_list=SUPPORTED_ASSET_TYPES):
+    def download(self, target_dir=os.getcwd(), file_size=None, asset_list=SUPPORTED_ASSET_TYPES, file_type='both'):
         """
        Downloads an asset into a target directory.
 
         Input:
             target_dir: str, target directory name. Default is the current working directory.
             file_size: float, size of file in megabytes. Default is None.
-            asset_type: list of strings, one or more possible asset types to download. Default is all asset types.
+            asset_list: list of strings, one or more possible asset types to download. Default is all asset types.
+            file_type: string taking three possible values: 'html' (to download only html documents), 'pdf' (to download
+                        only pdf documents or 'both' (to download both documents). Default is both
+
         Output: asset in target directory
         Returns: Full path to downloaded file
        """
         self.logger.info('downloading an instance of Asset')
-        file_name = "{}_{}_{}_{}.pdf".format(self.place, self.state_or_province, self.asset_type, self.meeting_date)
+        if self.content_type == "application/pdf":
+            suffix = "pdf"
+        elif self.content_type == "text/html":
+            suffix = "html"
+        elif self.content_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            suffix = "docx"
+
+        file_name = "{}_{}_{}_{}.{}".format(self.place, self.state_or_province, self.asset_type, self.meeting_date, suffix)
         asset = self.url
         file_size = self._mb_to_bytes(file_size)
 
-        if file_size is None and self.asset_type in asset_list:
-            response = requests.get(asset, allow_redirects=True)
-            if not os.path.isdir(target_dir):
-                self.logger.info('Making directory for asset')
-                os.mkdir(target_dir)
-            full_path = os.path.join(target_dir, file_name)
+        # Download whether it's an HTML doc or a pdf
+        if file_type == "both":
+            self._handle_asset(asset, target_dir, asset_list, file_name, file_size)
+        elif file_type == 'pdf':
+            if self.asset_type in ['audio', 'video']:
+                self._handle_asset(asset, target_dir, asset_list, file_name, file_size)
+            elif self.asset_type not in ['audio', 'video'] and self.content_type == "application/pdf":
+                self._handle_asset(asset, target_dir, asset_list, file_name, file_size)
+        else:
+            if self.asset_type in ['audio', 'video']:
+                self._handle_asset(asset, target_dir, asset_list, file_name, file_size)
+            elif self.asset_type not in ['audio', 'video'] and self.content_type == "text/html":
+                self._handle_asset(asset, target_dir, asset_list, file_name, file_size)
 
-            with open(full_path, 'wb') as file:
-                file.write(response.content)
-
-            self.logger.info('Asset downloaded')
-
-            return full_path
-
-        elif self.asset_type in asset_list and float(self.content_length) <= float(file_size):
-            response = requests.get(asset, allow_redirects=True)
-            if not os.path.isdir(target_dir):
-                self.logger.info('Making directory for asset')
-                os.mkdir(target_dir)
-            full_path = os.path.join(target_dir, file_name)
-
-            with open(full_path, 'wb') as file:
-                file.write(response.content)
-
-            self.logger.info('Asset downloaded')
-
-            return full_path
 
     def append_to_csv(self, target_path, write_header=False):
         """
@@ -228,6 +225,38 @@ class Asset(object):
     def __repr__(self):
         return f'Asset(url: {self.url}, asset_name: {self.asset_name}, committee_name: {self.committee_name}, place: {self.place}, state_or_province: {self.state_or_province},  asset_type: {self.asset_type}, meeting_date: {self.meeting_date}, meeting_time: {self.meeting_time}, meeting_id: {self.meeting_id}, scraped_by: {self.scraped_by}, content_type: {self.content_type}, content_length: {self.content_length})'
 
+    def _handle_asset(self, asset, target_dir, asset_list, file_name, file_size):
+        '''
+        A helper function in download()
+        '''
+        if file_size is None and self.asset_type in asset_list:
+            response = requests.get(asset, allow_redirects=True)
+            if not os.path.isdir(target_dir):
+                self.logger.info('Making directory for asset')
+                os.mkdir(target_dir)
+            full_path = os.path.join(target_dir, file_name)
+
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
+
+            self.logger.info('Asset downloaded')
+
+            return full_path
+
+        elif self.asset_type in asset_list and float(self.content_length) <= float(file_size):
+            response = requests.get(asset, allow_redirects=True)
+            if not os.path.isdir(target_dir):
+                self.logger.info('Making directory for asset')
+                os.mkdir(target_dir)
+            full_path = os.path.join(target_dir, file_name)
+
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
+
+            self.logger.info('Asset downloaded')
+
+            return full_path
+
     def _mb_to_bytes(self, file_size):
         """
         Converts file_size from megabytes to bytes.
@@ -270,7 +299,7 @@ class AssetCollection(object):
         return f'AssetCollection({self.assets})'
 
     def download(self, target_dir=os.getcwd(), file_size=None,
-                 asset_list=SUPPORTED_ASSET_TYPES):
+                 asset_list=SUPPORTED_ASSET_TYPES, file_type='both'):
         """
         Write assets to target_dir.
 
@@ -283,6 +312,9 @@ class AssetCollection(object):
                         of files to be downloaded. Default is all file types.
                         Valid file types are: 'agenda', 'minutes', 'audio', 'video',
                         'agenda_packet', and 'captions'.
+            file_type: string taking three possible values: 'html' (to download only html documents),
+                        'pdf' (to download only pdf documents or 'both' (to download both documents).
+                        Default is 'both'.
 
         Output: Downloaded assets.
 
@@ -293,7 +325,7 @@ class AssetCollection(object):
         downloaded_file_paths = []
 
         for item in self.assets:
-            downloaded_file_path = item.download(target_dir, file_size, asset_list)
+            downloaded_file_path = item.download(target_dir, file_size, asset_list, file_type)
             downloaded_file_paths.append(downloaded_file_path)
 
         self.logger.info("done running AssetCollection.download")
@@ -374,16 +406,17 @@ if __name__ == '__main__':
 
     cp = SUPPORTED_SITES['civicplus']
     logger.info('creating an instance of civic_scraper.scrapers.CivicPlusSite')
-    site = cp(base_url="https://ca-eastpaloalto.civicplus.com/AgendaCenter")
+    site = cp(base_url="http://pa-statecollege.civicplus.com/AgendaCenter")
     logger.info('done creating an instance of civic_scraper.scrapers.CivicPlusSite')
     logger.info('calling civic_scraper.scrapers.CivicPlusSite.scrape')
-    metadata = site.scrape("2020-01-01", "2020-05-01")
+    metadata = site.scrape("2020-08-28", "2020-08-28")
+    print(metadata)
     logger.info('done calling civic_scraper.scrapers.CivicPlusSite.scrape')
 
-    logger.info('downloading an instance of civic_scraper.scrapers.CivicPlusSite')
-    metadata.download(target_dir="test", asset_list=['agenda'])
-    logger.info('done downloading an instance of civic_scraper.scrapers.CivicPlusSite')
-    logger.info('calling civic_scraper.Asset.to_csv')
-    metadata.to_csv(target_path="/Users/amydipierro/GitHub/test.csv", appending=True)
-    metadata.to_csv(appending=False)
-    logger.info('done calling civic_scraper.Asset.to_csv')
+    # logger.info('downloading an instance of civic_scraper.scrapers.CivicPlusSite')
+    # metadata.download(file_type='pdf')
+    # logger.info('done downloading an instance of civic_scraper.scrapers.CivicPlusSite')
+    # logger.info('calling civic_scraper.Asset.to_csv')
+    # metadata.to_csv(target_path="/Users/amydipierro/GitHub/test.csv", appending=True)
+    # metadata.to_csv(appending=False)
+    # logger.info('done calling civic_scraper.Asset.to_csv')
