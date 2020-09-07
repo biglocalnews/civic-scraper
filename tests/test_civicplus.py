@@ -36,8 +36,8 @@ def test_scrape_defaults():
     # checks in a separate test).
     first = assets[0]
     assert first.url == 'http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05052020-382'
-    assert first.asset_name == None
-    assert first.committee_name == 'Board of Commissioners'
+    assert first.committee_name == 'Board of Commissioners 2020'
+    assert first.asset_name == 'May 05, 2020, May 5, 2020 Recessed Meeting/Budget Work Session Agenda. Agenda'
     assert first.place == 'nashcounty'
     assert first.state_or_province == 'nc'
     assert first.asset_type == 'agenda'
@@ -72,16 +72,16 @@ def test_scrape_parameters_1():
     cp = CivicPlusSite(site_url)
     assets = cp.scrape(start_date=start_date, end_date=end_date, file_size=file_size, asset_list=asset_list).assets
     # Check asset count
-    assert len(assets) == 5
+    assert len(assets) == 15
     # Spot check asset attributes.
     # Start simple, and add more attribute
     # checks as needed to cover expected
     # edge cases (or better yet, put those
     # checks in a separate test).
     first = assets[0]
-    assert first.url == 'http://fl-zephyrhills.civicplus.com/AgendaCenter/ViewFile/Agenda/_08172020-360'
-    assert first.asset_name == None
-    assert first.committee_name == 'Airport Authority'
+    assert first.url == 'http://fl-zephyrhills.civicplus.com/AgendaCenter/ViewFile/Agenda/_08172020-360?html=true'
+    assert first.asset_name == 'August 17, 2020, Airport Advisory Regular Meeting. HTML'
+    assert first.committee_name == 'Airport Authority 2020'
     assert first.place == 'zephyrhills'
     assert first.state_or_province == 'fl'
     assert first.asset_type == 'agenda'
@@ -89,19 +89,18 @@ def test_scrape_parameters_1():
     assert first.meeting_time == None
     assert first.meeting_id == 'civicplus_fl_zephyrhills_08172020-360'
     assert first.scraped_by == 'civicplus.py_1.0.0'
-    assert first.content_type == 'application/pdf'
-    assert first.content_length == '54515'
+    assert first.content_type == 'text/html'
+    assert first.content_length == '2487'
     # Check that assets are in the correct date range
     for asset in assets:
         assert asset.meeting_date in expected_meeting_dates
     # Check that assets have the correct size
-    expected_content_lengths = ['54515', '1266122', '1301997', '1303606', '144582']
+    expected_content_lengths = ['2487', '54515', '54517', '3181', '1266122', '1266093', '4889', '1301997', '1301956', '4117', '1303606', '1303584', '3052', '144582', '144610']
     actual_content_lengths = [asset.content_length for asset in assets]
     assert expected_content_lengths == actual_content_lengths
     # Check range of asset types
-    expected_asset_types = ['agenda', 'agenda', 'agenda', 'agenda', 'agenda']
-    actual_asset_types = [asset.asset_type for asset in assets]
-    assert expected_asset_types == actual_asset_types
+    for asset in assets:
+        assert asset.asset_type == 'agenda'
 
 @pytest.mark.vcr()
 def test_scrape_parameters_2():
