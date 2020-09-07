@@ -53,7 +53,7 @@ def test_to_csv_defaults(tmp_path):
     with open(temp_csv, 'rb') as file:
         for chunk in iter(lambda: file.read(4096), b""):
             hash_md5.update(chunk)
-    assert hash_md5.digest() == b'\x08fh*1j\xa31\x13\x824\x84B\xae\x93\xe9'
+    assert hash_md5.digest() == b'\xf9\x84oT\x00[8\xb9wG\x15\x90\xae\x7f\x9e\xb3'
 
     # Check that the csv exists
     assert len(list(tmp_path.iterdir())) == 1
@@ -84,7 +84,9 @@ def test_append_to_csv(tmp_path):
     with open(temp_csv, 'rb') as file:
         for chunk in iter(lambda: file.read(4096), b""):
             hash_md5.update(chunk)
-    assert hash_md5.digest() == b'\x08fh*1j\xa31\x13\x824\x84B\xae\x93\xe9'
+    assert hash_md5.digest() == b'\xf9\x84oT\x00[8\xb9wG\x15\x90\xae\x7f\x9e\xb3'
+
+    hash_md5.digest()
 
     # Check that the csv exists
     assert os.path.exists(tmp_path)
@@ -100,7 +102,7 @@ def test_append_to_csv_existing(tmp_path):
     temp_csv_1 = directory / "temp.csv"
 
     # Create the second temporary directory and temporary file
-    temp_csv_2 = directory / "temp_csv_appending2.csv"
+    temp_csv_2 = directory / "temp_csv.csv"
 
     # Make the first AssetCollection
     site_url = "http://ks-liberal.civicplus.com/AgendaCenter"
@@ -125,10 +127,10 @@ def test_append_to_csv_existing(tmp_path):
     with open(temp_csv_2, 'rb') as file:
         for chunk in iter(lambda: file.read(4096), b""):
             hash_md5.update(chunk)
-    assert hash_md5.digest() == b'B\xee\xcc(\xc3\xee\xbe\x00m\x95iG\xd5\ne('
+    assert hash_md5.digest() == b'c\x14SWL\x85\x7f@\x9a\xd4\xf8\xdcL\x8fK\xa2'
+    hash_md5.digest()
 
-    # Check that the files both exist
-    assert os.path.exists(temp_csv_1)
+    # Check that the file exists
     assert os.path.exists(temp_csv_2)
 
 
@@ -165,6 +167,8 @@ def test_download_defaults(tmp_path):
 
     for hash in expected_asset_hashes:
         assert hash in actual_asset_hashes
+
+    print(actual_asset_hashes)
 
 
 @pytest.mark.vcr()
