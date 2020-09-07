@@ -349,10 +349,10 @@ class CivicPlusSite(Site):
         filtered_dict = {}
         for committee in asset_stubs:
             for stub in asset_stubs[committee]:
-                year = int(stub[2][5:9])
-                month = int(stub[2][1:3])
-                day = int(stub[2][3:5])
-                date = datetime.date(year, month, day)
+                year = stub[2][5:9]
+                month = stub[2][1:3]
+                day = stub[2][3:5]
+                date = datetime.date(int(year), int(month), int(day))
                 if start <= date <= end:
                     filtered_stubs.append(stub)
                     filtered_dict[committee] = filtered_stubs
