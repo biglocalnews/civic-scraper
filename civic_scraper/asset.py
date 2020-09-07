@@ -56,6 +56,7 @@ from collections import OrderedDict
 import datetime
 import logging
 import sys
+import mimetypes
 
 # Parameters
 SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'agenda_packet', 'captions']
@@ -156,14 +157,9 @@ class Asset(object):
         Returns: Full path to downloaded file
        """
         self.logger.info('downloading an instance of Asset')
-        if self.content_type == "application/pdf":
-            suffix = "pdf"
-        elif self.content_type == "text/html":
-            suffix = "html"
-        elif self.content_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            suffix = "docx"
+        file_extension = mimetypes.guess_extension(self.content_type)
 
-        file_name = "{}_{}_{}_{}.{}".format(self.place, self.state_or_province, self.asset_type, self.meeting_date, suffix)
+        file_name = "{}_{}_{}_{}{}".format(self.place, self.state_or_province, self.asset_type, self.meeting_date, file_extension)
         asset = self.url
         file_size = self._mb_to_bytes(file_size)
 
@@ -180,7 +176,6 @@ class Asset(object):
                 self._handle_asset(asset, target_dir, asset_list, file_name, file_size)
             elif self.asset_type not in ['audio', 'video'] and self.content_type == "text/html":
                 self._handle_asset(asset, target_dir, asset_list, file_name, file_size)
-
 
     def append_to_csv(self, target_path, write_header=False):
         """
