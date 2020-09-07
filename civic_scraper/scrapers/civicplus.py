@@ -55,7 +55,7 @@ class CivicPlusSite(Site):
         Input: URL of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
         """
         self.url = base_url
-        self.runtime = str(datetime.datetime.utcnow().date()).replace('-', '')
+        self.runtime = datetime.datetime.utcnow().date()
 
     # Public interface (used by calling code)
     def scrape(
@@ -67,7 +67,7 @@ class CivicPlusSite(Site):
             file_size=None,
             asset_list=SUPPORTED_ASSET_TYPES,
             csv_export=None,
-            append=False
+            append=False,
     ):
         """
         Input:
@@ -117,36 +117,36 @@ class CivicPlusSite(Site):
 
     # Private methods
 
-    def _get_metadata(self, url_dict):
+    def _get_metadata(self, metadata_dict):
         """
         Returns an AssetCollection object.
 
-        Input: A dictionary of asset URLs and meeting names (committee_name in the parlance below)
+        Input: A dictionary of asset URLs, asset titles, meeting ids and meeting names
+                (committee_name in the parlance below)
         Output: A AssetCollection object
         """
 
         assets = []
 
-        for committee in url_dict:
-            for link in url_dict[committee]:
+        for committee in metadata_dict:
+
+            for link in metadata_dict[committee]:
+
                 asset_args = {}
-                place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link)
+                place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link[1])
                 asset_args['place'] = place
-                state_or_province = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link)
+                state_or_province = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link[1])
                 asset_args['state_or_province'] = state_or_province
-                meeting_date = self._get_asset_metadata(r"(?<=_)\w{8}(?=-)", link)
-                asset_args['meeting_date'] = datetime.date(int(meeting_date[4:]), int(meeting_date[:2]), int(meeting_date[2:4]))
+                asset_args['meeting_date'] = datetime.date(int(link[2][5:9]), int(link[2][1:3]), int(link[2][3:5]))
                 asset_args['meeting_time'] = None
-                asset_args['asset_name'] = None
+                asset_args['asset_name'] = link[0]
                 asset_args['committee_name'] = committee
-                meeting_number = self._get_asset_metadata(r"(?<=_)\d{8}-\d+", link)
-                print(meeting_number)
-                asset_args['meeting_id'] = "civicplus_{}_{}_{}".format(state_or_province, place, meeting_number)
-                asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link)
+                asset_args['meeting_id'] = "civicplus_{}_{}_{}".format(state_or_province, place, link[2])
+                asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link[1])
                 asset_args['asset_type'] = asset_type.lower()
-                asset_args['url'] = link
+                asset_args['url'] = link[1]
                 asset_args['scraped_by'] = 'civicplus.py_1.0.0'
-                headers = requests.head(link).headers
+                headers = requests.head(link[1]).headers
                 asset_args['content_type'] = headers['content-type']
                 asset_args['content_length'] = headers['content-length']
                 assets.append(Asset(**asset_args))
@@ -196,7 +196,7 @@ class CivicPlusSite(Site):
         for element in year_elements:
             link = element.attrs['href']
             year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
-            meeting_name = re.search(r"(?<=aria-label=\").*(?=\d{4}\" href)", str(element)).group(0).strip()
+            meeting_name = element['aria-label'].strip()
 
             if start_date is not None and end_date is not None:
                 start_year = re.search(r"^\d{4}", start_date).group(0)
@@ -235,11 +235,17 @@ class CivicPlusSite(Site):
         the response to that request.
 
         Input: Dictionary of years, cat_ids and meeting_names
-        Returns: Dictionary of asset URL stubs and meeting_names
+        Returns: Dictionary of asset URLs and URL stubs, meeting_names and asset_names
 
         The dictionary returned by this function should take the following general structure:
 
-        {'meeting_name1': [url stub, url stub, ...], 'meeting_name2': [url stub, url stub, ...] ...}
+        {
+            'meeting_name1':
+                [(asset_name, url stub), (asset_name, url stub), ...],
+            'meeting_name2':
+                [(asset_name, url stub), (asset_name, url stub), ...]
+            ...
+        }
         """
 
         page = "{}/UpdateCategoryList".format(self.url)
@@ -260,19 +266,9 @@ class CivicPlusSite(Site):
                     if response.status_code == 200:
                         soup = self._make_soup(response.text)
                         end_links = self._get_links(soup)
-                        all_links.append(end_links)
+                        for end_link in end_links:
+                            all_links.append(end_link)
                         links_dict[meeting_name] = all_links
-
-        # Remove lists for which no links have been found
-        for govt_body in links_dict:
-            for link_list in govt_body:
-                if link_list == []:
-                    all_links.remove(link_list)
-                for stub in link_list:
-                    if stub == []:
-                        link_list.remove(stub)
-                    elif stub == "":
-                        link_list.remove(stub)
 
         return links_dict
 
@@ -280,18 +276,47 @@ class CivicPlusSite(Site):
         """
         Make a list of links to assets we want to download
         Input: Parsed text of website
-        Returns: The latter portion of links to assets to download as a list
+        Returns: A list of tuples in which the first item in each tuple is the title of an
+                an asset and the second item of the tuple is a link, or partial link, to
+                the asset.
         """
-
-        links = soup.table.find_all('a')
+        rows = soup.find_all(class_='catAgendaRow')
         end_links = []
-        for link in links:
-            if '/Agenda/' or '/Minutes/' in link.attrs['href']:
-                end_links.append(link.get('href'))
-                end_links = list(filter(None, end_links))
-                for end_link in end_links:
-                    if ('true' in end_link) or ('http' in end_link) or ('Previous' in end_link) or ('AssetCenter' in end_link):
-                        end_links.remove(end_link)
+        for row in rows:
+            # Get meeting_id
+            meeting_id = row.a['name']
+            # Add the first set of links
+            asset_list = row.find_all('li')
+            for asset in asset_list:
+                asset_title = asset.a['aria-label'].strip()
+                end_link = asset.a['href'].strip()
+                link_tuple = (asset_title, end_link, meeting_id)
+                end_links.append(link_tuple)
+
+            # Add the rest of the links
+            tds = row.find_all("td")
+            for td in tds[1:-1]:
+                try:
+                    asset_title = td.a['aria-label'].strip()
+                except (KeyError, TypeError):
+                    asset_title = None
+                try:
+                    end_link = td.a['href'].strip()
+                except (KeyError, TypeError):
+                    end_link = None
+
+                if asset_title is not None and end_link is not None:
+                    link_tuple = (asset_title, end_link, meeting_id)
+                    end_links.append(link_tuple)
+
+        # Filter out any links that are blank, previous versions of agendas and duplicates
+        old_links = []
+        for end_link in end_links:
+            if (end_link[1] == None) or ('Previous' in end_link[1]):
+                end_links.remove(end_link)
+            elif end_link[1] in old_links:
+                end_links.remove(end_link)
+            old_links.append(end_link[1])
 
         return end_links
 
@@ -300,48 +325,38 @@ class CivicPlusSite(Site):
         Filters assets to the provided date range.
 
         Inputs:
-            asset_stubs: A dictionary of asset stubs and meeting names
+            asset_stubs: A dictionary of asset stubs, meeting names, meeting id, and asset titles
             start_date: The earliest date of assets to return
             end_date: The latest date of assets to return
 
-        Returns: A dictionary of asset stubs and meeting names filtered by date range
+        Returns: A dictionary of asset stubs, asset titles, meeting id and meeting names filtered by date range
         """
+
         if start_date is not None and end_date is not None:
-            start = start_date.replace("-","")
-            end = end_date.replace("-", "")
+            start = datetime.date(int(start_date[0:4]), int(start_date[5:7]), int(start_date[-2:]))
+            end = datetime.date(int(end_date[0:4]), int(end_date[5:7]), int(end_date[-2:]))
         elif start_date is not None and end_date is None:
-            start = start_date.replace("-", "")
-            end = self.runtime
+            start = datetime.date(int(start_date[0:4]), int(start_date[5:7]), int(start_date[-2:]))
+            end = self.runtime + datetime.timedelta(days=14)
         elif start_date is None and end_date is not None:
-            start = "19000101"
-            end = end_date.replace("-", "")
+            start = datetime.date(1900, 1, 1)
+            end = datetime.date(int(end_date[0:4]), int(end_date[5:7]), int(end_date[-2:]))
         else:
-            start = "19000101"
-            end = self.runtime
+            start = datetime.date(1900, 1, 1)
+            end = self.runtime + datetime.timedelta(days=14)
 
         filtered_stubs = []
         filtered_dict = {}
         for committee in asset_stubs:
-            for link_list in asset_stubs[committee]:
-                for stub in link_list:
-                    if re.search(r"(?<=_)\d{2}(?=\d{6}-)", stub) is None:
-                        month = ""
-                    else:
-                        month = re.search(r"(?<=_)\d{2}(?=\d{6}-)", stub).group(0)
-                    if re.search(r"(?<=_\d{2})\d{2}(?=\d{4}-)", stub) is None:
-                        day = ""
-                    else:
-                        day = re.search(r"(?<=_\d{2})\d{2}(?=\d{4}-)", stub).group(0)
-                    if re.search(r"(?<=\d)\d{4}(?=-)", stub) is None:
-                        year = ""
-                    else:
-                        year = re.search(r"(?<=\d)\d{4}(?=-)", stub).group(0)
-                    date = "{}{}{}".format(year, month, day)
-                    if len(date) == 0:
-                        continue
-                    if int(start) <= int(date) <= int(end):
-                        filtered_stubs.append(stub)
-                        filtered_dict[committee] = filtered_stubs
+            for stub in asset_stubs[committee]:
+                year = int(stub[2][5:9])
+                month = int(stub[2][1:3])
+                day = int(stub[2][3:5])
+                date = datetime.date(year, month, day)
+                if start <= date <= end:
+                    filtered_stubs.append(stub)
+                    filtered_dict[committee] = filtered_stubs
+
 
         # Remove duplicates
         filtered_stubs_deduped = []
@@ -359,18 +374,23 @@ class CivicPlusSite(Site):
         Combines a base URL and a list of partial asset links (asset_stubs)
         to make full urls.
 
-        Input: A dictionary of asset stubs and meeting names
-        Returns: A dictionary of full URLs and meeting names
+        Input: A dictionary of asset stubs, asset titles, meeting ids and meeting names
+        Returns: A dictionary of full URLs, meeting names, meeting ids and asset titles
         """
         url_list = []
-        url_dict ={}
+        url_dict = {}
 
         for committee in asset_stubs:
             for stub in asset_stubs[committee]:
-                stub = stub.replace("/AgendaCenter", "")
-                text = "{}{}".format(self.url, stub)
-                url_list.append(text)
-                url_dict[committee] = url_list
+                if "/AgendaCenter" in stub[1]:
+                    new_stub = stub[1].replace("/AgendaCenter", "")
+                    text = "{}{}".format(self.url, new_stub)
+                    new_tuple = (stub[0], text, stub[2])
+                    url_list.append(new_tuple)
+                    url_dict[committee] = url_list
+                else:
+                    url_list.append(stub)
+                    url_dict[committee] = url_list
 
         return url_dict
 
@@ -388,9 +408,9 @@ class CivicPlusSite(Site):
 
 if __name__ == '__main__':
     # The following code is for testing purposes only
-    base_url = 'http://ab-slavelake.civicplus.com/AgendaCenter'
+    base_url = 'http://mo-joplin.civicplus.com/AgendaCenter'
     site = CivicPlusSite(base_url)
-    url_dict = site.scrape(start_date='2020-06-01', file_size=20, asset_list=['minutes'])
+    url_dict = site.scrape(start_date='2020-09-01')
     print(url_dict)
 
 
