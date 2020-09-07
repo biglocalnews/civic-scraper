@@ -141,7 +141,7 @@ class CivicPlusSite(Site):
                 asset_args['meeting_time'] = None
                 asset_args['asset_name'] = link[0]
                 asset_args['committee_name'] = committee
-                asset_args['meeting_id'] = "civicplus_{}_{}_{}".format(state_or_province, place, link[2])
+                asset_args['meeting_id'] = "civicplus_{}_{}{}".format(state_or_province, place, link[2])
                 asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link[1])
                 asset_args['asset_type'] = asset_type.lower()
                 asset_args['url'] = link[1]
