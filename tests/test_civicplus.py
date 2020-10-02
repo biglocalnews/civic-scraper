@@ -114,3 +114,17 @@ def test_scrape_parameters_2():
     assets = cp.scrape(start_date=start_date, end_date=end_date).assets
     # Check asset count
     assert len(assets) == 0
+
+@pytest.mark.vcr()
+def test_committee_match():
+    '''
+    Test behavior of CivicPlus.scrape when there are no responsive assets to scrape
+    '''
+    site_url = "http://wa-bremerton.civicplus.com/AgendaCenter"
+    start_date = "2020-09-20"
+    end_date = "2020-10-02"
+    cp = CivicPlusSite(site_url)
+    assets = cp.scrape(start_date=start_date, end_date=end_date).assets
+    # Check asset metadata
+    assert assets[0].asset_name == "September 22, 2020, Parks & Recreation Commission Regular Meeting Documents (PDF). Agenda"
+    assert assets[0].committee_name == "Parks and Recreation Commission 2020"
