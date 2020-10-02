@@ -12,12 +12,19 @@ From Python (example):
     url_dict = site.scrape(start_date='2020-06-01', target_dir="/Users/amydipierro/GitHub/tmp/", file_size=20, asset_list=['minutes'])
 
 Inputs of scrape():
-        url: str of the form 'https://*.civicplus.com/AgendaCenter', where * is a string specific to the website.
-        start_date: (optional) str entered in the form YYYY-MM-DD
-        end_date: (optional) str entered in the form YYYY-MM-DD
-        file_size: (optional) int, upper limit of size of file to be downloaded, in megabytes.
-        asset_list: (optional) list of str containing one or more of the following possible asset types:
-                    'agenda', 'minutes', 'audio', 'video', 'agenda_packet', 'captions'.
+        start_date: (optional) str entered in the form YYYY-MM-DD.
+                    Default is to download all assets back to the earliest asset posted.
+        end_date: (optional) str entered in the form YYYY-MM-DD.
+                    Default is to download all assets up to the most-recent asset posted.
+        download: (optional) bool, True to download assets identified by scraper. Default is False.
+        target_dir: (optional) str, parameter specifying directory to download assets. Default is None.
+        file_size: (optional) int, parameter limiting the size of assets to download, in megabytes. Default is None.
+        asset_list: (optional) list of str, parameter limiting the types of assets (e.g., agenda, audio, etc.)
+                        to be scraped. Default is None.
+        csv_export: (optional) str, parameter specifying path to download csv of scraped metadata.
+                        Default behavior is not to download a csv unless path is specified.
+        append: (optional) bool, True to append metadata to an existing csv, False to overwrite if csv already exists.
+                    Default is False.
 
 Returns of scrape(): AssetCollection object.
 
@@ -91,8 +98,13 @@ class CivicPlusSite(Site):
         soup = self._make_soup(html)
         post_params = self._get_post_params(soup, start_date, end_date)
         asset_stubs = self._get_all_assets(post_params)
+        # import pdb;
+        # pdb.set_trace()
+        # print("asset_stubs.keys(): ", asset_stubs.keys())
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
+        # print("filtered_stubs.keys(): ", filtered_stubs.keys())
         links = self._make_asset_links(filtered_stubs)
+        # print("links.keys(): ", links.keys())
         metadata = self._get_metadata(links)
 
         if download and csv_export is not None and target_dir is None:
@@ -123,12 +135,14 @@ class CivicPlusSite(Site):
 
         Input: A dictionary of asset URLs, asset titles, meeting ids and meeting names
                 (committee_name in the parlance below)
-        Output: A AssetCollection object
+        Output: An AssetCollection object
         """
-
+        # print("in _get_metadata")
+        # print("metadata_dict: ", metadata_dict)
         assets = []
 
         for committee in metadata_dict:
+            # print("committee: ", committee)
 
             for link in metadata_dict[committee]:
 
@@ -250,25 +264,22 @@ class CivicPlusSite(Site):
 
         page = "{}/UpdateCategoryList".format(self.url)
         # Get links
-        all_links = []
         links_dict = {}
-        for year in post_params:
-            ids = []
-            committees = post_params[year]
+        for year, committees in post_params.items():
             for committee in committees:
-                id = committee[0]
+                all_links = []
+                cat_id = committee[0]
                 meeting_name = committee[1]
-                ids.append(id)
-                for cat_id in ids:
-                    payload = {'year': year, 'catID': cat_id, 'term': '', 'prevVersionScreen': 'false'}
-                    response = requests.post(page, params=payload)
-                    # TODO: Remove this if statement?
-                    if response.status_code == 200:
-                        soup = self._make_soup(response.text)
-                        end_links = self._get_links(soup)
-                        for end_link in end_links:
-                            all_links.append(end_link)
-                        links_dict[meeting_name] = all_links
+                payload = {'year': year, 'catID': cat_id, 'term': '', 'prevVersionScreen': 'false'}
+                response = requests.post(page, params=payload)
+                # import pdb;pdb.set_trace()
+                # TODO: Remove this if statement?
+                if response.status_code == 200:
+                    soup = self._make_soup(response.text)
+                    end_links = self._get_links(soup)
+                    for end_link in end_links:
+                        all_links.append(end_link)
+                    links_dict[meeting_name] = all_links
 
         return links_dict
 
@@ -345,28 +356,26 @@ class CivicPlusSite(Site):
             start = datetime.date(1900, 1, 1)
             end = self.runtime + datetime.timedelta(days=14)
 
-        filtered_stubs = []
         filtered_dict = {}
-        for committee in asset_stubs:
-            for stub in asset_stubs[committee]:
+        for committee, stubs in asset_stubs.items():
+            filtered_stubs = []
+            for stub in stubs:
                 year = stub[2][5:9]
                 month = stub[2][1:3]
                 day = stub[2][3:5]
                 date = datetime.date(int(year), int(month), int(day))
                 if start <= date <= end:
                     filtered_stubs.append(stub)
-                    filtered_dict[committee] = filtered_stubs
-
+            filtered_dict[committee] = filtered_stubs
 
         # Remove duplicates
-        filtered_stubs_deduped = []
         filtered_dict_deduped = {}
-        for committee in filtered_dict:
-            for stub in filtered_dict[committee]:
+        for committee, stubs in filtered_dict.items():
+            filtered_stubs_deduped = []
+            for stub in stubs:
                 if stub not in filtered_stubs_deduped:
                     filtered_stubs_deduped.append(stub)
-                    filtered_dict_deduped[committee] = filtered_stubs_deduped
-
+            filtered_dict_deduped[committee] = filtered_stubs_deduped
         return filtered_dict_deduped
 
     def _make_asset_links(self, asset_stubs):
@@ -407,7 +416,7 @@ class CivicPlusSite(Site):
 
 if __name__ == '__main__':
     # The following code is for testing purposes only
-    base_url = 'http://mo-joplin.civicplus.com/AgendaCenter'
+    base_url = 'http://wa-bremerton.civicplus.com/AgendaCenter'
     site = CivicPlusSite(base_url)
-    url_dict = site.scrape(start_date='2020-09-01')
+    url_dict = site.scrape(start_date='2020-09-20')
     print(url_dict)
