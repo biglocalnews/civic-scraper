@@ -1,7 +1,7 @@
 """
 TITLE: CivicPlusSite
 AUTHOR: Amy DiPierro
-VERSION: 2020-08-26
+VERSION: 2020-10-09
 
 DESCRIPTION: This module scrapes agendas and minutes from CivicPlus Agenda Center websites. It has one public method, scrape(),
 which returns an AssetCollection object.
@@ -98,11 +98,11 @@ class CivicPlusSite(Site):
         soup = self._make_soup(html)
         post_params = self._get_post_params(soup, start_date, end_date)
         asset_stubs = self._get_all_assets(post_params)
-        # import pdb;
-        # pdb.set_trace()
         # print("asset_stubs.keys(): ", asset_stubs.keys())
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
         # print("filtered_stubs.keys(): ", filtered_stubs.keys())
+        # import pdb;
+        # pdb.set_trace()
         links = self._make_asset_links(filtered_stubs)
         # print("links.keys(): ", links.keys())
         metadata = self._get_metadata(links)
@@ -386,10 +386,10 @@ class CivicPlusSite(Site):
         Input: A dictionary of asset stubs, asset titles, meeting ids and meeting names
         Returns: A dictionary of full URLs, meeting names, meeting ids and asset titles
         """
-        url_list = []
         url_dict = {}
 
         for committee in asset_stubs:
+            url_list = []
             for stub in asset_stubs[committee]:
                 if "/AgendaCenter" in stub[1]:
                     new_stub = stub[1].replace("/AgendaCenter", "")
@@ -416,7 +416,11 @@ class CivicPlusSite(Site):
 
 if __name__ == '__main__':
     # The following code is for testing purposes only
-    base_url = 'http://wa-bremerton.civicplus.com/AgendaCenter'
+    base_url = 'http://wi-columbus.civicplus.com/AgendaCenter'
     site = CivicPlusSite(base_url)
-    url_dict = site.scrape(start_date='2020-09-20')
-    print(url_dict)
+    url_dict = site.scrape(start_date='2020-10-01', end_date='2020-10-09')
+    for asset in url_dict:
+        print("ASSET: ")
+        print("----------------------------")
+        print(asset)
+        print("----------------------------")
