@@ -147,9 +147,9 @@ class CivicPlusSite(Site):
             for link in metadata_dict[committee]:
 
                 asset_args = {}
-                place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", link[1])
+                place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", self.url)
                 asset_args['place'] = place
-                state_or_province = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", link[1])
+                state_or_province = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", self.url)
                 asset_args['state_or_province'] = state_or_province
                 asset_args['meeting_date'] = datetime.date(int(link[2][5:9]), int(link[2][1:3]), int(link[2][3:5]))
                 asset_args['meeting_time'] = None
