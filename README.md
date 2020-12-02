@@ -11,6 +11,8 @@
 
 `civic-scraper` is a Python package that helps identify and download agendas, minutes and other file assets related to government meetings from local public agencies around the U.S.
 
+> License: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
 ## Setup
 
 ```
