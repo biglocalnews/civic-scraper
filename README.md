@@ -1,8 +1,8 @@
 # civic-scraper
 
 - [Overview](#overview)
-- [Setup](#setup)
 - [Usage](#usage)
+  - [Install](#install)
   - [Scraping asset information](#scraping-asset-information)
   - [Downloading assets](#downloading-assets)
   - [Exporting asset metadata to csv](#exporting-asset-metadata-to-csv)
@@ -19,10 +19,11 @@
 > we plan to add a command-line tool to simplify data acquisition
 > for common use cases.
 
-## Setup
+## Usage
 
+To use `civic-scraper` in your own Python projects, follow the steps below.
 
-To use `civic-scraper` in your own Python code, follow the steps below.
+> Note: At present, `civic-scraper` supports only websites using [CivicPlus's Agenda Center](https://www.civicplus.com/civicengage/civicengage/features), but in the future, it will support several types of websites where local governments post information about public meetings.
 
 ### Install
 
@@ -31,10 +32,6 @@ Install the package from GitHub, for example using `pip`:
 ```
 pip install git+https://github.com/biglocalnews/civic-scraper.git
 ```
-
-### Usage
-
-> Note: At present, `civic-scraper` supports only websites using [CivicPlus's Agenda Center](https://www.civicplus.com/civicengage/civicengage/features), but in the future, it will support several types of websites where local governments post information about public meetings.
 
 ### Scraping asset information
 
