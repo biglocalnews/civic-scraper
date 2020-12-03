@@ -6,6 +6,7 @@
   - [Scraping asset information](#scraping-asset-information)
   - [Downloading assets](#downloading-assets)
   - [Exporting asset metadata to csv](#exporting-asset-metadata-to-csv)
+- [Contributors](#contributors)
 
 ## Overview
 
@@ -13,17 +14,25 @@
 
 > License: [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
+> This package currently contains library code that can be used in
+> Python scripts for downloading metadata and files. In the future,
+> we plan to add a command-line tool to simplify data acquisition
+> for common use cases.
+
 ## Setup
 
-```
-git clone https://github.com/biglocalnews/civic-scraper
-cd civic-scraper
-python setup.py install
-```
-
-## Usage
 
 To use `civic-scraper` in your own Python code, follow the steps below.
+
+### Install
+
+Install the package from GitHub, for example using `pip`:
+
+```
+pip install git+https://github.com/biglocalnews/civic-scraper.git
+```
+
+### Usage
 
 > Note: At present, `civic-scraper` supports only websites using [CivicPlus's Agenda Center](https://www.civicplus.com/civicengage/civicengage/features), but in the future, it will support several types of websites where local governments post information about public meetings.
 
@@ -161,3 +170,26 @@ The generated file contains the following information:
 * `content_length` (*str*) - The size of the asset in bytes.
 
 [MIME type]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+
+## Contributors
+
+We welcome contributions of all varieties, from documentation to new
+scrapers to help with the underlying framework.
+
+A great way to get started is to check out our
+[Issues tracker](https://github.com/biglocalnews/civic-scraper/issues) to find work that needs doing. Or file an Issue proposing a feature you'd like to work on.
+
+That way we can coordinate your efforts with that of other contributors
+and the core team.
+
+Once you've found a way to contribute and are ready to dive in:
+
+* *Fork* this repo.
+* *Write* some snazzy code.
+* *Test*.We have minimal test coverage but we're always looking to add more. For code contributions (as opposed to documentation), we welcome added test coverage although we'll accept code without tests. However, please do at least run existing tests and verify there are no regressions *before* sending us a Pull Request.
+* *Pull Request*. Send us a Pull Request with changes once you're ready
+  for us to review and merge.
+
+### Testing
+
+TK
