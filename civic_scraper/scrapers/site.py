@@ -2,7 +2,7 @@
 Base Site class.
 """
 from civic_scraper.asset import AssetCollection
-SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']
+SUPPORTED_ASSET_TYPES = ['agenda', 'minutes', 'audio', 'video', 'agenda_packet', 'captions']
 
 class Site(object):
 
