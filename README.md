@@ -41,10 +41,10 @@ method.
 
 
 ```
-# Example for East Palo Alto, CA
+# Example for Menlo Park, CA
 
 from civic_scraper.scrapers import CivicPlusSite
-url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter'
+url = 'https://ca-menlopark.civicplus.com/AgendaCenter'
 site = CivicPlusSite(url)
 assets = site.scrape()
 ```
@@ -153,15 +153,15 @@ Here are more details on the above arguments:
 
 The generated file contains the following information:
 
-* `url` (*str*) - The URL for an asset. Ex: https://ca-eastpaloalto.civicplus.com/AgendaCenter/ViewFile/Agenda/_04282020-1613
-* `asset_name` (*str*) - The title of an asset. Ex: City Council Special Budget Meeting - April 4, 2020
+* `url` (*str*) - The URL for an asset. Ex: https://ca-menlopark.civicplus.com/AgendaCenter/ViewFile/Agenda/_12082020-3549
+* `asset_name` (*str*) - The title of an asset. Ex: City Council Regular Meeting
 * `committee_name` (*str*) - The name of the committee that generated the asset. Ex: City Council
-* `place` (*str*) - The name of the place associated with the asset in lowercase with spaces and punctuation removed. Ex: eastpaloalto
+* `place` (*str*) - The name of the place associated with the asset in lowercase with spaces and punctuation removed. Ex: menlopark
 * `state_or_province` (*str*) - The lowercase two-letter abbreviation for the state or province associated with an asset. Ex: ca
 * `asset_type` (*str*) - One of the following strings: `agenda`, `minutes`, `audio`, `video`, `agenda_packet`, `captions`
 * `meeting_date` (*str*) - Date of meeting or blank if no meeting date given in the format YYYY-MM-DD.
 * `meeting_time` (*str*) - Time of meeting or blank if no time given.
-* `meeting_id`: (*str*) - Platform name, `state_or_province` and `place` followed by unique meeting ID assigned by platform. Ex: civicplus_ca_eastpaloalto_01272020-1589
+* `meeting_id`: (*str*) - Platform name, `state_or_province` and `place` followed by unique meeting ID assigned by platform. Ex: civicplus_ca_menlopark_12082020-3549
 * `scraped_by` (*str*) - Module and version that produced the asset using [semantic versioning](https://semver.org). Ex: `civicplus.py_1.0.0`
 * `content_type` (*str*) - The [MIME type][] of the asset. Ex: `application/pdf`
 * `content_length` (*str*) - The size of the asset in bytes.
