@@ -6,17 +6,17 @@ DESCRIPTION: Defines the Asset and AssetList classes.
 
 Asset:
     Attributes:
-        url: str, the URL to download an asset. Ex: https://ca-eastpaloalto.civicplus.com/AgendaCenter/ViewFile/Agenda/_04282020-1613
-        asset_name: str, the title of an asset. Ex: City Council Special Budget Meeting - April 4, 2020
+        url: str, the URL to download an asset. Ex: https://ca-menlopark.civicplus.com/AgendaCenter/ViewFile/Agenda/_12082020-3549
+        asset_name: str, the title of an asset. Ex:  City Council Regular Meeting
         committee_name: str, the name of the committee that generated the asset. Ex: City Council
-        place: str, the name of the place associated with the asset in lowercase with spaces and punctuation removed. Ex: eastpaloalto
+        place: str, the name of the place associated with the asset in lowercase with spaces and punctuation removed. Ex: menlopark
         state_or_province: str, the two-letter abbreviation for the state or province associated with an asset. Ex: ca
         asset_type: str, one of the following strings: 'agenda', 'minutes', 'audio', 'video', 'agenda_packet', 'captions'
         meeting_date: datetime.date corresponding to the time the meeting was held or today if no date given
         meeting_time: datetime.time corresponding to the time the meetings was held or midnight if no time given
         meeting_id: str, the name of the platform being scraped, state_or_province and place
                     followed by the unique meeting ID the platform assigned to the meeting
-                    Ex: civicplus_ca_eastpaloalto_01272020-1589
+                    Ex: civicplus_ca_menlopark_12082020-3549
         scraped_by: str, describes the module and version that produced the asset. Ex: 'civicplus.py_1.0.0'
         content_type: str, the file type of the asset as given by HTTP headers. Ex: 'application/pdf'
         content_length: str, the size of the asset in bytes
@@ -401,11 +401,15 @@ if __name__ == '__main__':
 
     cp = SUPPORTED_SITES['civicplus']
     logger.info('creating an instance of civic_scraper.scrapers.CivicPlusSite')
-    site = cp(base_url="http://pa-statecollege.civicplus.com/AgendaCenter")
+    site = cp(base_url="http://nj-rivervale.civicplus.com/AgendaCenter")
     logger.info('done creating an instance of civic_scraper.scrapers.CivicPlusSite')
     logger.info('calling civic_scraper.scrapers.CivicPlusSite.scrape')
-    metadata = site.scrape("2020-08-28", "2020-08-28")
-    print(metadata)
+    metadata = site.scrape("2020-09-14", "2020-09-30")
+    for item in metadata:
+        print("-------------------")
+        print("ITEM: ")
+        print(item)
+        print("-------------------")
     logger.info('done calling civic_scraper.scrapers.CivicPlusSite.scrape')
 
     # logger.info('downloading an instance of civic_scraper.scrapers.CivicPlusSite')
