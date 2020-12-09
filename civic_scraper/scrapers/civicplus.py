@@ -35,6 +35,7 @@ import re
 import datetime
 import bs4
 import requests
+import pdb
 
 from civic_scraper.scrapers.site import Site
 from civic_scraper.asset import Asset, AssetCollection
@@ -98,13 +99,8 @@ class CivicPlusSite(Site):
         soup = self._make_soup(html)
         post_params = self._get_post_params(soup, start_date, end_date)
         asset_stubs = self._get_all_assets(post_params)
-        # print("asset_stubs.keys(): ", asset_stubs.keys())
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
-        # print("filtered_stubs.keys(): ", filtered_stubs.keys())
-        # import pdb;
-        # pdb.set_trace()
         links = self._make_asset_links(filtered_stubs)
-        # print("links.keys(): ", links.keys())
         metadata = self._get_metadata(links)
 
         if download and csv_export is not None and target_dir is None:
@@ -202,15 +198,18 @@ class CivicPlusSite(Site):
 
         Or more generally: {year: [(cat_id, meeting_name) ... ]}
         """
-
-        # Make the dictionary
         year_elements = soup.find_all(href=re.compile("changeYear"))
         years_cat_id = {}
         cat_ids = []
+
         for element in year_elements:
             link = element.attrs['href']
             year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
-            meeting_name = element['aria-label'].strip()
+            try:
+                meeting_name = element['aria-label'].strip()
+            except KeyError:
+                
+                meeting_name = element.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.h2.text.strip("▼")
 
             if start_date is not None and end_date is not None:
                 start_year = re.search(r"^\d{4}", start_date).group(0)
@@ -272,7 +271,7 @@ class CivicPlusSite(Site):
                 meeting_name = committee[1]
                 payload = {'year': year, 'catID': cat_id, 'term': '', 'prevVersionScreen': 'false'}
                 response = requests.post(page, params=payload)
-                # import pdb;pdb.set_trace()
+                pdb.set_trace()
                 # TODO: Remove this if statement?
                 if response.status_code == 200:
                     soup = self._make_soup(response.text)
