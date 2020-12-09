@@ -98,9 +98,17 @@ class CivicPlusSite(Site):
         html = self._get_html()
         soup = self._make_soup(html)
         post_params = self._get_post_params(soup, start_date, end_date)
+        print("----------------")
+        print(post_params)
         asset_stubs = self._get_all_assets(post_params)
+        print("----------------")
+        print(asset_stubs)
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
+        print("----------------")
+        print(filtered_stubs)
         links = self._make_asset_links(filtered_stubs)
+        print("----------------")
+        print(links)
         metadata = self._get_metadata(links)
 
         if download and csv_export is not None and target_dir is None:
@@ -198,47 +206,60 @@ class CivicPlusSite(Site):
 
         Or more generally: {year: [(cat_id, meeting_name) ... ]}
         """
-        year_elements = soup.find_all(href=re.compile("changeYear"))
+        # TODO: Capture the meeting_name e.g. "Beautification & Maintenance Commission"
+        # listing listingCollapse noHeader
+        new_year_elements = soup.find_all(class_="listing listingCollapse noHeader")
+        # year_elements = soup.find_all(href=re.compile("changeYear"))
+
         years_cat_id = {}
         cat_ids = []
 
-        for element in year_elements:
-            link = element.attrs['href']
-            year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
-            try:
-                meeting_name = element['aria-label'].strip()
-            except KeyError:
-                
-                meeting_name = element.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.parent.h2.text.strip("▼")
+        for element in new_year_elements:
+            meeting_name = element.h2.text.strip("▼")
+            a_tags = element.find_all("a")
+            for tag in a_tags:
+                link = str(tag)
+                if link.find("changeYear") != -1:
+                    year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
 
-            if start_date is not None and end_date is not None:
-                start_year = re.search(r"^\d{4}", start_date).group(0)
-                end_year = re.search(r"^\d{4}", end_date).group(0)
-                if start_year <= year <= end_year:
-                    cat_id = re.findall(r"\d+(?=,.*')", link)[1]
-                    cat_id_text = (cat_id, meeting_name)
-                    cat_ids.append(cat_id_text)
-                    years_cat_id[year] = cat_ids
-            elif start_date is not None and end_date is None:
-                start_year = re.search(r"^\d{4}", start_date).group(0)
-                if start_year <= year:
-                    cat_id = re.findall(r"\d+(?=,.*')", link)[1]
-                    cat_id_text = (cat_id, meeting_name)
-                    cat_ids.append(cat_id_text)
-                    years_cat_id[year] = cat_ids
-            elif start_date is None and end_date is not None:
-                end_year = re.search(r"^\d{4}", end_date).group(0)
-                if end_year >= year:
-                    cat_id = re.findall(r"\d+(?=,.*')", link)[1]
-                    cat_id_text = (cat_id, meeting_name)
-                    cat_ids.append(cat_id_text)
-                    years_cat_id[year] = cat_ids
-            # Case if start_date and end_date are both None
-            else:
-                cat_id = re.findall(r"\d+(?=,.*')", link)[1]
-                cat_id_text = (cat_id, meeting_name)
-                cat_ids.append(cat_id_text)
-                years_cat_id[year] = cat_ids
+        
+        # for element in year_elements:
+        #     link = element.attrs['href']
+        #     year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
+        #     try:
+        #         meeting_name = element['aria-label'].strip()
+        #     except KeyError:
+        #         meeting_name = None
+            
+                    if start_date is not None and end_date is not None:
+                        start_year = re.search(r"^\d{4}", start_date).group(0)
+                        end_year = re.search(r"^\d{4}", end_date).group(0)
+                        if start_year <= year <= end_year:
+                            cat_id = re.findall(r"\d+(?=,.*')", link)[1]
+                            cat_id_text = (cat_id, meeting_name)
+                            cat_ids.append(cat_id_text)
+                            years_cat_id[year] = cat_ids
+                            
+                    elif start_date is not None and end_date is None:
+                        start_year = re.search(r"^\d{4}", start_date).group(0)
+                        if start_year <= year:
+                            cat_id = re.findall(r"\d+(?=,.*')", link)[1]
+                            cat_id_text = (cat_id, meeting_name)
+                            cat_ids.append(cat_id_text)
+                            years_cat_id[year] = cat_ids
+                    elif start_date is None and end_date is not None:
+                        end_year = re.search(r"^\d{4}", end_date).group(0)
+                        if end_year >= year:
+                            cat_id = re.findall(r"\d+(?=,.*')", link)[1]
+                            cat_id_text = (cat_id, meeting_name)
+                            cat_ids.append(cat_id_text)
+                            years_cat_id[year] = cat_ids
+                    # Case if start_date and end_date are both None
+                    else:
+                        cat_id = re.findall(r"\d+(?=,.*')", link)[1]
+                        cat_id_text = (cat_id, meeting_name)
+                        cat_ids.append(cat_id_text)
+                        years_cat_id[year] = cat_ids
 
         return years_cat_id
 
@@ -271,7 +292,7 @@ class CivicPlusSite(Site):
                 meeting_name = committee[1]
                 payload = {'year': year, 'catID': cat_id, 'term': '', 'prevVersionScreen': 'false'}
                 response = requests.post(page, params=payload)
-                pdb.set_trace()
+                
                 # TODO: Remove this if statement?
                 if response.status_code == 200:
                     soup = self._make_soup(response.text)
@@ -290,6 +311,7 @@ class CivicPlusSite(Site):
                 an asset and the second item of the tuple is a link, or partial link, to
                 the asset.
         """
+        
         rows = soup.find_all(class_='catAgendaRow')
         end_links = []
         for row in rows:
@@ -297,8 +319,8 @@ class CivicPlusSite(Site):
             meeting_id = row.a['name']
             # Add the first set of links
             asset_list = row.find_all('li')
+            asset_title = row.p.text.strip()
             for asset in asset_list:
-                asset_title = asset.a['aria-label'].strip()
                 end_link = asset.a['href'].strip()
                 link_tuple = (asset_title, end_link, meeting_id)
                 end_links.append(link_tuple)
@@ -306,6 +328,7 @@ class CivicPlusSite(Site):
             # Add the rest of the links
             tds = row.find_all("td")
             for td in tds[1:-1]:
+                
                 try:
                     asset_title = td.a['aria-label'].strip()
                 except (KeyError, TypeError):
@@ -315,7 +338,7 @@ class CivicPlusSite(Site):
                 except (KeyError, TypeError):
                     end_link = None
 
-                if asset_title is not None and end_link is not None:
+                if end_link is not None:
                     link_tuple = (asset_title, end_link, meeting_id)
                     end_links.append(link_tuple)
 
