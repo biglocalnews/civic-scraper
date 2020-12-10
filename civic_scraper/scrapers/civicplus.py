@@ -35,7 +35,6 @@ import re
 import datetime
 import bs4
 import requests
-import pdb
 
 from civic_scraper.scrapers.site import Site
 from civic_scraper.asset import Asset, AssetCollection
@@ -98,17 +97,9 @@ class CivicPlusSite(Site):
         html = self._get_html()
         soup = self._make_soup(html)
         post_params = self._get_post_params(soup, start_date, end_date)
-        print("----------------")
-        print(post_params)
         asset_stubs = self._get_all_assets(post_params)
-        print("----------------")
-        print(asset_stubs)
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
-        print("----------------")
-        print(filtered_stubs)
         links = self._make_asset_links(filtered_stubs)
-        print("----------------")
-        print(links)
         metadata = self._get_metadata(links)
 
         if download and csv_export is not None and target_dir is None:
@@ -141,12 +132,9 @@ class CivicPlusSite(Site):
                 (committee_name in the parlance below)
         Output: An AssetCollection object
         """
-        # print("in _get_metadata")
-        # print("metadata_dict: ", metadata_dict)
         assets = []
 
         for committee in metadata_dict:
-            # print("committee: ", committee)
 
             for link in metadata_dict[committee]:
 
@@ -158,7 +146,7 @@ class CivicPlusSite(Site):
                 asset_args['meeting_date'] = datetime.date(int(link[2][5:9]), int(link[2][1:3]), int(link[2][3:5]))
                 asset_args['meeting_time'] = None
                 asset_args['asset_name'] = link[0]
-                asset_args['committee_name'] = committee
+                asset_args['committee_name'] = committee.strip("►")
                 asset_args['meeting_id'] = "civicplus_{}_{}{}".format(state_or_province, place, link[2])
                 asset_type = self._get_asset_metadata(r"(?<=e/)\w+(?=/_)", link[1])
                 asset_args['asset_type'] = asset_type.lower()
@@ -206,31 +194,18 @@ class CivicPlusSite(Site):
 
         Or more generally: {year: [(cat_id, meeting_name) ... ]}
         """
-        # TODO: Capture the meeting_name e.g. "Beautification & Maintenance Commission"
-        # listing listingCollapse noHeader
-        new_year_elements = soup.find_all(class_="listing listingCollapse noHeader")
-        # year_elements = soup.find_all(href=re.compile("changeYear"))
-
+        year_elements = soup.find_all(class_="listing listingCollapse noHeader")
         years_cat_id = {}
         cat_ids = []
 
-        for element in new_year_elements:
+        for element in year_elements:
             meeting_name = element.h2.text.strip("▼")
             a_tags = element.find_all("a")
             for tag in a_tags:
                 link = str(tag)
                 if link.find("changeYear") != -1:
                     year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
-
         
-        # for element in year_elements:
-        #     link = element.attrs['href']
-        #     year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
-        #     try:
-        #         meeting_name = element['aria-label'].strip()
-        #     except KeyError:
-        #         meeting_name = None
-            
                     if start_date is not None and end_date is not None:
                         start_year = re.search(r"^\d{4}", start_date).group(0)
                         end_year = re.search(r"^\d{4}", end_date).group(0)
