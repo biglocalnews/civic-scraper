@@ -154,6 +154,15 @@ class CivicPlusSite(Site):
                 asset_args['scraped_by'] = 'civicplus.py_1.0.0'
                 headers = requests.head(link[1]).headers
                 asset_args['content_type'] = headers['content-type']
+                # Handle edge case for audio/video streams
+                # TODO: Evaluate whether there is a smarter way to handle these cases
+                # if (asset_type == "no_data") and asset_args['content_type'] == 'text/html; charset=utf-8':
+                if (asset_type == "no_data") and ("Audio" in asset_args['asset_name']):
+                    asset_args['asset_type'] = 'audio'
+                elif (asset_type == "no_data") and ("Video" in asset_args['asset_name']):
+                    asset_args['asset_type'] = 'video'
+                elif (asset_type == "no_data") and ("Media" in asset_args['asset_name']):
+                    asset_args['asset_type'] = 'video'
                 asset_args['content_length'] = headers['content-length']
                 assets.append(Asset(**asset_args))
 
@@ -394,6 +403,15 @@ class CivicPlusSite(Site):
                 if "/AgendaCenter" in stub[1]:
                     new_stub = stub[1].replace("/AgendaCenter", "")
                     text = "{}{}".format(self.url, new_stub)
+                    new_tuple = (stub[0], text, stub[2])
+                    url_list.append(new_tuple)
+                    url_dict[committee] = url_list
+                elif "/DocumentCenter" in stub[1]:
+                    new_base = str(self.url).replace("/AgendaCenter", "")
+                    if (stub[1].find("https://") and stub[1].find("http://")) != -1:
+                        text = stub[1]
+                    else:
+                        text = "{}{}".format(new_base, stub[1])
                     new_tuple = (stub[0], text, stub[2])
                     url_list.append(new_tuple)
                     url_dict[committee] = url_list
