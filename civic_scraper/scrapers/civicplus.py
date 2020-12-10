@@ -262,7 +262,8 @@ class CivicPlusSite(Site):
         links_dict = {}
         for year, committees in post_params.items():
             for committee in committees:
-                all_links = []
+                all_links = [] # Use this to build a list of metadata to populate links_dict
+                just_links = [] # Use this to make sure there are no duplicates
                 cat_id = committee[0]
                 meeting_name = committee[1]
                 payload = {'year': year, 'catID': cat_id, 'term': '', 'prevVersionScreen': 'false'}
@@ -273,7 +274,9 @@ class CivicPlusSite(Site):
                     soup = self._make_soup(response.text)
                     end_links = self._get_links(soup)
                     for end_link in end_links:
-                        all_links.append(end_link)
+                        if end_link[1] not in just_links:
+                            just_links.append(end_link[1])
+                            all_links.append(end_link)
                     links_dict[meeting_name] = all_links
 
         return links_dict
