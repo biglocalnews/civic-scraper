@@ -169,7 +169,7 @@ class CivicPlusSite(Site):
                 except KeyError:
                     # If content-length not given, assign an arbitrary and large content length
                     # to prevent users from downloading large files (e.g., YouTube links)
-                    asset_args['content_length'] = 9999
+                    asset_args['content_length'] = 9999999
                 assets.append(Asset(**asset_args))
 
         return AssetCollection(assets)
@@ -423,6 +423,22 @@ class CivicPlusSite(Site):
                     new_tuple = (stub[0], text, stub[2])
                     url_list.append(new_tuple)
                     url_dict[committee] = url_list
+                elif "/CivicMedia" in stub[1]:
+                    new_base = str(self.url).replace("/AgendaCenter", "")
+                    if (stub[1].find("https://") and stub[1].find("http://")) != -1:
+                        text = stub[1]
+                    else:
+                        text = "{}{}".format(new_base, stub[1])
+                    response = requests.get(text)
+                    soup = self._make_soup(response.text)
+                    scripts = soup.find_all('script')
+                    for script in scripts:
+                        if re.search(r"https:\/\/\w+\.civplus\.tikiliveapi\.com.*m3u8", str(script)) is not None:
+                            link = re.search(r"https:\/\/\w+\.civplus\.tikiliveapi\.com.*m3u8", str(script)).group(0)
+                            import pdb; pdb.set_trace()
+                            new_tuple = (stub[0], link, stub[2])
+                            url_list.append(new_tuple)
+                            url_dict[committee] = url_list
                 else:
                     url_list.append(stub)
                     url_dict[committee] = url_list
