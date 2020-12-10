@@ -435,7 +435,6 @@ class CivicPlusSite(Site):
                     for script in scripts:
                         if re.search(r"https:\/\/\w+\.civplus\.tikiliveapi\.com.*m3u8", str(script)) is not None:
                             link = re.search(r"https:\/\/\w+\.civplus\.tikiliveapi\.com.*m3u8", str(script)).group(0)
-                            import pdb; pdb.set_trace()
                             new_tuple = (stub[0], link, stub[2])
                             url_list.append(new_tuple)
                             url_dict[committee] = url_list
