@@ -163,7 +163,13 @@ class CivicPlusSite(Site):
                     asset_args['asset_type'] = 'video'
                 elif (asset_type == "no_data") and ("Media" in asset_args['asset_name']):
                     asset_args['asset_type'] = 'video'
-                asset_args['content_length'] = headers['content-length']
+                
+                try:
+                    asset_args['content_length'] = headers['content-length']
+                except KeyError:
+                    # If content-length not given, assign an arbitrary and large content length
+                    # to prevent users from downloading large files (e.g., YouTube links)
+                    asset_args['content_length'] = 9999
                 assets.append(Asset(**asset_args))
 
         return AssetCollection(assets)
@@ -204,6 +210,8 @@ class CivicPlusSite(Site):
         Or more generally: {year: [(cat_id, meeting_name) ... ]}
         """
         year_elements = soup.find_all(class_="listing listingCollapse noHeader")
+        if year_elements == []:
+            year_elements = soup.find_all(class_="listing listingCollapse")
         years_cat_id = {}
         cat_ids = []
 
@@ -244,7 +252,7 @@ class CivicPlusSite(Site):
                         cat_id_text = (cat_id, meeting_name)
                         cat_ids.append(cat_id_text)
                         years_cat_id[year] = cat_ids
-
+        
         return years_cat_id
 
     def _get_all_assets(self, post_params):
