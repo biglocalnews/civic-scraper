@@ -32,7 +32,7 @@ class GranicusSite(Site):
     """
 
     def __init__(self, url):
-        std_url = re.sub("(?<=view_id=)\d*", "1", url)
+        std_url = re.sub(r'(?<=view_id=)\d*', "1", url)
         self.url = std_url
         self.runtime = datetime.datetime.utcnow().strftime("%Y%m%d")
 
@@ -60,11 +60,11 @@ class GranicusSite(Site):
             response = requests.get(self.url)
             if response.text.strip() == "Page not found.":
                 print("Page not found 1")
-                self.url = re.sub("(?<=view_id=)\d*", "2", self.url)
+                self.url = re.sub(r'(?<=view_id=)\d*', "2", self.url)
                 response = requests.get(self.url)
                 if response.text.strip() == "Page not found.":
                     print("Page not found 2")
-                    self.url = re.sub("(?<=view_id=)\d*", "33", self.url)
+                    self.url = re.sub(r'(?<=view_id=)\d*', "33", self.url)
                     response = requests.get(self.url)
             return response.text
         except:
@@ -196,11 +196,3 @@ class GranicusSite(Site):
                 metadata.append(row_dict)
             return row_dict
 
-
-if __name__ == '__main__':
-    url = input("Enter Granicus URL: ")
-    start_date = input("Enter start date (or nothing): ")
-    end_date = input("Enter end date (or nothing): ")
-    site = GranicusSite(url)
-    metadata = site.scrape(start_date=start_date, end_date=end_date, file_size=100, type_list=['agenda'])
-    print(metadata)
