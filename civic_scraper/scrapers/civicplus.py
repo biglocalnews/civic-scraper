@@ -93,7 +93,6 @@ class CivicPlusSite(Site):
         Returns:
             AssetCollection object
         """
-
         html = self._get_html()
         soup = self._make_soup(html)
         post_params = self._get_post_params(soup, start_date, end_date)
@@ -101,8 +100,6 @@ class CivicPlusSite(Site):
         # print("asset_stubs.keys(): ", asset_stubs.keys())
         filtered_stubs = self._filter_assets(asset_stubs, start_date, end_date)
         # print("filtered_stubs.keys(): ", filtered_stubs.keys())
-        # import pdb;
-        # pdb.set_trace()
         links = self._make_asset_links(filtered_stubs)
         # print("links.keys(): ", links.keys())
         metadata = self._get_metadata(links)
@@ -261,7 +258,6 @@ class CivicPlusSite(Site):
             ...
         }
         """
-
         page = "{}/UpdateCategoryList".format(self.url)
         # Get links
         links_dict = {}
@@ -272,8 +268,6 @@ class CivicPlusSite(Site):
                 meeting_name = committee[1]
                 payload = {'year': year, 'catID': cat_id, 'term': '', 'prevVersionScreen': 'false'}
                 response = requests.post(page, params=payload)
-                # import pdb;pdb.set_trace()
-                # TODO: Remove this if statement?
                 if response.status_code == 200:
                     soup = self._make_soup(response.text)
                     end_links = self._get_links(soup)
