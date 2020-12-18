@@ -107,7 +107,7 @@ def test_scrape_parameters_2():
     '''
     Test behavior of CivicPlus.scrape when there are no responsive assets to scrape
     '''
-    site_url = "http://nm-lascruces.civicplus.com/AgendaCenter"
+    site_url = "https://nm-lascruces.civicplus.com/AgendaCenter"
     start_date = "2020-08-29"
     end_date = "2020-08-29"
     cp = CivicPlusSite(site_url)
