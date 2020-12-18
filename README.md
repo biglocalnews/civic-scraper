@@ -7,6 +7,7 @@
   - [Downloading assets](#downloading-assets)
   - [Exporting asset metadata to csv](#exporting-asset-metadata-to-csv)
 - [Contributors](#contributors)
+  - [Testing](#testing)
 
 ## Overview
 
@@ -189,4 +190,34 @@ Once you've found a way to contribute and are ready to dive in:
 
 ### Testing
 
-TK
+We use the [pytest][] framework for testing, in combination with [pytest-vcr][]
+for recording web interactions with websites. The latter allows us to generate
+"cassettes" -- i.e. test fixtures -- during an initial run of a test
+that hits a live website. Subsequent test runs will use the stored
+"cassette" instead of hitting the live website.
+
+[pytest]: https://docs.pytest.org/en/latest/contents.html
+[pytest-vcr]: https://pytest-vcr.readthedocs.io/en/latest/
+
+
+Here are some example invocations of the test runner:
+
+```
+# Run all tests
+pytest
+
+# Run tests in verbose mode
+pytest -v
+```
+
+#### Optimizing tests
+
+When recording web interactions via pytest-vcr, it's quite easy to create
+tests with a long run time. You can [profile the runtime of tests][] to
+find cases for optimization with the `--durations` flag:
+
+[profile the runtime of tests]: https://docs.pytest.org/en/latest/example/simple.html#profiling-test-duration
+
+```
+pytest --durations=0
+```
