@@ -1,5 +1,4 @@
-from .site import Site
-from .civicplus import CivicPlusSite
+from .civic_plus.site import Site as CivicPlusSite
 from .granicus import GranicusSite
 
 SUPPORTED_SITES = {

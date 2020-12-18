@@ -3,3 +3,4 @@ __pycache__/
 .idea/*
 .python-version
 *.egg-info
+.tox

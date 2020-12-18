@@ -1,29 +1,11 @@
-"""
-TITLE: GranicusSite
-AUTHOR: Amy DiPierro
-VERSION: 2020-07-06
-USAGE: From the command line, type 'python3 granicus.py' Then enter a URL
-    pointing to a Granicus website and an optional start and end date in the
-    form YYMMDD when prompted.
-
-This script scrapes agendas, minutes and other assets and multimedia from
-Granicus websites.
-
-Input: A Granicus URL, for example
-    "https://marin.granicus.com/ViewPublisher.php?view_id=33"
-Returns: A list of assets found at that address in the given time range
-
-"""
-# Libraries
-
 import re
 import datetime
 import bs4
 import requests
-from civic_scraper.scrapers import Site
-from civic_scraper.asset import AssetCollection
+from civic_scraper.base import Site
+from civic_scraper.base.constants import SUPPORTED_ASSET_TYPES
+from civic_scraper.base import AssetCollection
 
-# Code
 
 # Granicus object class
 class GranicusSite(Site):
@@ -36,8 +18,8 @@ class GranicusSite(Site):
         self.url = std_url
         self.runtime = datetime.datetime.utcnow().strftime("%Y%m%d")
 
-    # Public interface (used by calling code)
-    def scrape(self, start_date, end_date, file_size, type_list=['agenda', 'minutes', 'audio', 'video', 'video2', 'agenda_packet', 'captions']):
+    def scrape(self, start_date, end_date, file_size,
+               type_list=SUPPORTED_ASSET_TYPES):
         if start_date == '':
             start_date = self.runtime
         if end_date == '':
@@ -47,8 +29,6 @@ class GranicusSite(Site):
         # TODO: filter by file size
         return self._get_all_assets(soup, start_date, end_date, type_list)
 
-    # Private methods
-
     def _get_html(self):
         """
         Get HTML response.
@@ -56,21 +36,17 @@ class GranicusSite(Site):
         Input: Link of the website we want to scrape.
         Returns: HTML of the website as text.
         """
-        try:
+        response = requests.get(self.url)
+        if response.text.strip() == "Page not found.":
+            print("Page not found 1")
+            self.url = re.sub(r'(?<=view_id=)\d*', "2", self.url)
             response = requests.get(self.url)
             if response.text.strip() == "Page not found.":
-                print("Page not found 1")
-                self.url = re.sub(r'(?<=view_id=)\d*', "2", self.url)
+                print("Page not found 2")
+                self.url = re.sub(r'(?<=view_id=)\d*', "33", self.url)
                 response = requests.get(self.url)
-                if response.text.strip() == "Page not found.":
-                    print("Page not found 2")
-                    self.url = re.sub(r'(?<=view_id=)\d*', "33", self.url)
-                    response = requests.get(self.url)
-            return response.text
-        except:
-            print("The url", self.url, "could not be reached.")
-            return ""
-    
+        return response.text
+
     def _make_soup(self, html):
         """
         Parses the text we've collected
@@ -97,7 +73,6 @@ class GranicusSite(Site):
 
         for row in rows:
             items = row.find_all("td")
-            
             # Initialize item variables in row
             place = re.search(r"(?<=\//).*(?=\.g)", self.url).group(0)
             state_or_province = None
@@ -151,7 +126,9 @@ class GranicusSite(Site):
                 short_date = None
 
             if short_date is not None:
-                filter_date = int(datetime.datetime.strftime(datetime.datetime.strptime(short_date, "%b %d, %Y"), "%Y%m%d"))
+                filter_date = int(datetime.datetime.strftime(
+                    datetime.datetime.strptime(short_date, "%b %d, %Y"), "%Y%m%d")
+                )
             elif year is not None:
                 filter_date = datetime.date(year, month, day).strftime("%Y%m%d")
             else:
@@ -162,17 +139,29 @@ class GranicusSite(Site):
 
             # Filter by date
             if int(start_date) <= int(filter_date) <= int(end_date):
-                self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="agenda", url=agenda)
-                self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="minutes", url=minutes)
-                self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="video", url=video)
-                self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="audio", url=audio)
-                self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="video", url=video2)
-                self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="captions", url=captions)
-                self._add_row(type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type="agenda_packet", url=agenda_packet)
+                args = (
+                    type_list,
+                    place,
+                    state_or_province,
+                    date,
+                    committee_name,
+                    meeting_id,
+                    scraped_by
+                )
+                self._add_row(*args, asset_type="agenda", url=agenda)
+                self._add_row(*args, asset_type="minutes", url=minutes)
+                self._add_row(*args, asset_type="video", url=video)
+                self._add_row(*args, asset_type="audio", url=audio)
+                self._add_row(*args, asset_type="video", url=video2)
+                self._add_row(*args, asset_type="captions", url=captions)
+                self._add_row(*args, asset_type="agenda_packet", url=agenda_packet)
 
         return AssetCollection(metadata)
 
-    def _add_row(self, type_list, place, state_or_province, date, committee_name, meeting_id, scraped_by, asset_type, url):
+    def _add_row(self, type_list, place,
+                 state_or_province, date, committee_name,
+                 meeting_id, scraped_by, asset_type, url):
+        metadata = []
         if asset_type in type_list:
             row_dict = {}
             row_dict['place'] = place
@@ -187,12 +176,11 @@ class GranicusSite(Site):
                 print("url: ", url)
                 if asset_type in ['agenda', 'minutes', 'captions']:
                     url = "http:{}".format(url)
-                    row_dict['url'] = url  # url
+                    row_dict['url'] = url
                 else:
-                    row_dict['url'] = url # url
+                    row_dict['url'] = url
                 headers = requests.head(url).headers
                 row_dict['content_type'] = headers['content-type']
                 row_dict['content_length'] = headers['content-length']
                 metadata.append(row_dict)
             return row_dict
-
