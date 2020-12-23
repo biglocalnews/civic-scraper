@@ -12,13 +12,13 @@ USAGE:
     PYTHONPATH=${PWD} python examples/scrape_metadata.py
 
 """
-from civic_scraper.scrapers import CivicPlusSite
+from civic_scraper.platforms import CivicPlusSite
 
 print("Scraping metadata for Columbus, WI...")
 url = 'http://wi-columbus.civicplus.com/AgendaCenter'
 site = CivicPlusSite(url)
 assets_metadata = site.scrape(start_date='2020-10-01', end_date='2020-10-09')
 
-outfile = '/tmp/columbus-wi.csv'
-print(f'Exporting metadata to {outfile}')
-assets_metadata.to_csv(outfile)
+outdir = '/tmp'
+outfile = assets_metadata.to_csv(outdir)
+print(f"Exported {outfile}")
