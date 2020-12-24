@@ -80,13 +80,14 @@ def test_scrape_cache_true(tmpdir):
         end_date,
         cache=True,
     )
-    actual_files = [f.basename for f in tmpdir.join("html").listdir()]
+    artifacts_path = tmpdir.join("artifacts")
+    actual_files = [f.basename for f in artifacts_path.listdir()]
     expected = [
         "http__nc-nashcounty.civicplus.com__AgendaCenter__Search__QUERYterm=&CIDs=all&startDate=05%2F03%2F2020&endDate=05%2F06%2F2020&dateRange=&dateSelector="
     ]
     assert actual_files == expected
-    # Spot rheck contents
-    inpath = tmpdir.join("html").join(expected[0])
+    # Spot check contents
+    inpath = artifacts_path.join(expected[0])
     contents = file_contents(inpath)
     assert "Board of Commissioners" in contents
 

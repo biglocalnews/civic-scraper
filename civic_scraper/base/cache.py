@@ -17,6 +17,16 @@ class Cache:
         return str(out)
 
     @property
+    def assets_path(self):
+        "Path for agendas, minutes and other gov file assets"
+        return str(Path(self.path).joinpath('assets'))
+
+    @property
+    def artifacts_path(self):
+        "Path for HTML and other intermediate artifacts from scraping"
+        return str(Path(self.path).joinpath('artifacts'))
+
+    @property
     def _path_from_env(self):
         return os.environ.get('CIVIC_SCRAPER_DIR')
 

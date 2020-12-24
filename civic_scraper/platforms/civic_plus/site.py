@@ -59,7 +59,7 @@ class Site(base.Site):
         response_url, raw_html = self._search(start, end)
         # Cache the raw html from search results page
         if cache:
-            cache_path = f'html/{self._cache_page_name(response_url)}'
+            cache_path = f'{self.cache.artifacts_path}/{self._cache_page_name(response_url)}'
             self.cache.write(cache_path, raw_html)
         file_metadata = self.parser_kls(raw_html).parse()
         assets = self._build_asset_collection(file_metadata)
