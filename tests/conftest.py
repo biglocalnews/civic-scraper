@@ -21,6 +21,19 @@ def civic_scraper_dir(tmp_path):
     return str(tmp_path.joinpath(".civic-scraper"))
 
 
+@pytest.fixture
+def create_scraper_dir(civic_scraper_dir):
+    Path(civic_scraper_dir).mkdir(parents=True, exist_ok=True)
+
+
+@pytest.fixture
+def set_default_env(civic_scraper_dir, monkeypatch):
+    monkeypatch.setenv(
+        'CIVIC_SCRAPER_DIR',
+        civic_scraper_dir
+    )
+
+
 def read_fixture(file_name):
     path = str(Path(__file__).parent.joinpath("fixtures").joinpath(file_name))
     return file_contents(path)
@@ -39,6 +52,21 @@ def file_lines(pth):
 @pytest.fixture(scope="session")
 def search_results_html():
     return read_fixture("civplus_agenda_search_results_page.html")
+
+
+@pytest.fixture
+def one_site_url():
+    return [
+        'http://nc-nashcounty.civicplus.com/AgendaCenter'
+    ]
+
+
+@pytest.fixture
+def two_site_urls():
+    return [
+        'http://nc-nashcounty.civicplus.com/AgendaCenter',
+        'https://nm-lascruces.civicplus.com/AgendaCenter',
+    ]
 
 
 @pytest.fixture
