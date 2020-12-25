@@ -27,6 +27,11 @@ class Cache:
         return str(Path(self.path).joinpath('artifacts'))
 
     @property
+    def metadata_files_path(self):
+        "Path for metadata files related to file artifacts"
+        return str(Path(self.path).joinpath('metadata'))
+
+    @property
     def _path_from_env(self):
         return os.environ.get('CIVIC_SCRAPER_DIR')
 
