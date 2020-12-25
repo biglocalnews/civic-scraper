@@ -2,6 +2,7 @@ import csv
 import datetime
 import mimetypes
 import os
+from pathlib import Path
 
 import requests
 
@@ -62,14 +63,15 @@ class Asset:
 
     def download(self, target_dir):
         """
-       Downloads an asset to a target directory.
+        Downloads an asset to a target directory.
 
         Args:
             target_dir (str): target directory name
 
         Returns:
             Full path to downloaded file
-       """
+        """
+        Path(target_dir).mkdir(parents=True, exist_ok=True)
         file_extension = mimetypes.guess_extension(self.content_type)
         file_name = "{}_{}{}".format(
             # meeting id reflects date and numeric identifier
@@ -84,28 +86,7 @@ class Asset:
         return full_path
 
 
-class AssetCollection:
-
-    def __init__(self, assets):
-        """
-        A collection of Asset instances.
-
-        Args:
-            assets (list): List of Asset instances
-        """
-        self.assets = assets
-
-    def __iter__(self):
-        return iter(self.assets)
-
-    def __next__(self):
-        return next(self)
-
-    def __len__(self):
-        return len(self.assets)
-
-    def __repr__(self):
-        return f'AssetCollection({self.assets})'
+class AssetCollection(list):
 
     def to_csv(self, target_dir):
         """
@@ -138,7 +119,10 @@ class AssetCollection:
             .strftime("%Y%m%dT%H%M")
         file_name = f'civic_scraper_assets_meta_{tstamp}z.csv'
         path = os.path.join(target_dir, file_name)
-        rows = [asset.__dict__ for asset in self.assets]
+        rows = [asset.__dict__ for asset in self]
+        # Ensure output dir exists
+        Path(target_dir).mkdir(parents=True, exist_ok=True)
+        # Write the file
         with open(path, 'w') as out:
             writer = csv.DictWriter(out, fieldnames=headers)
             writer.writeheader()

@@ -124,7 +124,7 @@ class Site(base.Site):
         Returns:
             AssetCollection
         """
-        assets = []
+        assets = AssetCollection()
         for row in metadata:
             url = self._mk_url(self.url, row['url_path'])
             asset_args = {
@@ -147,7 +147,7 @@ class Site(base.Site):
                 'content_length': headers['content-length'],
             })
             assets.append(Asset(**asset_args))
-        return AssetCollection(assets)
+        return assets
 
     def _mk_url(self, url, url_path):
         base_url = url.split('/Agenda')[0]

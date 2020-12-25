@@ -16,7 +16,7 @@ def test_scrape_defaults():
     end_date = "2020-05-06"
     url = "http://nc-nashcounty.civicplus.com/AgendaCenter"
     cp = CivicPlusSite(url)
-    assets = cp.scrape(start_date, end_date).assets
+    assets = cp.scrape(start_date, end_date)
     assert len(assets) == 4
     first = assets[0]
     assert (
@@ -52,7 +52,7 @@ def test_scrape_no_meetings_for_date():
     site_url = "https://nm-lascruces.civicplus.com/AgendaCenter"
     scrape_date = "2020-08-29"
     cp = CivicPlusSite(site_url)
-    assets = cp.scrape(start_date=scrape_date, end_date=scrape_date).assets
+    assets = cp.scrape(start_date=scrape_date, end_date=scrape_date)
     assert assets == []
 
 
@@ -199,6 +199,6 @@ def test_scrape_place_state():
     start_date = "2020-10-01"
     end_date = "2020-10-09"
     cp = CivicPlusSite(site_url)
-    assets = cp.scrape(start_date=start_date, end_date=end_date).assets
+    assets = cp.scrape(start_date=start_date, end_date=end_date)
     assert assets[2].state_or_province == "wi"
     assert assets[2].place == "columbus"

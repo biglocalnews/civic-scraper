@@ -3,7 +3,9 @@ import logging
 import traceback
 from pathlib import Path
 
+from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
+
 
 logger = logging.getLogger(__name__)
 
@@ -56,10 +58,9 @@ class Runner:
             Metadata CSV listing file assets for given sites and params.
 
         Returns:
-            List of AssetCollection instances (one per site scraped)
+            AssetCollection instance
         """
-        # List of AssetCollection instances
-        _collections = []
+        asset_collection = AssetCollection()
         cache_obj = Cache(self.cache_path)
         logger.info(
             f"Scraping {len(site_urls)} site(s) from {start_date} to {end_date}..."
@@ -70,25 +71,24 @@ class Runner:
             if cache:
                 kwargs["cache"] = cache_obj
             site = SiteClass(url, **kwargs)
-            logger.info(f"Scraping {url}")
-            asset_collection = site.scrape(
+            logger.info(f"\t{url}")
+            _collection = site.scrape(
                 start_date,
                 end_date,
                 cache=cache,
             )
-            _collections.append(asset_collection)
+            asset_collection.extend(_collection)
+        metadata_file = asset_collection.to_csv(cache_obj.metadata_files_path)
+        logger.info(f"Wrote asset metadata CSV: {metadata_file}")
         if download:
             download_counter = 0
-            logger.info(f"Downloading file assets...")
-            for asset_collection in _collections:
-                for asset in asset_collection:
-                    logger.info(asset.url)
-                    asset.download(cache_obj.assets_path)
-                    download_counter += 1
-            logger.info(
-                f"Downloaded {download_counter} file(s) to {cache_obj.assets_path}"
-            )
-        return _collections
+            logger.info(f"Downloading {len(asset_collection)} file asset(s) to {cache_obj.assets_path}...")
+            for asset in asset_collection:
+                # TODO: Add error-handling here
+                logger.info(f"\t{asset.url}")
+                asset.download(cache_obj.assets_path)
+                download_counter += 1
+        return asset_collection
 
     def _get_site_class(self, url):
         class_name = self._get_site_class_name(url)
@@ -99,3 +99,4 @@ class Runner:
     def _get_site_class_name(self, url):
         if "civicplus" in url:
             return "CivicPlusSite"
+
