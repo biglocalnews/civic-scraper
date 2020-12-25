@@ -1,5 +1,5 @@
 from pathlib import Path
-from unittest.mock import call, patch, Mock
+from unittest.mock import call, patch, Mock, MagicMock
 
 import pytest
 
@@ -7,9 +7,9 @@ import pytest
 from civic_scraper.runner import Runner
 
 
-@pytest.mark.usefixtures("set_default_env")  # , 'create_scraper_dir')
+@pytest.mark.usefixtures("set_default_env")
 def test_runner_site_scrape(civic_scraper_dir, one_site_url):
-    site_class = Mock(name="CivicPlusSite")
+    site_class = MagicMock(name="CivicPlusSite")
     to_patch = "civic_scraper.runner.Runner._get_site_class"
     with patch(to_patch) as mock_method:
         mock_method.return_value = site_class
@@ -32,8 +32,12 @@ def test_runner_site_scrape(civic_scraper_dir, one_site_url):
 @pytest.mark.usefixtures("set_default_env")
 def test_runner_site_cache(cache_mock, get_site_mock, civic_scraper_dir, one_site_url):
     "Runner should configure Site cache and call scrape with cache flag"
-    site_class = Mock(name="CivicPlusSite")
+    # Prep mocks
+    site_class = MagicMock(name="CivicPlusSite")
+    cache_instance = cache_mock.return_value
+    cache_instance.metadata_files_path = str(Path(civic_scraper_dir).joinpath('metadata'))
     get_site_mock.return_value = site_class
+    # Run test
     start_date = end_date = "2012-12-01"
     r = Runner(civic_scraper_dir)
     r.scrape(start_date, end_date, site_urls=one_site_url, cache=True)
@@ -50,9 +54,10 @@ def test_runner_site_cache(cache_mock, get_site_mock, civic_scraper_dir, one_sit
     )
 
 
+@patch("civic_scraper.runner.AssetCollection")
 @patch("civic_scraper.runner.Runner._get_site_class")
 @pytest.mark.usefixtures("set_default_env")
-def test_runner_no_download_via_site(get_site_mock, civic_scraper_dir, one_site_url):
+def test_runner_no_download_via_site(get_site_mock, asset_collection, civic_scraper_dir, one_site_url):
     "Runner should not trigger download via Site.scrape"
     # The runner is primarily intended for use by the CLI layer,
     # which may ultimately apply asynchronous, parallel,
@@ -73,17 +78,27 @@ def test_runner_no_download_via_site(get_site_mock, civic_scraper_dir, one_site_
         "2012-12-01",
         cache=True,
     )
+    # AssetCollection is instantiated and to_csv called by default
+    asset_collection.assert_called_once()
+    ac_instance = asset_collection.return_value
+    ac_instance.to_csv.assert_called_once()
 
 
 @patch("civic_scraper.platforms.civic_plus.site.Asset")
+@patch("civic_scraper.runner.AssetCollection")
 @pytest.mark.vcr()
 @pytest.mark.usefixtures("set_default_env")
-def test_runner_downloads_assets(asset_mock, civic_scraper_dir):
+def test_runner_downloads_assets(asset_collection, asset_mock, civic_scraper_dir):
     "Runner should trigger download on assets if requested"
     url = "http://nc-nashcounty.civicplus.com/AgendaCenter"
     start_date = end_date = "2020-05-05"
     r = Runner(civic_scraper_dir)
     r.scrape(start_date, end_date, site_urls=[url], download=True)
+    # Check AssetCollection is instantiated and to_csv called by default
+    asset_collection.assert_called_once()
+    ac_instance = asset_collection.return_value
+    ac_instance.to_csv.assert_called_once()
+    # Check Asset.download is called
     assets_dir = str(Path(civic_scraper_dir).joinpath("assets"))
     asset_instance = asset_mock.return_value
     # Asset.download called twice with the assets_dir path
