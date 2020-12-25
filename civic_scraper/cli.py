@@ -1,3 +1,4 @@
+import csv
 import logging
 import os
 
@@ -73,11 +74,11 @@ def cli():
     help="Base URL for a single site to scraper."
 )
 @optgroup.option(
-    '--sites-file',
+    '--urls-file',
     type=click.File('r'),
-    help="CSV containing a URL field for target sites"
+    help="CSV containing a 'url' field for target sites."
 )
-def scrape(start_date, end_date, download, cache, url, sites_file):
+def scrape(start_date, end_date, download, cache, url, urls_file):
     """Scrape one or more government sites."""
     cache_path = os.environ.get('CIVIC_SCRAPER_DIR', DEFAULT_USER_HOME)
     runner = Runner(cache_path=cache_path)
@@ -89,6 +90,7 @@ def scrape(start_date, end_date, download, cache, url, sites_file):
     }
     if url:
         kwargs['site_urls'] = [url]
-    # TODO: else:
-    #    site_urls = sites_from_csv(sites_file)
+    else:
+        reader = csv.DictReader(urls_file.readlines())
+        kwargs['site_urls'] = [row['url'] for row in reader]
     runner.scrape(**kwargs)

@@ -32,6 +32,10 @@ def set_default_env(civic_scraper_dir, monkeypatch):
     monkeypatch.setenv("CIVIC_SCRAPER_DIR", civic_scraper_dir)
 
 
+def path_to_test_dir_file(file_name):
+    return str(Path(__file__).parent.joinpath(file_name))
+
+
 def read_fixture(file_name):
     path = str(Path(__file__).parent.joinpath("fixtures").joinpath(file_name))
     return file_contents(path)
