@@ -1,3 +1,4 @@
+import csv
 import datetime
 from pathlib import Path
 
@@ -28,10 +29,7 @@ def create_scraper_dir(civic_scraper_dir):
 
 @pytest.fixture
 def set_default_env(civic_scraper_dir, monkeypatch):
-    monkeypatch.setenv(
-        'CIVIC_SCRAPER_DIR',
-        civic_scraper_dir
-    )
+    monkeypatch.setenv("CIVIC_SCRAPER_DIR", civic_scraper_dir)
 
 
 def read_fixture(file_name):
@@ -46,7 +44,16 @@ def file_contents(pth):
 
 def file_lines(pth):
     with open(pth, "r") as f:
-        return f.readlines()
+        return [line.strip() for line in f.readlines()]
+
+
+def list_dir(pth):
+    return [str(p) for p in Path(pth).glob("*")]
+
+
+def csv_rows(pth):
+    with open(pth, "r") as source:
+        return [row for row in csv.DictReader(source)]
 
 
 @pytest.fixture(scope="session")
@@ -56,16 +63,14 @@ def search_results_html():
 
 @pytest.fixture
 def one_site_url():
-    return [
-        'http://nc-nashcounty.civicplus.com/AgendaCenter'
-    ]
+    return ["http://nc-nashcounty.civicplus.com/AgendaCenter"]
 
 
 @pytest.fixture
 def two_site_urls():
     return [
-        'http://nc-nashcounty.civicplus.com/AgendaCenter',
-        'https://nm-lascruces.civicplus.com/AgendaCenter',
+        "http://nc-nashcounty.civicplus.com/AgendaCenter",
+        "https://nm-lascruces.civicplus.com/AgendaCenter",
     ]
 
 

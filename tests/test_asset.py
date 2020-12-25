@@ -12,17 +12,18 @@ from .conftest import file_lines
 def asset_collection(asset_inputs):
     return AssetCollection([Asset(**kwargs) for kwargs in asset_inputs])
 
+
 def test_asset_methods():
     # extend
-    extended = AssetCollection([1,2])
-    extended.extend([3,4])
-    assert extended == AssetCollection([1,2,3,4])
+    extended = AssetCollection([1, 2])
+    extended.extend([3, 4])
+    assert extended == AssetCollection([1, 2, 3, 4])
     # append
-    appended= AssetCollection([1,2])
-    appended.append([3,4])
-    assert appended == AssetCollection([1,2,[3,4]])
+    appended = AssetCollection([1, 2])
+    appended.append([3, 4])
+    assert appended == AssetCollection([1, 2, [3, 4]])
     # indexing
-    indexed = AssetCollection([1,2])
+    indexed = AssetCollection([1, 2])
     assert indexed[1] == 2
 
 

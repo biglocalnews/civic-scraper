@@ -1,7 +1,5 @@
 import importlib
 import logging
-import traceback
-from pathlib import Path
 
 from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
@@ -99,4 +97,3 @@ class Runner:
     def _get_site_class_name(self, url):
         if "civicplus" in url:
             return "CivicPlusSite"
-

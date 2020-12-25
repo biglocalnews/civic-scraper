@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
 from setuptools import setup, find_packages
 
@@ -14,6 +11,8 @@ def read_reqs(name):
 
 requirements = [
     'bs4',
+    'click',
+    'click-option-group',
     'requests',
 ]
 
@@ -34,11 +33,8 @@ setup(
     author="Serdar Tumgoren",
     author_email='zstumgoren@gmail.com',
     url='https://github.com/biglocalnews/civic-scraper',
-    #TODO: Specify civic_scraper/ instead of find_packages?
-    # (because tests/ is also a package...?)
     packages=find_packages(),
     include_package_data=True,
-    #TODO: Verify this is click-based
     entry_points='''
         [console_scripts]
         civic-scraper=civic_scraper.cli:cli

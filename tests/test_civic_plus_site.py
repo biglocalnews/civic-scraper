@@ -83,7 +83,11 @@ def test_scrape_cache_true(tmpdir):
     artifacts_path = tmpdir.join("artifacts")
     actual_files = [f.basename for f in artifacts_path.listdir()]
     expected = [
-        "http__nc-nashcounty.civicplus.com__AgendaCenter__Search__QUERYterm=&CIDs=all&startDate=05%2F03%2F2020&endDate=05%2F06%2F2020&dateRange=&dateSelector="
+        (
+            "http__nc-nashcounty.civicplus.com__AgendaCenter__Search__QUERY"
+            "term=&CIDs=all&startDate=05%2F03%2F2020"
+            "&endDate=05%2F06%2F2020&dateRange=&dateSelector="
+        )
     ]
     assert actual_files == expected
     # Spot check contents
@@ -121,10 +125,12 @@ def test_scrape_download_true(tmpdir):
     )
     target_dir = tmpdir.join("assets")
     actual_files = set([f.basename for f in target_dir.listdir()])
-    expected = set([
-        "civicplus_nc-nashcounty_05052020-382_minutes.pdf",
-        "civicplus_nc-nashcounty_05052020-382_agenda.pdf",
-    ])
+    expected = set(
+        [
+            "civicplus_nc-nashcounty_05052020-382_minutes.pdf",
+            "civicplus_nc-nashcounty_05052020-382_agenda.pdf",
+        ]
+    )
     assert actual_files == expected
 
 

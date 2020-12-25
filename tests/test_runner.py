@@ -35,7 +35,9 @@ def test_runner_site_cache(cache_mock, get_site_mock, civic_scraper_dir, one_sit
     # Prep mocks
     site_class = MagicMock(name="CivicPlusSite")
     cache_instance = cache_mock.return_value
-    cache_instance.metadata_files_path = str(Path(civic_scraper_dir).joinpath('metadata'))
+    cache_instance.metadata_files_path = str(
+        Path(civic_scraper_dir).joinpath("metadata")
+    )
     get_site_mock.return_value = site_class
     # Run test
     start_date = end_date = "2012-12-01"
@@ -57,7 +59,9 @@ def test_runner_site_cache(cache_mock, get_site_mock, civic_scraper_dir, one_sit
 @patch("civic_scraper.runner.AssetCollection")
 @patch("civic_scraper.runner.Runner._get_site_class")
 @pytest.mark.usefixtures("set_default_env")
-def test_runner_no_download_via_site(get_site_mock, asset_collection, civic_scraper_dir, one_site_url):
+def test_runner_no_download_via_site(
+    get_site_mock, asset_collection, civic_scraper_dir, one_site_url
+):
     "Runner should not trigger download via Site.scrape"
     # The runner is primarily intended for use by the CLI layer,
     # which may ultimately apply asynchronous, parallel,
