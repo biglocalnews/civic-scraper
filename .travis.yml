@@ -1,5 +1,8 @@
 # Config file for automatic testing at travis-ci.org
 # This file will be regenerated if you run travis_pypi_setup.py
+os:
+  - linux
+  - windows
 language: python
 matrix:
   include:
@@ -17,5 +20,4 @@ install: pip install -U tox
 # command to run tests, e.g. python setup.py test
 script:
   - tox
-
 
