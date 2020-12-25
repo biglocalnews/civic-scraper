@@ -1,5 +1,6 @@
 import importlib
 import logging
+import re
 
 from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
@@ -95,5 +96,5 @@ class Runner:
         return getattr(mod, class_name)
 
     def _get_site_class_name(self, url):
-        if "civicplus" in url:
+        if re.search(r'(civicplus|AgendaCenter)', url):
             return "CivicPlusSite"

@@ -13,7 +13,7 @@ def test_runner_site_scrape(civic_scraper_dir, one_site_url):
     to_patch = "civic_scraper.runner.Runner._get_site_class"
     with patch(to_patch) as mock_method:
         mock_method.return_value = site_class
-        start_date = end_date = "2012-12-01"
+        start_date = end_date = "2020-12-01"
         r = Runner(civic_scraper_dir)
         r.scrape(start_date, end_date, one_site_url)
         site_class.assert_called_once_with(
@@ -21,8 +21,8 @@ def test_runner_site_scrape(civic_scraper_dir, one_site_url):
         )
         site_instance = site_class.return_value
         site_instance.scrape.assert_called_once_with(
-            "2012-12-01",
-            "2012-12-01",
+            "2020-12-01",
+            "2020-12-01",
             cache=False,
         )
 
