@@ -1,4 +1,5 @@
 import datetime
+import logging
 import re
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
@@ -10,6 +11,9 @@ from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
 from .parser import Parser
+
+
+logger = logging.getLogger(__name__)
 
 
 class Site(base.Site):
@@ -61,6 +65,7 @@ class Site(base.Site):
         if cache:
             cache_path = f'{self.cache.artifacts_path}/{self._cache_page_name(response_url)}'
             self.cache.write(cache_path, raw_html)
+            logger.info(f"Cached search results page HTML: {cache_path}")
         file_metadata = self.parser_kls(raw_html).parse()
         assets = self._build_asset_collection(file_metadata)
         if download:
