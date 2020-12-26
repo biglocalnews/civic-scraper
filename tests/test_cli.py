@@ -33,7 +33,7 @@ def test_cli_scrape_simple(civic_scraper_dir):
     # Check metadata written by default
     assert len(meta_files) == 1
     fname = meta_files[0]
-    pattern = r"civic_scraper_assets_meta_20201225T\d{4}z.csv"
+    pattern = r"civic_scraper_assets_meta_\d{8}T\d{4}z.csv"
     assert re.match(pattern, fname)
     full_path = str(Path(civic_scraper_dir, "metadata", fname))
     data = csv_rows(full_path)
