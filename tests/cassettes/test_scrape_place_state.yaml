@@ -972,4 +972,454 @@ interactions:
     status:
       code: 302
       message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Minutes/_10072020-1620
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=
+      Content-Length:
+      - '141629'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:37 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=ybr4qlm0hzpezppv1n1zdzzs; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10072020-1620
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Cable Commission.agenda.100720.updated.pdf
+      Content-Length:
+      - '128531'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:37 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=fyllsnz15ayt1yqb0bkxeppk; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1621
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.agenda.100620.reg.pdf
+      Content-Length:
+      - '420270'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:38 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=kgp1trbzxbjlojovorvjzua3; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1623
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.Packet.100620.reg.pdf
+      Content-Length:
+      - '20520005'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:39 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=qvvp3y1ubpetcte3q5d3ptaz; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1622
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.agenda.100620.cow.pdf
+      Content-Length:
+      - '153547'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:39 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=jwwji0snu0l23tzmzvhskiru; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1624
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.Packet.100620.cow.pdf
+      Content-Length:
+      - '16037105'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:39 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=vthx2azxqlbkt23k52isnk4q; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Minutes/_10082020-1625
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=
+      Content-Length:
+      - '114616'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:40 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=3i4rmbueff3w0nnizqnaychc; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10082020-1625
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=CHLPC.agenda.100820.pdf
+      Content-Length:
+      - '121058'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:40 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=wwihcfnyhm23vs405y343s34; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10052020-1619
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Tourism agenda.100520 - amended.pdf
+      Content-Length:
+      - '160939'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Sat, 26 Dec 2020 00:07:41 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=aapxbclgt5e3mcnsokb5rqky; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
 version: 1

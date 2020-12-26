@@ -146,7 +146,7 @@ class Site(base.Site):
             }
             # TODO: Add conditional here to short-circuit
             # header request based on method option
-            headers = requests.head(url).headers
+            headers = requests.head(url, allow_redirects=True).headers
             asset_args.update({
                 'content_type': headers['content-type'],
                 'content_length': headers['content-length'],
