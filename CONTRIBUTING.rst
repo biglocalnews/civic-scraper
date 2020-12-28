@@ -57,8 +57,10 @@ Our `official docs`_ use restructuredText and Sphinx. To contribute documentatio
 * Fork and clone this repo
 * Create a virtual environment and perform the next steps inside an active venv
 * ``pip install -r requirements.txt`` and ``pip install -r requirements-dev.txt``
+* Create a branch for your doc updates and start writing!
 * Use `make docs` to build docs and/or use `make servedocs` commands to run a
   Sphinx server that displays doc pages and allows easier reloading of pages in browser
+* Create a GitHub Pull Request once you're ready to send us your changes
 
 .. _official docs: https://civic-scraper.readthedocs.io/en/latest/?badge=latest
 
