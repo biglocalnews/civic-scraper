@@ -4,3 +4,12 @@ __pycache__/
 .python-version
 *.egg-info
 .tox
+docs/_build/
+#docs/
+#!docs/Makefile
+#!docs/authors.rst
+#!docs/contributing.rst
+#!docs/history.rst
+#!docs/index.rst
+#!docs/make.bat
+#!docs/readme.rst

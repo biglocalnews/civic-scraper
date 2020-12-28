@@ -29,7 +29,7 @@ def cli():
 
 
 @cli.command(
-    help="Scrape government websites for links ot agendas, minutes and other files."
+    help="Scrape government websites for links to agendas, minutes and other files."
 )
 @click.option(
     '-s',
