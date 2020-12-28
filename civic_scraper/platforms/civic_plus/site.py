@@ -10,6 +10,7 @@ import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
+from civic_scraper.utils import today_local_str
 from .parser import Parser
 
 
@@ -57,7 +58,7 @@ class Site(base.Site):
         Returns:
             AssetCollection: A sequence of Asset instances
         """
-        today = datetime.datetime.now().strftime("%m/%d/%Y")
+        today = today_local_str()
         start = start_date or today
         end = end_date or today
         response_url, raw_html = self._search(start, end)

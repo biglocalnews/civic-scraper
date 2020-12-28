@@ -1,5 +1,6 @@
 import datetime
 import pytest
+from unittest.mock import patch
 
 from civic_scraper.base.cache import Cache
 from civic_scraper.platforms import CivicPlusSite
@@ -208,3 +209,22 @@ def test_scrape_place_state():
     assets = cp.scrape(start_date=start_date, end_date=end_date)
     assert assets[2].state_or_province == "wi"
     assert assets[2].place == "columbus"
+
+
+@patch(
+    'civic_scraper.platforms.civic_plus.site.today_local_str',
+    return_value='2020-05-05'
+)
+@pytest.mark.vcr()
+def test_scrape_current_day_by_default(today_local_str, tmpdir):
+    "Scrape should assume current day be default"
+    url = "http://nc-nashcounty.civicplus.com/AgendaCenter"
+    cp = CivicPlusSite(url, cache=Cache(tmpdir))
+    cp.scrape(download=True)
+    target_dir = tmpdir.join("assets")
+    actual_files = [f.basename for f in target_dir.listdir()]
+    expected = [
+        'civicplus_nc-nashcounty_05052020-382_minutes.pdf',
+        'civicplus_nc-nashcounty_05052020-382_agenda.pdf'
+    ]
+    assert actual_files == expected
