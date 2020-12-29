@@ -86,7 +86,8 @@ Ready to contribute? Here's how to set up `civic-scraper` for local development.
 
     $ git clone git@github.com:your_name_here/civic-scraper.git
 
-3. Install your local copy into a virtualenv and set up your fork for local development. 
+3. Install developement dependencies and your local copy of the code 
+   into a virtualenv and set up your fork for local development.
    There are numerous ways to create virtual environments in Python. 
    Below uses the venv_ library built into recent Python versions::
     
@@ -96,8 +97,9 @@ Ready to contribute? Here's how to set up `civic-scraper` for local development.
     # Activate the virtual env
     source civic-scraper-env/bin/activate
 
-    # Install the Python package into the venv
+    # Install dev requirements and the Python package into the venv
     cd civic-scraper/
+    pip install -r requirements-dev.txt
     python setup.py develop
 
 4. Create a branch for local development::
