@@ -8,7 +8,7 @@ civic-scraper
 It includes a command-line tool and reusable Python code to scrape a growing number
 of public agency websites.
 
-* Documentation: http://civic-scraper.readthedocs.io/en/latest/
+* Docs: http://civic-scraper.readthedocs.io/en/latest/
 * GitHub: https://github.com/biglocalnews/civic-scraper
 * PyPI: https://pypi.python.org/pypi/civic-scraper
 * Free and open source software: `Apache license`_
@@ -16,6 +16,10 @@ of public agency websites.
 .. _Apache license: https://github.com/biglocalnews/civic-scraper/blob/master/LICENSE
 .. _agendas: https://en.wikipedia.org/wiki/Agenda_(meeting)
 .. _minutes: https://en.wikipedia.org/wiki/Minutes
+
+Basic install and usage
+-----------------------
+
 
 Install civic-scraper_::
 
@@ -34,6 +38,9 @@ Or in a script::
   site = CivicPlusSite(url)
   site.scrape(download=True)
 
+See the `official docs`_ for more details on usage.
+
+.. _official docs: http://civic-scraper.readthedocs.io/en/latest/
 """
 
 import os
