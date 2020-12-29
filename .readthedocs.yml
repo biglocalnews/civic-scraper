@@ -1,0 +1,6 @@
+version: 2
+python:
+  version: 3.7
+  # Add a requirements.txt file if needed
+  #  install:
+  #  - requirements: requirements.txt
