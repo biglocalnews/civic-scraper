@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.0 (YYYY-MM-DD)
+0.1.0 (2020-12-28)
 ------------------
 
-* Initial release supporting CivicPlus sites
+* Initial release with CLI and support for CivicPlus sites
