@@ -1,6 +1,8 @@
 version: 2
+build:
+  image: latest
 python:
   version: 3.7
-  # Add a requirements.txt file if needed
-  #  install:
-  #  - requirements: requirements.txt
+  install:
+    - requirements: requirements-dev.txt
+
