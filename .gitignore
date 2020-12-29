@@ -4,6 +4,8 @@ __pycache__/
 .python-version
 *.egg-info
 .tox
+build/
+dist/
 docs/_build/
 #docs/
 #!docs/Makefile
