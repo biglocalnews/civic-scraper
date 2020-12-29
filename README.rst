@@ -6,7 +6,7 @@
         :target: https://pypi.python.org/pypi/civic-scraper
 
 .. image:: https://img.shields.io/travis/biglocalnews/civic-scraper.svg
-        :target: https://travis-ci.org/biglocalnews/civic-scraper
+        :target: https://travis-ci.com/biglocalnews/civic-scraper
 
 .. image:: https://readthedocs.org/projects/civic-scraper/badge/?version=latest
         :target: https://civic-scraper.readthedocs.io/en/latest/?badge=latest
