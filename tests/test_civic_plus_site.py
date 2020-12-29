@@ -222,9 +222,9 @@ def test_scrape_current_day_by_default(today_local_str, tmpdir):
     cp = CivicPlusSite(url, cache=Cache(tmpdir))
     cp.scrape(download=True)
     target_dir = tmpdir.join("assets")
-    actual_files = [f.basename for f in target_dir.listdir()]
-    expected = [
+    actual_files = set([f.basename for f in target_dir.listdir()])
+    expected = set([
         'civicplus_nc-nashcounty_05052020-382_minutes.pdf',
         'civicplus_nc-nashcounty_05052020-382_agenda.pdf'
-    ]
+    ])
     assert actual_files == expected
