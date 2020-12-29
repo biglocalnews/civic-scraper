@@ -88,7 +88,7 @@ Ready to contribute? Here's how to set up `civic-scraper` for local development.
 
 3. Install your local copy into a virtualenv and set up your fork for local development. 
    There are numerous ways to create virtual environments in Python. 
-   Below uses the _venv library built into recent Python versions::
+   Below uses the venv_ library built into recent Python versions::
     
     # Create a virtual env alongside the civic-scraper git repo
     python -m venv civic-scraper-env
