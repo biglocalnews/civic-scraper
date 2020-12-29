@@ -1,5 +1,5 @@
 """
-Example of scraping metadat by date for a single CivicPlus site.
+Example of scraping metadata by date for a single CivicPlus site.
 
 NOTE: CivicScraper must be installed to use this script.
 Below USAGE shows how to run from the root of this repo.
