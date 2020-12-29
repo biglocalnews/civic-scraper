@@ -7,12 +7,13 @@ from .cache import Cache
 class Site(object):
     """Base class for all Site scrapers.
 
-    Args
+    Args:
         base_url (int): URL to a government agency site
         cache (Cache instance): Optional Cache instance
             (default: ".civic-scraper" in user home dir)
         parser_kls (class): Optional parser class to extract
             data from government agency websites.
+
     """
 
     def __init__(self, base_url, cache=Cache(), parser_kls=None):
