@@ -232,7 +232,7 @@ minutes discovered on the site.
 To save a timestamped CSV containing metadata for available assets, 
 call :py:meth:`AssetCollection.to_csv() <civic_scraper.base.asset.AssetCollection.to_csv>` with a target output directory::
 
-  # Save to metadata
+  # Save metadata CSV
   assets_metadata.to_csv('/tmp/civic-scraper/metadata')
 
 .. _download assets script:
