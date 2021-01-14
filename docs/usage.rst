@@ -202,6 +202,22 @@ agency's CivicPlus Agenda Center site.  Then call the :code:`scrape` method::
 .. note:: :code:`CivicPlusSite` is an alias for more convenient import of the actual Civic Plus class
    located at :py:class:`civic_scraper.platforms.civic_plus.site.Site`.
 
+:py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>` will automatically store 
+downloaded assets in the :ref:`default cache directory <default cache dir>`. 
+
+This location can be customized by :ref:`setting an environment variable <customize cache dir>` or by passing an
+instance of :py:class:`civic_scraper.base.cache.Cache` to :py:class:`CivicPlusSite <civic_scraper.platforms.civic_plus.site.Site>`::
+  
+  from civic_scraper.base.cache import Cache
+  from civic_scraper.platforms import CivicPlusSite
+
+  url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter'
+
+  # Change output dir to /tmp
+  site = CivicPlusSite(url, cache=Cache('/tmp'))
+  assets_metadata = site.scrape()
+
+
 .. _export metadata script:
 
 Export metadata to CSV
@@ -211,16 +227,13 @@ By default, :py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.s
 containing :py:class:`~civic_scraper.base.asset.Asset` instances. 
 
 The asset instances store metadata about specific meeting agendas and 
-minutes discovered on the site. 
+minutes discovered on the site.
 
 To save a timestamped CSV containing metadata for available assets, 
-call :py:meth:`AssetCollection.to_csv() <civic_scraper.base.asset.AssetCollection.to_csv>`::
+call :py:meth:`AssetCollection.to_csv() <civic_scraper.base.asset.AssetCollection.to_csv>` with a target output directory::
 
-  # Save metadata to default cache directory
-  assets_metadata.to_csv()
-
-  # Save to an alternate directory
-  assets_metadata.to_csv('/tmp')
+  # Save to metadata
+  assets_metadata.to_csv('/tmp/civic-scraper/metadata')
 
 .. _download assets script:
 
@@ -234,14 +247,13 @@ You can trigger downloads by passing :code:`download=True` to
 
   site.scrape(download=True)
 
-
 Or you can loop over the :py:class:`Asset instances <civic_scraper.base.asset.Asset>`
 in an :py:class:`~civic_scraper.base.asset.AssetCollection` and 
-call :py:meth:`~civic_scraper.base.asset.Asset.download` on each::
+call :py:meth:`~civic_scraper.base.asset.Asset.download` on each with a target output directory::
 
   assets_metadata = site.scrape()
   for asset in assets_metadata:
-      asset.download()
+      asset.download('/tmp/civic-scraper/assets')
 
 Scrape by date
 ~~~~~~~~~~~~~~
@@ -314,6 +326,8 @@ The generated file contains the following information:
 * ``scraped_by`` (*str*) - Version of *civic-scraper* that produced the asset. Ex: `civicplus_v0.1.0`
 * ``content_type`` (*str*) - The `MIME type`_ of the asset. Ex: `application/pdf`
 * ``content_length`` (*str*) - The size of the asset in bytes.
+
+.. _change download dir:
 
 Changing the download location
 -------------------------------
