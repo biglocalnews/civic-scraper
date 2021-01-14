@@ -197,7 +197,7 @@ agency's CivicPlus Agenda Center site.  Then call the :code:`scrape` method::
   from civic_scraper.platforms import CivicPlusSite
   url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter'
   site = CivicPlusSite(url)
-  assets_metaada = site.scrape()
+  assets_metadata = site.scrape()
 
 .. note:: :code:`CivicPlusSite` is an alias for more convenient import of the actual Civic Plus class
    located at :py:class:`civic_scraper.platforms.civic_plus.site.Site`.
