@@ -4,8 +4,10 @@ LABEL maintainer "DataMade <info@datamade.us>"
 RUN mkdir /app
 WORKDIR /app
 
+# Reference: https://civic-scraper.readthedocs.io/en/latest/install.html
 RUN pip install civic-scraper
 
+# Reference: https://civic-scraper.readthedocs.io/en/latest/contributing.html#get-started
 COPY ./requirements-dev.txt /app/requirements-dev.txt
 RUN pip install --no-cache-dir -r requirements-dev.txt
 

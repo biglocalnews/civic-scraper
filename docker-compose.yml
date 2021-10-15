@@ -10,5 +10,5 @@ services:
     volumes:
       - .:/app
     environment:
-      CIVIC_SCRAPER_DIR: ./data
+      CIVIC_SCRAPER_DIR: ./_data
     command: civic-scraper scrape --download --url http://nc-nashcounty.civicplus.com/AgendaCenter
