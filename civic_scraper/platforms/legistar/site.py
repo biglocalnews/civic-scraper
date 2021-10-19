@@ -2,6 +2,7 @@ import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 
+import legistar
 from legistar.events import LegistarEventsScraper
 
 from datetime import datetime
@@ -14,14 +15,17 @@ class LegistarSite(base.Site):
     # base.Site's init has what we need for now
     def create_asset(self, event):
         # get date and time of event
-        month, day, year = event[0]['Meeting Date'].split('/')
-        hr, minute_meridian = event[0]['Meeting Time'].split(':')
-        minute, meridian = minute_meridian.split(' ')
+        # month, day, year = event[0]['Meeting Date'].split('/')
+        # hr, minute_meridian = event[0]['Meeting Time'].split(':')
+        # minute, meridian = minute_meridian.split(' ')
 
-        if hr != '12':
-            hour = int(hr) + 12 if meridian == 'PM' else int(hr)
-        else:
-            hour = 0 if meridian == 'AM' else int(hr)
+        # if hr != '12':
+        #     hour = int(hr) + 12 if meridian == 'PM' else int(hr)
+        # else:
+        #     hour = 0 if meridian == 'AM' else int(hr)
+        breakpoint()
+        LegistarEventsScraper.toDate(event[0]['Meeting Date'])
+        LegistarEventsScraper.toTime(event[0]['Meeting Time'])
 
         full_datetime = datetime(int(year), int(month), int(day), hour, int(minute))
 
@@ -30,7 +34,7 @@ class LegistarSite(base.Site):
         _, _, _, _, query, _ = urlparse(url)
 
         query_dict = parse_qs(query)
-        
+
         meeting_id = 'legistar_ga-canton_{}'.format(query_dict['ID'][0])
 
         e = {'url': url,
@@ -46,7 +50,7 @@ class LegistarSite(base.Site):
              'content_type': 'txt',
              'content_length': None,
         }
-        return Asset(e)
+        return Asset(**e)
 
     def scrape(self, download=True):
         webscraper = LegistarEventsScraper(
@@ -60,7 +64,7 @@ class LegistarSite(base.Site):
 
         webscraper.BASE_URL = "https://canton.legistar.com/"
         webscraper.EVENTSPAGE = "https://canton.legistar.com/Calendar.aspx"
-        # webscraper.TIMEZONE = self.TIMEZONE
+        webscraper.TIMEZONE = 'UTC'
         webscraper.date_format = '%m/%d/%Y'
 
         ac = AssetCollection()
