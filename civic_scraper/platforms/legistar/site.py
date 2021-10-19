@@ -2,7 +2,6 @@ import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 
-import legistar
 from legistar.events import LegistarEventsScraper
 
 from datetime import datetime
