@@ -12,21 +12,12 @@ from urllib.parse import urlparse, parse_qs
 class LegistarSite(base.Site):
     # do not overwrite init method
     # base.Site's init has what we need for now
-    def create_asset(self, event):
+    def create_asset(self, event, scraper):
         # get date and time of event
-        # month, day, year = event[0]['Meeting Date'].split('/')
-        # hr, minute_meridian = event[0]['Meeting Time'].split(':')
-        # minute, meridian = minute_meridian.split(' ')
-
-        # if hr != '12':
-        #     hour = int(hr) + 12 if meridian == 'PM' else int(hr)
-        # else:
-        #     hour = 0 if meridian == 'AM' else int(hr)
-        breakpoint()
-        LegistarEventsScraper.toDate(event[0]['Meeting Date'])
-        LegistarEventsScraper.toTime(event[0]['Meeting Time'])
-
-        full_datetime = datetime(int(year), int(month), int(day), hour, int(minute))
+        meeting_datetime_tuple = (event[0]['Meeting Date'], event[0]['Meeting Time'])
+        meeting_datetime = " ".join(meeting_datetime_tuple)
+        meeting_date = scraper.toDate(meeting_datetime)
+        meeting_time = scraper.toTime(meeting_datetime)
 
         # get event ID
         url = event[0]['Meeting Details']['url']
@@ -42,9 +33,9 @@ class LegistarSite(base.Site):
              'place': event[0]['Meeting Location'],
              'state_or_province': None,
              'asset_type': 'Agenda',
-             'meeting_date': full_datetime.date(), 
-             'meeting_time': full_datetime.time(),
-             'meeting_id': '3',
+             'meeting_date': meeting_date, 
+             'meeting_time': meeting_time,
+             'meeting_id': meeting_id,
              'scraped_by': f'civic-scraper_{civic_scraper.__version__}',
              'content_type': 'txt',
              'content_length': None,
@@ -64,14 +55,13 @@ class LegistarSite(base.Site):
         webscraper.BASE_URL = "https://canton.legistar.com/"
         webscraper.EVENTSPAGE = "https://canton.legistar.com/Calendar.aspx"
         webscraper.TIMEZONE = 'UTC'
-        webscraper.date_format = '%m/%d/%Y'
+        webscraper.date_format = '%m/%d/%Y %I:%M %p'
 
         ac = AssetCollection()
-        assets = [self.create_asset(event) for event in webscraper.events(since=2021)]
+        assets = [self.create_asset(event, webscraper) for event in webscraper.events(since=2021)]
         for a in assets:
             ac.append(a)
 
-        # breakpoint()
         if download:
             asset_dir = Path(self.cache.path, 'assets')
             asset_dir.mkdir(parents=True, exist_ok=True)
@@ -79,7 +69,6 @@ class LegistarSite(base.Site):
                 # if self._skippable(asset, file_size, asset_list):
                     # continue
                 dir_str = str(asset_dir)
-                # breakpoint()
                 asset.download(dir_str)
         return ac
 
