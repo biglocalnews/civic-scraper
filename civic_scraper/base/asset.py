@@ -61,7 +61,7 @@ class Asset:
     def __repr__(self):
         return f'Asset({self.url})'
 
-    def download(self, target_dir):
+    def download(self, target_dir, session=None):
         """
         Downloads an asset to a target directory.
 
@@ -79,7 +79,10 @@ class Asset:
             self.asset_type,
             file_extension
         )
-        response = requests.get(self.url, allow_redirects=True)
+        if session:
+            response = session.get(self.url, allow_redirects=True)
+        else:
+            response = requests.get(self.url, allow_redirects=True)
         full_path = os.path.join(target_dir, file_name)
         with open(full_path, 'wb') as outfile:
             outfile.write(response.content)
