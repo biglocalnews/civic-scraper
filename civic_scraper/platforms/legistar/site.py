@@ -69,7 +69,7 @@ class LegistarSite(base.Site):
                 # if self._skippable(asset, file_size, asset_list):
                     # continue
                 dir_str = str(asset_dir)
-                asset.download(dir_str)
+                asset.download(dir_str, session=webscraper)
         return ac
 
 if __name__ == "__main__":
