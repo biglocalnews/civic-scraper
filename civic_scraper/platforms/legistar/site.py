@@ -20,12 +20,16 @@ class LegistarSite(base.Site):
         meeting_time = scraper.toTime(meeting_datetime)
 
         # get event ID
-        url = event[0]['Meeting Details']['url']
-        _, _, _, _, query, _ = urlparse(url)
+        try:
+            url = event[0]['Meeting Details']['url']
+            _, _, _, _, query, _ = urlparse(url)
 
-        query_dict = parse_qs(query)
+            query_dict = parse_qs(query)
 
-        meeting_id = 'legistar_ga-canton_{}'.format(query_dict['ID'][0])
+            meeting_id = 'legistar_ga-canton_{}'.format(query_dict['ID'][0])
+        except:
+            url = None
+            meeting_id = None
 
         e = {'url': url,
              'asset_name': event[0]['Name']['label'],
@@ -69,7 +73,7 @@ class LegistarSite(base.Site):
                 # if self._skippable(asset, file_size, asset_list):
                     # continue
                 dir_str = str(asset_dir)
-                asset.download(dir_str, session=webscraper)
+                asset.download(target_dir=dir_str, session=webscraper)
         return ac
 
 if __name__ == "__main__":
