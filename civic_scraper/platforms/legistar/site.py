@@ -29,7 +29,6 @@ class LegistarSite(base.Site):
             meeting_id = 'legistar_ga-canton_{}'.format(query_dict['ID'][0])
         else:
             # No meeting details, e.g., event is in future
-            breakpoint()
             url = None
             meeting_id = None
 
