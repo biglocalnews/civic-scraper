@@ -20,14 +20,16 @@ class LegistarSite(base.Site):
         meeting_time = scraper.toTime(meeting_datetime)
 
         # get event ID
-        try:
+        if type(event[0]['Meeting Details']) == dict:
             url = event[0]['Meeting Details']['url']
             _, _, _, _, query, _ = urlparse(url)
 
             query_dict = parse_qs(query)
 
             meeting_id = 'legistar_ga-canton_{}'.format(query_dict['ID'][0])
-        except:
+        else:
+            # No meeting details, e.g., event is in future
+            breakpoint()
             url = None
             meeting_id = None
 
@@ -70,10 +72,11 @@ class LegistarSite(base.Site):
             asset_dir = Path(self.cache.path, 'assets')
             asset_dir.mkdir(parents=True, exist_ok=True)
             for asset in ac:
-                # if self._skippable(asset, file_size, asset_list):
-                    # continue
-                dir_str = str(asset_dir)
-                asset.download(target_dir=dir_str, session=webscraper)
+                if asset.url:
+                    # if self._skippable(asset, file_size, asset_list):
+                        # continue
+                    dir_str = str(asset_dir)
+                    asset.download(target_dir=dir_str, session=webscraper)
         return ac
 
 if __name__ == "__main__":
