@@ -14,7 +14,9 @@ class LegistarSite(base.Site):
     # base.Site's init has what we need for now
     def create_asset(self, event, scraper):
         # get date and time of event
-        meeting_datetime = " ".join(event['Meeting Date'], event['Meeting Time'])
+        import pdb
+        pdb.set_trace()
+        meeting_datetime = " ".join((event['Meeting Date'], event['Meeting Time']))
         meeting_date = scraper.toDate(meeting_datetime)
         meeting_time = scraper.toTime(meeting_datetime)
 
