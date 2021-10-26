@@ -14,8 +14,6 @@ class LegistarSite(base.Site):
     # base.Site's init has what we need for now
     def create_asset(self, event, scraper):
         # get date and time of event
-        import pdb
-        pdb.set_trace()
         meeting_datetime = " ".join((event['Meeting Date'], event['Meeting Time']))
         meeting_date = scraper.toDate(meeting_datetime)
         meeting_time = scraper.toTime(meeting_datetime)
@@ -51,7 +49,7 @@ class LegistarSite(base.Site):
 
         webscraper.BASE_URL = "https://smyrnacity.legistar.com/"
         webscraper.EVENTSPAGE = self.url
-        webscraper.TIMEZONE = 'ET'
+        webscraper.TIMEZONE = 'EST'
         webscraper.date_format = '%m/%d/%Y %I:%M %p'
 
         ac = AssetCollection()

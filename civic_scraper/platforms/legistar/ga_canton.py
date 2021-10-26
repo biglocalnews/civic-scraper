@@ -49,7 +49,7 @@ class LegistarSite(base.Site):
 
         webscraper.BASE_URL = "https://canton.legistar.com/"
         webscraper.EVENTSPAGE = self.url
-        webscraper.TIMEZONE = 'ET'
+        webscraper.TIMEZONE = 'EST'
         webscraper.date_format = '%m/%d/%Y %I:%M %p'
 
         ac = AssetCollection()
