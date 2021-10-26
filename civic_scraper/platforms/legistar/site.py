@@ -14,14 +14,14 @@ class LegistarSite(base.Site):
     # base.Site's init has what we need for now
     def create_asset(self, event, scraper):
         # get date and time of event
-        meeting_datetime_tuple = (event[0]['Meeting Date'], event[0]['Meeting Time'])
+        meeting_datetime_tuple = (event['Meeting Date'], event['Meeting Time'])
         meeting_datetime = " ".join(meeting_datetime_tuple)
         meeting_date = scraper.toDate(meeting_datetime)
         meeting_time = scraper.toTime(meeting_datetime)
 
         # get event ID
-        if type(event[0]['Meeting Details']) == dict:
-            url = event[0]['Meeting Details']['url']
+        if type(event['Meeting Details']) == dict:
+            url = event['Meeting Details']['url']
             _, _, _, _, query, _ = urlparse(url)
 
             query_dict = parse_qs(query)
@@ -33,9 +33,9 @@ class LegistarSite(base.Site):
             meeting_id = None
 
         e = {'url': url,
-             'asset_name': event[0]['Name']['label'],
-             'committee_name': event[0]['Name']['label'],
-             'place': event[0]['Meeting Location'],
+             'asset_name': event['Name']['label'],
+             'committee_name': event['Name']['label'],
+             'place': event['Meeting Location'],
              'state_or_province': None,
              'asset_type': 'Agenda',
              'meeting_date': meeting_date, 
@@ -48,22 +48,15 @@ class LegistarSite(base.Site):
         return Asset(**e)
 
     def scrape(self, download=True):
-        webscraper = LegistarEventsScraper(
-            # requests_per_minute=self.requests_per_minute,
-            retry_attempts=3)
-
-        # if self.cache_storage:
-        #     webscraper.cache_storage = self.cache_storage
-
-        # webscraper.cache_write_only = self.cache_write_only
+        webscraper = LegistarEventsScraper(retry_attempts=3)
 
         webscraper.BASE_URL = "https://canton.legistar.com/"
-        webscraper.EVENTSPAGE = "https://canton.legistar.com/Calendar.aspx"
-        webscraper.TIMEZONE = 'UTC'
+        webscraper.EVENTSPAGE = self.url
+        webscraper.TIMEZONE = 'ET'
         webscraper.date_format = '%m/%d/%Y %I:%M %p'
 
         ac = AssetCollection()
-        assets = [self.create_asset(event, webscraper) for event in webscraper.events(since=2021)]
+        assets = [self.create_asset(event[0], webscraper) for event in webscraper.events(since=2021)]
         for a in assets:
             ac.append(a)
 
@@ -72,8 +65,6 @@ class LegistarSite(base.Site):
             asset_dir.mkdir(parents=True, exist_ok=True)
             for asset in ac:
                 if asset.url:
-                    # if self._skippable(asset, file_size, asset_list):
-                        # continue
                     dir_str = str(asset_dir)
                     asset.download(target_dir=dir_str, session=webscraper)
         return ac
