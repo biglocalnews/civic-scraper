@@ -14,7 +14,7 @@ class LegistarSite(base.Site):
     # base.Site's init has what we need for now
     def create_asset(self, event, scraper):
         # get date and time of event
-        meeting_datetime = " ".join(event['Meeting Date'], event['Meeting Time'])
+        meeting_datetime = " ".join((event['Meeting Date'], event['Meeting Time']))
         meeting_date = scraper.toDate(meeting_datetime)
         meeting_time = scraper.toTime(meeting_datetime)
 
@@ -23,7 +23,7 @@ class LegistarSite(base.Site):
             url = event['Meeting Details']['url']
             query_dict = parse_qs(urlparse(url).query)
 
-            meeting_id = 'legistar_ga-canton_{}'.format(query_dict['ID'][0])
+            meeting_id = 'legistar_ga-smyrna_{}'.format(query_dict['ID'][0])
         else:
             # No meeting details, e.g., event is in future
             url = None
@@ -35,7 +35,7 @@ class LegistarSite(base.Site):
              'place': event['Meeting Location'],
              'state_or_province': None,
              'asset_type': 'Agenda',
-             'meeting_date': meeting_date, 
+             'meeting_date': meeting_date,
              'meeting_time': meeting_time,
              'meeting_id': meeting_id,
              'scraped_by': f'civic-scraper_{civic_scraper.__version__}',
@@ -47,9 +47,9 @@ class LegistarSite(base.Site):
     def scrape(self, download=True):
         webscraper = LegistarEventsScraper(retry_attempts=3)
 
-        webscraper.BASE_URL = "https://canton.legistar.com/"
+        webscraper.BASE_URL = "https://smyrnacity.legistar.com/"
         webscraper.EVENTSPAGE = self.url
-        webscraper.TIMEZONE = 'ET'
+        webscraper.TIMEZONE = 'EST'
         webscraper.date_format = '%m/%d/%Y %I:%M %p'
 
         ac = AssetCollection()
@@ -67,7 +67,7 @@ class LegistarSite(base.Site):
         return ac
 
 if __name__ == "__main__":
-    url = "https://canton.legistar.com/Calendar.aspx"
+    url = "https://smyrnacity.legistar.com/Calendar.aspx"
     site = LegistarSite(url)
     assets = site.scrape(download=True)
     assets.to_csv(site.cache.metadata_files_path)
