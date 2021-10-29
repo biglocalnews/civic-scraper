@@ -12,8 +12,9 @@ from urllib.parse import urlparse, parse_qs
 # Scrape today's agendas and minutes from a Legistar site
 class LegistarSite(base.Site):
 
-    def __init__(self, base_url, cache=Cache(), parser_kls=None, timezone=None):
+    def __init__(self, base_url, municipality, cache=Cache(), parser_kls=None, timezone=None):
         super().__init__(base_url, cache, parser_kls)
+        self.municipality = municipality
         self.timezone = timezone
 
     def create_asset(self, event, scraper):
@@ -27,7 +28,7 @@ class LegistarSite(base.Site):
             url = event['Meeting Details']['url']
             query_dict = parse_qs(urlparse(url).query)
 
-            meeting_id = 'legistar_ga-canton_{}'.format(query_dict['ID'][0])
+            meeting_id = 'legistar_{}_{}'.format(self.municipality, query_dict['ID'][0])
         else:
             # No meeting details, e.g., event is in future
             url = None
@@ -45,7 +46,7 @@ class LegistarSite(base.Site):
              'asset_name': asset_name,
              'committee_name': committee_name,
              'place': event['Meeting Location'],
-             'state_or_province': None,
+             'state_or_province': self.municipality,
              'asset_type': 'Agenda',
              'meeting_date': meeting_date,
              'meeting_time': meeting_time,
