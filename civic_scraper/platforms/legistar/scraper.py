@@ -1,6 +1,7 @@
 import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
+from civic_scraper.base.cache import Cache
 
 from legistar.events import LegistarEventsScraper
 
@@ -10,8 +11,11 @@ from urllib.parse import urlparse, parse_qs
 
 # Scrape today's agendas and minutes from a Legistar site
 class LegistarSite(base.Site):
-    # do not overwrite init method
-    # base.Site's init has what we need for now
+
+    def __init__(self, base_url, cache=Cache(), parser_kls=None, timezone=None):
+        super().__init__(base_url, cache, parser_kls)
+        self.timezone = timezone
+
     def create_asset(self, event, scraper):
         # get date and time of event
         meeting_datetime = " ".join((event['Meeting Date'], event['Meeting Time']))
@@ -29,9 +33,17 @@ class LegistarSite(base.Site):
             url = None
             meeting_id = None
 
+        # get event name
+        if type(event['Name']) == dict:
+            asset_name = event['Name']['label']
+            committee_name = event['Name']['label']
+        else:
+            asset_name = event['Name']
+            committee_name = event['Name']
+
         e = {'url': url,
-             'asset_name': event['Name']['label'],
-             'committee_name': event['Name']['label'],
+             'asset_name': asset_name,
+             'committee_name': committee_name,
              'place': event['Meeting Location'],
              'state_or_province': None,
              'asset_type': 'Agenda',
