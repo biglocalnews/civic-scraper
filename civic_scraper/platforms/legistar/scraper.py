@@ -12,10 +12,9 @@ from urllib.parse import urlparse, parse_qs
 # Scrape today's agendas and minutes from a Legistar site
 class LegistarSite(base.Site):
 
-    def __init__(self, base_url, legistar_instance, state, cache=Cache(), parser_kls=None, timezone=None):
+    def __init__(self, base_url, cache=Cache(), parser_kls=None, timezone=None):
         super().__init__(base_url, cache, parser_kls)
-        self.legistar_instance = legistar_instance
-        self.state = state
+        self.legistar_instance = urlparse(base_url).netloc.split('.')[0]
         self.timezone = timezone
 
     def create_asset(self, event, scraper):
@@ -29,7 +28,7 @@ class LegistarSite(base.Site):
             url = event['Meeting Details']['url']
             query_dict = parse_qs(urlparse(url).query)
 
-            meeting_id = 'legistar_{}-{}_{}'.format(self.state, self.legistar_instance, query_dict['ID'][0])
+            meeting_id = 'legistar_{}_{}'.format(self.legistar_instance, query_dict['ID'][0])
         else:
             # No meeting details, e.g., event is in future
             url = None
@@ -47,7 +46,7 @@ class LegistarSite(base.Site):
              'asset_name': asset_name,
              'committee_name': committee_name,
              'place': event['Meeting Location'],
-             'state_or_province': self.state,
+             'state_or_province': None,
              'asset_type': 'Agenda',
              'meeting_date': meeting_date,
              'meeting_time': meeting_time,
@@ -62,7 +61,7 @@ class LegistarSite(base.Site):
         webscraper = LegistarEventsScraper(retry_attempts=3)
 
         # required to instantiate webscraper
-        webscraper.BASE_URL = "https://{}.legistar.com/".format(self.legistar_instance)
+        webscraper.BASE_URL = urlparse(self.url).netloc
         webscraper.EVENTSPAGE = self.url
         webscraper.TIMEZONE = self.timezone
         webscraper.date_format = '%m/%d/%Y %I:%M %p'
