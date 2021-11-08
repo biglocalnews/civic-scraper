@@ -4,4 +4,4 @@ services:
   scraper:
     # Don't restart the service when the command exits
     restart: "no"
-    command: pytest -sxv
+    command: pytest -sxv -k "not legistar_scraper"
