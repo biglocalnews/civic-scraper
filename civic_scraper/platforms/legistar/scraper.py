@@ -5,7 +5,7 @@ from civic_scraper.base.cache import Cache
 
 from legistar.events import LegistarEventsScraper
 
-from datetime import datetime
+from datetime import datetime, time
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
@@ -19,7 +19,10 @@ class LegistarSite(base.Site):
 
     def create_asset(self, event, scraper):
         # get date and time of event
-        meeting_datetime = " ".join((event['Meeting Date'], event['Meeting Time']))
+        if not event['Meeting Time']:
+            meeting_datetime = " ".join((event['Meeting Date'], time(0, 0, 0)))
+        else:
+            meeting_datetime = " ".join((event['Meeting Date'], event['Meeting Time']))
         meeting_date = scraper.toDate(meeting_datetime)
         meeting_time = scraper.toTime(meeting_datetime)
 
@@ -48,7 +51,7 @@ class LegistarSite(base.Site):
              'place': event['Meeting Location'],
              'state_or_province': None,
              'asset_type': 'Agenda',
-             'meeting_date': meeting_date,
+             'meeting_date': meeting_date.strip(),
              'meeting_time': meeting_time,
              'meeting_id': meeting_id,
              'scraped_by': f'civic-scraper_{civic_scraper.__version__}',
