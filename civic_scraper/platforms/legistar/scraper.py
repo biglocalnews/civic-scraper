@@ -20,7 +20,7 @@ class LegistarSite(base.Site):
     def create_asset(self, event, scraper):
         # get date and time of event
         if not event['Meeting Time']:
-            meeting_datetime = " ".join((event['Meeting Date'], time(0, 0, 0)))
+            meeting_datetime = " ".join((event['Meeting Date'], "12:00 AM"))
         else:
             meeting_datetime = " ".join((event['Meeting Date'], event['Meeting Time']))
         meeting_date = scraper.toDate(meeting_datetime)
