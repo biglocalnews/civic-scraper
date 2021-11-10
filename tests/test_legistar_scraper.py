@@ -157,7 +157,7 @@ legistar_sites = [
     },
 ]
 
-def test_integration():
+def legistar_integration():
     for obj in legistar_sites:
         scraper = LegistarSite(obj['site'], **obj['config'])
         data = scraper.scrape()
