@@ -27,7 +27,7 @@ jobs:
         pip install -e .
     - name: Lint with flake8
       run: |
-         flake8 ./councilmatic_core/*.py
+         flake8 ./civic_scraper/*.py
     - name: Test with pytest
       run: |
         pytest -sv
