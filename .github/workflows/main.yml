@@ -14,6 +14,15 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Build containers and run tests
-      run: docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm scraper
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x'
+    - name: Lint with flake8
+      run: |
+         flake8 ./civic_scraper/*.py
+    - name: Test with pytest
+      run: |
+        pytest -sv
