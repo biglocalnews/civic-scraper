@@ -15,11 +15,6 @@ legistar_sites = [
         'timezone': 'US/Alaska',
      }
     },
-    {'site': 'https://npfmc.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Alaska',
-     }
-    },
     {'site': 'https://petersburg.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Alaska',
@@ -41,11 +36,6 @@ legistar_sites = [
      }
     },
     {'site': 'https://cityoffoley.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Central',
-     }
-    },
-    {'site': 'https://accessfayetteville.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Central',
      }
@@ -155,6 +145,16 @@ legistar_sites = [
         'timezone': 'US/Pacific',
      }
     },
+    {'site': 'https://emeryville.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Pacific',
+     }
+    },
+    {'site': 'https://cityfortbragg.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Pacific'
+     }
+    }
 ]
 
 def legistar_integration():
@@ -162,3 +162,6 @@ def legistar_integration():
         scraper = LegistarSite(obj['site'], **obj['config'])
         data = scraper.scrape()
         assert len(data) > 10
+
+if __name__ == '__main__':
+    legistar_integration()
