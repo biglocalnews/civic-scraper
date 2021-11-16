@@ -18,7 +18,7 @@ def test_scrape_defaults():
     url = "http://nc-nashcounty.civicplus.com/AgendaCenter"
     cp = CivicPlusSite(url)
     assets = cp.scrape(start_date, end_date)
-    assert len(assets) == 4
+    assert len(assets) >= 4
     first = assets[0]
     assert (
         first.url
