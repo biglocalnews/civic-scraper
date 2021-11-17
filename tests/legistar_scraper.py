@@ -75,17 +75,12 @@ legistar_sites = [
         'timezone': 'US/Arizona',
      }
     },
-    {'site': 'https://phoenix.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
+    # {'site': 'https://phoenix.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Arizona',
+    #  }
+    # },
     {'site': 'https://pima.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
-    {'site': 'https://yuma-az.legistar.com/Calendar.apx',
      'config': {
         'timezone': 'US/Arizona',
      }
@@ -154,7 +149,12 @@ legistar_sites = [
      'config': {
         'timezone': 'US/Pacific'
      }
-    }
+    },
+    {'site': 'https://fresnocounty.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Pacific'
+     }
+    },
 ]
 
 def legistar_integration():
