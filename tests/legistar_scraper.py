@@ -5,86 +5,86 @@ from civic_scraper.platforms import LegistarSite
 logging.basicConfig(level="DEBUG")
 
 legistar_sites = [
-    {'site': 'https://kpb.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Alaska',
-     }
-    },
-    {'site': 'https://matanuska.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Alaska',
-     }
-    },
-    {'site': 'https://petersburg.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Alaska',
-     }
-    },
-    {'site': 'https://sitka.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Alaska',
-     }
-    },
-    {'site': 'https://valdez.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Alaska',
-     }
-    },
-    {'site': 'https://baldwincountyal.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Central',
-     }
-    },
-    {'site': 'https://cityoffoley.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Central',
-     }
-    },
-    {'site': 'https://jonesboro.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Central',
-     }
-    },
-    {'site': 'https://apachejunction.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
-    {'site': 'https://goodyear.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
-    {'site': 'https://lakehavasucity.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
-    {'site': 'https://maricopa.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
-    {'site': 'https://mesa.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
-    {'site': 'https://paradisevalleyaz.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
+    # {'site': 'https://kpb.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Alaska',
+    #  }
+    # },
+    # {'site': 'https://matanuska.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Alaska',
+    #  }
+    # },
+    # {'site': 'https://petersburg.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Alaska',
+    #  }
+    # },
+    # {'site': 'https://sitka.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Alaska',
+    #  }
+    # },
+    # {'site': 'https://valdez.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Alaska',
+    #  }
+    # },
+    # {'site': 'https://baldwincountyal.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Central',
+    #  }
+    # },
+    # {'site': 'https://cityoffoley.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Central',
+    #  }
+    # },
+    # {'site': 'https://jonesboro.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Central',
+    #  }
+    # },
+    # {'site': 'https://apachejunction.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Arizona',
+    #  }
+    # },
+    # {'site': 'https://goodyear.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Arizona',
+    #  }
+    # },
+    # {'site': 'https://lakehavasucity.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Arizona',
+    #  }
+    # },
+    # {'site': 'https://maricopa.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Arizona',
+    #  }
+    # },
+    # {'site': 'https://mesa.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Arizona',
+    #  }
+    # },
+    # {'site': 'https://paradisevalleyaz.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Arizona',
+    #  }
+    # },
     # {'site': 'https://phoenix.legistar.com/Calendar.aspx',
     #  'config': {
     #     'timezone': 'US/Arizona',
     #  }
     # },
-    {'site': 'https://pima.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Arizona',
-     }
-    },
+    # {'site': 'https://pima.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Arizona',
+    #  }
+    # },
     {'site': 'https://alameda.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Pacific',
