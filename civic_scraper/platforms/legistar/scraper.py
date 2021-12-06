@@ -1,3 +1,4 @@
+import re
 import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
@@ -8,27 +9,58 @@ from legistar.events import LegistarEventsScraper
 from datetime import datetime, time
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
+from warnings import showwarning
 
 # Scrape today's agendas and minutes from a Legistar site
 class LegistarSite(base.Site):
 
-    def __init__(self, base_url, cache=Cache(), parser_kls=None, timezone=None):
+    def __init__(self, base_url, verbose_keys=True, cache=Cache(), parser_kls=None, timezone=None):
         super().__init__(base_url, cache, parser_kls)
         self.legistar_instance = urlparse(base_url).netloc.split('.')[0]
         self.timezone = timezone
+        self.verbose_keys = verbose_keys
 
     def create_asset(self, event, scraper):
-        # get date and time of event
-        if not event['Meeting Time']:
-            meeting_datetime = " ".join((event['Meeting Date'], "12:00 AM"))
+        location_info = None
+        if self.verbose_keys:
+            detail_info = event['Meeting Details']
+            date_info = event['Meeting Date']
+            time_info = event['Meeting Time'] or None
+            if 'Meeting Location' in event.keys():
+                location_info = event['Meeting Location']
         else:
-            meeting_datetime = " ".join((event['Meeting Date'], event['Meeting Time']))
+            detail_info = event['Details']
+            date_info = event['Date']
+            time_info = event['Time'] or None
+            if 'Location' in event.keys():
+                location_info = event['Location']
+
+        # get date and time of event
+        if time_info:
+            meeting_datetime = " ".join((date_info, time_info))
+        else:
+            meeting_datetime = " ".join((date_info, '12:00 AM'))
+
+        date_format = re.match("\d*?\/\d*?\/\d{4}", date_info)
+
+        time_format = None
+        if time_info:
+            time_format = re.match("\d*?:\d{2} \w{2}", time_info)
+
+        if date_format is None:
+            showwarning("Date is not in appropriate format.", category=Warning, filename="civic_scraper/platforms/scraper.py", lineno="44")
+        if time_format is None and time_info is not None:
+            showwarning("Time is not in appropriate format.", category=Warning, filename="civic_scraper/platforms/scraper.py", lineno="45")
+            breakpoint()
+
         meeting_date = scraper.toDate(meeting_datetime)
         meeting_time = scraper.toTime(meeting_datetime)
 
+        # use regex to match pattern #/#/#; raise warning if no match
+
         # get event ID
-        if type(event['Meeting Details']) == dict:
-            url = event['Meeting Details']['url']
+        if type(event[scraper.event_info_key]) == dict:
+            url = detail_info['url']
             query_dict = parse_qs(urlparse(url).query)
 
             meeting_id = 'legistar_{}_{}'.format(self.legistar_instance, query_dict['ID'][0])
@@ -48,7 +80,7 @@ class LegistarSite(base.Site):
         e = {'url': url,
              'asset_name': asset_name,
              'committee_name': committee_name,
-             'place': event['Meeting Location'],
+             'place': location_info,
              'state_or_province': None,
              'asset_type': 'Agenda',
              'meeting_date': meeting_date.strip(),
@@ -61,7 +93,7 @@ class LegistarSite(base.Site):
         return Asset(**e)
 
     def scrape(self, download=True):
-        webscraper = LegistarEventsScraper(retry_attempts=3)
+        webscraper = LegistarEventsScraper(verbose_keys=self.verbose_keys, retry_attempts=3)
 
         # required to instantiate webscraper
         webscraper.BASE_URL = urlparse(self.url).netloc
