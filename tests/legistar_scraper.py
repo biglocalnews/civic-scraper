@@ -5,96 +5,99 @@ from civic_scraper.platforms import LegistarSite
 logging.basicConfig(level="DEBUG")
 
 legistar_sites = [
-    # {'site': 'https://kpb.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Alaska',
-    #  }
-    # },
-    # {'site': 'https://matanuska.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Alaska',
-    #  }
-    # },
-    # {'site': 'https://petersburg.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Alaska',
-    #  }
-    # },
-    # {'site': 'https://sitka.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Alaska',
-    #  }
-    # },
-    # {'site': 'https://valdez.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Alaska',
-    #  }
-    # },
-    # {'site': 'https://baldwincountyal.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Central',
-    #  }
-    # },
-    # {'site': 'https://cityoffoley.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Central',
-    #  }
-    # },
-    # {'site': 'https://jonesboro.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Central',
-    #  }
-    # },
-    # {'site': 'https://apachejunction.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Arizona',
-    #  }
-    # },
-    # {'site': 'https://goodyear.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Arizona',
-    #  }
-    # },
-    # {'site': 'https://lakehavasucity.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Arizona',
-    #  }
-    # },
-    # {'site': 'https://maricopa.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Arizona',
-    #  }
-    # },
-    # {'site': 'https://mesa.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Arizona',
-    #  }
-    # },
-    # {'site': 'https://paradisevalleyaz.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Arizona',
-    #  }
-    # },
-    # {'site': 'https://phoenix.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Arizona',
-    #  }
-    # },
-    # {'site': 'https://pima.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Arizona',
-    #  }
-    # },
-    {'site': 'https://alameda.legistar.com/Calendar.aspx',
+    {'site': 'https://kpb.legistar.com/Calendar.aspx',
      'config': {
-        'timezone': 'US/Pacific',
+        'timezone': 'US/Alaska',
      }
     },
-    {'site': 'https://actransit.legistar.com/Calendar.aspx',
+    {'site': 'https://matanuska.legistar.com/Calendar.aspx',
      'config': {
-        'timezone': 'US/Pacific',
+        'timezone': 'US/Alaska',
      }
     },
+    {'site': 'https://petersburg.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Alaska',
+     }
+    },
+    {'site': 'https://sitka.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Alaska',
+     }
+    },
+    {'site': 'https://valdez.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Alaska',
+     }
+    },
+    {'site': 'https://baldwincountyal.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Central',
+     }
+    },
+    {'site': 'https://cityoffoley.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Central',
+     }
+    },
+    {'site': 'https://jonesboro.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Central',
+     }
+    },
+    {'site': 'https://apachejunction.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Arizona',
+     }
+    },
+    {'site': 'https://goodyear.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Arizona',
+     }
+    },
+    {'site': 'https://lakehavasucity.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Arizona',
+     }
+    },
+    {'site': 'https://maricopa.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Arizona',
+     }
+    },
+    {'site': 'https://mesa.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Arizona',
+     }
+    },
+    {'site': 'https://paradisevalleyaz.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Arizona',
+     }
+    },
+    {'site': 'https://phoenix.legistar.com/Calendar.aspx',
+     'config': {
+        'event_info_key': 'Details',
+        'timezone': 'US/Arizona',
+     }
+    },
+    {'site': 'https://pima.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Arizona',
+     }
+    },
+    # FEWER THAN 10 EVENTS
+    # {'site': 'https://alameda.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Pacific',
+    #  }
+    # },
+    # FEWER THAN 10 EVENTS
+    # {'site': 'https://actransit.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Pacific',
+    #  }
+    # },
     {'site': 'https://burlingameca.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Pacific',
@@ -105,27 +108,12 @@ legistar_sites = [
         'timezone': 'US/Pacific',
      }
     },
-    {'site': 'https://cathedralcity.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Pacific',
-     }
-    },
-    {'site': 'https://chulavista.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Pacific',
-     }
-    },
     {'site': 'https://cityofcommerce.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Pacific',
      }
     },
     {'site': 'https://corona.legistar.com/Calendar.aspx',
-     'config': {
-        'timezone': 'US/Pacific',
-     }
-    },
-    {'site': 'https://culver-city.legistar.com/Calendar.apx',
      'config': {
         'timezone': 'US/Pacific',
      }
@@ -150,9 +138,26 @@ legistar_sites = [
         'timezone': 'US/Pacific'
      }
     },
-    {'site': 'https://fresnocounty.legistar.com/Calendar.aspx',
+    # FEWER THAN 10 EVENTS
+    # {'site': 'https://fresnocounty.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Pacific'
+    #  }
+    # },
+    {'site': 'https://fresno.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Pacific'
+     }
+    },
+    # FEWER THAN 10 EVENTS
+    # {'site': 'https://fullerton.legistar.com/Calendar.aspx',
+    #  'config': {
+    #     'timezone': 'US/Pacific',
+    #  }
+    # },
+    {'site': 'https://goleta.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Pacific',
      }
     },
 ]
