@@ -86,18 +86,16 @@ legistar_sites = [
         'timezone': 'US/Arizona',
      }
     },
-    # FEWER THAN 10 EVENTS
-    # {'site': 'https://alameda.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Pacific',
-    #  }
-    # },
-    # FEWER THAN 10 EVENTS
-    # {'site': 'https://actransit.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Pacific',
-    #  }
-    # },
+    {'site': 'https://alameda.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Pacific',
+     }
+    },
+    {'site': 'https://actransit.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Pacific',
+     }
+    },
     {'site': 'https://burlingameca.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Pacific',
@@ -138,23 +136,21 @@ legistar_sites = [
         'timezone': 'US/Pacific'
      }
     },
-    # FEWER THAN 10 EVENTS
-    # {'site': 'https://fresnocounty.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Pacific'
-    #  }
-    # },
+    {'site': 'https://fresnocounty.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Pacific'
+     }
+    },
     {'site': 'https://fresno.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Pacific'
      }
     },
-    # FEWER THAN 10 EVENTS
-    # {'site': 'https://fullerton.legistar.com/Calendar.aspx',
-    #  'config': {
-    #     'timezone': 'US/Pacific',
-    #  }
-    # },
+    {'site': 'https://fullerton.legistar.com/Calendar.aspx',
+     'config': {
+        'timezone': 'US/Pacific',
+     }
+    },
     {'site': 'https://goleta.legistar.com/Calendar.aspx',
      'config': {
         'timezone': 'US/Pacific',
@@ -166,7 +162,7 @@ def legistar_integration():
     for obj in legistar_sites:
         scraper = LegistarSite(obj['site'], **obj['config'])
         data = scraper.scrape()
-        assert len(data) > 10
+        assert len(data) > 0
 
 if __name__ == '__main__':
     legistar_integration()
