@@ -14,26 +14,26 @@ from warnings import showwarning
 # Scrape today's agendas and minutes from a Legistar site
 class LegistarSite(base.Site):
 
-    def __init__(self, base_url, event_info_key='Meeting Details', cache=Cache(), parser_kls=None, timezone=None):
+    def __init__(self,
+                 base_url,
+                 event_info_keys = {'meeting_details_info': 'Meeting Details',
+                                    'meeting_date_info': 'Meeting Date',
+                                    'meeting_time_info': 'Meeting Time',
+                                    'meeting_location_info': 'Meeting Location'},
+                 cache=Cache(),
+                 parser_kls=None, timezone=None):
         super().__init__(base_url, cache, parser_kls)
         self.legistar_instance = urlparse(base_url).netloc.split('.')[0]
         self.timezone = timezone
-        self.event_info_key = event_info_key
+        self.event_info_keys = event_info_keys
 
     def create_asset(self, event, scraper):
+        detail_info = event[self.event_info_keys['meeting_details_info']]
+        date_info = event[self.event_info_keys['meeting_date_info']]
+        time_info = event[self.event_info_keys['meeting_time_info']] or None
         location_info = None
-        if self.event_info_key == 'Meeting Details':
-            detail_info = event['Meeting Details']
-            date_info = event['Meeting Date']
-            time_info = event['Meeting Time'] or None
-            if 'Meeting Location' in event.keys():
-                location_info = event['Meeting Location']
-        else:
-            detail_info = event['Details']
-            date_info = event['Date']
-            time_info = event['Time'] or None
-            if 'Location' in event.keys():
-                location_info = event['Location']
+        if self.event_info_keys['meeting_location_info'] in event.keys():
+            location_info = event[self.event_info_keys['meeting_location_info']]
 
         time_format = None
         if time_info:
@@ -86,7 +86,7 @@ class LegistarSite(base.Site):
         return Asset(**e)
 
     def scrape(self, download=True):
-        webscraper = LegistarEventsScraper(event_info_key=self.event_info_key, retry_attempts=3)
+        webscraper = LegistarEventsScraper(event_info_key=self.event_info_keys['meeting_details_info'], retry_attempts=3)
 
         # required to instantiate webscraper
         webscraper.BASE_URL = urlparse(self.url).netloc

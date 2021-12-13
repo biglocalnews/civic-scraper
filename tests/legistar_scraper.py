@@ -77,7 +77,10 @@ legistar_sites = [
     },
     {'site': 'https://phoenix.legistar.com/Calendar.aspx',
      'config': {
-        'event_info_key': 'Details',
+        'event_info_keys': {'meeting_details_info': 'Details',
+                            'meeting_date_info': 'Date',
+                            'meeting_time_info': 'Time',
+                            'meeting_location_info': 'Location'},
         'timezone': 'US/Arizona',
      }
     },
