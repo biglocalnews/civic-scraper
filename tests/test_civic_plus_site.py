@@ -19,28 +19,28 @@ def test_scrape_defaults():
     cp = CivicPlusSite(url)
     assets = cp.scrape(start_date, end_date)
     assert len(assets) >= 4
-    first = assets[0]
+    agenda = [asset for asset in assets if asset.url.endswith('Agenda/_05052020-382')][0]
     assert (
-        first.url
+        agenda.url
         == "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05052020-382"
     )
-    assert first.committee_name == "Board of Commissioners"
-    assert first.asset_name == "May 5, 2020 Recessed Meeting/Budget Work Session Agenda"
-    assert first.place == "nashcounty"
-    assert first.state_or_province == "nc"
-    assert first.asset_type == "agenda"
-    assert first.meeting_date == datetime.datetime(2020, 5, 5)
-    assert first.meeting_time is None
-    assert first.meeting_id == "civicplus_nc-nashcounty_05052020-382"
-    assert first.scraped_by == "civic-scraper_0.1.0"
-    assert first.content_type == "application/pdf"
-    assert first.content_length == "19536"
+    assert agenda.committee_name == "Board of Commissioners"
+    assert agenda.asset_name == "May 5, 2020 Recessed Meeting/Budget Work Session Agenda"
+    assert agenda.place == "nashcounty"
+    assert agenda.state_or_province == "nc"
+    assert agenda.asset_type == "agenda"
+    assert agenda.meeting_date == datetime.datetime(2020, 5, 5)
+    assert agenda.meeting_time is None
+    assert agenda.meeting_id == "civicplus_nc-nashcounty_05052020-382"
+    assert agenda.scraped_by == "civic-scraper_0.1.0"
+    assert agenda.content_type == "application/pdf"
+    assert agenda.content_length == "19536"
     # Check that assets are in the correct date range
     expected_meeting_dates = [datetime.datetime(2020, 5, day) for day in range(3, 7)]
     for asset in assets:
         assert asset.meeting_date in expected_meeting_dates
     # Check range of asset types
-    expected_asset_types = ["agenda", "minutes", "agenda", "agenda", "minutes", "agenda"]
+    expected_asset_types = ['minutes', 'agenda', 'minutes', 'agenda']
     actual_asset_types = [asset.asset_type for asset in assets]
     assert expected_asset_types == actual_asset_types
 
