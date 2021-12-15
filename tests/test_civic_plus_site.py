@@ -18,29 +18,29 @@ def test_scrape_defaults():
     url = "http://nc-nashcounty.civicplus.com/AgendaCenter"
     cp = CivicPlusSite(url)
     assets = cp.scrape(start_date, end_date)
-    assert len(assets) == 4
+    assert len(assets) >= 4
     first = assets[0]
     assert (
         first.url
-        == "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Minutes/_05052020-382"
+        == "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05052020-382"
     )
     assert first.committee_name == "Board of Commissioners"
     assert first.asset_name == "May 5, 2020 Recessed Meeting/Budget Work Session Agenda"
     assert first.place == "nashcounty"
     assert first.state_or_province == "nc"
-    assert first.asset_type == "minutes"
+    assert first.asset_type == "agenda"
     assert first.meeting_date == datetime.datetime(2020, 5, 5)
     assert first.meeting_time is None
     assert first.meeting_id == "civicplus_nc-nashcounty_05052020-382"
     assert first.scraped_by == "civic-scraper_0.1.0"
     assert first.content_type == "application/pdf"
-    assert first.content_length == "28998"
+    assert first.content_length == "19536"
     # Check that assets are in the correct date range
     expected_meeting_dates = [datetime.datetime(2020, 5, day) for day in range(3, 7)]
     for asset in assets:
         assert asset.meeting_date in expected_meeting_dates
     # Check range of asset types
-    expected_asset_types = ["minutes", "agenda", "minutes", "agenda"]
+    expected_asset_types = ["agenda", "minutes", "agenda", "agenda", "minutes", "agenda"]
     actual_asset_types = [asset.asset_type for asset in assets]
     assert expected_asset_types == actual_asset_types
 

@@ -37,7 +37,7 @@ def test_cli_scrape_simple(civic_scraper_dir):
     assert re.match(pattern, fname)
     full_path = str(Path(civic_scraper_dir, "metadata", fname))
     data = csv_rows(full_path)
-    assert len(data) == 2
+    assert len(data) >= 2
     # Check assets and artifacts *not* saved by default
     artifacts_dir = Path(civic_scraper_dir).joinpath("artifacts")
     assets_dir = Path(civic_scraper_dir).joinpath("assets")
