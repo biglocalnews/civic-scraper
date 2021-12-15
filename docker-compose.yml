@@ -1,0 +1,14 @@
+version: '2.4'
+
+services:
+  scraper:
+    image: civic-scraper
+    container_name: civic-scraper
+    build: .
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+    environment:
+      CIVIC_SCRAPER_DIR: ./_data
+    command: civic-scraper scrape --download --url http://nc-nashcounty.civicplus.com/AgendaCenter

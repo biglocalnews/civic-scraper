@@ -1,4 +1,5 @@
 bs4
 click
 click-option-group
+https://github.com/opencivicdata/python-legistar-scraper/zipball/master
 requests
