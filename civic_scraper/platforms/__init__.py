@@ -1,2 +1,2 @@
 from .civic_plus.site import Site as CivicPlusSite
-from .legistar.scraper import LegistarSite
+from .legistar.site import LegistarSite
