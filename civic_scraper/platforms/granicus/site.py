@@ -18,7 +18,7 @@ if __name__ == '__main__':
     url = 'https://brookhavencityga.iqm2.com/Citizens/default.aspx/Services/RSS.aspx?Feed=Calendar'
 
     rss_text = fetch_url(session, url, **headers)
-    parse_rss(rss_text)
+    parse_rss(url)
 
 
 
