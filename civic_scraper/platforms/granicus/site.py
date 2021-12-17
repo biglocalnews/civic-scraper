@@ -1,17 +1,16 @@
-from civic_scraper import base
-from civic_scraper.base.asset import Asset, AssetCollection
-from civic_scraper.base.cache import Cache
+from requests import Session
 
-class GranicusSite(base.Site):
-    def __init__(self,
-                 base_url,
-                 event_info_keys = {'meeting_details_info': 'Meeting Details',
-                                    'meeting_date_info': 'Meeting Date',
-                                    'meeting_time_info': 'Meeting Time',
-                                    'meeting_location_info': 'Meeting Location'},
-                 cache=Cache(),
-                 parser_kls=None, timezone=None):
-        super().__init__(base_url, cache, parser_kls)
-        self.granicus_instance = urlparse(base_url).netloc.split('.')[0]
-        self.timezone = timezone
-        self.event_info_keys = event_info_keys
+def fetch_url(url = 'https://brookhavencityga.iqm2.com/Citizens/default.aspx', **kwargs):
+    session = Session()
+    headers = {"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"}
+    response = session.get(url, headers=headers)
+
+    breakpoint()
+
+    print(response.text)
+
+    return response
+
+if __name__ == '__main__':
+    fetch_url()
+
