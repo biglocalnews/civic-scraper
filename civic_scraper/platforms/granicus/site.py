@@ -13,7 +13,7 @@ from urllib.parse import urlparse, parse_qs
 class GranicusSite(base.Site):
     def __init__(self, rss_url, cache=Cache()):
         self.url = rss_url
-        self.granicus_instance = urlparse(url).netloc.split('.')[0]
+        self.granicus_instance = urlparse(rss_url).netloc.split('.')[0]
         self.cache = cache
 
     def create_asset(self, entry):
@@ -66,10 +66,3 @@ class GranicusSite(base.Site):
                     asset.download(target_dir=dir_str, session=session)
 
         return parsed_rss
-
-if __name__ == '__main__':
-    url = 'https://brookhavencityga.iqm2.com/Services/RSS.aspx?Feed=Calendar'
-
-    scraper = GranicusSite(url)
-    scraper.scrape()
-
