@@ -20,7 +20,6 @@ def granicus_integration():
     for obj in granicus_sites:
         scraper = GranicusSite(obj['site'])
         data = scraper.scrape()
-        breakpoint()
         assert len(data) > 0
 
 if __name__ == '__main__':
