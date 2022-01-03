@@ -23,13 +23,13 @@ class GranicusSite(base.Site):
 
         meeting_url = entry['link']
         query_dict = parse_qs(urlparse(meeting_url).query)
-        try:
-            if 'ID' in query_dict.keys():
-                meeting_id = 'granicus_{}_{}'.format(self.granicus_instance, query_dict['ID'][0])
-            else:
-                meeting_id = 'granicus_{}_{}'.format(self.granicus_instance, query_dict['MeetingID'][0])
-        except KeyError:
-            breakpoint()
+
+        if 'ID' in query_dict.keys():
+            meeting_id = 'granicus_{}_{}'.format(self.granicus_instance, query_dict['ID'][0])
+        else:
+            meeting_id = 'granicus_{}_{}'.format(self.granicus_instance, query_dict['MeetingID'][0])
+
+        # breakpoint()
 
         e = {'url': self.url,
              'asset_name': asset_name,
@@ -51,6 +51,7 @@ class GranicusSite(base.Site):
         session.headers.update({"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"})
 
         parsed_rss = feedparser.parse(self.url)
+        # breakpoint()
 
         ac = AssetCollection()
         assets = [self.create_asset(e) for e in parsed_rss['entries']]
@@ -65,4 +66,4 @@ class GranicusSite(base.Site):
                     dir_str = str(asset_dir)
                     asset.download(target_dir=dir_str, session=session)
 
-        return parsed_rss
+        return ac
