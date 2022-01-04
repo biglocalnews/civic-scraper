@@ -51,7 +51,8 @@ class GranicusSite(base.Site):
         session = Session()
         session.headers.update({"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"})
 
-        parsed_rss = feedparser.parse(self.url)
+        response = session.get(self.url)
+        parsed_rss = feedparser.parse(response.text)
 
         ac = AssetCollection()
         assets = [self.create_asset(e) for e in parsed_rss['entries']]
