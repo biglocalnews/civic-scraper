@@ -53,7 +53,9 @@ def scrape(url):
                     asset_url, asset_name = asset
                     asset_type = 'Meeting'
 
-                    e = {'url': asset_url,
+                    full_asset_url = asset_base_url + asset_url[2:]
+
+                    e = {'url': full_asset_url,
                          'asset_name': asset_name,
                          'committee_name': committee_name,
                          'place': None, # config
