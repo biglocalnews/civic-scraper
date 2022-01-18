@@ -5,6 +5,8 @@ from io import StringIO
 from lxml import etree
 from requests import Session
 
+import civic_scraper
+
 
 def scrape(url):
     session = Session()
@@ -41,31 +43,34 @@ def scrape(url):
 
         agenda_items = frame_tree.xpath("//tr[./td[@class='dx-wrap dxtl dxtl__B0' and not(@colspan)]]")
         for item in agenda_items:
-            # dig into item > last td (use class) to get agenda text
-            # asset_name =
-            # asset_type =
-            # dig into link_tr to get link for agenda item
-            link_tr = item.xpath("./following-sibling::tr[1]")
+            link_tr_text = item.xpath("./following-sibling::tr[1]")[0]
 
-            # def create_asset(self, entry):
-                e = {'url': event_url,
-            #          'asset_name': asset_name,
-                     'committee_name': committee_name,
-            #          'place': self.place, # config
-            #          'state_or_province': self.state_or_province, # config
-            #          'asset_type': asset_type,
-                     'meeting_date': meeting_datetime.date(),
-                     'meeting_time': meeting_datetime.time(),
-                     'meeting_id': meeting_id,
-                     'scraped_by': f'civic-scraper_{civic_scraper.__version__}',
-                     'content_type': 'txt',
-                     'content_length': None,
-                    }
-            #     return Asset(**e)
+            link_tr = [(tr.attrib['href'], tr.xpath("./text()")[0]) for tr in link_tr_text.xpath(".//a") if tr.attrib['href'] != '#']
+            if link_tr:
+                asset_base_url = "https://chaffeecoco.civicclerk.com/"
+
+                for asset in link_tr:
+                    asset_url, asset_name = asset
+                    asset_type = 'Meeting'
+
+                    e = {'url': asset_url,
+                         'asset_name': asset_name,
+                         'committee_name': committee_name,
+                         'place': None, # config
+                         'state_or_province': None, # config
+                         'asset_type': asset_type,
+                         'meeting_date': meeting_datetime.date(),
+                         'meeting_time': meeting_datetime.time(),
+                         'meeting_id': meeting_id,
+                         'scraped_by': f'civic-scraper_{civic_scraper.__version__}',
+                         'content_type': 'txt',
+                         'content_length': None,
+                        }
+                    #     return Asset(**e)
 
         agenda_name = frame_tree.xpath("//span[@id='lblAgendaName']")
 
-        breakpoint()
+        # breakpoint()
 
         ## wait on this
         # parse out info from this page
