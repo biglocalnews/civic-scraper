@@ -4,6 +4,7 @@ from datetime import datetime
 from io import StringIO
 from lxml import etree
 from requests import Session
+from pathlib import Path
 
 import civic_scraper
 from civic_scraper import base
