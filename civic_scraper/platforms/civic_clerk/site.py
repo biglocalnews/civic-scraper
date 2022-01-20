@@ -39,7 +39,7 @@ class CivicClerkSite(base.Site):
             }
         return Asset(**e)
 
-    def scrape(self):
+    def scrape(self, download=True):
         session = Session()
         response = session.get(self.url)
 
