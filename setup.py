@@ -50,6 +50,7 @@ requirements = [
     'bs4',
     'click',
     'click-option-group',
+    'feedparser',
     'requests',
     'legistar @ https://github.com/opencivicdata/python-legistar-scraper/zipball/master'
 ]
