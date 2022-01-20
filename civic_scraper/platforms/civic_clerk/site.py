@@ -104,8 +104,3 @@ class CivicClerkSite(base.Site):
                     asset.download(target_dir=dir_str, session=session)
             # parse out info from this page
         return ac
-
-if __name__ == '__main__':
-    url = 'https://northstpaulmn.civicclerk.com/web/home.aspx'
-    scraper = CivicClerkSite(url)
-    scraper.scrape()
