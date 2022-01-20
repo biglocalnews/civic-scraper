@@ -49,6 +49,8 @@ class CivicClerkSite(base.Site):
         # only the first <=10 events are here; pagination to be handled later
         events = tree.xpath("//table[@id='aspxroundpanelRecent2_ASPxPanel4_grdEventsRecent2_DXMainTable']/tr[@class='dxgvDataRow_CustomThemeModerno']")
 
+        ac = AssetCollection()
+
         for event in events:
             # grab commitee name, link, & time/date from row
             committee_name = event.xpath("./td[1]//text()")[1].strip()
@@ -78,13 +80,24 @@ class CivicClerkSite(base.Site):
                 link_tr = [(tr.attrib['href'], tr.xpath("./text()")[0]) for tr in link_tr_text.xpath(".//a") if tr.attrib['href'] != '#']
                 if link_tr:
                     assets = [self.create_asset(a, committee_name, meeting_datetime, meeting_id) for a in link_tr]
+                    for a in assets:
+                        ac.append(a)
 
             agenda_name = frame_tree.xpath("//span[@id='lblAgendaName']")
+
+            if download:
+                asset_dir = Path(self.cache.path, 'assets')
+                asset_dir.mkdir(parents=True, exist_ok=True)
+                for asset in ac:
+                    if asset.url:
+                        dir_str = str(asset_dir)
+                        asset.download(target_dir=dir_str, session=session)
 
             # breakpoint()
 
             ## wait on this
             # parse out info from this page
+        return ac
 
 if __name__ == '__main__':
     url = 'https://chaffeecoco.civicclerk.com/web/home.aspx'
