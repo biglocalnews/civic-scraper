@@ -52,14 +52,12 @@ class CivicClerkSite(base.Site):
     def get_agenda_items(self, text, parser, session):
         event_tree = etree.parse(StringIO(text), parser)
         iframe = event_tree.xpath("//iframe")
-        if iframe:
-            event_frame = iframe[0].attrib['src']
-            event_frame_url = 'https://chaffeecoco.civicclerk.com' + event_frame
-            frame_response = session.get(event_frame_url)
-            frame_tree = etree.parse(StringIO(frame_response.text), parser)
+        event_frame = iframe[0].attrib['src']
+        event_frame_url = self.base_url + event_frame
+        frame_response = session.get(event_frame_url)
+        frame_tree = etree.parse(StringIO(frame_response.text), parser)
 
-            return frame_tree.xpath("//tr[./td[@class='dx-wrap dxtl dxtl__B0' and not(@colspan)]]")
-        return None
+        return frame_tree.xpath("//tr[./td[@class='dx-wrap dxtl dxtl__B0' and not(@colspan)]]")
 
     def scrape(self, download=True):
         session = Session()
@@ -81,19 +79,17 @@ class CivicClerkSite(base.Site):
 
             event_url = f'{self.base_url}/Web/DocumentFrame.aspx?id={meeting_id}&mod=-1&player_tab=-2'
             event_response = session.get(event_url)
-            agenda_items = self.get_agenda_items(event_response.text, parser, session) if event_response.status_code == 200 else None
 
-            # if event_response.status_code != 200:
-            #     print(event_response.status_code)
+            agenda_items = []
+            if event_response.status_code == 200:
+                agenda_items = self.get_agenda_items(event_response.text, parser, session)
 
-            if agenda_items:
-                for item in agenda_items:
-                    link_tr_text = item.xpath("./following-sibling::tr[1]")[0]
-                    link_tr = [(tr.attrib['href'], tr.xpath("./text()")[0]) for tr in link_tr_text.xpath(".//a") if tr.attrib['href'] != '#']
-                    if link_tr:
-                        assets = [self.create_asset(a, committee_name, meeting_datetime, meeting_id) for a in link_tr]
-                        for a in assets:
-                            ac.append(a)
+            for item in agenda_items:
+                link_tr_text = item.xpath("./following-sibling::tr[1]")[0]
+                link_tr = [(tr.attrib['href'], tr.xpath("./text()")[0]) for tr in link_tr_text.xpath(".//a") if tr.attrib['href'] != '#']
+                assets = [self.create_asset(a, committee_name, meeting_datetime, meeting_id) for a in link_tr]
+                for a in assets:
+                    ac.append(a)
 
         if download:
             asset_dir = Path(self.cache.path, 'assets')
