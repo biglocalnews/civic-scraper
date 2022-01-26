@@ -47,13 +47,12 @@ class CivicClerkSite(base.Site):
         href = link.attrib['href']
         pattern = '.*?\((?P<id>.*?),.*'
         match = re.match(pattern, href)
-        return 'civicclerk_{}_{}'.format(self.civicclerk_instance, match.group('id'))
+        return (match.group('id'), 'civicclerk_{}_{}'.format(self.civicclerk_instance, match.group('id')))
 
     def get_agenda_items(self, text, parser, session):
         event_tree = etree.parse(StringIO(text), parser)
-        iframe = event_tree.xpath("//iframe")
-        event_frame = iframe[0].attrib['src']
-        event_frame_url = self.base_url + event_frame
+        event_frame = event_tree.xpath("//iframe[@id='docViewer']")[0]
+        event_frame_url = self.base_url + event_frame.attrib['src']
         frame_response = session.get(event_frame_url)
         frame_tree = etree.parse(StringIO(frame_response.text), parser)
 
@@ -61,6 +60,7 @@ class CivicClerkSite(base.Site):
 
     def scrape(self, download=True):
         session = Session()
+        session.headers.update({"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"})
         response = session.get(self.url)
 
         parser = etree.HTMLParser()
@@ -75,9 +75,9 @@ class CivicClerkSite(base.Site):
             committee_name = event.xpath("./td[1]//text()")[1].strip()
             str_datetime = event.xpath("./td[2]//text()")[0].strip()
             meeting_datetime = datetime.strptime(str_datetime, '%m/%d/%Y %I:%M %p')
-            meeting_id = self.get_meeting_id(event)
+            meeting_id_num, meeting_id = self.get_meeting_id(event)
 
-            event_url = f'{self.base_url}/Web/DocumentFrame.aspx?id={meeting_id}&mod=-1&player_tab=-2'
+            event_url = f'{self.base_url}/Web/DocumentFrame.aspx?id={meeting_id_num}&mod=-1&player_tab=-2'
             event_response = session.get(event_url)
 
             agenda_items = []
@@ -90,6 +90,8 @@ class CivicClerkSite(base.Site):
                 assets = [self.create_asset(a, committee_name, meeting_datetime, meeting_id) for a in link_tr]
                 for a in assets:
                     ac.append(a)
+
+        breakpoint()
 
         if download:
             asset_dir = Path(self.cache.path, 'assets')
