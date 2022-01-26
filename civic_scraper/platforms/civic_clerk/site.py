@@ -91,8 +91,6 @@ class CivicClerkSite(base.Site):
                 for a in assets:
                     ac.append(a)
 
-        breakpoint()
-
         if download:
             asset_dir = Path(self.cache.path, 'assets')
             asset_dir.mkdir(parents=True, exist_ok=True)
