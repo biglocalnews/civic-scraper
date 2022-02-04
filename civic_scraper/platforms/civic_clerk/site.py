@@ -24,6 +24,9 @@ class CivicClerkSite(base.Site):
 
         self.session = Session()
         self.session.headers.update({"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"})
+        self.session.hooks = {
+            'response': lambda r, *args, **kwargs: r.raise_for_status()
+        }
 
     def create_asset(self, asset, committee_name, meeting_datetime, meeting_id):
         asset_url, asset_name = asset
@@ -41,18 +44,18 @@ class CivicClerkSite(base.Site):
              'scraped_by': f'civic-scraper_{civic_scraper.__version__}',
              'content_type': 'txt',
              'content_length': None,
-            }
+             }
         return Asset(**e)
 
     def get_meeting_id(self, event):
         link = event.xpath("./td[1]//a")[0]
         href = link.attrib['href']
-        pattern = '.*?\((?P<id>.*?),.*'
+        pattern = r'.*?\((?P<id>.*?),.*'
         match = re.match(pattern, href)
         return (match.group('id'), 'civicclerk_{}_{}'.format(self.civicclerk_instance, match.group('id')))
 
     def get_agenda_items(self, text):
-        event_tree = lxml.html.fromstrinfg(text)
+        event_tree = lxml.html.fromstring(text)
 
         event_frame = event_tree.xpath("//iframe[@id='docViewer']")[0]
         event_frame_url = self.base_url + event_frame.attrib['src']
@@ -61,17 +64,23 @@ class CivicClerkSite(base.Site):
         frame_tree = lxml.html.fromstring(frame_response.text)
         frame_has_table = True if frame_tree.xpath("//table") else False
 
+        assets = []
+
         if frame_has_table:
             assets_list = frame_tree.xpath("//tr[./td[@class='dx-wrap dxtl dxtl__B0' and not(@colspan)]]")
             for item in assets_list:
                 link_tr_text = item.xpath("./following-sibling::tr[1]")[0]
-                assets = [(self.base_url + tr.attrib['href'][2:], tr.xpath("./text()")[0]) for tr in link_tr_text.xpath(".//a") if tr.attrib['href'] != '#']
-                return assets
+                for tr in link_tr_text.xpath(".//a"):
+                    if tr.attrib['href'] != '#':
+                        asset_url = self.base_url + '/Web' + tr.attrib['href'][2:]
+                        asset_name = tr.xpath("./text()")[0]
+                        assets.append((asset_url, asset_name))
         else:
             no_agenda_str = 'Agenda content has not been published for this meeting.'
-            if no_agenda_str in frame_tree.xpath("//text()"):
-                return []
-            return [(event_frame_url, None)]
+            if no_agenda_str not in frame_tree.xpath("//text()"):
+                assets.append((event_frame_url, None))
+
+        return assets
 
     def scrape(self, download=True):
         response = self.session.get(self.url)
