@@ -24,6 +24,7 @@ class CivicClerkSite(base.Site):
 
         self.session = Session()
         self.session.headers.update({"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"})
+        # Raise an error if a request gets a failing status code
         self.session.hooks = {
             'response': lambda r, *args, **kwargs: r.raise_for_status()
         }
@@ -87,6 +88,54 @@ class CivicClerkSite(base.Site):
 
         tree = lxml.html.fromstring(response.text)
 
+        
+        payload = {}
+        payload['__EVENTARGUMENT'] = None
+        payload['__EVENTTARGET'] = None
+        payload['__VIEWSTATE'] = tree.xpath(
+            "//input[@name='__VIEWSTATE']/@value")[0]
+        payload['__VIEWSTATEGENERATOR'] = tree.xpath(
+            "//input[@name='__VIEWSTATEGENERATOR']/@value")[0]
+        payload['__EVENTVALIDATION'] = tree.xpath(
+            "//input[@name='__EVENTVALIDATION']/@value")[0]
+        payload['__CALLBACKID'] = 'aspxroundpanelCurrent$pnlDetails$grdEventsCurrent'
+        payload['__CALLBACKPARAM'] = 'c0:KV|61;["765","726","859","577","738","652","688","791","766","727"];GB|20;12|PAGERONCLICK3|PBN;'
+
+        event_callback_source, = tree.xpath("//script[@id='dxss_1262922130']/text()")
+        import re
+        import html
+        import json
+        import demjson
+        callback_state = demjson.decode(re.search(r'^dxo\.stateObject = \((?P<body>.*)\);$', event_callback_source, re.MULTILINE).group('body'))
+        
+        other_values = {
+	"aspxroundpanelCurrent$pnlDetails$grdEventsCurrent": html.escape(json.dumps(callback_state))}
+        payload.update(other_values)
+        response = self.session.post('https://chaffeecoco.civicclerk.com/web/home.aspx',
+                                     payload)
+
+        breakpoint()
+        import re
+
+        data_str = re.match(r'0\|/\*DX\*/\((?P<body>.*)\)', response.text).group('body')
+
+        import demjson
+        import html
+        import json
+
+        data = demjson.decode(data_str)
+
+        payload['aspxroundpanelCurrent$pnlDetails$grdEventsCurrent'] = html.escape(json.dumps(data['result']['stateObject']))
+
+        response = self.session.post('https://chaffeecoco.civicclerk.com/web/home.aspx',
+                                     payload)
+
+
+        
+
+        breakpoint()
+
+        
         # only the first <=10 events are here; pagination to be handled later
         events = tree.xpath("//table[@id='aspxroundpanelRecent2_ASPxPanel4_grdEventsRecent2_DXMainTable']/tr[@class='dxgvDataRow_CustomThemeModerno']")
 
