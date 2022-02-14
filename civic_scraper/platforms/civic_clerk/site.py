@@ -1,10 +1,13 @@
 import re
-
 from datetime import datetime
-import lxml.html
-from requests import Session
+import html
+import json
 from pathlib import Path
 from urllib.parse import urlparse
+
+import demjson
+import lxml.html
+from requests import Session
 
 import civic_scraper
 from civic_scraper import base
@@ -83,12 +86,11 @@ class CivicClerkSite(base.Site):
 
         return assets
 
-    def scrape(self, download=True):
+    def _future_events(self):
         response = self.session.get(self.url)
 
         tree = lxml.html.fromstring(response.text)
 
-        
         payload = {}
         payload['__EVENTARGUMENT'] = None
         payload['__EVENTTARGET'] = None
@@ -97,45 +99,55 @@ class CivicClerkSite(base.Site):
         payload['__VIEWSTATEGENERATOR'] = tree.xpath(
             "//input[@name='__VIEWSTATEGENERATOR']/@value")[0]
         payload['__EVENTVALIDATION'] = tree.xpath(
-            "//input[@name='__EVENTVALIDATION']/@value")[0]
+                "//input[@name='__EVENTVALIDATION']/@value")[0]
         payload['__CALLBACKID'] = 'aspxroundpanelCurrent$pnlDetails$grdEventsCurrent'
+        #payload['__CALLBACKPARAM'] = 'c0:KV|61;["765","726","859","577","738","652","688","791","766","727"];GB|20;12|PAGERONCLICK3|PBN;'
         payload['__CALLBACKPARAM'] = 'c0:KV|61;["765","726","859","577","738","652","688","791","766","727"];GB|20;12|PAGERONCLICK3|PBN;'
-
-        event_callback_source, = tree.xpath("//script[@id='dxss_1262922130']/text()")
-        import re
-        import html
-        import json
-        import demjson
+            
+        event_callback_source, = tree.xpath('''//script[contains(text(), "var dxo = new ASPxClientGridView('aspxroundpanelCurrent_pnlDetails_grdEventsCurrent');")]/text()''')
         callback_state = demjson.decode(re.search(r'^dxo\.stateObject = \((?P<body>.*)\);$', event_callback_source, re.MULTILINE).group('body'))
+
+        print(callback_state['keys'])
+        payload["aspxroundpanelCurrent$pnlDetails$grdEventsCurrent"] = html.escape(json.dumps(callback_state))
+
+        # __CALLBACKPARAM	"c0:KV|61;[\"859\",\"577\",\"738\",\"652\",\"688\",\"791\",\"766\",\"727\",\"860\",\"594\"];GB|20;12|PAGERONCLICK3|PBN;"
+        #__CALLBACKPARAM	"c0:KV|61;[\"739\",\"653\",\"767\",\"689\",\"792\",\"579\",\"728\",\"861\",\"777\",\"654\"];GB|20;12|PAGERONCLICK3|PBN;"
+        #__CALLBACKPARAM	"c0:KV|31;[\"768\",\"690\",\"793\",\"612\",\"729\"];GB|20;12|PAGERONCLICK3|PN1;"        
+        #__CALLBACKPARAM	"c0:KV|61;[\"739\",\"653\",\"767\",\"689\",\"792\",\"579\",\"728\",\"861\",\"777\",\"654\"];GB|20;12|PAGERONCLICK3|PN0;"
+        #__CALLBACKPARAM	"c0:KV|61;[\"859\",\"577\",\"738\",\"652\",\"688\",\"791\",\"766\",\"727\",\"860\",\"594\"];GB|20;12|PAGERONCLICK3|PN1;"
+        #__CALLBACKPARAM	"c0:KV|61;[\"739\",\"653\",\"767\",\"689\",\"792\",\"579\",\"728\",\"861\",\"777\",\"654\"];GB|20;12|PAGERONCLICK3|PBN;"
+        #__CALLBACKPARAM	"c0:KV|61;[\"859\",\"577\",\"738\",\"652\",\"688\",\"791\",\"766\",\"727\",\"860\",\"594\"];GB|20;12|PAGERONCLICK3|PBN;"
+        #__CALLBACKPARAM	"c0:KV|61;[\"859\",\"577\",\"738\",\"652\",\"688\",\"791\",\"766\",\"727\",\"860\",\"594\"];GB|20;12|PAGERONCLICK3|PN1;"
+
+        # PBN is next
+        while True:
+
+            response = self.session.post(self.url, payload)
+
+            data_str = re.match(r'0\|/\*DX\*/\((?P<body>.*)\)', response.text)\
+                         .group('body')
+
+            data = demjson.decode(data_str)
+
+            callback_state = data['result']['stateObject']
+
+            table_tree = lxml.html.fromstring(data['result']['html'])
+
+            payload['__CALLBACKPARAM'] = 'c0:KV|61;' + json.dumps(callback_state['keys']) + ';GB|20;12|PAGERONCLICK3|PBN;'
+            payload["aspxroundpanelCurrent$pnlDetails$grdEventsCurrent"] = html.escape(json.dumps(callback_state))
+            
+
+
+            yield table_tree
+
+            breakpoint()
+            
         
-        other_values = {
-	"aspxroundpanelCurrent$pnlDetails$grdEventsCurrent": html.escape(json.dumps(callback_state))}
-        payload.update(other_values)
-        response = self.session.post('https://chaffeecoco.civicclerk.com/web/home.aspx',
-                                     payload)
+                       
 
-        breakpoint()
-        import re
-
-        data_str = re.match(r'0\|/\*DX\*/\((?P<body>.*)\)', response.text).group('body')
-
-        import demjson
-        import html
-        import json
-
-        data = demjson.decode(data_str)
-
-        payload['aspxroundpanelCurrent$pnlDetails$grdEventsCurrent'] = html.escape(json.dumps(data['result']['stateObject']))
-
-        response = self.session.post('https://chaffeecoco.civicclerk.com/web/home.aspx',
-                                     payload)
-
-
+    def scrape(self, download=True):
         
-
-        breakpoint()
-
-        
+        list(self._future_events())
         # only the first <=10 events are here; pagination to be handled later
         events = tree.xpath("//table[@id='aspxroundpanelRecent2_ASPxPanel4_grdEventsRecent2_DXMainTable']/tr[@class='dxgvDataRow_CustomThemeModerno']")
 
