@@ -62,8 +62,12 @@ class CivicClerkSite(base.Site):
         event_tree = lxml.html.fromstring(text)
 
         event_frame = event_tree.xpath("//iframe[@id='docViewer']")[0]
-        event_frame_url = self.base_url + event_frame.attrib['src']
 
+        if 'src' not in event_frame.attrib:
+            return []
+
+        event_frame_url = self.base_url + event_frame.attrib['src']
+        
         frame_response = self.session.get(event_frame_url)
         frame_tree = lxml.html.fromstring(frame_response.text)
         frame_has_table = True if frame_tree.xpath("//table") else False
@@ -89,6 +93,7 @@ class CivicClerkSite(base.Site):
     def events(self):
 
         yield from self._future_events()
+        yield from self._past_events()
 
     def _future_events(self):
 
@@ -187,7 +192,6 @@ class CivicClerkSite(base.Site):
             event_response = self.session.get(event_url)
 
             agenda_items = self.get_agenda_items(event_response.text)
-            breakpoint()
 
             if agenda_items:
                 assets = [self.create_asset(a, committee_name, meeting_datetime, meeting_id) for a in agenda_items]
