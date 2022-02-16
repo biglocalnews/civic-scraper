@@ -26,11 +26,10 @@ class CivicClerkSite(base.Site):
         self.cache = cache
 
         self.session = Session()
-        self.session.headers.update(
-            {
-                "User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
-            }
-        )
+        self.session.headers[
+            "User-Agent"
+        ] = "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
+
         # Raise an error if a request gets a failing status code
         self.session.hooks = {
             "response": lambda r, *args, **kwargs: r.raise_for_status()
