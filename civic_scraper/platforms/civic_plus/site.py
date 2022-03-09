@@ -18,21 +18,12 @@ logger = logging.getLogger(__name__)
 
 
 class Site(base.Site):
-
     def __init__(self, base_url, cache=Cache(), parser_kls=Parser):
-        super().__init__(
-            base_url,
-            cache=cache,
-            parser_kls=parser_kls
-        )
-        self.subdomain = urlparse(base_url).netloc.split('.')[0]
-        self.place = self._get_asset_metadata(
-            r'(?<=-)\w+(?=\.)',
-            base_url
-        )
+        super().__init__(base_url, cache=cache, parser_kls=parser_kls)
+        self.subdomain = urlparse(base_url).netloc.split(".")[0]
+        self.place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", base_url)
         self.state_or_province = self._get_asset_metadata(
-            r'(?<=//)\w{2}(?=-)',
-            base_url
+            r"(?<=//)\w{2}(?=-)", base_url
         )
 
     def scrape(
@@ -42,7 +33,7 @@ class Site(base.Site):
         cache=False,
         download=False,
         file_size=None,
-        asset_list=None
+        asset_list=None,
     ):
         """Scrape a government website for metadata and/or docs.
 
@@ -64,13 +55,15 @@ class Site(base.Site):
         response_url, raw_html = self._search(start, end)
         # Cache the raw html from search results page
         if cache:
-            cache_path = f'{self.cache.artifacts_path}/{self._cache_page_name(response_url)}'
+            cache_path = (
+                f"{self.cache.artifacts_path}/{self._cache_page_name(response_url)}"
+            )
             self.cache.write(cache_path, raw_html)
             logger.info(f"Cached search results page HTML: {cache_path}")
         file_metadata = self.parser_kls(raw_html).parse()
         assets = self._build_asset_collection(file_metadata)
         if download:
-            asset_dir = Path(self.cache.path, 'assets')
+            asset_dir = Path(self.cache.path, "assets")
             asset_dir.mkdir(parents=True, exist_ok=True)
             for asset in assets:
                 if self._skippable(asset, file_size, asset_list):
@@ -89,35 +82,34 @@ class Site(base.Site):
         return False
 
     def _cache_page_name(self, response_url):
-        return response_url\
-            .replace(':', '')\
-            .replace('//', '__') \
-            .replace('/', '__')\
-            .replace('?', 'QUERY')
+        return (
+            response_url.replace(":", "")
+            .replace("//", "__")
+            .replace("/", "__")
+            .replace("?", "QUERY")
+        )
 
     def _state_or_province(self, url):
         pass
 
     def _search(self, start_date, end_date):
         params = {
-            'term': '',
-            'CIDs': 'all',
-            'startDate': self._convert_date(start_date),
-            'endDate': self._convert_date(end_date),
-            'dateRange': '',
-            'dateSelector': '',
+            "term": "",
+            "CIDs": "all",
+            "startDate": self._convert_date(start_date),
+            "endDate": self._convert_date(end_date),
+            "dateRange": "",
+            "dateSelector": "",
         }
         # Search URLs follow the below pattern
         # /Search/?term=&CIDs=all&startDate=12/17/2020&endDate=12/18/2020&dateRange=&dateSelector=
-        search_url = self.url.rstrip('/') + '/Search/'
+        search_url = self.url.rstrip("/") + "/Search/"
         response = requests.get(search_url, params=params)
         return response.url, response.text
 
     def _convert_date(self, date_str):
         if date_str:
-            return datetime.datetime\
-                .strptime(date_str, "%Y-%m-%d")\
-                .strftime("%m/%d/%Y")
+            return datetime.datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d/%Y")
         else:
             return None
 
@@ -132,31 +124,33 @@ class Site(base.Site):
         """
         assets = AssetCollection()
         for row in metadata:
-            url = self._mk_url(self.url, row['url_path'])
+            url = self._mk_url(self.url, row["url_path"])
             asset_args = {
-                'state_or_province': self.state_or_province,
-                'place': self.place,
-                'committee_name': row['committee_name'],
-                'meeting_id': self._mk_mtg_id(self.subdomain, row['meeting_id']),
-                'meeting_date': row['meeting_date'],
-                'meeting_time': row['meeting_time'],
-                'asset_name': row['meeting_title'],
-                'asset_type': row['asset_type'],
-                'scraped_by': f'civic-scraper_{civic_scraper.__version__}',
-                'url': url,
+                "state_or_province": self.state_or_province,
+                "place": self.place,
+                "committee_name": row["committee_name"],
+                "meeting_id": self._mk_mtg_id(self.subdomain, row["meeting_id"]),
+                "meeting_date": row["meeting_date"],
+                "meeting_time": row["meeting_time"],
+                "asset_name": row["meeting_title"],
+                "asset_type": row["asset_type"],
+                "scraped_by": f"civic-scraper_{civic_scraper.__version__}",
+                "url": url,
             }
             # TODO: Add conditional here to short-circuit
             # header request based on method option
             headers = requests.head(url, allow_redirects=True).headers
-            asset_args.update({
-                'content_type': headers['content-type'],
-                'content_length': headers['content-length'],
-            })
+            asset_args.update(
+                {
+                    "content_type": headers["content-type"],
+                    "content_length": headers["content-length"],
+                }
+            )
             assets.append(Asset(**asset_args))
         return assets
 
     def _mk_url(self, url, url_path):
-        base_url = url.split('/Agenda')[0]
+        base_url = url.split("/Agenda")[0]
         return urljoin(base_url, url_path)
 
     def _mk_mtg_id(self, subdomain, raw_mtg_id):

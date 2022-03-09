@@ -19,13 +19,17 @@ def test_scrape_defaults():
     cp = CivicPlusSite(url)
     assets = cp.scrape(start_date, end_date)
     assert len(assets) >= 4
-    agenda = [asset for asset in assets if asset.url.endswith('Agenda/_05052020-382')][0]
+    agenda = [asset for asset in assets if asset.url.endswith("Agenda/_05052020-382")][
+        0
+    ]
     assert (
         agenda.url
         == "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05052020-382"
     )
     assert agenda.committee_name == "Board of Commissioners"
-    assert agenda.asset_name == "May 5, 2020 Recessed Meeting/Budget Work Session Agenda"
+    assert (
+        agenda.asset_name == "May 5, 2020 Recessed Meeting/Budget Work Session Agenda"
+    )
     assert agenda.place == "nashcounty"
     assert agenda.state_or_province == "nc"
     assert agenda.asset_type == "agenda"
@@ -40,7 +44,7 @@ def test_scrape_defaults():
     for asset in assets:
         assert asset.meeting_date in expected_meeting_dates
     # Check range of asset types
-    expected_asset_types = ['minutes', 'agenda', 'minutes', 'agenda']
+    expected_asset_types = ["minutes", "agenda", "minutes", "agenda"]
     actual_asset_types = [asset.asset_type for asset in assets]
     assert expected_asset_types == actual_asset_types
 
@@ -212,8 +216,7 @@ def test_scrape_place_state():
 
 
 @patch(
-    'civic_scraper.platforms.civic_plus.site.today_local_str',
-    return_value='2020-05-05'
+    "civic_scraper.platforms.civic_plus.site.today_local_str", return_value="2020-05-05"
 )
 @pytest.mark.vcr()
 def test_scrape_current_day_by_default(today_local_str, tmpdir):
@@ -223,8 +226,10 @@ def test_scrape_current_day_by_default(today_local_str, tmpdir):
     cp.scrape(download=True)
     target_dir = tmpdir.join("assets")
     actual_files = set([f.basename for f in target_dir.listdir()])
-    expected = set([
-        'civicplus_nc-nashcounty_05052020-382_minutes.pdf',
-        'civicplus_nc-nashcounty_05052020-382_agenda.pdf'
-    ])
+    expected = set(
+        [
+            "civicplus_nc-nashcounty_05052020-382_minutes.pdf",
+            "civicplus_nc-nashcounty_05052020-382_agenda.pdf",
+        ]
+    )
     assert actual_files == expected
