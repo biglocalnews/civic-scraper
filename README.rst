@@ -5,9 +5,6 @@
 .. image:: https://img.shields.io/pypi/pyversions/civic-scraper.svg
         :target: https://pypi.python.org/pypi/civic-scraper
 
-.. image:: https://app.travis-ci.com/biglocalnews/civic-scraper.svg?branch=master
-    :target: https://app.travis-ci.com/biglocalnews/civic-scraper
-
 .. image:: https://readthedocs.org/projects/civic-scraper/badge/?version=latest
         :target: https://civic-scraper.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
