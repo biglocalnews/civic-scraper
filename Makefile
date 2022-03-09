@@ -50,12 +50,6 @@ clean-test: ## remove test and coverage artifacts
 lint: ## check style with flake8
 	flake8 civic_scraper tests
 
-test: ## run tests quickly with the default Python
-		py.test
-
-test-all: ## run tests on every Python version with tox
-	tox -p auto
-
 coverage: ## check code coverage quickly with the default Python
 		coverage run --source civic_scraper -m pytest
 		coverage report -m
