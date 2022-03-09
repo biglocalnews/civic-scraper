@@ -77,14 +77,23 @@ USA = [
     "WA",
     "WI",
     "WV",
-    "WY"
+    "WY",
 ]
 
 CANADA = ["AB", "BC", "SK"]
 
-MUNICIPALITY = ['City', 'Village', 'Selectman', 'Select Board', 'Municipal', 'Town', 'Borough']
+MUNICIPALITY = [
+    "City",
+    "Village",
+    "Selectman",
+    "Select Board",
+    "Municipal",
+    "Town",
+    "Borough",
+]
 
 # Code
+
 
 def generate_site_csv(file_in, file_out):
 
@@ -93,9 +102,9 @@ def generate_site_csv(file_in, file_out):
 
     # Read in each line of the .csv, reformat them and add them to a list
 
-    with open(file_in, 'r') as f:
+    with open(file_in, "r") as f:
         for line in f:
-            raw_url = line.strip().strip(',')
+            raw_url = line.strip().strip(",")
             format_url = "http://{}/AgendaCenter".format(raw_url)
             raw_list.append(format_url)
 
@@ -110,7 +119,7 @@ def generate_site_csv(file_in, file_out):
             continue
 
         # If website is reachable, extract metadata
-        soup = bs4.BeautifulSoup(response.text, 'html.parser')
+        soup = bs4.BeautifulSoup(response.text, "html.parser")
         years = soup.find_all(href=re.compile("changeYear"))
 
         name_list = re.search(r"(?<=\://\w{2}-)\w+(?=.)", url.title())
@@ -132,13 +141,22 @@ def generate_site_csv(file_in, file_out):
             state = "Invalid state"
             whitelisted = False
 
-        meeting_bodies = soup.find_all('h2')
+        meeting_bodies = soup.find_all("h2")
         meeting_bodies_list = []
         for body in meeting_bodies:
             meeting_bodies_list.append(body.text[1:])
 
         # Categorize each endpoint by government level
-        if len([str for str in meeting_bodies_list if any(sub in str for sub in MUNICIPALITY)]) > 0:
+        if (
+            len(
+                [
+                    str
+                    for str in meeting_bodies_list
+                    if any(sub in str for sub in MUNICIPALITY)
+                ]
+            )
+            > 0
+        ):
             if len([i for i in meeting_bodies_list if "County" in i]) == 0:
                 govt_level = "Municipality"
             else:
@@ -153,7 +171,7 @@ def generate_site_csv(file_in, file_out):
         if response.status_code == 200 and len(years) != 0:
             years_list = []
             for element in years:
-                link = element.attrs['href']
+                link = element.attrs["href"]
                 year = re.search(r"(?<=\()\d{4}(?=,)", link).group(0)
                 years_list.append(year)
             num_years = len(years_list)
@@ -178,33 +196,30 @@ def generate_site_csv(file_in, file_out):
 
     # Remove duplicates in the list -- endpoints with the same root as the result
     # of aliases
-    clean_list = pd.DataFrame(clean_list).drop_duplicates("root").to_dict('records')
+    clean_list = pd.DataFrame(clean_list).drop_duplicates("root").to_dict("records")
 
     # Write out the list of dictionaries to a csv
-    with open(file_out, 'a', newline='') as file:
+    with open(file_out, "a", newline="") as file:
         dict_writer = csv.DictWriter(file, clean_dict.keys())
         dict_writer.writeheader()
         dict_writer.writerows(clean_list)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     """
     Call generate_site_csv from the command line.
     """
 
     import argparse
 
-
     # Set up parser
     parser = argparse.ArgumentParser()
+    parser.add_argument("file_in", type=str)
     parser.add_argument(
-        'file_in',
-        type=str
-    )
-    parser.add_argument(
-        'file_out',
+        "file_out",
         type=str,
     )
-    
+
     args = parser.parse_args()
 
     # Call function

@@ -7,7 +7,4 @@ def today_local_str():
 
 
 def default_user_home():
-    return join(
-        expanduser('~'),
-        '.civic-scraper'
-    )
+    return join(expanduser("~"), ".civic-scraper")

@@ -54,11 +54,14 @@ def test_cli_store_assets_and_artifacts(civic_scraper_dir):
         cli.cli,
         [
             "scrape",
-            "--start-date", "2020-05-05",
-            "--end-date", "2020-05-05",
+            "--start-date",
+            "2020-05-05",
+            "--end-date",
+            "2020-05-05",
             "--cache",
             "--download",
-            "--url", "http://nc-nashcounty.civicplus.com/AgendaCenter",
+            "--url",
+            "http://nc-nashcounty.civicplus.com/AgendaCenter",
         ],
     )
     artifacts_dir = Path(civic_scraper_dir).joinpath("artifacts")
@@ -73,7 +76,7 @@ def test_cli_store_assets_and_artifacts(civic_scraper_dir):
     assert len(list_dir(assets_dir)) == 2
 
 
-@patch('civic_scraper.cli.Runner')
+@patch("civic_scraper.cli.Runner")
 @pytest.mark.usefixtures("set_default_env")
 def test_cli_store_csv_urls(runner_class, civic_scraper_dir):
     "Scrape should allow submission of URLs via CSV file"
@@ -82,23 +85,25 @@ def test_cli_store_csv_urls(runner_class, civic_scraper_dir):
         cli.cli,
         [
             "scrape",
-            "--start-date", "2020-05-05",
-            "--end-date", "2020-05-05",
+            "--start-date",
+            "2020-05-05",
+            "--end-date",
+            "2020-05-05",
             "--cache",
             "--download",
             "--urls-file",
-            path_to_test_dir_file("fixtures/url_input.csv")
+            path_to_test_dir_file("fixtures/url_input.csv"),
         ],
     )
     kwargs = {
-        'start_date': "2020-05-05",
-        'end_date': "2020-05-05",
-        'cache': True,
-        'download': True,
-        'site_urls': [
+        "start_date": "2020-05-05",
+        "end_date": "2020-05-05",
+        "cache": True,
+        "download": True,
+        "site_urls": [
             "http://nc-nashcounty.civicplus.com/AgendaCenter",
-            "https://wi-columbus.civicplus.com/AgendaCenter"
-        ]
+            "https://wi-columbus.civicplus.com/AgendaCenter",
+        ],
     }
     runner_instance = runner_class.return_value
     runner_instance.scrape.assert_called_once_with(**kwargs)

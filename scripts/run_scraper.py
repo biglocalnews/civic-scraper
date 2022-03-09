@@ -29,11 +29,11 @@ from civic_scraper.scrapers import SUPPORTED_SITES
 
 
 def run_scraper(
-        scraper_type: str,
-        endpoint: str,
-        target_path: str,
-        scraper_args: dict = None,
-    ):
+    scraper_type: str,
+    endpoint: str,
+    target_path: str,
+    scraper_args: dict = None,
+):
     """
     Run a specified scraper on a specified site, possibly with arguments,
     and write the resulting asset list as a csv to a specified path
@@ -58,47 +58,43 @@ def run_scraper(
     try:
         scraper = SUPPORTED_SITES[scraper_type]
     except KeyError:
-        raise ValueError('Unable to instantiate scraper: '
-                         '{}'.format(scraper_type))
+        raise ValueError("Unable to instantiate scraper: " "{}".format(scraper_type))
     site = scraper(endpoint)
 
     # scrape the specified site
     try:
         asset_collection = site.scrape(**scraper_args)
     except Exception:
-        raise Exception('Unable to scrape with args: '
-                        '{}'.format(scraper_args))
+        raise Exception("Unable to scrape with args: " "{}".format(scraper_args))
 
     # write results to the specified file location
     try:
         asset_collection.to_csv(target_path)
     except Exception:
-        raise Exception('Unable to write asset list to path: '
-                        '{}'.format(target_path))
+        raise Exception("Unable to write asset list to path: " "{}".format(target_path))
     return asset_collection
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     """
     Call run_scraper from the command line.
     """
     # parse arguments
     import argparse
     import json
+
     parser = argparse.ArgumentParser()
+    parser.add_argument("scraper_type", type=str)
     parser.add_argument(
-        'scraper_type',
-        type=str
-    )
-    parser.add_argument(
-        'endpoint',
+        "endpoint",
         type=str,
     )
     parser.add_argument(
-        'target_path',
+        "target_path",
         type=str,
     )
     parser.add_argument(
-        '--scraper_args',
+        "--scraper_args",
         type=json.loads,  # imports a dict from escaped JSON
         default={},
     )
@@ -111,4 +107,3 @@ if __name__ == '__main__':
         target_path=args.target_path,
         scraper_args=args.scraper_args,
     )
-

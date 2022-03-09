@@ -81,7 +81,9 @@ class Runner:
         logger.info(f"Wrote asset metadata CSV: {metadata_file}")
         if download:
             download_counter = 0
-            logger.info(f"Downloading {len(asset_collection)} file asset(s) to {cache_obj.assets_path}...")
+            logger.info(
+                f"Downloading {len(asset_collection)} file asset(s) to {cache_obj.assets_path}..."
+            )
             for asset in asset_collection:
                 # TODO: Add error-handling here
                 logger.info(f"\t{asset.url}")
@@ -96,5 +98,5 @@ class Runner:
         return getattr(mod, class_name)
 
     def _get_site_class_name(self, url):
-        if re.search(r'(civicplus|AgendaCenter)', url):
+        if re.search(r"(civicplus|AgendaCenter)", url):
             return "CivicPlusSite"

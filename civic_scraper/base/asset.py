@@ -43,7 +43,7 @@ class Asset:
         meeting_id: str = None,
         scraped_by: str = None,
         content_type: str = None,
-        content_length: str = None
+        content_length: str = None,
     ):
         self.url = url
         self.asset_name = asset_name
@@ -59,7 +59,7 @@ class Asset:
         self.content_length = content_length
 
     def __repr__(self):
-        return f'Asset({self.url})'
+        return f"Asset({self.url})"
 
     def download(self, target_dir, session=None):
         """
@@ -77,20 +77,19 @@ class Asset:
             # meeting id reflects date and numeric identifier
             self.meeting_id,
             self.asset_type,
-            file_extension
+            file_extension,
         )
         if session:
             response = session.get(self.url, allow_redirects=True)
         else:
             response = requests.get(self.url, allow_redirects=True)
         full_path = os.path.join(target_dir, file_name)
-        with open(full_path, 'wb') as outfile:
+        with open(full_path, "wb") as outfile:
             outfile.write(response.content)
         return full_path
 
 
 class AssetCollection(list):
-
     def to_csv(self, target_dir):
         """
         Write metadata about the asset list to a csv.
@@ -104,29 +103,27 @@ class AssetCollection(list):
             Path to file written.
         """
         headers = [
-            'place',
-            'state_or_province',
-            'meeting_date',
-            'meeting_time',
-            'committee_name',
-            'meeting_id',
-            'asset_name',
-            'asset_type',
-            'url',
-            'scraped_by',
-            'content_type',
-            'content_length',
+            "place",
+            "state_or_province",
+            "meeting_date",
+            "meeting_time",
+            "committee_name",
+            "meeting_id",
+            "asset_name",
+            "asset_type",
+            "url",
+            "scraped_by",
+            "content_type",
+            "content_length",
         ]
-        tstamp = datetime.datetime\
-            .utcnow()\
-            .strftime("%Y%m%dT%H%M")
-        file_name = f'civic_scraper_assets_meta_{tstamp}z.csv'
+        tstamp = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M")
+        file_name = f"civic_scraper_assets_meta_{tstamp}z.csv"
         path = os.path.join(target_dir, file_name)
         rows = [asset.__dict__ for asset in self]
         # Ensure output dir exists
         Path(target_dir).mkdir(parents=True, exist_ok=True)
         # Write the file
-        with open(path, 'w') as out:
+        with open(path, "w") as out:
             writer = csv.DictWriter(out, fieldnames=headers)
             writer.writeheader()
             writer.writerows(rows)
