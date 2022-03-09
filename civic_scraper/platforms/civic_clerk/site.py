@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
-import demjson
+import demjson3 as demjson
 import lxml.html
 from requests import Session
 
