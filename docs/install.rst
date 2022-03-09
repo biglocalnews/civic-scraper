@@ -20,7 +20,7 @@ You should also be able to import the :code:`civic_scraper` package from a Pytho
   import civic_scraper
   print(civic_scraper.__version__)
 
-.. note:: See :ref:`the usage docs <usage>` for details on using *civic-scraper* on 
+.. note:: See :ref:`the usage docs <usage>` for details on using *civic-scraper* on
   the command line and in custom scripts.
 
 .. _default cache dir:

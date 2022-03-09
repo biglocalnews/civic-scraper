@@ -1,5 +1,5 @@
 from datetime import datetime
-from os.path import join, expanduser
+from os.path import expanduser, join
 
 
 def today_local_str():

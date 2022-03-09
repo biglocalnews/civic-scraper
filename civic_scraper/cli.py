@@ -3,7 +3,7 @@ import logging
 import os
 
 import click
-from click_option_group import optgroup, RequiredMutuallyExclusiveOptionGroup
+from click_option_group import RequiredMutuallyExclusiveOptionGroup, optgroup
 
 from civic_scraper.runner import Runner
 from civic_scraper.utils import default_user_home, today_local_str

@@ -1,5 +1,5 @@
-import pytest
 import logging
+
 from civic_scraper.platforms import LegistarSite
 
 logging.basicConfig(level="DEBUG")

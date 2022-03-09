@@ -15,7 +15,7 @@
 					<script type='text/javascript'>
 						var enableTelemetry = 'false'
 						var aiConfig = {
-						instrumentationKey: '1cde048e-3185-4906-aa46-c92a7312b60f'						
+						instrumentationKey: '1cde048e-3185-4906-aa46-c92a7312b60f'
 						}
 						var appInsights = window.appInsights || function (a) { function b(a) { c[a] = function () { var b = arguments; c.queue.push(function () { c[a].apply(c, b) }) } } var c = { config: a }, d = document, e = window; setTimeout(function () { var b = d.createElement('script'); b.src = a.url || 'https://az416426.vo.msecnd.net/scripts/a/ai.0.js', d.getElementsByTagName('script')[0].parentNode.appendChild(b) }); try { c.cookie = d.cookie } catch (a) { } c.queue = []; for (var f = ['Event', 'Exception', 'Metric', 'PageView', 'Trace', 'Dependency']; f.length;)b('track' + f.pop()); if (b('setAuthenticatedUserContext'), b('clearAuthenticatedUserContext'), b('startTrackEvent'), b('stopTrackEvent'), b('startTrackPage'), b('stopTrackPage'), b('flush'), !a.disableExceptionTracking) { f = 'onerror', b('_' + f); var g = e[f]; e[f] = function (a, b, d, e, h) { var i = g && g(a, b, d, e, h); return !0 !== i && c['_' + f](a, b, d, e, h), i } } return c }(aiConfig);
 						window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length;
@@ -31,7 +31,7 @@
 										return false;
 								}
 							});
-						});						
+						});
 						appInsights.trackPageView();
 					</script>
 			<script>
@@ -46,7 +46,7 @@
 					}
 				}, false);
 			</script>
-			
+
 	<script type="text/javascript">
         window.isResponsiveEnabled = true;
 		window.isRemoveSetHeights= false;
@@ -79,13 +79,13 @@
 		}());
 	</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	
+
+
 	<meta name="theme-color" content="#1071b1">
 	<link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
 	<title>Las Cruces, NM</title>
-				
+
 	<!--[if IE 6]><script language="JavaScript" type="text/javascript"> var isie6 = true; </script><![endif]-->
 	<!--[if IE 7]><script language="JavaScript" type="text/javascript"> var isie7 = true; </script><![endif]-->
 	<!--[if IE 8]><script language="JavaScript" type="text/javascript"> var isie8 = true; </script><![endif]-->
@@ -95,7 +95,7 @@
 	var externalSiteDialogHeight = '390px';
 	var order = '';
 //--></script>
-	
+
 	<link href="/-1859218124.css" rel="stylesheet" type="text/css" />	<link href="/-1950283178.css" rel="stylesheet" type="text/css" />
 
 	<link rel="stylesheet" type="text/css" href="/Assets/Styles/Print.css" media="print">
@@ -112,20 +112,20 @@
 	</script>
 	<!--CPHeadContent-->
 	<script src="/-1202706238.js" type="text/javascript"></script>
-	
-	
-	
+
+
+
 <script type="text/javascript" src="/Scripts/HtmlExtensionSupport.js"></script>
 
 <link type="text/css" href="/asset.axd?id=kgAAAB-LCAAAAAAABABVjTEKhDAURO8ydYj5K1qk9RiLxRIjiCZZzF8RJHf34xZiN_PewBwYYN8HvrDoUmQfGQrjxaIw9otfp1m7FEKK2uUsOsGaop6Dbcr8uT2VvvQKjq_JztXfbFJfhkjXmogaIU7-67aRAMvrz5cTeII6tJIAAAA%3d" rel="stylesheet"/>
 
 	<link href="/718583105.css" rel="stylesheet" type="text/css" />
-    <script src="/14692419.js" type="text/javascript"></script>    
+    <script src="/14692419.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	    $(document).ready(function () {
 	        $('body').append('<div id="cpDatePickerWrapperAgenda" class="bottom leftEdge" style="position:absolute; width: 300px"></div>');
 		    cp.datetimepicker.createDatePicker('#StartDatePicker', {format:'mm/dd/yyyy'});
-		    cp.datetimepicker.createDatePicker('#EndDatePicker', { format: 'mm/dd/yyyy' });		    
+		    cp.datetimepicker.createDatePicker('#EndDatePicker', { format: 'mm/dd/yyyy' });
 			$('.popoutContainer > a').click(function (e) {
 				e.preventDefault();
 			});
@@ -137,15 +137,15 @@
 			});
 
 			$('#searchField').keypress(function (e) {
-			    if (e.which == 13 || e.keyCode == 13) {			     
+			    if (e.which == 13 || e.keyCode == 13) {
 			        $('#searchButton').trigger('click');
-			    }			    
+			    }
 			});
 
 			$('#selectCategoryButton').click(function () {
 	           	//Hide all popups already open if nesessary.
 	           	$('.popUp').fadeOut(200).removeClass('popped');
-	           	$('.popUpParent').removeClass('popped'); 
+	           	$('.popUpParent').removeClass('popped');
 
 				$elem = $('#categoryList');
 	        	if ($elem.is(':visible')) {
@@ -230,7 +230,7 @@
 			$('#categoryList').toggle();
 		}
 
-		function doSearch() {		    
+		function doSearch() {
 			var term = $('#searchField').val();
 
 			var startDate = $('#StartDatePicker').val();
@@ -258,7 +258,7 @@
 			return (term && term != null && term.trim() != '' && term.trim() != $('#searchField').attr('placeholder'));
 		}
 
-		function getDatePicker(id) {		    
+		function getDatePicker(id) {
 		    var datePicker = $('#' + id);
 			return datePicker;
 		}
@@ -330,9 +330,9 @@
 			$('#timePeriod').toggleClass('open');
 		}
 
-		
+
 	</script>
-	
+
 	<script src="/2068681422.js" type="text/javascript"></script>
 <script type="text/javascript">
     window.onload = function () {
@@ -368,7 +368,7 @@
                     //$('ul.years').html($('<li class="current"><a>' + year + '</a></li>'));
                     $('.catAgendaRow').hide();
                     $(rowAgendaID).show();
-                    
+
                 }
             });
         }
@@ -404,11 +404,11 @@
 		setEditorVariables(false, 840);
 		function getPrintPreviewType() { return 0; } function printPreview() {pPreview(getPrintPreviewType()); }
 	</script>
-	
+
 </head>
 <body class="wide " >
 
-	
+
 
 	<div id="fb-root"></div>
 <div id=skipToContentLinks>
@@ -437,13 +437,13 @@
 	<div id="outer-wrap" class="outer-wrap">
 		<div id="inner-wrap" class="inner-wrap">
 				<div id="divToolbars" class="cpToolbars newCP" style="">
-					
+
 <style>
-@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700); 
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700);
 .alertText .customAlert {
     color: #EAEAEA;
     display: inline-block;
-    font-family: 'Open Sans Condensed', sans-serif; 
+    font-family: 'Open Sans Condensed', sans-serif;
     text-transform: uppercase;
     font-weight: bold;
     height: 27px;
@@ -470,14 +470,14 @@
     </div>
   </div>
   <div id="98_divAlertBarEmpty" class="alertBarEmpty"></div>
-  
+
 <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/App_Themes/CP/ie7.css"><![endif]-->
 <!-- Allow Dashboard, Favorites Enabled -->
 
 				</div>
 			<div id="bodyWrapper">
 				<div id="mainNavHolderMobile" class="mainNavHolderMobile"></div>
-				
+
 <div data-cpRole="structuralContainer" id="structuralContainer1">
 <div data-cpRole="structuralContainer" id="structuralContainer2" class="fixedTop_ts">
 <div class="siteWrap"><header class="siteHeader"><div data-cpRole="banner" id="banner2" class="logo empty">
@@ -489,13 +489,13 @@
 " class="bannerObject" href="/" target="_self"><img alt="Homepage" class="bannerObject" height="62" src="/ImageRepository/Document?documentID=34" width="375" /></a>
 
 </div><aside data-cpRole="contentContainer" id="contentContainer2a" class="search">	<div id="cc01021876-5297-4839-9da8-d57fd55893ac" data-containerid="01021876-5297-4839-9da8-d57fd55893ac" class="pageContent cpGrid cpGrid24 isLockedContainer showInMobile" data-contentcontainerbreakpoint="25">
-				                
+
 
 		<div class="row outer wide"><!--
---><div class="outer col col10 first" style="" data-widgetcontainerid="8e5efdb3-35a2-475d-8c82-8b32e75e83da">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col10 first last id38d01ffd-7dbe-4e0c-b6ea-9f58e9f2eeb6" style="" data-widgetcontainerid="38d01ffd-7dbe-4e0c-b6ea-9f58e9f2eeb6">	
+--><div class="outer col col10 first" style="" data-widgetcontainerid="8e5efdb3-35a2-475d-8c82-8b32e75e83da">
+	<div class="row nest first last wide">
+
+	<div class="inner col col10 first last id38d01ffd-7dbe-4e0c-b6ea-9f58e9f2eeb6" style="" data-widgetcontainerid="38d01ffd-7dbe-4e0c-b6ea-9f58e9f2eeb6">
 <div data-widget-id="c2dd2bbf-8aa6-4b5a-bcf5-a6dc292efca6" data-widget-controller-path="/GraphicLinks/Widget">
 
 
@@ -506,35 +506,35 @@
 		<div class="">
 				</div>
 	</div>
-	<div class="widgetBody cpGrid cpGrid4 ">	
+	<div class="widgetBody cpGrid cpGrid4 ">
 			<div class="row   wide"><!--
 --><div class="col col1 first "><div class="semanticList"><!--
-	    --><div class="widgetItem GraphicLinks"><a class="widgetDesc widgetGraphicLinksLink" href="https://www.facebook.com/CityofLasCruces" target="_self"  aria-label="Facebook graphic"><img src="/ImageRepository/Document?documentID=38" 
-     class="graphicButtonLink" alt="Facebook" 
-     onmouseover="this.src='/ImageRepository/Document?documentID=39'" 
+	    --><div class="widgetItem GraphicLinks"><a class="widgetDesc widgetGraphicLinksLink" href="https://www.facebook.com/CityofLasCruces" target="_self"  aria-label="Facebook graphic"><img src="/ImageRepository/Document?documentID=38"
+     class="graphicButtonLink" alt="Facebook"
+     onmouseover="this.src='/ImageRepository/Document?documentID=39'"
 	onmouseout="this.src='/ImageRepository/Document?documentID=38'"
-     onfocus="this.src='/ImageRepository/Document?documentID=39'" 
+     onfocus="this.src='/ImageRepository/Document?documentID=39'"
 	onblur="this.src='/ImageRepository/Document?documentID=38'"> </a></div><!--
 --></div></div><!----><div class="col col1  "><div class="semanticList"><!--
-	    --><div class="widgetItem GraphicLinks"><a class="widgetDesc widgetGraphicLinksLink" href="https://www.instagram.com/cityoflascrucesgov/" target="_self"  aria-label="Instagram graphic"><img src="/ImageRepository/Document?documentID=40" 
-     class="graphicButtonLink" alt="Instagram" 
-     onmouseover="this.src='/ImageRepository/Document?documentID=41'" 
+	    --><div class="widgetItem GraphicLinks"><a class="widgetDesc widgetGraphicLinksLink" href="https://www.instagram.com/cityoflascrucesgov/" target="_self"  aria-label="Instagram graphic"><img src="/ImageRepository/Document?documentID=40"
+     class="graphicButtonLink" alt="Instagram"
+     onmouseover="this.src='/ImageRepository/Document?documentID=41'"
 	onmouseout="this.src='/ImageRepository/Document?documentID=40'"
-     onfocus="this.src='/ImageRepository/Document?documentID=41'" 
+     onfocus="this.src='/ImageRepository/Document?documentID=41'"
 	onblur="this.src='/ImageRepository/Document?documentID=40'"> </a></div><!--
 --></div></div><!----><div class="col col1  "><div class="semanticList"><!--
-	    --><div class="widgetItem GraphicLinks"><a class="widgetDesc widgetGraphicLinksLink" href="https://twitter.com/clcgov" target="_self"  aria-label="Twitter graphic"><img src="/ImageRepository/Document?documentID=42" 
-     class="graphicButtonLink" alt="Twitter" 
-     onmouseover="this.src='/ImageRepository/Document?documentID=43'" 
+	    --><div class="widgetItem GraphicLinks"><a class="widgetDesc widgetGraphicLinksLink" href="https://twitter.com/clcgov" target="_self"  aria-label="Twitter graphic"><img src="/ImageRepository/Document?documentID=42"
+     class="graphicButtonLink" alt="Twitter"
+     onmouseover="this.src='/ImageRepository/Document?documentID=43'"
 	onmouseout="this.src='/ImageRepository/Document?documentID=42'"
-     onfocus="this.src='/ImageRepository/Document?documentID=43'" 
+     onfocus="this.src='/ImageRepository/Document?documentID=43'"
 	onblur="this.src='/ImageRepository/Document?documentID=42'"> </a></div><!--
 --></div></div><!----><div class="col col1  last"><div class="semanticList"><!--
-	    --><div class="widgetItem GraphicLinks"><a class="widgetDesc widgetGraphicLinksLink" href="https://www.youtube.com/user/CLCTV20" target="_self"  aria-label="YouTube graphic"><img src="/ImageRepository/Document?documentID=44" 
-     class="graphicButtonLink" alt="YouTube" 
-     onmouseover="this.src='/ImageRepository/Document?documentID=45'" 
+	    --><div class="widgetItem GraphicLinks"><a class="widgetDesc widgetGraphicLinksLink" href="https://www.youtube.com/user/CLCTV20" target="_self"  aria-label="YouTube graphic"><img src="/ImageRepository/Document?documentID=44"
+     class="graphicButtonLink" alt="YouTube"
+     onmouseover="this.src='/ImageRepository/Document?documentID=45'"
 	onmouseout="this.src='/ImageRepository/Document?documentID=44'"
-     onfocus="this.src='/ImageRepository/Document?documentID=45'" 
+     onfocus="this.src='/ImageRepository/Document?documentID=45'"
 	onblur="this.src='/ImageRepository/Document?documentID=44'"> </a></div><!--
 --></div></div><!--			--></div>
 	</div>
@@ -547,12 +547,12 @@
 
 	</div> <!-- inner row -->
 
-			</div><!-- outer column --><!----><div class="outer col col14 last" style="" data-widgetcontainerid="a98b71fe-3583-4dc0-bbe7-5b7d00b21756">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col14 first last id1b494887-f415-4a4c-9326-cd58e8294d50" style="" data-widgetcontainerid="1b494887-f415-4a4c-9326-cd58e8294d50">	
+			</div><!-- outer column --><!----><div class="outer col col14 last" style="" data-widgetcontainerid="a98b71fe-3583-4dc0-bbe7-5b7d00b21756">
+	<div class="row nest first last wide">
+
+	<div class="inner col col14 first last id1b494887-f415-4a4c-9326-cd58e8294d50" style="" data-widgetcontainerid="1b494887-f415-4a4c-9326-cd58e8294d50">
 <div data-widget-id="bf4651d7-11d2-4cfe-bf9b-4b820ca090ac" data-widget-controller-path="/Layout/WidgetSearch">
-	
+
 		<script defer type="text/javascript" src="/Common/Controls/jquery-ui/js/jquery.ui.autocomplete.min.js"></script>
 	<script defer src="/Areas/Layout/Assets/Scripts/Search.js" type="text/javascript"></script>
 	<script defer type="text/javascript">
@@ -663,7 +663,7 @@
 
 
 <style scoped>
-    
+
         .widgetSearch ::-webkit-input-placeholder {
         color: #333333;
       }
@@ -676,7 +676,7 @@
     .widgetSearch :-ms-input-placeholder {
        color: #333333;
     }
-    
+
 
 	.widgetSearch .widgetBody .widgetSearchBoxbf4651d7-11d2-4cfe-bf9b-4b820ca090ac
 	{
@@ -691,8 +691,8 @@
 	{
 		display: inline-block;
 		color: #333;
-		
-		
+
+
 		 padding-top: 10px;
 	}
 	#ysnSearchOnlyDeptbf4651d7-11d2-4cfe-bf9b-4b820ca090ac
@@ -780,13 +780,13 @@
 </div><div data-cpRole="structuralContainer" id="structuralContainer3">
 <div data-cpRole="banner" id="banner1"><div data-cpRole="structuralContainer" id="structuralContainer4">
 <div class="siteWrap2"><aside data-cpRole="contentContainer" id="contentContainer4a">	<div id="cc5c358e0a-29f7-4e38-ab0e-56489475fe25" data-containerid="5c358e0a-29f7-4e38-ab0e-56489475fe25" class="pageContent cpGrid cpGrid24 isLockedContainer showInMobile" data-contentcontainerbreakpoint="1">
-				                
+
 
 		<div class="row outer autoWidths center wide"><!--
---><div class="outer col col24 first last" style="" data-widgetcontainerid="6fd83935-16dc-42ea-986b-53ea4b4bafe3">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col24 first last id276a2028-2c24-4eeb-8d82-151c2b69ae2a" style="" data-widgetcontainerid="276a2028-2c24-4eeb-8d82-151c2b69ae2a">	
+--><div class="outer col col24 first last" style="" data-widgetcontainerid="6fd83935-16dc-42ea-986b-53ea4b4bafe3">
+	<div class="row nest first last wide">
+
+	<div class="inner col col24 first last id276a2028-2c24-4eeb-8d82-151c2b69ae2a" style="" data-widgetcontainerid="276a2028-2c24-4eeb-8d82-151c2b69ae2a">
 
 	<div class="widget slideShow  skin43" id="slideshow62d7b36b-e828-40b0-8948-f17d6496be22" data-widgetID="62d7b36b-e828-40b0-8948-f17d6496be22">
         <input type="hidden" class="slideTiming" value="5"/>
@@ -804,7 +804,7 @@
 							</li>
 		</ol>
 
-	
+
 	</div>
 	<script type="text/javascript">
 	    // <!--
@@ -953,16 +953,16 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 			});
 		});
 		// -->
-	</script>	
+	</script>
 
 
-		</div>	
+		</div>
 
 <script type="text/javascript">
 	$(document).ready(function (e) {
 		$('.slideshowOptions.nonEmpty').unbind('click').click(function (e) {
 			var $this = $(this);
-			// If the parent is a slider we need to tweak our "this" reference to refer to the options handle. 
+			// If the parent is a slider we need to tweak our "this" reference to refer to the options handle.
 			// This came about, because we needed to use slider images to trigger options. - JE
 			if ($this.parent().hasClass('cpSlider')) {
 				$this = $this.closest('.widget.slideShow').siblings('.handle.options');
@@ -1018,7 +1018,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		if (is_ie) {
 			$('.widget.slideShow').css('overflow', 'hidden').parents('.row.nest').css('overflow', 'hidden');
 		}
-		
+
         var hasEditRights = false;
         if (window.File && window.FileList && window.FileReader && hasEditRights) {
             var SlideshowWidget = 3;
@@ -1026,7 +1026,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
         }
 
 		if(hasEditRights)
-    		browserVersionNotCompatibleWithDragDropTextUpdate($('#slideshowPlaceholder' + '62d7b36b-e828-40b0-8948-f17d6496be22'), 'Click to start adding images.');    	
+    		browserVersionNotCompatibleWithDragDropTextUpdate($('#slideshowPlaceholder' + '62d7b36b-e828-40b0-8948-f17d6496be22'), 'Click to start adding images.');
     });
 
     function SlideshowWidgetCallback(widgetID, response) {
@@ -1046,7 +1046,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 
         $('.slideshowOptions.nonEmpty').unbind('click').click(function (e) {
             var $this = $(this);
-            // If the parent is a slider we need to tweak our "this" reference to refer to the options handle. 
+            // If the parent is a slider we need to tweak our "this" reference to refer to the options handle.
             // This came about, because we needed to use slider images to trigger options. - JE
             if ($this.parent().hasClass('cpSlider')) {
                 $this = $this.closest('.widget.slideShow').siblings('.handle.options');
@@ -1128,13 +1128,13 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 			<li><a class="breadCrumb" href="/">Home</a></li><li>Agenda Center</li>
 		</ol>
 
-	   
-    
+
+
 </div><div data-cpRole="mainContentContainer" id="moduleContent">
 	<a id="contentarea"></a>
-	
+
 <!-- BEGIN AgendaCenterContent.aspx ***** -->
-     
+
 <input type="hidden" name="dateRange" />
 	<div id="AgendaCenterContent" class="newCP moduleContentNew ">
 		<div class="contentMain selfClear">
@@ -1144,33 +1144,33 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 						<img src="/Areas/AgendaCenter/Assets/Images/HomeModuleIconLarge.png" alt="Agendas module icon" width="74" height="74" />
 					</a>
 				</div>
-				
+
 				<div class="text">
-                    
+
 					    <h1>Agenda Center</h1>
-				    View current agendas and minutes for all boards, committees, and commissions. 
+				    View current agendas and minutes for all boards, committees, and commissions.
 				</div>
-			
-				
+
+
 				<div class="tools">
 					<h3>Tools</h3>
 					<ul>
-						
+
 								<li><a href="/rss.aspx#agendaCenter" aria-label="AgendaCenterRSS" class="RSS">RSS</a></li>
 						<li><a href="/list.aspx#agendaCenter" class="notifyMe">Notify Me®</a></li>
-						
+
 					</ul>
 				</div>
-				
+
 				<div class="search selfClear">
 					<h3>Search Agendas by:</h3>
 					<div class="noWrap">
 						<div class="popoutContainer">
-							<label class="screenRead" for="timePeriod">Time Period</label> 
+							<label class="screenRead" for="timePeriod">Time Period</label>
 							<a id="timePeriod" onkeypress="return this.onclick();" onclick="showTimePeriodDropdown(event); return false;" href="" class="button"><span>Time Period</span></a>
 							<div class="popout popUp" style="display:none;" id="dateRangePopup">
 								<div class="popoutTop">
-									<div class="popoutBtm">									
+									<div class="popoutBtm">
 										<ol name="quickDateRange" id="submittedIn">
 											<li id="liTimePeriod" style="display:none;"><a href=""onkeypress="this.onclick();" onclick="resetDateDefaults(); return false;">Time Period</a></li>
 											<li><a href=""onkeypress="this.onclick();" onclick="changeDateRange('1', 'Last Week'); return false;">Last Week</a></li>
@@ -1182,18 +1182,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 								</div>
 							</div>
 						</div>
-						<div class="date">						
+						<div class="date">
                             <div class="t-widget t-datepicker">
-                                <div class="t-picker-wrap">                                    
-									<label class="screenRead" for="StartDatePicker">Start Date</label>                                  
+                                <div class="t-picker-wrap">
+									<label class="screenRead" for="StartDatePicker">Start Date</label>
                                     <input class="submittedStart" cp5ph="true" id="StartDatePicker" name="StartDate" placeholder="Start Date" title="Start Date" type="text" value="11/08/2020" />
-                                </div>                                
+                                </div>
                             </div>
-						</div>                         
-						<div class="date">						
+						</div>
+						<div class="date">
                             <div class="t-widget t-datepicker">
-                                <div class="t-picker-wrap">                                
-									<label class="screenRead" for="EndDatePicker">End Date</label>                                 
+                                <div class="t-picker-wrap">
+									<label class="screenRead" for="EndDatePicker">End Date</label>
                                   <input class="submittedEnd" cp5ph="true" id="EndDatePicker" name="EndDate" placeholder="End Date" title="End Date" type="text" value="12/15/2020" />
                                </div>
                              </div>
@@ -1209,599 +1209,599 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<input type="image" id="searchButton"  src="/Common/images/SearchButton.png" title="Agenda Center Search" alt="Agenda Center Search">
 					<div id="categoryList" style="display:none; " class="categoryList">
 						<div>
-							
+
 									 <ol>
-									 									 
+
 										 <li>
 										 <input type="checkbox" onkeypress="this.onclick();" onclick="checkUncheckAll(this.checked);" id="allCategories" checked>
 										 <label for="allCategories">All Categories</label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="50" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="50"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="50">
 								2020 Census Complete Count Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="5" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="5"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="5">
 								ADA Advisory Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="6" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="6"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="6">
 								AHLBTF Advisory Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="7" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="7"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="7">
 								Airport Advisory Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="8" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="8"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="8">
 								Animal Care Task Force
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="48" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="48"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="48">
 								Animal Service Center of the Mesilla Valley
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="9" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="9"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="9">
 								Board of Commissioners for Las Cruces Utilities
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="10" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="10"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="10">
 								Capital Improvements Advisory Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="4" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="4"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="4">
 								City Art Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="39" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="39"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="39">
 								City Council
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="11" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="11"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="11">
 								Communications PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="41" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="41"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="41">
 								Comprehensive Plan Advisory Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="12" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="12"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="12">
 								CVB Advisory Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="14" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="14"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="14">
 								DAC Juvenile Justice Continuum Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="13" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="13"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="13">
 								Development Review Committee
-								
+
 										 </label>
 										 </li>
-								
+
 									 </ol>
-					
+
 									 <ol>
-									 
+
 										<li>
 										 <input type="checkbox" id="42" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="42"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="42">
 								Downtown Parking Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="16" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="16"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="16">
 								Economic Development PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="53" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="53"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="53">
 								El Paseo & South Solano Ad Hoc Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="17" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="17"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="17">
 								Finance PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="18" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="18"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="18">
 								Health and Human Services Advisory Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="19" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="19"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="19">
 								Health PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="20" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="20"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="20">
 								Historic Preservation Commission
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="21" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="21"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="21">
 								Housing PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="22" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="22"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="22">
 								Infrastructure/CIP PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="51" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="51"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="51">
 								Integrated Pest Management Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="52" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="52"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="52">
 								Las Cruces Economic Recovery Ad Hoc Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="40" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="40"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="40">
 								LC Partnership for Community Schools
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="49" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="49"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="49">
 								Mayor's Suicide Prevention Taskforce
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="46" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="46"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="46">
 								Metro Narcotics
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="24" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="24"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="24">
 								MPO Bicycle and Pedestrian Facilities Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="25" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="25"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="25">
 								MPO Policy Committee
-								
+
 										 </label>
 										 </li>
-								
+
 									 </ol>
-					
+
 									 <ol>
-									 
+
 										<li>
 										 <input type="checkbox" id="26" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="26"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="26">
 								MPO Technical Advisory Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="3" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="3"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="3">
 								Parks & Rec Advisory Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="27" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="27"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="27">
 								Parks and Recreation Youth Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="28" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="28"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="28">
 								Planning and Zoning Commission
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="45" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="45"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="45">
 								Public Safety PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="29" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="29"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="29">
 								Quality of Life PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="30" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="30"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="30">
 								Selection Advisory Committee
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="31" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="31"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="31">
 								Senior Programs Advisory Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="32" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="32"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="32">
 								South Mesquite Design Review Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="33" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="33"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="33">
 								Thomas Branigan Memorial Library Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="34" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="34"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="34">
 								Transit Advisory Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="35" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="35"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="35">
 								TSI PRC
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="36" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="36"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="36">
 								University District Citizen's Design Review Board
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="37" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="37"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="37">
 								Utility Customer Advisory Group
-								
+
 										 </label>
 										 </li>
-								
+
 										<li>
 										 <input type="checkbox" id="38" onkeypress="this.onclick();" onclick="checkUncheckAllCategoriesCB()" name="chkCategoryID" value="38"
-										 
-											 checked="checked"											 
-									 
+
+											 checked="checked"
+
 										 >
 										 <label for="38">
 								VA Advisory Board
-								
+
 										 </label>
 										 </li>
-								
+
 									 </ol>
-					
+
 						</div>
 					</div>
 				</div>
 						</div>
-			
 
-		<a class="return" href="/AgendaCenter">&#9668; Back to all agendas</a> 
-   
+
+		<a class="return" href="/AgendaCenter">&#9668; Back to all agendas</a>
+
 			<p class="dim results"></p>
-	
+
 	<!-- Category list starts(when headers are off) -->
-	
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat7">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(7)"><span id="span7">&#9660;</span>Airport Advisory Board</h2>
-					
+
 
 <span id="section7">
 	<script type="text/javascript">
@@ -1809,12 +1809,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a07" aria-label="Airport Advisory Board 2020" href="javascript:changeYear(2020, 7,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -1827,7 +1827,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -1835,41 +1835,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row8084090bea0" class="catAgendaRow">
     <a name="_11192020-808"></a>
 	<td>
 		<h4>
 			<a name="_11192020-808"></a>
-			
+
 			<a name="808" title="Airport Advisory Board Meeting Agenda for November 19, 2020 " href="/AgendaCenter/ViewFile/Agenda/_11192020-808?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 19, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 16, 2020 11:47 AM
-					
+
 			</a></h4>
 		<p>Airport Advisory Board Meeting Agenda for November 19, 2020 </p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer808" class="popoutContainer">
 			<a href="" id="btnAgendaDD808" onkeypress="this.onclick();" onclick="showDownloadMenu(808, 7, 'agendaDD808', event, false); return false;" class="button"><span id="spanDD808">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD808" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 19, 2020, Airport Advisory Board Meeting Agenda for November 19, 2020 . HTML" href="/AgendaCenter/ViewFile/Agenda/_11192020-808?html=true" id="anch18084090bea0" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Airport Advisory Board Meeting Agenda for November 19, 2020 . PDF" href="/AgendaCenter/ViewFile/Agenda/_11192020-808" id="anch28084090bea0" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Airport Advisory Board Meeting Agenda for November 19, 2020 . Packet" href="/AgendaCenter/ViewFile/Agenda/_11192020-808?packet=true" id="anch38084090bea0" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -1877,22 +1877,22 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat9">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(9)"><span id="span9">&#9660;</span>Board of Commissioners for Las Cruces Utilities</h2>
-					
+
 
 <span id="section9">
 	<script type="text/javascript">
@@ -1900,12 +1900,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a09" aria-label="Board of Commissioners for Las Cruces Utilities 2020" href="javascript:changeYear(2020, 9,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -1918,11 +1918,11 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="videos">
 					Media
 				</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -1930,43 +1930,43 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row809eb920d13" class="catAgendaRow">
     <a name="_11192020-809"></a>
 	<td>
 		<h4>
 			<a name="_11192020-809"></a>
-			
+
 			<a name="809" title="Potential Quorum Notice" href="/AgendaCenter/ViewFile/Agenda/_11192020-809?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 19, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 16, 2020 3:23 PM
-					
+
 			</a></h4>
 		<p>Potential Quorum Notice</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="videos"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer809" class="popoutContainer">
 			<a href="" id="btnAgendaDD809" onkeypress="this.onclick();" onclick="showDownloadMenu(809, 9, 'agendaDD809', event, false); return false;" class="button"><span id="spanDD809">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD809" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 19, 2020, Potential Quorum Notice. HTML" href="/AgendaCenter/ViewFile/Agenda/_11192020-809?html=true" id="anch1809eb920d13" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Potential Quorum Notice. PDF" href="/AgendaCenter/ViewFile/Agenda/_11192020-809" id="anch2809eb920d13" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Potential Quorum Notice. Packet" href="/AgendaCenter/ViewFile/Agenda/_11192020-809?packet=true" id="anch3809eb920d13" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -1974,45 +1974,45 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
+
 
 <tr id="row791de51eabe" class="catAgendaRow">
     <a name="_11122020-791"></a>
 	<td>
 		<h4>
 			<a name="_11122020-791"></a>
-			
+
 			<a name="791" title="LCU Board Regular Meeting for November 12, 2020, will focus on the Administrative Report, Three Resolutions on Consent, and Seven Resolutions for Discussion." href="/AgendaCenter/ViewFile/Agenda/_11122020-791?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 12, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 2, 2020 4:29 PM
-					
+
 			</a></h4>
 		<p>LCU Board Regular Meeting for November 12, 2020, will focus on the Administrative Report, Three Resolutions on Consent, and Seven Resolutions for Discussion.</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"><a href="/AgendaCenter/ViewFile/Minutes/_11122020-791" aria-label="November 12, 2020, LCU Board Regular Meeting for November 12, 2020, will focus on the Administrative Report, Three Resolutions on Consent, and Seven Resolutions for Discussion.. Minutes" target="_blank"><img src="/Areas/AgendaCenter/Assets/Images/HomeIconMinutes.png" alt="Minutes"></a></td>
-    
+
 	<td class="videos"><a href="https://publicrecords.las-cruces.org/WebLink/Browse.aspx?id=2049915&dbid=0&repo=Live" aria-label="November 12, 2020, LCU Board Regular Meeting for November 12, 2020, will focus on the Administrative Report, Three Resolutions on Consent, and Seven Resolutions for Discussion.. Media" target="_blank"><img src="/Areas/AgendaCenter/Assets/Images/HomeIconVideos.png" alt="Videos"></a></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer791" class="popoutContainer">
 			<a href="" id="btnAgendaDD791" onkeypress="this.onclick();" onclick="showDownloadMenu(791, 9, 'agendaDD791', event, false); return false;" class="button"><span id="spanDD791">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD791" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 12, 2020, LCU Board Regular Meeting for November 12, 2020, will focus on the Administrative Report, Three Resolutions on Consent, and Seven Resolutions for Discussion.. HTML" href="/AgendaCenter/ViewFile/Agenda/_11122020-791?html=true" id="anch1791de51eabe" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 12, 2020, LCU Board Regular Meeting for November 12, 2020, will focus on the Administrative Report, Three Resolutions on Consent, and Seven Resolutions for Discussion.. PDF" href="/AgendaCenter/ViewFile/Agenda/_11122020-791" id="anch2791de51eabe" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 12, 2020, LCU Board Regular Meeting for November 12, 2020, will focus on the Administrative Report, Three Resolutions on Consent, and Seven Resolutions for Discussion.. Packet" href="/AgendaCenter/ViewFile/Agenda/_11122020-791?packet=true" id="anch3791de51eabe" target="_blank">Packet</a></li>
-									
+
 									<li><a aria-label="November 12, 2020, LCU Board Regular Meeting for November 12, 2020, will focus on the Administrative Report, Three Resolutions on Consent, and Seven Resolutions for Discussion.. Previous Version" id="anch4791de51eabe" class="previous" href="/AgendaCenter/PreviousVersions/_11122020-791">Previous Versions</a></li>
-								
+
 						</ol>
 					</div>
 				</div>
@@ -2020,18 +2020,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat10">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(10)"><span id="span10">&#9660;</span>Capital Improvements Advisory Committee</h2>
-					
+
 
 <span id="section10">
 	<script type="text/javascript">
@@ -2039,12 +2039,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a010" aria-label="Capital Improvements Advisory Committee 2020" href="javascript:changeYear(2020, 10,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2057,11 +2057,11 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="videos">
 					Media
 				</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2069,45 +2069,45 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row8004ad5dfa6" class="catAgendaRow">
     <a name="_11192020-800"></a>
 	<td>
 		<h4>
 			<a name="_11192020-800"></a>
-			
+
 			<a name="800" title="CIAC Agenda for November 19, 2020 , will focus on Utilities Department Impact Fee Updates and Seven Year Report for Park Impact Fees Reviews for: Utilities, Parks & Rec, and Public Safety." href="/AgendaCenter/ViewFile/Agenda/_11192020-800?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 19, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 13, 2020 12:34 PM
-					
+
 			</a></h4>
 		<p>CIAC Agenda for November 19, 2020 , will focus on Utilities Department Impact Fee Updates and Seven Year Report for Park Impact Fees Reviews for: Utilities, Parks &amp; Rec, and Public Safety.</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"><a href="/AgendaCenter/ViewFile/Minutes/_11192020-800" aria-label="November 19, 2020, CIAC Agenda for November 19, 2020 , will focus on Utilities Department Impact Fee Updates and Seven Year Report for Park Impact Fees Reviews for: Utilities, Parks & Rec, and Public Safety.. Minutes" target="_blank"><img src="/Areas/AgendaCenter/Assets/Images/HomeIconMinutes.png" alt="Minutes"></a></td>
-    
+
 	<td class="videos"><a href="https://publicrecords.las-cruces.org/WebLink/Browse.aspx?id=2051050&dbid=0&repo=Live" aria-label="November 19, 2020, CIAC Agenda for November 19, 2020 , will focus on Utilities Department Impact Fee Updates and Seven Year Report for Park Impact Fees Reviews for: Utilities, Parks & Rec, and Public Safety.. Media" target="_blank"><img src="/Areas/AgendaCenter/Assets/Images/HomeIconVideos.png" alt="Videos"></a></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer800" class="popoutContainer">
 			<a href="" id="btnAgendaDD800" onkeypress="this.onclick();" onclick="showDownloadMenu(800, 10, 'agendaDD800', event, false); return false;" class="button"><span id="spanDD800">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD800" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 19, 2020, CIAC Agenda for November 19, 2020 , will focus on Utilities Department Impact Fee Updates and Seven Year Report for Park Impact Fees Reviews for: Utilities, Parks & Rec, and Public Safety.. HTML" href="/AgendaCenter/ViewFile/Agenda/_11192020-800?html=true" id="anch18004ad5dfa6" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, CIAC Agenda for November 19, 2020 , will focus on Utilities Department Impact Fee Updates and Seven Year Report for Park Impact Fees Reviews for: Utilities, Parks & Rec, and Public Safety.. PDF" href="/AgendaCenter/ViewFile/Agenda/_11192020-800" id="anch28004ad5dfa6" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, CIAC Agenda for November 19, 2020 , will focus on Utilities Department Impact Fee Updates and Seven Year Report for Park Impact Fees Reviews for: Utilities, Parks & Rec, and Public Safety.. Packet" href="/AgendaCenter/ViewFile/Agenda/_11192020-800?packet=true" id="anch38004ad5dfa6" target="_blank">Packet</a></li>
-									
+
 									<li><a aria-label="November 19, 2020, CIAC Agenda for November 19, 2020 , will focus on Utilities Department Impact Fee Updates and Seven Year Report for Park Impact Fees Reviews for: Utilities, Parks & Rec, and Public Safety.. Previous Version" id="anch48004ad5dfa6" class="previous" href="/AgendaCenter/PreviousVersions/_11192020-800">Previous Versions</a></li>
-								
+
 						</ol>
 					</div>
 				</div>
@@ -2115,18 +2115,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat4">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(4)"><span id="span4">&#9660;</span>City Art Board</h2>
-					
+
 
 <span id="section4">
 	<script type="text/javascript">
@@ -2134,12 +2134,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a04" aria-label="City Art Board 2020" href="javascript:changeYear(2020, 4,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2152,11 +2152,11 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="videos">
 					Media
 				</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2164,43 +2164,43 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row821ebcd0080" class="catAgendaRow">
     <a name="_12082020-821"></a>
 	<td>
 		<h4>
 			<a name="_12082020-821"></a>
-			
+
 			<a name="821" title="City Art Board Agenda" href="/AgendaCenter/ViewFile/Agenda/_12082020-821?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 8, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="December">Dec</abbr> 3, 2020 8:13 AM
-					
+
 			</a></h4>
 		<p>City Art Board Agenda</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="videos"><a href="https://zoom.us/webinar/register/WN_v-bEPKU7QWi8jBIeEvPBtQ" aria-label="December 08, 2020, City Art Board Agenda. Media" target="_blank"><img src="/Areas/AgendaCenter/Assets/Images/HomeIconVideos.png" alt="Videos"></a></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer821" class="popoutContainer">
 			<a href="" id="btnAgendaDD821" onkeypress="this.onclick();" onclick="showDownloadMenu(821, 4, 'agendaDD821', event, false); return false;" class="button"><span id="spanDD821">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD821" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 08, 2020, City Art Board Agenda. HTML" href="/AgendaCenter/ViewFile/Agenda/_12082020-821?html=true" id="anch1821ebcd0080" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 08, 2020, City Art Board Agenda. PDF" href="/AgendaCenter/ViewFile/Agenda/_12082020-821" id="anch2821ebcd0080" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 08, 2020, City Art Board Agenda. Packet" href="/AgendaCenter/ViewFile/Agenda/_12082020-821?packet=true" id="anch3821ebcd0080" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -2208,43 +2208,43 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
+
 
 <tr id="row7956fdda8e6" class="catAgendaRow">
     <a name="_11102020-795"></a>
 	<td>
 		<h4>
 			<a name="_11102020-795"></a>
-			
+
 			<a name="795" title="City Art Board Agenda" href="/AgendaCenter/ViewFile/Agenda/_11102020-795?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 10, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 5, 2020 9:11 AM
-					
+
 			</a></h4>
 		<p>City Art Board Agenda</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="videos"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer795" class="popoutContainer">
 			<a href="" id="btnAgendaDD795" onkeypress="this.onclick();" onclick="showDownloadMenu(795, 4, 'agendaDD795', event, false); return false;" class="button"><span id="spanDD795">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD795" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 10, 2020, City Art Board Agenda. HTML" href="/AgendaCenter/ViewFile/Agenda/_11102020-795?html=true" id="anch17956fdda8e6" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 10, 2020, City Art Board Agenda. PDF" href="/AgendaCenter/ViewFile/Agenda/_11102020-795" id="anch27956fdda8e6" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 10, 2020, City Art Board Agenda. Packet" href="/AgendaCenter/ViewFile/Agenda/_11102020-795?packet=true" id="anch37956fdda8e6" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -2252,26 +2252,26 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat14">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(14)"><span id="span14">&#9660;</span>DAC Juvenile Justice Continuum Board</h2>
-					
+
 
 <span id="section14">
 	<script type="text/javascript">
@@ -2279,12 +2279,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a014" aria-label="DAC Juvenile Justice Continuum Board 2020" href="javascript:changeYear(2020, 14,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2297,7 +2297,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2305,43 +2305,43 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row8126dc4f983" class="catAgendaRow">
     <a name="_12092020-812"></a>
 	<td>
 		<h4>
 			<a name="_12092020-812"></a>
-			
+
 			<a name="812" title="DOÑA ANA COUNTY JUVENILE JUSTICE CONTINUUM BOARD AGENDA" href="/AgendaCenter/ViewFile/Agenda/_12092020-812?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 9, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="December">Dec</abbr> 4, 2020 8:20 AM
-					
+
 			</a></h4>
 		<p>DO&#209;A ANA COUNTY JUVENILE JUSTICE CONTINUUM BOARD AGENDA</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer812" class="popoutContainer">
 			<a href="" id="btnAgendaDD812" onkeypress="this.onclick();" onclick="showDownloadMenu(812, 14, 'agendaDD812', event, false); return false;" class="button"><span id="spanDD812">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD812" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 09, 2020, DOÑA ANA COUNTY JUVENILE JUSTICE CONTINUUM BOARD AGENDA. HTML" href="/AgendaCenter/ViewFile/Agenda/_12092020-812?html=true" id="anch18126dc4f983" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 09, 2020, DOÑA ANA COUNTY JUVENILE JUSTICE CONTINUUM BOARD AGENDA. PDF" href="/AgendaCenter/ViewFile/Agenda/_12092020-812" id="anch28126dc4f983" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 09, 2020, DOÑA ANA COUNTY JUVENILE JUSTICE CONTINUUM BOARD AGENDA. Packet" href="/AgendaCenter/ViewFile/Agenda/_12092020-812?packet=true" id="anch38126dc4f983" target="_blank">Packet</a></li>
-									
+
 									<li><a aria-label="December 09, 2020, DOÑA ANA COUNTY JUVENILE JUSTICE CONTINUUM BOARD AGENDA. Previous Version" id="anch48126dc4f983" class="previous" href="/AgendaCenter/PreviousVersions/_12092020-812">Previous Versions</a></li>
-								
+
 						</ol>
 					</div>
 				</div>
@@ -2349,18 +2349,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat13">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(13)"><span id="span13">&#9660;</span>Development Review Committee</h2>
-					
+
 
 <span id="section13">
 	<script type="text/javascript">
@@ -2368,12 +2368,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a013" aria-label="Development Review Committee 2020" href="javascript:changeYear(2020, 13,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2386,7 +2386,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2394,41 +2394,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row81705c248e4" class="catAgendaRow">
     <a name="_12022020-817"></a>
 	<td>
 		<h4>
 			<a name="_12022020-817"></a>
-			
+
 			<a name="817" title="DRC Meeting on December 2, 2020 - CANCELLED" href="/AgendaCenter/ViewFile/Agenda/_12022020-817?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 2, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 30, 2020 11:10 AM
-					
+
 			</a></h4>
 		<p>DRC Meeting on December 2, 2020 - CANCELLED</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer817" class="popoutContainer">
 			<a href="" id="btnAgendaDD817" onkeypress="this.onclick();" onclick="showDownloadMenu(817, 13, 'agendaDD817', event, false); return false;" class="button"><span id="spanDD817">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD817" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 02, 2020, DRC Meeting on December 2, 2020 - CANCELLED. HTML" href="/AgendaCenter/ViewFile/Agenda/_12022020-817?html=true" id="anch181705c248e4" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 02, 2020, DRC Meeting on December 2, 2020 - CANCELLED. PDF" href="/AgendaCenter/ViewFile/Agenda/_12022020-817" id="anch281705c248e4" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 02, 2020, DRC Meeting on December 2, 2020 - CANCELLED. Packet" href="/AgendaCenter/ViewFile/Agenda/_12022020-817?packet=true" id="anch381705c248e4" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -2436,41 +2436,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
+
 
 <tr id="row798833794ba" class="catAgendaRow">
     <a name="_11182020-798"></a>
 	<td>
 		<h4>
 			<a name="_11182020-798"></a>
-			
+
 			<a name="798" title="DRC Meeting on November 18, 2020 - CANCELLED" href="/AgendaCenter/ViewFile/Agenda/_11182020-798?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 18, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 13, 2020 8:04 AM
-					
+
 			</a></h4>
 		<p>DRC Meeting on November 18, 2020 - CANCELLED</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer798" class="popoutContainer">
 			<a href="" id="btnAgendaDD798" onkeypress="this.onclick();" onclick="showDownloadMenu(798, 13, 'agendaDD798', event, false); return false;" class="button"><span id="spanDD798">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD798" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 18, 2020, DRC Meeting on November 18, 2020 - CANCELLED. HTML" href="/AgendaCenter/ViewFile/Agenda/_11182020-798?html=true" id="anch1798833794ba" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 18, 2020, DRC Meeting on November 18, 2020 - CANCELLED. PDF" href="/AgendaCenter/ViewFile/Agenda/_11182020-798" id="anch2798833794ba" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 18, 2020, DRC Meeting on November 18, 2020 - CANCELLED. Packet" href="/AgendaCenter/ViewFile/Agenda/_11182020-798?packet=true" id="anch3798833794ba" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -2478,18 +2478,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat42">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(42)"><span id="span42">&#9660;</span>Downtown Parking Committee</h2>
-					
+
 
 <span id="section42">
 	<script type="text/javascript">
@@ -2497,12 +2497,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a042" aria-label="Downtown Parking Committee 2020" href="javascript:changeYear(2020, 42,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2515,7 +2515,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2523,41 +2523,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row803308126bc" class="catAgendaRow">
     <a name="_11192020-803"></a>
 	<td>
 		<h4>
 			<a name="_11192020-803"></a>
-			
+
 			<a name="803" title="Downtown Parking Committee Meeting" href="/AgendaCenter/ViewFile/Agenda/_11192020-803?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 19, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 16, 2020 6:11 AM
-					
+
 			</a></h4>
 		<p>Downtown Parking Committee Meeting</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer803" class="popoutContainer">
 			<a href="" id="btnAgendaDD803" onkeypress="this.onclick();" onclick="showDownloadMenu(803, 42, 'agendaDD803', event, false); return false;" class="button"><span id="spanDD803">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD803" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 19, 2020, Downtown Parking Committee Meeting. HTML" href="/AgendaCenter/ViewFile/Agenda/_11192020-803?html=true" id="anch1803308126bc" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Downtown Parking Committee Meeting. PDF" href="/AgendaCenter/ViewFile/Agenda/_11192020-803" id="anch2803308126bc" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Downtown Parking Committee Meeting. Packet" href="/AgendaCenter/ViewFile/Agenda/_11192020-803?packet=true" id="anch3803308126bc" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -2565,18 +2565,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat16">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(16)"><span id="span16">&#9660;</span>Economic Development PRC</h2>
-					
+
 
 <span id="section16">
 	<script type="text/javascript">
@@ -2584,12 +2584,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a016" aria-label="Economic Development PRC 2020" href="javascript:changeYear(2020, 16,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2602,7 +2602,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2610,41 +2610,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row8058dfb994a" class="catAgendaRow">
     <a name="_11182020-805"></a>
 	<td>
 		<h4>
 			<a name="_11182020-805"></a>
-			
+
 			<a name="805" title="Economic Development PRC Meeting" href="/AgendaCenter/ViewFile/Agenda/_11182020-805?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 18, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 13, 2020 3:06 PM
-					
+
 			</a></h4>
 		<p>Economic Development PRC Meeting</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"><a href="/AgendaCenter/ViewFile/Minutes/_11182020-805" aria-label="November 18, 2020, Economic Development PRC Meeting. Minutes" target="_blank"><img src="/Areas/AgendaCenter/Assets/Images/HomeIconMinutes.png" alt="Minutes"></a></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer805" class="popoutContainer">
 			<a href="" id="btnAgendaDD805" onkeypress="this.onclick();" onclick="showDownloadMenu(805, 16, 'agendaDD805', event, false); return false;" class="button"><span id="spanDD805">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD805" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 18, 2020, Economic Development PRC Meeting. HTML" href="/AgendaCenter/ViewFile/Agenda/_11182020-805?html=true" id="anch18058dfb994a" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 18, 2020, Economic Development PRC Meeting. PDF" href="/AgendaCenter/ViewFile/Agenda/_11182020-805" id="anch28058dfb994a" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 18, 2020, Economic Development PRC Meeting. Packet" href="/AgendaCenter/ViewFile/Agenda/_11182020-805?packet=true" id="anch38058dfb994a" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -2652,24 +2652,24 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat19">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(19)"><span id="span19">&#9660;</span>Health PRC</h2>
-					
+
 
 <span id="section19">
 	<script type="text/javascript">
@@ -2677,12 +2677,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a019" aria-label="Health PRC 2020" href="javascript:changeYear(2020, 19,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2695,7 +2695,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2703,43 +2703,43 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row811dcef6232" class="catAgendaRow">
     <a name="_12022020-811"></a>
 	<td>
 		<h4>
 			<a name="_12022020-811"></a>
-			
+
 			<a name="811" title="Health PRC Meeting December 2, 2020" href="/AgendaCenter/ViewFile/Agenda/_12022020-811?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 2, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 23, 2020 10:53 AM
-					
+
 			</a></h4>
 		<p>Health PRC Meeting December 2, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer811" class="popoutContainer">
 			<a href="" id="btnAgendaDD811" onkeypress="this.onclick();" onclick="showDownloadMenu(811, 19, 'agendaDD811', event, false); return false;" class="button"><span id="spanDD811">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD811" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 02, 2020, Health PRC Meeting December 2, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_12022020-811?html=true" id="anch1811dcef6232" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 02, 2020, Health PRC Meeting December 2, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_12022020-811" id="anch2811dcef6232" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 02, 2020, Health PRC Meeting December 2, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_12022020-811?packet=true" id="anch3811dcef6232" target="_blank">Packet</a></li>
-									
+
 									<li><a aria-label="December 02, 2020, Health PRC Meeting December 2, 2020. Previous Version" id="anch4811dcef6232" class="previous" href="/AgendaCenter/PreviousVersions/_12022020-811">Previous Versions</a></li>
-								
+
 						</ol>
 					</div>
 				</div>
@@ -2747,18 +2747,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat20">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(20)"><span id="span20">&#9660;</span>Historic Preservation Commission</h2>
-					
+
 
 <span id="section20">
 	<script type="text/javascript">
@@ -2766,12 +2766,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a020" aria-label="Historic Preservation Commission 2020" href="javascript:changeYear(2020, 20,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2784,7 +2784,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2792,41 +2792,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row827ed368861" class="catAgendaRow">
     <a name="_12142020-827"></a>
 	<td>
 		<h4>
 			<a name="_12142020-827"></a>
-			
+
 			<a name="827" title="Historic Preservation Commission Meeting on December 14, 2020" href="/AgendaCenter/ViewFile/Agenda/_12142020-827?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 14, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="December">Dec</abbr> 10, 2020 2:49 PM
-					
+
 			</a></h4>
 		<p>Historic Preservation Commission Meeting on December 14, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer827" class="popoutContainer">
 			<a href="" id="btnAgendaDD827" onkeypress="this.onclick();" onclick="showDownloadMenu(827, 20, 'agendaDD827', event, false); return false;" class="button"><span id="spanDD827">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD827" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 14, 2020, Historic Preservation Commission Meeting on December 14, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_12142020-827?html=true" id="anch1827ed368861" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 14, 2020, Historic Preservation Commission Meeting on December 14, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_12142020-827" id="anch2827ed368861" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 14, 2020, Historic Preservation Commission Meeting on December 14, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_12142020-827?packet=true" id="anch3827ed368861" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -2834,41 +2834,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
+
 
 <tr id="row81043b95590" class="catAgendaRow">
     <a name="_11172020-810"></a>
 	<td>
 		<h4>
 			<a name="_11172020-810"></a>
-			
+
 			<a name="810" title="Historic Preservation Committee Meeting on November 20, 2020" href="/AgendaCenter/ViewFile/Agenda/_11172020-810?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 17, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 17, 2020 9:08 AM
-					
+
 			</a></h4>
 		<p>Historic Preservation Committee Meeting on November 20, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer810" class="popoutContainer">
 			<a href="" id="btnAgendaDD810" onkeypress="this.onclick();" onclick="showDownloadMenu(810, 20, 'agendaDD810', event, false); return false;" class="button"><span id="spanDD810">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD810" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 17, 2020, Historic Preservation Committee Meeting on November 20, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_11172020-810?html=true" id="anch181043b95590" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 17, 2020, Historic Preservation Committee Meeting on November 20, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_11172020-810" id="anch281043b95590" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 17, 2020, Historic Preservation Committee Meeting on November 20, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_11172020-810?packet=true" id="anch381043b95590" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -2876,43 +2876,43 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
+
 
 <tr id="row7935a58341b" class="catAgendaRow">
     <a name="_11092020-793"></a>
 	<td>
 		<h4>
 			<a name="_11092020-793"></a>
-			
+
 			<a name="793" title="Historic Preservation Commission Meeting on November 9, 2020" href="/AgendaCenter/ViewFile/Agenda/_11092020-793?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 9, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 5, 2020 1:00 PM
-					
+
 			</a></h4>
 		<p>Historic Preservation Commission Meeting on November 9, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer793" class="popoutContainer">
 			<a href="" id="btnAgendaDD793" onkeypress="this.onclick();" onclick="showDownloadMenu(793, 20, 'agendaDD793', event, false); return false;" class="button"><span id="spanDD793">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD793" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 09, 2020, Historic Preservation Commission Meeting on November 9, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_11092020-793?html=true" id="anch17935a58341b" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 09, 2020, Historic Preservation Commission Meeting on November 9, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_11092020-793" id="anch27935a58341b" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 09, 2020, Historic Preservation Commission Meeting on November 9, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_11092020-793?packet=true" id="anch37935a58341b" target="_blank">Packet</a></li>
-									
+
 									<li><a aria-label="November 09, 2020, Historic Preservation Commission Meeting on November 9, 2020. Previous Version" id="anch47935a58341b" class="previous" href="/AgendaCenter/PreviousVersions/_11092020-793">Previous Versions</a></li>
-								
+
 						</ol>
 					</div>
 				</div>
@@ -2920,18 +2920,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat21">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(21)"><span id="span21">&#9660;</span>Housing PRC</h2>
-					
+
 
 <span id="section21">
 	<script type="text/javascript">
@@ -2939,12 +2939,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a021" aria-label="Housing PRC 2020" href="javascript:changeYear(2020, 21,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -2957,7 +2957,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -2965,41 +2965,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row80634401286" class="catAgendaRow">
     <a name="_11182020-806"></a>
 	<td>
 		<h4>
 			<a name="_11182020-806"></a>
-			
+
 			<a name="806" title="Housing PRC Meeting on November 18, 2020 - Cancelled" href="/AgendaCenter/ViewFile/Agenda/_11182020-806?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 18, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 16, 2020 6:20 AM
-					
+
 			</a></h4>
 		<p>Housing PRC Meeting on November 18, 2020 - Cancelled</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer806" class="popoutContainer">
 			<a href="" id="btnAgendaDD806" onkeypress="this.onclick();" onclick="showDownloadMenu(806, 21, 'agendaDD806', event, false); return false;" class="button"><span id="spanDD806">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD806" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 18, 2020, Housing PRC Meeting on November 18, 2020 - Cancelled. HTML" href="/AgendaCenter/ViewFile/Agenda/_11182020-806?html=true" id="anch180634401286" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 18, 2020, Housing PRC Meeting on November 18, 2020 - Cancelled. PDF" href="/AgendaCenter/ViewFile/Agenda/_11182020-806" id="anch280634401286" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 18, 2020, Housing PRC Meeting on November 18, 2020 - Cancelled. Packet" href="/AgendaCenter/ViewFile/Agenda/_11182020-806?packet=true" id="anch380634401286" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3007,22 +3007,22 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat52">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(52)"><span id="span52">&#9660;</span>Las Cruces Economic Recovery Ad Hoc Board</h2>
-					
+
 
 <span id="section52">
 	<script type="text/javascript">
@@ -3030,12 +3030,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a052" aria-label="Las Cruces Economic Recovery Ad Hoc Board 2020" href="javascript:changeYear(2020, 52,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3048,7 +3048,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3056,41 +3056,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row813328316ff" class="catAgendaRow">
     <a name="_12032020-813"></a>
 	<td>
 		<h4>
 			<a name="_12032020-813"></a>
-			
+
 			<a name="813" title="Las Cruces Economic Recovery Ad Hoc Board Agenda for December 3, 2020" href="/AgendaCenter/ViewFile/Agenda/_12032020-813?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 3, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 24, 2020 11:11 AM
-					
+
 			</a></h4>
 		<p>Las Cruces Economic Recovery Ad Hoc Board Agenda for December 3, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer813" class="popoutContainer">
 			<a href="" id="btnAgendaDD813" onkeypress="this.onclick();" onclick="showDownloadMenu(813, 52, 'agendaDD813', event, false); return false;" class="button"><span id="spanDD813">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD813" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 03, 2020, Las Cruces Economic Recovery Ad Hoc Board Agenda for December 3, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_12032020-813?html=true" id="anch1813328316ff" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 03, 2020, Las Cruces Economic Recovery Ad Hoc Board Agenda for December 3, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_12032020-813" id="anch2813328316ff" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 03, 2020, Las Cruces Economic Recovery Ad Hoc Board Agenda for December 3, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_12032020-813?packet=true" id="anch3813328316ff" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3098,43 +3098,43 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
+
 
 <tr id="row807afbaa6ec" class="catAgendaRow">
     <a name="_11192020-807"></a>
 	<td>
 		<h4>
 			<a name="_11192020-807"></a>
-			
+
 			<a name="807" title="Cancelled- Las Cruces Economic Recovery Ad-Hoc Board Agenda for November 19, 2020" href="/AgendaCenter/ViewFile/Agenda/_11192020-807?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 19, 2020</strong>
-			
+
 				&thinsp;&mdash;&thinsp;Amended <abbr title="November">Nov</abbr> 18, 2020 9:40 AM
-			
+
 			</a></h4>
 		<p>Cancelled- Las Cruces Economic Recovery Ad-Hoc Board Agenda for November 19, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer807" class="popoutContainer">
 			<a href="" id="btnAgendaDD807" onkeypress="this.onclick();" onclick="showDownloadMenu(807, 52, 'agendaDD807', event, false); return false;" class="button"><span id="spanDD807">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD807" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 19, 2020, Cancelled- Las Cruces Economic Recovery Ad-Hoc Board Agenda for November 19, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_11192020-807?html=true" id="anch1807afbaa6ec" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Cancelled- Las Cruces Economic Recovery Ad-Hoc Board Agenda for November 19, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_11192020-807" id="anch2807afbaa6ec" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Cancelled- Las Cruces Economic Recovery Ad-Hoc Board Agenda for November 19, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_11192020-807?packet=true" id="anch3807afbaa6ec" target="_blank">Packet</a></li>
-									
+
 									<li><a aria-label="November 19, 2020, Cancelled- Las Cruces Economic Recovery Ad-Hoc Board Agenda for November 19, 2020. Previous Version" id="anch4807afbaa6ec" class="previous" href="/AgendaCenter/PreviousVersions/_11192020-807">Previous Versions</a></li>
-								
+
 						</ol>
 					</div>
 				</div>
@@ -3142,20 +3142,20 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat49">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(49)"><span id="span49">&#9660;</span>Mayor's Suicide Prevention Taskforce</h2>
-					
+
 
 <span id="section49">
 	<script type="text/javascript">
@@ -3163,12 +3163,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a049" aria-label="Mayor's Suicide Prevention Taskforce 2020" href="javascript:changeYear(2020, 49,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3181,7 +3181,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3189,41 +3189,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row802c3ccd524" class="catAgendaRow">
     <a name="_11182020-802"></a>
 	<td>
 		<h4>
 			<a name="_11182020-802"></a>
-			
+
 			<a name="802" title="The Las Cruces Mayor's Suicide Prevention Task Force" href="/AgendaCenter/ViewFile/Agenda/_11182020-802?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 18, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 18, 2020 12:00 PM
-					
+
 			</a></h4>
 		<p>The Las Cruces Mayor&#39;s Suicide Prevention Task Force</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer802" class="popoutContainer">
 			<a href="" id="btnAgendaDD802" onkeypress="this.onclick();" onclick="showDownloadMenu(802, 49, 'agendaDD802', event, false); return false;" class="button"><span id="spanDD802">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD802" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 18, 2020, The Las Cruces Mayor's Suicide Prevention Task Force. HTML" href="/AgendaCenter/ViewFile/Agenda/_11182020-802?html=true" id="anch1802c3ccd524" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 18, 2020, The Las Cruces Mayor's Suicide Prevention Task Force. PDF" href="/AgendaCenter/ViewFile/Agenda/_11182020-802" id="anch2802c3ccd524" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 18, 2020, The Las Cruces Mayor's Suicide Prevention Task Force. Packet" href="/AgendaCenter/ViewFile/Agenda/_11182020-802?packet=true" id="anch3802c3ccd524" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3231,26 +3231,26 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat3">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(3)"><span id="span3">&#9660;</span>Parks & Rec Advisory Board</h2>
-					
+
 
 <span id="section3">
 	<script type="text/javascript">
@@ -3258,12 +3258,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a03" aria-label="Parks & Rec Advisory Board 2020" href="javascript:changeYear(2020, 3,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3276,7 +3276,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3284,41 +3284,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row7812e5187d7" class="catAgendaRow">
     <a name="_11192020-781"></a>
 	<td>
 		<h4>
 			<a name="_11192020-781"></a>
-			
+
 			<a name="781" title="Parks & Recreation Advisory Board Meeting" href="/AgendaCenter/ViewFile/Agenda/_11192020-781?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 19, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 12, 2020 2:43 PM
-					
+
 			</a></h4>
 		<p>Parks &amp; Recreation Advisory Board Meeting</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"><a href="/AgendaCenter/ViewFile/Minutes/_11192020-781" aria-label="November 19, 2020, Parks & Recreation Advisory Board Meeting. Minutes" target="_blank"><img src="/Areas/AgendaCenter/Assets/Images/HomeIconMinutes.png" alt="Minutes"></a></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer781" class="popoutContainer">
 			<a href="" id="btnAgendaDD781" onkeypress="this.onclick();" onclick="showDownloadMenu(781, 3, 'agendaDD781', event, false); return false;" class="button"><span id="spanDD781">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD781" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 19, 2020, Parks & Recreation Advisory Board Meeting. HTML" href="/AgendaCenter/ViewFile/Agenda/_11192020-781?html=true" id="anch17812e5187d7" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Parks & Recreation Advisory Board Meeting. PDF" href="/AgendaCenter/ViewFile/Agenda/_11192020-781" id="anch27812e5187d7" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 19, 2020, Parks & Recreation Advisory Board Meeting. Packet" href="/AgendaCenter/ViewFile/Agenda/_11192020-781?packet=true" id="anch37812e5187d7" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3326,20 +3326,20 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat28">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(28)"><span id="span28">&#9660;</span>Planning and Zoning Commission</h2>
-					
+
 
 <span id="section28">
 	<script type="text/javascript">
@@ -3347,12 +3347,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a028" aria-label="Planning and Zoning Commission 2020" href="javascript:changeYear(2020, 28,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3365,7 +3365,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3373,41 +3373,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row828f0d23b2e" class="catAgendaRow">
     <a name="_12142020-828"></a>
 	<td>
 		<h4>
 			<a name="_12142020-828"></a>
-			
+
 			<a name="828" title="Planning & Zoning Commission Potential Quorum Notice for December 13-19, 2020" href="/AgendaCenter/ViewFile/Agenda/_12142020-828?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 14, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="December">Dec</abbr> 10, 2020 3:14 PM
-					
+
 			</a></h4>
 		<p>Planning &amp; Zoning Commission Potential Quorum Notice for December 13-19, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer828" class="popoutContainer">
 			<a href="" id="btnAgendaDD828" onkeypress="this.onclick();" onclick="showDownloadMenu(828, 28, 'agendaDD828', event, false); return false;" class="button"><span id="spanDD828">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD828" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 14, 2020, Planning & Zoning Commission Potential Quorum Notice for December 13-19, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_12142020-828?html=true" id="anch1828f0d23b2e" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 14, 2020, Planning & Zoning Commission Potential Quorum Notice for December 13-19, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_12142020-828" id="anch2828f0d23b2e" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 14, 2020, Planning & Zoning Commission Potential Quorum Notice for December 13-19, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_12142020-828?packet=true" id="anch3828f0d23b2e" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3415,41 +3415,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
+
 
 <tr id="row796d333931c" class="catAgendaRow">
     <a name="_11242020-796"></a>
 	<td>
 		<h4>
 			<a name="_11242020-796"></a>
-			
+
 			<a name="796" title="P&Z Agenda for November 24, 2020" href="/AgendaCenter/ViewFile/Agenda/_11242020-796?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 24, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 9, 2020 9:59 AM
-					
+
 			</a></h4>
 		<p>P&amp;Z Agenda for November 24, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer796" class="popoutContainer">
 			<a href="" id="btnAgendaDD796" onkeypress="this.onclick();" onclick="showDownloadMenu(796, 28, 'agendaDD796', event, false); return false;" class="button"><span id="spanDD796">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD796" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 24, 2020, P&Z Agenda for November 24, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_11242020-796?html=true" id="anch1796d333931c" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 24, 2020, P&Z Agenda for November 24, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_11242020-796" id="anch2796d333931c" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 24, 2020, P&Z Agenda for November 24, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_11242020-796?packet=true" id="anch3796d333931c" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3457,20 +3457,20 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat29">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(29)"><span id="span29">&#9660;</span>Quality of Life PRC</h2>
-					
+
 
 <span id="section29">
 	<script type="text/javascript">
@@ -3478,12 +3478,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a029" aria-label="Quality of Life PRC 2020" href="javascript:changeYear(2020, 29,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3496,7 +3496,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3504,41 +3504,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row818fed23789" class="catAgendaRow">
     <a name="_12092020-818"></a>
 	<td>
 		<h4>
 			<a name="_12092020-818"></a>
-			
+
 			<a name="818" title="Quality of Life Policy Review Committee Meeting Agenda" href="/AgendaCenter/ViewFile/Agenda/_12092020-818?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 9, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="December">Dec</abbr> 2, 2020 3:13 PM
-					
+
 			</a></h4>
 		<p>Quality of Life Policy Review Committee Meeting Agenda</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer818" class="popoutContainer">
 			<a href="" id="btnAgendaDD818" onkeypress="this.onclick();" onclick="showDownloadMenu(818, 29, 'agendaDD818', event, false); return false;" class="button"><span id="spanDD818">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD818" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 09, 2020, Quality of Life Policy Review Committee Meeting Agenda. HTML" href="/AgendaCenter/ViewFile/Agenda/_12092020-818?html=true" id="anch1818fed23789" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 09, 2020, Quality of Life Policy Review Committee Meeting Agenda. PDF" href="/AgendaCenter/ViewFile/Agenda/_12092020-818" id="anch2818fed23789" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 09, 2020, Quality of Life Policy Review Committee Meeting Agenda. Packet" href="/AgendaCenter/ViewFile/Agenda/_12092020-818?packet=true" id="anch3818fed23789" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3546,20 +3546,20 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat31">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(31)"><span id="span31">&#9660;</span>Senior Programs Advisory Board</h2>
-					
+
 
 <span id="section31">
 	<script type="text/javascript">
@@ -3567,12 +3567,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a031" aria-label="Senior Programs Advisory Board 2020" href="javascript:changeYear(2020, 31,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3585,7 +3585,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3593,43 +3593,43 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row822646c575c" class="catAgendaRow">
     <a name="_12102020-822"></a>
 	<td>
 		<h4>
 			<a name="_12102020-822"></a>
-			
+
 			<a name="822" title="Senior Programs Advisory Board Meeting December 10, 2020 CANCELLED" href="/AgendaCenter/ViewFile/Agenda/_12102020-822?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 10, 2020</strong>
-			
+
 				&thinsp;&mdash;&thinsp;Amended <abbr title="December">Dec</abbr> 10, 2020 7:26 AM
-			
+
 			</a></h4>
 		<p>Senior Programs Advisory Board Meeting December 10, 2020 CANCELLED</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer822" class="popoutContainer">
 			<a href="" id="btnAgendaDD822" onkeypress="this.onclick();" onclick="showDownloadMenu(822, 31, 'agendaDD822', event, false); return false;" class="button"><span id="spanDD822">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD822" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 10, 2020, Senior Programs Advisory Board Meeting December 10, 2020 CANCELLED. HTML" href="/AgendaCenter/ViewFile/Agenda/_12102020-822?html=true" id="anch1822646c575c" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 10, 2020, Senior Programs Advisory Board Meeting December 10, 2020 CANCELLED. PDF" href="/AgendaCenter/ViewFile/Agenda/_12102020-822" id="anch2822646c575c" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 10, 2020, Senior Programs Advisory Board Meeting December 10, 2020 CANCELLED. Packet" href="/AgendaCenter/ViewFile/Agenda/_12102020-822?packet=true" id="anch3822646c575c" target="_blank">Packet</a></li>
-									
+
 									<li><a aria-label="December 10, 2020, Senior Programs Advisory Board Meeting December 10, 2020 CANCELLED. Previous Version" id="anch4822646c575c" class="previous" href="/AgendaCenter/PreviousVersions/_12102020-822">Previous Versions</a></li>
-								
+
 						</ol>
 					</div>
 				</div>
@@ -3637,41 +3637,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
+
 
 <tr id="row792a30ef277" class="catAgendaRow">
     <a name="_11122020-792"></a>
 	<td>
 		<h4>
 			<a name="_11122020-792"></a>
-			
+
 			<a name="792" title="CANCELLED - Senior Programs Advisory Board Meeting - November 12, 2020" href="/AgendaCenter/ViewFile/Agenda/_11122020-792?html=true" target="_blank"><strong><abbr title="November">Nov</abbr> 12, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 4, 2020 7:51 AM
-					
+
 			</a></h4>
 		<p>CANCELLED - Senior Programs Advisory Board Meeting - November 12, 2020</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer792" class="popoutContainer">
 			<a href="" id="btnAgendaDD792" onkeypress="this.onclick();" onclick="showDownloadMenu(792, 31, 'agendaDD792', event, false); return false;" class="button"><span id="spanDD792">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD792" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="November 12, 2020, CANCELLED - Senior Programs Advisory Board Meeting - November 12, 2020. HTML" href="/AgendaCenter/ViewFile/Agenda/_11122020-792?html=true" id="anch1792a30ef277" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 12, 2020, CANCELLED - Senior Programs Advisory Board Meeting - November 12, 2020. PDF" href="/AgendaCenter/ViewFile/Agenda/_11122020-792" id="anch2792a30ef277" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="November 12, 2020, CANCELLED - Senior Programs Advisory Board Meeting - November 12, 2020. Packet" href="/AgendaCenter/ViewFile/Agenda/_11122020-792?packet=true" id="anch3792a30ef277" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3679,22 +3679,22 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat34">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(34)"><span id="span34">&#9660;</span>Transit Advisory Board</h2>
-					
+
 
 <span id="section34">
 	<script type="text/javascript">
@@ -3702,12 +3702,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a034" aria-label="Transit Advisory Board 2020" href="javascript:changeYear(2020, 34,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3720,7 +3720,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3728,49 +3728,49 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row589851ac16f" class="catAgendaRow">
     <a name="_12032020-589"></a>
 	<td>
 		<h4>
 			<a name="_12032020-589"></a>
-			
+
 			<a name="589" title="LAS CRUCES AREA TRANSIT ADVISORY BOARD MEETING AGENDA
 " href="/AgendaCenter/ViewFile/Agenda/_12032020-589?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 3, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 26, 2020 3:00 PM
-					
+
 			</a></h4>
 		<p>LAS CRUCES AREA TRANSIT ADVISORY BOARD MEETING AGENDA
 </p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer589" class="popoutContainer">
 			<a href="" id="btnAgendaDD589" onkeypress="this.onclick();" onclick="showDownloadMenu(589, 34, 'agendaDD589', event, false); return false;" class="button"><span id="spanDD589">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD589" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 03, 2020, LAS CRUCES AREA TRANSIT ADVISORY BOARD MEETING AGENDA
 . HTML" href="/AgendaCenter/ViewFile/Agenda/_12032020-589?html=true" id="anch1589851ac16f" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 03, 2020, LAS CRUCES AREA TRANSIT ADVISORY BOARD MEETING AGENDA
 . PDF" href="/AgendaCenter/ViewFile/Agenda/_12032020-589" id="anch2589851ac16f" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 03, 2020, LAS CRUCES AREA TRANSIT ADVISORY BOARD MEETING AGENDA
 . Packet" href="/AgendaCenter/ViewFile/Agenda/_12032020-589?packet=true" id="anch3589851ac16f" target="_blank">Packet</a></li>
-									
+
 									<li><a aria-label="December 03, 2020, LAS CRUCES AREA TRANSIT ADVISORY BOARD MEETING AGENDA
 . Previous Version" id="anch4589851ac16f" class="previous" href="/AgendaCenter/PreviousVersions/_12032020-589">Previous Versions</a></li>
-								
+
 						</ol>
 					</div>
 				</div>
@@ -3778,18 +3778,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat35">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(35)"><span id="span35">&#9660;</span>TSI PRC</h2>
-					
+
 
 <span id="section35">
 	<script type="text/javascript">
@@ -3797,12 +3797,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a035" aria-label="TSI PRC 2020" href="javascript:changeYear(2020, 35,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3815,7 +3815,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3823,41 +3823,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row81516029fc6" class="catAgendaRow">
     <a name="_12012020-815"></a>
 	<td>
 		<h4>
 			<a name="_12012020-815"></a>
-			
+
 			<a name="815" title="Transportation-Sustainability-Infrastructure PRC Meeting Agenda for December 1, 2020 " href="/AgendaCenter/ViewFile/Agenda/_12012020-815?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 1, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="November">Nov</abbr> 25, 2020 8:28 AM
-					
+
 			</a></h4>
 		<p>Transportation-Sustainability-Infrastructure PRC Meeting Agenda for December 1, 2020 </p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer815" class="popoutContainer">
 			<a href="" id="btnAgendaDD815" onkeypress="this.onclick();" onclick="showDownloadMenu(815, 35, 'agendaDD815', event, false); return false;" class="button"><span id="spanDD815">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD815" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 01, 2020, Transportation-Sustainability-Infrastructure PRC Meeting Agenda for December 1, 2020 . HTML" href="/AgendaCenter/ViewFile/Agenda/_12012020-815?html=true" id="anch181516029fc6" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 01, 2020, Transportation-Sustainability-Infrastructure PRC Meeting Agenda for December 1, 2020 . PDF" href="/AgendaCenter/ViewFile/Agenda/_12012020-815" id="anch281516029fc6" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 01, 2020, Transportation-Sustainability-Infrastructure PRC Meeting Agenda for December 1, 2020 . Packet" href="/AgendaCenter/ViewFile/Agenda/_12012020-815?packet=true" id="anch381516029fc6" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3865,18 +3865,18 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 				<div class="listing listingCollapse noHeader" id="cat36">
 					<h2 tabindex="0" onkeypress="this.onclick();" onclick="expandCollaspseCategory(36)"><span id="span36">&#9660;</span>University District Citizen's Design Review Board</h2>
-					
+
 
 <span id="section36">
 	<script type="text/javascript">
@@ -3884,12 +3884,12 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 	    $(document).ready(function () {
 	        $('.current').children().removeAttr('href');
 	    });
-	</script>	
-		<ul class="years">	
+	</script>
+		<ul class="years">
 			<li class=current><a id="a036" aria-label="University District Citizen's Design Review Board 2020" href="javascript:changeYear(2020, 36,'a0')">2020</a></li>
-				
+
 			<li>
-		
+
 			</li>
 		</ul>
 	<!--The table needs a position-relative to avoid weird issues with IE where the controls would just dissapear. -->
@@ -3902,7 +3902,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 					<th scope="col" class="minutes">
 						Minutes
 					</th>
-                
+
 				<th scope="col" class="downloads">
 					Download
 				</th>
@@ -3910,41 +3910,41 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</thead>
 		<tbody>
 		<!-- Agendas for a category starts -->
-	
+
 
 <tr id="row81955ad6eb6" class="catAgendaRow">
     <a name="_12072020-819"></a>
 	<td>
 		<h4>
 			<a name="_12072020-819"></a>
-			
+
 			<a name="819" title="University District Citizen Design Review Committee Meeting on December 7, 2020 - Cancelled" href="/AgendaCenter/ViewFile/Agenda/_12072020-819?html=true" target="_blank"><strong><abbr title="December">Dec</abbr> 7, 2020</strong>
-			
+
 						&thinsp;&mdash;&thinsp;Posted <abbr title="December">Dec</abbr> 2, 2020 11:22 AM
-					
+
 			</a></h4>
 		<p>University District Citizen Design Review Committee Meeting on December 7, 2020 - Cancelled</p>
-		
+
 	</td>
         <!--This TD actually needs to be empty of all whitespace for matching :empty css selector.-->
 		<td class="minutes"></td>
-    
+
 	<td class="downloads">
-		
+
 		<div id="downloadContainer819" class="popoutContainer">
 			<a href="" id="btnAgendaDD819" onkeypress="this.onclick();" onclick="showDownloadMenu(819, 36, 'agendaDD819', event, false); return false;" class="button"><span id="spanDD819">Download&nbsp;&#9660;</span></a>
 			<div class="popout popUp" id="agendaDD819" style="display:none;">
-		
+
 				<div class="popoutTop">
 					<div class="popoutBtm">
 						<ol>
-								
+
 									<li><a class="html" aria-label="December 07, 2020, University District Citizen Design Review Committee Meeting on December 7, 2020 - Cancelled. HTML" href="/AgendaCenter/ViewFile/Agenda/_12072020-819?html=true" id="anch181955ad6eb6" target="_blank">HTML</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 07, 2020, University District Citizen Design Review Committee Meeting on December 7, 2020 - Cancelled. PDF" href="/AgendaCenter/ViewFile/Agenda/_12072020-819" id="anch281955ad6eb6" target="_blank">PDF</a></li>
-									
+
 									<li><a class="pdf" aria-label="December 07, 2020, University District Citizen Design Review Committee Meeting on December 7, 2020 - Cancelled. Packet" href="/AgendaCenter/ViewFile/Agenda/_12072020-819?packet=true" id="anch381955ad6eb6" target="_blank">Packet</a></li>
-									
+
 						</ol>
 					</div>
 				</div>
@@ -3952,35 +3952,35 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		</div>
 	</td>
 </tr>
-		
-		<!-- Agendas for a category ends -->					
+
+		<!-- Agendas for a category ends -->
 		</tbody>
 	</table>
 </span>
 				</div>
-		
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 		<!-- Only render the section if there are agendas to display -->
-			
+
 	<!-- Categorylist ends -->
 
 		</div>
-		
+
 	</div>
 	<script type="text/javascript" src="/asset.axd?id=dgAAAB-LCAAAAAAABAAdjTkOhTAQQ-_iGgaGrcg1KBEFCkEiBUsY0P9CuTsDnfX8LN8YYbobGwxaG-ZNDiSYPrYo8_vpwj9laqgi_3YrTB772CewooK4n2R-uIbjW6twKS1yZiqJmWslVj_KptYAI-F08QHSzjRqdgAAAA%3d%3d"></script>
-	
-		
-	
-<!-- END AgendaCenterContent.aspx ***** -->   
 
-	
+
+
+<!-- END AgendaCenterContent.aspx ***** -->
+
+
 	<div class="newCP">
 
 	</div>
 </div>
 </div><aside data-cpRole="contentContainer" id="featureColumn" class="secondaryContent">	<div id="ccd6923f64-2522-4bce-8783-61ad1b416b69" data-containerid="d6923f64-2522-4bce-8783-61ad1b416b69" class="pageContent cpGrid cpGrid24 showInMobile" data-contentcontainerbreakpoint="40">
-				                
+
 
 
 
@@ -3988,7 +3988,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 </aside>
 </div><div data-cpRole="structuralContainer" id="structuralContainer9" class="siteSidebar">
 <aside data-cpRole="contentContainer" id="contentContainer9a">	<div id="ccb4b8ecba-60a3-4201-a70c-1c485cc91056" data-containerid="b4b8ecba-60a3-4201-a70c-1c485cc91056" class="pageContent cpGrid cpGrid24 showInMobile">
-				                
+
 
 
 
@@ -4037,7 +4037,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 
 
 </nav><aside data-cpRole="contentContainer" id="contentContainer9b">	<div id="ccf7aa0238-0f4c-42aa-96fd-cf72f20c84a9" data-containerid="f7aa0238-0f4c-42aa-96fd-cf72f20c84a9" class="pageContent cpGrid cpGrid24 showInMobile">
-				                
+
 
 
 
@@ -4046,13 +4046,13 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 </div>
 </div><div data-cpRole="structuralContainer" id="structuralContainer10">
 <aside data-cpRole="contentContainer" id="contentContainer10a">	<div id="ccee93adba-589e-445f-bad9-22ba2bf5de99" data-containerid="ee93adba-589e-445f-bad9-22ba2bf5de99" class="pageContent cpGrid cpGrid24 isLockedContainer showInMobile">
-				                
+
 
 		<div class="row outer wide"><!--
---><div class="outer col col24 first last" style="" data-widgetcontainerid="da493cce-238d-48ef-94e5-c5c36a39d4e7">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col24 first last ide1d6f21c-f599-48cc-828b-5bd99044046b" style="" data-widgetcontainerid="e1d6f21c-f599-48cc-828b-5bd99044046b">	
+--><div class="outer col col24 first last" style="" data-widgetcontainerid="da493cce-238d-48ef-94e5-c5c36a39d4e7">
+	<div class="row nest first last wide">
+
+	<div class="inner col col24 first last ide1d6f21c-f599-48cc-828b-5bd99044046b" style="" data-widgetcontainerid="e1d6f21c-f599-48cc-828b-5bd99044046b">
 <div data-widget-id="8a1654f1-48c2-4bd8-8c1b-64c8a3571924" data-widget-controller-path="/GraphicLinks/Widget">
 
 
@@ -4063,7 +4063,7 @@ slideshowd17e3f5c4e24413b8285fe388559d0e5.generate('720','1','5', false,false);
 		<div class="">
 				</div>
 	</div>
-	<div class="widgetBody cpGrid cpGrid3 ">	
+	<div class="widgetBody cpGrid cpGrid3 ">
 			<div class="row   wide"><!--
 --><div class="col col1 first "><div class="semanticList"><!--
 	    --><div class="widgetItem GraphicLinks">
@@ -4257,13 +4257,13 @@ height: 100%;
 </aside>
 </div><div data-cpRole="structuralContainer" id="structuralContainer11">
 <aside data-cpRole="contentContainer" id="contentContainer11a">	<div id="ccd626e9bf-036f-4b05-a2f8-967507a559f1" data-containerid="d626e9bf-036f-4b05-a2f8-967507a559f1" class="pageContent cpGrid cpGrid24 isLockedContainer showInMobile">
-				                
+
 
 		<div class="row outer wide"><!--
---><div class="outer col col24 first last" style="" data-widgetcontainerid="6ebe1ff5-df37-41ee-9e7e-97e3237c8fcb">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col24 first last idbb7a988b-9054-4329-a43d-5dc21e346f04" style="" data-widgetcontainerid="bb7a988b-9054-4329-a43d-5dc21e346f04">	
+--><div class="outer col col24 first last" style="" data-widgetcontainerid="6ebe1ff5-df37-41ee-9e7e-97e3237c8fcb">
+	<div class="row nest first last wide">
+
+	<div class="inner col col24 first last idbb7a988b-9054-4329-a43d-5dc21e346f04" style="" data-widgetcontainerid="bb7a988b-9054-4329-a43d-5dc21e346f04">
 <div data-widget-id="156dfb48-eeaa-4879-9213-2197073b1bd2" data-widget-controller-path="/GraphicLinks/Widget">
 
 
@@ -4274,7 +4274,7 @@ height: 100%;
 		<div class="">
 				</div>
 	</div>
-	<div class="widgetBody cpGrid cpGrid5 ">	
+	<div class="widgetBody cpGrid cpGrid5 ">
 			<div class="row   wide"><!--
 --><div class="col col1 first "><div class="semanticList"><!--
 	    --><div class="widgetItem GraphicLinks">
@@ -4525,49 +4525,51 @@ letter-spacing: .1em;}
 </div></div>
 </div><div data-cpRole="structuralContainer" id="structuralContainer12">
 <div class="siteWrap"><footer data-cpRole="contentContainer" id="contentContainer12a" class="siteFooter">	<div id="cc78a8be78-4ce3-49e2-ab19-8155892cf716" data-containerid="78a8be78-4ce3-49e2-ab19-8155892cf716" class="pageContent cpGrid cpGrid24 isLockedContainer showInMobile" data-contentcontainerbreakpoint="50">
-				                
+
 
 		<div class="row outer wide"><!--
---><div class="outer col col6 first" style="" data-widgetcontainerid="ee665081-ce5d-4bac-a626-687737a00d7a">				
-	<div class="row nest first wide">
-	
-	<div class="inner col col6 first last id5cf5a465-111e-4115-b3ad-7f87106f6ef5" style="" data-widgetcontainerid="5cf5a465-111e-4115-b3ad-7f87106f6ef5">	
+--><div class="outer col col6 first" style="" data-widgetcontainerid="ee665081-ce5d-4bac-a626-687737a00d7a">
+	<div class="row nest first wide">
+
+	<div class="inner col col6 first last id5cf5a465-111e-4115-b3ad-7f87106f6ef5" style="" data-widgetcontainerid="5cf5a465-111e-4115-b3ad-7f87106f6ef5">
 
 <div class="widget widgetSpacer" id="3a9d18fd-0866-479a-ae56-5942a18e49f9"></div>	</div> <!-- inner column -->
 
 	</div> <!-- inner row -->
-	<div class="row nest wide">
-	
-	<div class="inner col col6 first last id262ad61c-ebf9-488b-bfcf-e0c237ed9629" style="" data-widgetcontainerid="262ad61c-ebf9-488b-bfcf-e0c237ed9629">	
+	<div class="row nest wide">
+
+	<div class="inner col col6 first last id262ad61c-ebf9-488b-bfcf-e0c237ed9629" style="" data-widgetcontainerid="262ad61c-ebf9-488b-bfcf-e0c237ed9629">
 
 <div class="widget widgetSpacer" id="bcaf35af-940d-424f-9bb8-7cef9a1892fd"></div>	</div> <!-- inner column -->
 
 	</div> <!-- inner row -->
-	<div class="row nest last wide">
-	
-	<div class="inner col col6 first last id315a0d45-10e2-42c6-8e51-4c563bde4bb7" style="" data-widgetcontainerid="315a0d45-10e2-42c6-8e51-4c563bde4bb7">	
+	<div class="row nest last wide">
+
+	<div class="inner col col6 first last id315a0d45-10e2-42c6-8e51-4c563bde4bb7" style="" data-widgetcontainerid="315a0d45-10e2-42c6-8e51-4c563bde4bb7">
 <div class="widget image pageStyles" id="divImageOutere57b1a11-d87f-4eca-a5df-23c9a2c552e8" data-widget-id="e57b1a11-d87f-4eca-a5df-23c9a2c552e8">
-    
-	<div class="widgetBody " id="divImagee57b1a11-d87f-4eca-a5df-23c9a2c552e8">				<a href="/" target="_self"><img src="/ImageRepository/Document?documentID=53" alt="City of Las Cruces Mountains of Opportunity" title="City of Las Cruces Mountains of Opportunity"/></a>
-	</div></div>
+
+	<div class="widgetBody " id="divImagee57b1a11-d87f-4eca-a5df-23c9a2c552e8">
+				<a href="/" target="_self"><img src="/ImageRepository/Document?documentID=53" alt="City of Las Cruces Mountains of Opportunity" title="City of Las Cruces Mountains of Opportunity"/></a>
+	</div>
+</div>
 
 	</div> <!-- inner column -->
 
 	</div> <!-- inner row -->
 
-			</div><!-- outer column --><!----><div class="outer col col1" style="" data-widgetcontainerid="73322fee-8b4e-4f4a-a218-f5eb0a453519">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col1 first last id2b964ea0-4620-4791-9b6f-34dd56c42de1" style="" data-widgetcontainerid="2b964ea0-4620-4791-9b6f-34dd56c42de1">	
+			</div><!-- outer column --><!----><div class="outer col col1" style="" data-widgetcontainerid="73322fee-8b4e-4f4a-a218-f5eb0a453519">
+	<div class="row nest first last wide">
+
+	<div class="inner col col1 first last id2b964ea0-4620-4791-9b6f-34dd56c42de1" style="" data-widgetcontainerid="2b964ea0-4620-4791-9b6f-34dd56c42de1">
 
 <div class="widget widgetSpacer" id="b61afb01-5fed-4791-999a-a2d7fcb46613"></div>	</div> <!-- inner column -->
 
 	</div> <!-- inner row -->
 
-			</div><!-- outer column --><!----><div class="outer col col5" style="" data-widgetcontainerid="eb5377c3-161b-4313-80d8-20bff11b5ea1">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col5 first last id444270cd-2786-4c26-a7ca-4909acf76769" style="" data-widgetcontainerid="444270cd-2786-4c26-a7ca-4909acf76769">	
+			</div><!-- outer column --><!----><div class="outer col col5" style="" data-widgetcontainerid="eb5377c3-161b-4313-80d8-20bff11b5ea1">
+	<div class="row nest first last wide">
+
+	<div class="inner col col5 first last id444270cd-2786-4c26-a7ca-4909acf76769" style="" data-widgetcontainerid="444270cd-2786-4c26-a7ca-4909acf76769">
     <div data-widget-id="709db973-9f46-4676-9e4d-28cc03194853" data-widget-controller-path="/InfoAdvanced/Widget">
 
 
@@ -4611,33 +4613,33 @@ letter-spacing: .1em;}
 	//Render slideshow if info advacned items contain one.
 	$(document).ready(function (e) {
 		$('#divInfoAdv709db973-9f46-4676-9e4d-28cc03194853 .InfoAdvanced.widgetItem').each(function () {
-			renderSlideshowIfApplicable($(this));		
+			renderSlideshowIfApplicable($(this));
 		});
 	});
 </script></div>	</div> <!-- inner column -->
 
 	</div> <!-- inner row -->
 
-			</div><!-- outer column --><!----><div class="outer col col1" style="" data-widgetcontainerid="5db860b8-f349-40ab-88b7-c5ee0ada9da4">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col1 first last id2c88e0be-b7a2-405a-9427-81e8acc0884c" style="" data-widgetcontainerid="2c88e0be-b7a2-405a-9427-81e8acc0884c">	
+			</div><!-- outer column --><!----><div class="outer col col1" style="" data-widgetcontainerid="5db860b8-f349-40ab-88b7-c5ee0ada9da4">
+	<div class="row nest first last wide">
+
+	<div class="inner col col1 first last id2c88e0be-b7a2-405a-9427-81e8acc0884c" style="" data-widgetcontainerid="2c88e0be-b7a2-405a-9427-81e8acc0884c">
 
 <div class="widget widgetSpacer" id="ebf7e978-e36b-4bb7-92e8-e31cd9dc030f"></div>	</div> <!-- inner column -->
 
 	</div> <!-- inner row -->
 
-			</div><!-- outer column --><!----><div class="outer col col5" style="" data-widgetcontainerid="8493ad83-803e-4471-b787-9fa6168fee28">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col5 first last id0d150e61-7c0b-42db-b743-4a84d235fbe9" style="" data-widgetcontainerid="0d150e61-7c0b-42db-b743-4a84d235fbe9">	
+			</div><!-- outer column --><!----><div class="outer col col5" style="" data-widgetcontainerid="8493ad83-803e-4471-b787-9fa6168fee28">
+	<div class="row nest first last wide">
+
+	<div class="inner col col5 first last id0d150e61-7c0b-42db-b743-4a84d235fbe9" style="" data-widgetcontainerid="0d150e61-7c0b-42db-b743-4a84d235fbe9">
 	<div data-widget-id="810ccd40-bba3-43cc-bfeb-9ba588d15fde" data-widget-controller-path="/QuickLinks/Widget">
 
 
 
 
 
- 
+
 
 
 	<section id="widgetQuicklink810ccd40-bba3-43cc-bfeb-9ba588d15fde" class="widget widgetQuickLinks skin37 widgetOptionSet25 narrow" data-modulewidgettype="quickLinks" data-elementqueryclasses='{"wide-narrow":"min-width:25em"}' data-elementquerymatch='matchMultiColumn' data-elementqueryunmatch='unmatchMultiColumn' aria-labelledby="quickLinksHeader810ccd40-bba3-43cc-bfeb-9ba588d15fde">
@@ -4673,7 +4675,7 @@ letter-spacing: .1em;}
 					</ol>
 				</div>
 		</div>
-        
+
 	</div>
 	<div class="widgetFooter">
 	</div>
@@ -4687,26 +4689,26 @@ letter-spacing: .1em;}
 
 	</div> <!-- inner row -->
 
-			</div><!-- outer column --><!----><div class="outer col col1" style="" data-widgetcontainerid="10776120-10ec-47f9-b3a1-fc8ac578a18a">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col1 first last idbf9bb908-a073-42fa-bc51-783cf3778345" style="" data-widgetcontainerid="bf9bb908-a073-42fa-bc51-783cf3778345">	
+			</div><!-- outer column --><!----><div class="outer col col1" style="" data-widgetcontainerid="10776120-10ec-47f9-b3a1-fc8ac578a18a">
+	<div class="row nest first last wide">
+
+	<div class="inner col col1 first last idbf9bb908-a073-42fa-bc51-783cf3778345" style="" data-widgetcontainerid="bf9bb908-a073-42fa-bc51-783cf3778345">
 
 <div class="widget widgetSpacer" id="be247fca-faef-4f1d-80d2-a5c268f246fb"></div>	</div> <!-- inner column -->
 
 	</div> <!-- inner row -->
 
-			</div><!-- outer column --><!----><div class="outer col col5 last" style="" data-widgetcontainerid="79fdcf51-417e-4d99-ae07-186cf7e62e6c">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col5 first last idf425d731-83cd-4179-ba69-ac4aa4c6f8c7" style="" data-widgetcontainerid="f425d731-83cd-4179-ba69-ac4aa4c6f8c7">	
+			</div><!-- outer column --><!----><div class="outer col col5 last" style="" data-widgetcontainerid="79fdcf51-417e-4d99-ae07-186cf7e62e6c">
+	<div class="row nest first last wide">
+
+	<div class="inner col col5 first last idf425d731-83cd-4179-ba69-ac4aa4c6f8c7" style="" data-widgetcontainerid="f425d731-83cd-4179-ba69-ac4aa4c6f8c7">
 	<div data-widget-id="ffa9a258-80c6-4965-ae99-bb0d78815053" data-widget-controller-path="/QuickLinks/Widget">
 
 
 
 
 
- 
+
 
 
 	<section id="widgetQuicklinkffa9a258-80c6-4965-ae99-bb0d78815053" class="widget widgetQuickLinks skin37 widgetOptionSet25 narrow" data-modulewidgettype="quickLinks" data-elementqueryclasses='{"wide-narrow":"min-width:25em"}' data-elementquerymatch='matchMultiColumn' data-elementqueryunmatch='unmatchMultiColumn' aria-labelledby="quickLinksHeaderffa9a258-80c6-4965-ae99-bb0d78815053">
@@ -4746,7 +4748,7 @@ letter-spacing: .1em;}
 					</ol>
 				</div>
 		</div>
-        
+
 	</div>
 	<div class="widgetFooter">
 	</div>
@@ -4767,14 +4769,14 @@ letter-spacing: .1em;}
 </footer></div>
 </div><div data-cpRole="structuralContainer" id="structuralContainer13">
 <div class="siteWrap"><aside data-cpRole="contentContainer" id="contentContainer13a">	<div id="cc4a64e0e7-b797-49a0-bf6b-b54cb00f59a3" data-containerid="4a64e0e7-b797-49a0-bf6b-b54cb00f59a3" class="pageContent cpGrid cpGrid24 isLockedContainer showInMobile" data-contentcontainerbreakpoint="1">
-				                
+
 
 		<div class="row outer autoWidths center wide"><!--
---><div class="outer col col24 first last" style="" data-widgetcontainerid="e7c1ecee-eb52-447d-98ba-cd8804c400fb">				
-	<div class="row nest first last wide">
-	
-	<div class="inner col col24 first last idfc13ecdd-c9b3-4a0b-a8c0-3d948c2efc95" style="" data-widgetcontainerid="fc13ecdd-c9b3-4a0b-a8c0-3d948c2efc95">	
- 
+--><div class="outer col col24 first last" style="" data-widgetcontainerid="e7c1ecee-eb52-447d-98ba-cd8804c400fb">
+	<div class="row nest first last wide">
+
+	<div class="inner col col24 first last idfc13ecdd-c9b3-4a0b-a8c0-3d948c2efc95" style="" data-widgetcontainerid="fc13ecdd-c9b3-4a0b-a8c0-3d948c2efc95">
+
 	<div data-widget-id='373d173a-d631-4855-a57f-aff9c590be9a' data-moduleName="customHtml" id='widgetCustomHtml373d173a-d631-4855-a57f-aff9c590be9a' class="widget widgetCustomHtml skin43 narrow" >
 	<div class="widgetBody pageStyles" id="widgetBody373d173a-d631-4855-a57f-aff9c590be9a">
 		<div id="customHtml373d173a-d631-4855-a57f-aff9c590be9a"><div><div style="font-family: Anton; font-size: 1.1em; color: #fff; letter-spacing: .1em;"><span>Government Websites by <a style="color: #fff; text-decoration: none;" href="https://www.civicplus.com/">CivicPlus&reg;</a></span></div></div></div>
@@ -4795,10 +4797,10 @@ letter-spacing: .1em;}
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
+
+
+
+
 
 	<script type="text/javascript">function dynamicStretchContainers () {Core.Layout.stretchContainers('#structuralContainer9, #structuralContainer2, #structuralContainer1, #structuralContainer3');}</script>
 
@@ -4808,7 +4810,7 @@ letter-spacing: .1em;}
 
 
 	<script src="/523042700.js" type="text/javascript"></script>
-		
+
   <!-- Piwik -->
 <script type="text/javascript">
   var _paq = _paq || [];
@@ -4869,7 +4871,7 @@ $.getScript("//translate.google.com/translate_a/element.js?cb=googleTranslateEle
 		</style>
 	</noscript>
 
-		
+
 <div style="display: none;">
 	<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
 
@@ -4886,7 +4888,7 @@ $.getScript("//translate.google.com/translate_a/element.js?cb=googleTranslateEle
 	</svg>
 </div>
 	<script type="text/javascript">loadCSS('//fonts.googleapis.com/css?family=Anton:regular|Work+Sans:500,600,700,regular|');</script>
-	
+
 
 	<div class="hidden activeWidgetSkinComponentsOnPageJson">[]</div>
 		<div style="display: none;">
@@ -4905,8 +4907,8 @@ $.getScript("//translate.google.com/translate_a/element.js?cb=googleTranslateEle
 				</symbol>
 			</svg>
 		</div>
-	
-	
+
+
 
 	</body>
 </html>

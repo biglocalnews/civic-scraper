@@ -5,7 +5,6 @@ import re
 from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
 
-
 logger = logging.getLogger(__name__)
 
 
