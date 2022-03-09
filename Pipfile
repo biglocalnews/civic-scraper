@@ -26,6 +26,8 @@ vcrpy = "*"
 argh = "*"
 twine = "*"
 Sphinx = "*"
+pre-commit = "*"
+typing-extensions = "*"
 
 [requires]
 python_version = "3.7"

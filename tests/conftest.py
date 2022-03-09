@@ -42,12 +42,12 @@ def read_fixture(file_name):
 
 
 def file_contents(pth):
-    with open(pth, "r") as f:
+    with open(pth) as f:
         return f.read()
 
 
 def file_lines(pth):
-    with open(pth, "r") as f:
+    with open(pth) as f:
         return [line.strip() for line in f.readlines()]
 
 
@@ -56,7 +56,7 @@ def list_dir(pth):
 
 
 def csv_rows(pth):
-    with open(pth, "r") as source:
+    with open(pth) as source:
         return [row for row in csv.DictReader(source)]
 
 

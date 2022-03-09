@@ -82,7 +82,7 @@ Download documents
 ~~~~~~~~~~~~~~~~~~
 
 *civic-scraper* does not automatically download agendas or minutes by default
-since, depending on the :ref:`time period of the scrape <scrape by date cli>` and size of the documents, 
+since, depending on the :ref:`time period of the scrape <scrape by date cli>` and size of the documents,
 this could involve a large quantity of data.
 
 You must explicitly tell *civic-scraper* to download documents by using the
@@ -102,7 +102,7 @@ scraping documents from meetings in the past::
   # Scrape docs from meetings in January 2020
   civic-scraper scrape \
     --start-date=2020-01-01 \
-    --end-date=2020-01-31 \ 
+    --end-date=2020-01-31 \
     --url <site URL>
 
 Scrape multiple sites
@@ -131,14 +131,14 @@ You can scrape both sites by supplying the CSV's path to the
 Store scraping artifacts
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-As part of the scraping process, *civic-scraper* 
+As part of the scraping process, *civic-scraper*
 acquires "intermediate" file artifacts such as
 HTML pages with links to meeting agendas and minutes.
 
-We believe it's important to keep such file 
+We believe it's important to keep such file
 artifacts for the sake of transparency and reproducibility.
 
-Use the :code:`--cache` flag to store these files in the 
+Use the :code:`--cache` flag to store these files in the
 :ref:`civic-scraper cache directory <default cache dir>`::
 
   civic-scraper scrape --cache  --url <site URL>
@@ -148,10 +148,10 @@ Putting it all together
 
 The command-line options mentioned above can be used in tandem (with the
 exception of :code:`--url` and :code:`--urls-file`, which are mutually
-exclusive). 
+exclusive).
 
 For example, the below command::
-  
+
   civic-scraper scrape \
     --cache \
     --download \
@@ -171,17 +171,17 @@ would performing the following actions:
 Custom scripts
 --------------
 
-.. note:: In addition to this documentation, check out the `examples folder on GitHub`_ for 
+.. note:: In addition to this documentation, check out the `examples folder on GitHub`_ for
    sample scripts that demonstrate how to use *civic-scraper*.
 
 .. _examples folder on GitHub: https://github.com/biglocalnews/civic-scraper/tree/master/examples
 
-*civic-scraper* provides an importable Python package for users who are comfortable creating their 
-own scripts. The Python package provides access to a wider variety of features for 
+*civic-scraper* provides an importable Python package for users who are comfortable creating their
+own scripts. The Python package provides access to a wider variety of features for
 added flexibility and support for more advanced scenarios (e.g controlling the location of downloaded
 files or avoiding download of excessively large files).
 
-Scrape metadata 
+Scrape metadata
 ~~~~~~~~~~~~~~~~~
 
 Once you :ref:`install <install>` *civic-scraper* and
@@ -202,12 +202,12 @@ agency's CivicPlus Agenda Center site.  Then call the :code:`scrape` method::
 .. note:: :code:`CivicPlusSite` is an alias for more convenient import of the actual Civic Plus class
    located at :py:class:`civic_scraper.platforms.civic_plus.site.Site`.
 
-:py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>` will automatically store 
-downloaded assets in the :ref:`default cache directory <default cache dir>`. 
+:py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>` will automatically store
+downloaded assets in the :ref:`default cache directory <default cache dir>`.
 
 This location can be customized by :ref:`setting an environment variable <customize cache dir>` or by passing an
 instance of :py:class:`civic_scraper.base.cache.Cache` to :py:class:`CivicPlusSite <civic_scraper.platforms.civic_plus.site.Site>`::
-  
+
   from civic_scraper.base.cache import Cache
   from civic_scraper.platforms import CivicPlusSite
 
@@ -223,13 +223,13 @@ instance of :py:class:`civic_scraper.base.cache.Cache` to :py:class:`CivicPlusSi
 Export metadata to CSV
 ~~~~~~~~~~~~~~~~~~~~~~
 
-By default, :py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>` returns an :py:class:`~civic_scraper.base.asset.AssetCollection` 
-containing :py:class:`~civic_scraper.base.asset.Asset` instances. 
+By default, :py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>` returns an :py:class:`~civic_scraper.base.asset.AssetCollection`
+containing :py:class:`~civic_scraper.base.asset.Asset` instances.
 
-The asset instances store metadata about specific meeting agendas and 
+The asset instances store metadata about specific meeting agendas and
 minutes discovered on the site.
 
-To save a timestamped CSV containing metadata for available assets, 
+To save a timestamped CSV containing metadata for available assets,
 call :py:meth:`AssetCollection.to_csv() <civic_scraper.base.asset.AssetCollection.to_csv>` with a target output directory::
 
   # Save metadata CSV
@@ -240,7 +240,7 @@ call :py:meth:`AssetCollection.to_csv() <civic_scraper.base.asset.AssetCollectio
 Download assets
 ~~~~~~~~~~~~~~~
 
-There are two primary ways to download file assets discovered by a scrape. 
+There are two primary ways to download file assets discovered by a scrape.
 
 You can trigger downloads by passing :code:`download=True` to
 :py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>`::
@@ -248,7 +248,7 @@ You can trigger downloads by passing :code:`download=True` to
   site.scrape(download=True)
 
 Or you can loop over the :py:class:`Asset instances <civic_scraper.base.asset.Asset>`
-in an :py:class:`~civic_scraper.base.asset.AssetCollection` and 
+in an :py:class:`~civic_scraper.base.asset.AssetCollection` and
 call :py:meth:`~civic_scraper.base.asset.Asset.download` on each with a target output directory::
 
   assets_metadata = site.scrape()
@@ -263,7 +263,7 @@ user's local time).
 
 Scraping can be modified to capture assets from different date ranges by
 supplying the optional :code:`start_date` and/or :code:`end_date` arguments
-to :py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>`. 
+to :py:meth:`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>`.
 
 Their values must be strings of the form :code:`YYYY-MM-DD`::
 
@@ -291,12 +291,12 @@ using the :code:`file_size` and :code:`asset_list` arguments to
 Here are more details on the parameters mentioned above:
 
 * :code:`file_size` - Limit downloads to files with max file size in megabytes.
-* :code:`asset_list` -  Limit downloads to one or more `asset types`_ 
+* :code:`asset_list` -  Limit downloads to one or more `asset types`_
   (described below in `Metadata CSV`_). The default is to download all document types.
 
 .. _metadata csv:
 
-Metadata CSV 
+Metadata CSV
 ------------
 
 *civic-scraper* provides the ability to produce a CSV of metadata about agendas, minutes and other files
@@ -332,10 +332,10 @@ The generated file contains the following information:
 Changing the download location
 -------------------------------
 
-By default, *civic-scraper* will store downloaded agendas, minutes and 
+By default, *civic-scraper* will store downloaded agendas, minutes and
 other files in a :ref:`default directory <default cache dir>`.
 
-You can :ref:`customize this location <customize cache dir>` by setting 
+You can :ref:`customize this location <customize cache dir>` by setting
 the :code:`CIVIC_SCRAPER_DIR` environment variable.
 
 

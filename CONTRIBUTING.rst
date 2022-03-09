@@ -86,14 +86,14 @@ Ready to contribute? Here's how to set up `civic-scraper` for local development.
 
     $ git clone git@github.com:your_name_here/civic-scraper.git
 
-3. Install developement dependencies and your local copy of the code 
+3. Install developement dependencies and your local copy of the code
    into a virtualenv and set up your fork for local development.
-   There are numerous ways to create virtual environments in Python. 
+   There are numerous ways to create virtual environments in Python.
    Below uses the venv_ library built into recent Python versions::
-    
+
     # Create a virtual env alongside the civic-scraper git repo
     python -m venv civic-scraper-env
-    
+
     # Activate the virtual env
     source civic-scraper-env/bin/activate
 
@@ -132,7 +132,7 @@ Pull Request Guidelines
 Before you submit a pull request, check that it meets these guidelines:
 
 1. The pull request should include tests.
-2. If the pull request adds functionality, please be sure to review the docs 
+2. If the pull request adds functionality, please be sure to review the docs
    and include necessary updates. For example, new classes, methods
    and functions should be documented.
 3. The pull request should work for Python version 3.6 or higher. Check

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 civic-scraper
 -------------
@@ -42,9 +41,7 @@ See the `official docs`_ for more details on usage.
 
 .. _official docs: http://civic-scraper.readthedocs.io/en/latest/
 """
-
-import os
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 requirements = [
     "bs4",

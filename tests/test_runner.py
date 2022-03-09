@@ -1,8 +1,7 @@
 from pathlib import Path
-from unittest.mock import call, patch, Mock, MagicMock
+from unittest.mock import MagicMock, Mock, call, patch
 
 import pytest
-
 
 from civic_scraper.runner import Runner
 
