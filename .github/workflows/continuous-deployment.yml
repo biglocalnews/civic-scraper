@@ -1,0 +1,55 @@
+name: Continuous Deployment
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint-python:
+    name: Lint Python code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+
+      - id: install-deps
+        name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - id: lint
+        name: Lint
+        run: flake8 ./civic_scraper/*.py
+
+  test-python:
+    strategy:
+      matrix:
+        python: ["3.7", "3.8"]
+    name: Test Python code
+    runs-on: ubuntu-latest
+    steps:
+    - id: checkout
+      name: Checkout
+      uses: actions/checkout@v2
+
+    - id: setup-python
+      name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+
+    - id: install-deps
+      name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+
+    - id: run
+      name: Run tests
+      run: pytest -sv

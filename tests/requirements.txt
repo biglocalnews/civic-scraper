@@ -1,4 +1,0 @@
-pytest==6.2.5
-pytest-django==4.4.0
-pytest-mock
-flake8
