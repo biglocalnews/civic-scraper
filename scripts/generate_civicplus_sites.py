@@ -3,11 +3,11 @@ TITLE: generate_civicplus_sites.py
 AUTHOR: Amy DiPierro
 VERSION: 2020-08-29
 
-DESCRIPTION: 
+DESCRIPTION:
 
 Given a csv of CivicPlus Agenda Center endpoints, check to see if each endpoint
 contains assets that it would be possible to scrape. Add each endpoint with valid assets and
-associated metadata to a csv. 
+associated metadata to a csv.
 
 NOTE: Avoid overwriting previous versions of the csv produced by this file, since it is
 necessary to hand-key values in order to make them human-readable and to correctly categorize
@@ -20,12 +20,14 @@ USAGE: From the command line,
     "/Users/amydipierro/GitHub/test.csv"
 
 """
+import csv
+import re
+
+import bs4
+import pandas as pd
+
 # Libraries
 import requests
-import re
-import bs4
-import csv
-import pandas as pd
 
 # Parameters
 USA = [
@@ -102,10 +104,10 @@ def generate_site_csv(file_in, file_out):
 
     # Read in each line of the .csv, reformat them and add them to a list
 
-    with open(file_in, "r") as f:
+    with open(file_in) as f:
         for line in f:
             raw_url = line.strip().strip(",")
-            format_url = "http://{}/AgendaCenter".format(raw_url)
+            format_url = f"http://{raw_url}/AgendaCenter"
             raw_list.append(format_url)
 
     # Take out the header from the list
@@ -184,7 +186,7 @@ def generate_site_csv(file_in, file_out):
                 "end_year": largest,
                 "scraper_type": "civicplus",
                 "whitelisted": whitelisted,
-                "root": re.sub("\d", "", url),
+                "root": re.sub(r"\d", "", url),
                 "name": name,
                 "state": state,
                 "country": country,

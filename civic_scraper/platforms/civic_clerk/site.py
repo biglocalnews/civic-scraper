@@ -1,7 +1,6 @@
+import html
 import re
 from datetime import datetime
-import html
-import json
 from pathlib import Path
 from urllib.parse import urlparse
 

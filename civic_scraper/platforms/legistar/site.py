@@ -1,15 +1,14 @@
 import re
+from pathlib import Path
+from urllib.parse import parse_qs, urlparse
+
+from legistar.events import LegistarEventsScraper
+
 import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
 
-from legistar.events import LegistarEventsScraper
-
-from datetime import datetime, time
-from pathlib import Path
-from urllib.parse import urlparse, parse_qs
-from warnings import showwarning
 
 # Scrape today's agendas and minutes from a Legistar site
 class LegistarSite(base.Site):
@@ -41,14 +40,12 @@ class LegistarSite(base.Site):
 
         time_format = None
         if time_info:
-            time_format = re.match("\d*?:\d{2} \w{2}", time_info)
+            time_format = re.match(r"\d*?:\d{2} \w{2}", time_info)
 
         if time_format:
             meeting_datetime = " ".join((date_info, time_info))
         else:
             meeting_datetime = " ".join((date_info, "12:00 AM"))
-
-        date_format = re.match("\d*?\/\d*?\/\d{4}", date_info)
 
         meeting_date = scraper.toDate(meeting_datetime)
         meeting_time = scraper.toTime(meeting_datetime)

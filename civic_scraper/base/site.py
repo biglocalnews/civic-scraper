@@ -4,7 +4,7 @@ from .asset import AssetCollection
 from .cache import Cache
 
 
-class Site(object):
+class Site:
     """Base class for all Site scrapers.
 
     Args:
