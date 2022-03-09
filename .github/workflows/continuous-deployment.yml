@@ -13,19 +13,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install pipenv
+        run: pipx install pipenv
+
       - uses: actions/setup-python@v2
         with:
           python-version: '3.7'
+          cache: 'pipenv'
 
-      - id: install-deps
-        name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
+      - id: pipenv-install
+        name: Install Python dependencies
+        run: pipenv install --dev --python `which python`
 
       - id: lint
         name: Lint
-        run: flake8 ./civic_scraper/*.py
+        run: pipenv run flake8 ./civic_scraper/*.py
 
   test-python:
     strategy:
@@ -38,18 +40,18 @@ jobs:
       name: Checkout
       uses: actions/checkout@v2
 
-    - id: setup-python
-      name: Setup Python
-      uses: actions/setup-python@v2
+    - name: Install pipenv
+      run: pipx install pipenv
+
+    - uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python }}
+        cache: 'pipenv'
 
-    - id: install-deps
-      name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+    - id: pipenv-install
+      name: Install Python dependencies
+      run: pipenv install --dev --python `which python`
 
     - id: run
       name: Run tests
-      run: pytest -sv
+      run: pipenv run pytest -sv

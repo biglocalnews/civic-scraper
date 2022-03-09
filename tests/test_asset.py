@@ -62,11 +62,9 @@ def test_asset_download(tmpdir, asset_inputs):
             ),
         ]
         # check files written
-        actual_file_names = set([f.basename for f in tmpdir.listdir()])
-        expected_file_names = set(
-            [
-                "civicplus_nc-nashcounty_05042020-381_agenda.pdf",
-                "civicplus_nc-nashcounty_05042020-381_minutes.pdf",
-            ]
-        )
+        actual_file_names = {f.basename for f in tmpdir.listdir()}
+        expected_file_names = {
+            "civicplus_nc-nashcounty_05042020-381_agenda.pdf",
+            "civicplus_nc-nashcounty_05042020-381_minutes.pdf",
+        }
         assert actual_file_names == expected_file_names

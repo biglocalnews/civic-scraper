@@ -68,7 +68,7 @@ servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 check-release: ## check release for potential errors
-	python setup.py check -r -s
+	pipenv run python setup.py check -r -s
 
 test-release: clean dist ## release distros to test.pypi.org
 	twine upload -r testpypi dist/*
@@ -77,8 +77,8 @@ release: clean dist ## package and upload a release
 	twine upload -r pypi dist/*
 
 dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
+	pipenv run python setup.py sdist
+	pipenv run python setup.py bdist_wheel
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
