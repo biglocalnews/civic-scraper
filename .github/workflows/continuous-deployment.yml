@@ -27,7 +27,7 @@ jobs:
 
       - id: lint
         name: Lint
-        run: pipenv run flake8 ./civic_scraper/*.py
+        run: pipenv run flake8 ./
 
   test-python:
     strategy:
