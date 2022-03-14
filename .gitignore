@@ -8,4 +8,4 @@ build/
 dist/
 docs/_build/
 _data/
-.vs-code
+.vscode
