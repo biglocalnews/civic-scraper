@@ -29,6 +29,7 @@ Sphinx = "*"
 pre-commit = "*"
 typing-extensions = "*"
 myst-parser = "*"
+sphinx-autobuild = "*"
 
 [requires]
 python_version = "3.7"
