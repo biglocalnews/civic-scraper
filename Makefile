@@ -1,85 +1,133 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help
-.DEFAULT_GOAL := help
-define BROWSER_PYSCRIPT
-import os, webbrowser, sys
-try:
-	from urllib import pathname2url
-except:
-	from urllib.request import pathname2url
+#
+# Colors
+#
 
-webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
+# Define ANSI color codes
+RESET_COLOR   = \033[m
+
+BLUE       = \033[1;34m
+YELLOW     = \033[1;33m
+GREEN      = \033[1;32m
+RED        = \033[1;31m
+BLACK      = \033[1;30m
+MAGENTA    = \033[1;35m
+CYAN       = \033[1;36m
+WHITE      = \033[1;37m
+
+DBLUE      = \033[0;34m
+DYELLOW    = \033[0;33m
+DGREEN     = \033[0;32m
+DRED       = \033[0;31m
+DBLACK     = \033[0;30m
+DMAGENTA   = \033[0;35m
+DCYAN      = \033[0;36m
+DWHITE     = \033[0;37m
+
+BG_WHITE   = \033[47m
+BG_RED     = \033[41m
+BG_GREEN   = \033[42m
+BG_YELLOW  = \033[43m
+BG_BLUE    = \033[44m
+BG_MAGENTA = \033[45m
+BG_CYAN    = \033[46m
+
+# Name some of the colors
+COM_COLOR   = $(DBLUE)
+OBJ_COLOR   = $(DCYAN)
+OK_COLOR    = $(DGREEN)
+ERROR_COLOR = $(DRED)
+WARN_COLOR  = $(DYELLOW)
+NO_COLOR    = $(RESET_COLOR)
+
+OK_STRING    = "[OK]"
+ERROR_STRING = "[ERROR]"
+WARN_STRING  = "[WARNING]"
+
+define banner
+    @echo "  $(BLUE)__________$(RESET_COLOR)"
+    @echo "$(BLUE) |$(RED)BIG🌲LOCAL$(RESET_COLOR)$(BLUE)|$(RESET_COLOR)"
+    @echo "$(BLUE) |&&& ======|$(RESET_COLOR)"
+    @echo "$(BLUE) |=== ======|$(RESET_COLOR)  $(DWHITE)This is a $(RESET_COLOR)$(BG_RED)$(WHITE)Big Local News$(RESET_COLOR)$(DWHITE) automation$(RESET_COLOR)"
+    @echo "$(BLUE) |=== == %%%|$(RESET_COLOR)"
+    @echo "$(BLUE) |[_] ======|$(RESET_COLOR)  $(1)"
+    @echo "$(BLUE) |=== ===!##|$(RESET_COLOR)"
+    @echo "$(BLUE) |__________|$(RESET_COLOR)"
+    @echo ""
 endef
-export BROWSER_PYSCRIPT
 
-define PRINT_HELP_PYSCRIPT
-import re, sys
+#
+# Python helpers
+#
 
-for line in sys.stdin:
-	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
-	if match:
-		target, help = match.groups()
-		print("%-20s %s" % (target, help))
-endef
-export PRINT_HELP_PYSCRIPT
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
+PIPENV := pipenv run
+PYTHON := $(PIPENV) python -W ignore
 
-help:
-	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+#
+# Tests
+#
 
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
+lint: ## run the linter
+	$(call banner,        💅 Linting code 💅)
+	@$(PIPENV) flake8 ./
 
 
-clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+test: ## run all tests
+	$(call banner,       🤖 Running tests 🤖)
+	@$(PIPENV) pytest -sv
 
-clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
-
-clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
-	rm -f .coverage
-	rm -fr htmlcov/
-
-lint: ## check style with flake8
-	flake8 civic_scraper tests
-
-coverage: ## check code coverage quickly with the default Python
-		coverage run --source civic_scraper -m pytest
-		coverage report -m
-		coverage html
-		$(BROWSER) htmlcov/index.html
-
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/civic_scraper.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ civic_scraper
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
-
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
+#
+# Releases
+#
 
 check-release: ## check release for potential errors
-	pipenv run python setup.py check -r -s
+	$(call banner,      🔎 Checking release 🔎)
+	@$(PIPENV) twine check dist/*
 
-test-release: clean dist ## release distros to test.pypi.org
-	twine upload -r testpypi dist/*
 
-release: clean dist ## package and upload a release
-	twine upload -r pypi dist/*
+build-release: ## builds source and wheel package
+	$(call banner,      📦 Building release 📦)
+	@$(PYTHON) setup.py sdist
+	@$(PYTHON) setup.py bdist_wheel
+	@ls -l dist
 
-dist: clean ## builds source and wheel package
-	pipenv run python setup.py sdist
-	pipenv run python setup.py bdist_wheel
-	ls -l dist
+#
+# Docs
+#
 
-install: clean ## install the package to the active Python's site-packages
-	python setup.py install
+serve-docs: ## start the documentation test server
+	$(call banner,         📃 Serving docs 📃)
+	cd docs && $(PIPENV) make livehtml;
+
+
+test-docs: ## build the docs as html
+	$(call banner,        📃 Building docs 📃)
+	cd docs && $(PIPENV) make html;
+
+#
+# Extras
+#
+
+format: ## automatically format Python code with black
+	$(call banner,       🪥 Cleaning code 🪥)
+	@$(PIPENV) black .
+
+
+help: ## Show this help. Example: make help
+	@egrep -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+
+# Mark all the commands that don't have a target
+.PHONY: help \
+        build-release \
+        check-release \
+        coverage \
+        dist \
+        format \
+        lint \
+        mypy \
+        release \
+        run \
+        serve-docs \
+        test \
+        test-docs \
+        test-release
