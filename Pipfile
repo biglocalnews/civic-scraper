@@ -28,6 +28,7 @@ twine = "*"
 Sphinx = "*"
 pre-commit = "*"
 typing-extensions = "*"
+myst-parser = "*"
 
 [requires]
 python_version = "3.7"
