@@ -42,6 +42,7 @@ See the `official docs`_ for more details on usage.
 .. _official docs: http://civic-scraper.readthedocs.io/en/latest/
 """
 import os
+
 from setuptools import find_packages, setup
 
 
@@ -72,7 +73,7 @@ test_requirements = [
 setup(
     name="civic-scraper",
     version="0.1.0",
-    description="Command-line tool and library for scraping government agendas, minutes and other public records.",
+    description="A command-line interface to downloading agendas, minutes and other documents produced by local government",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     author="Serdar Tumgoren",

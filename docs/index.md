@@ -1,10 +1,8 @@
 # civic-scraper
 
-## Overview
+A command-line interface to downloading agendas, minutes and other documents produced by local government
 
-`civic-scraper` helps download [agendas], [minutes] and other documents produced by government.
-It includes a command-line tool and reusable Python code to scrape a growing number
-of public agency websites.
+## Links
 
 - Documentation: <http://civic-scraper.readthedocs.io/en/latest/>
 - GitHub: <https://github.com/biglocalnews/civic-scraper>
