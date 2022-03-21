@@ -127,6 +127,6 @@ setup(
     ],
     test_suite="tests",
     tests_require=test_requirements,
-    setup_requires=["pytest-runner", "setuptools_scm"],
+    setup_requires=["setuptools_scm"],
     use_scm_version={"version_scheme": version_scheme, "local_scheme": local_version},
 )
