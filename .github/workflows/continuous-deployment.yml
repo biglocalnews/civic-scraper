@@ -18,8 +18,8 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.7'
-          cache: 'pipenv'
+          python-version: "3.7"
+          cache: "pipenv"
 
       - id: pipenv-install
         name: Install Python dependencies
@@ -29,6 +29,37 @@ jobs:
         name: Lint
         run: pipenv run flake8 ./
 
+  test-docs:
+    name: Test Sphinx build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install pipenv
+        run: pipx install pipenv
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+          cache: "pipenv"
+
+      - id: pipenv-install
+        name: Install Python dependencies
+        run: pipenv install --dev --python `which python`
+
+      - id: build
+        name: Build
+        run: make test-docs
+
+      - id: save
+        name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: docs-${{ github.run_number }}
+          path: ./docs
+          if-no-files-found: error
+
   test-python:
     strategy:
       matrix:
@@ -36,22 +67,22 @@ jobs:
     name: Test Python code
     runs-on: ubuntu-latest
     steps:
-    - id: checkout
-      name: Checkout
-      uses: actions/checkout@v2
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Install pipenv
-      run: pipx install pipenv
+      - name: Install pipenv
+        run: pipx install pipenv
 
-    - uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python }}
-        cache: 'pipenv'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+          cache: "pipenv"
 
-    - id: pipenv-install
-      name: Install Python dependencies
-      run: pipenv install --dev --python `which python`
+      - id: pipenv-install
+        name: Install Python dependencies
+        run: pipenv install --dev --python `which python`
 
-    - id: run
-      name: Run tests
-      run: pipenv run pytest -sv
+      - id: run
+        name: Run tests
+        run: pipenv run pytest -sv

@@ -41,7 +41,17 @@ See the `official docs`_ for more details on usage.
 
 .. _official docs: http://civic-scraper.readthedocs.io/en/latest/
 """
+import os
 from setuptools import find_packages, setup
+
+
+def read(file_name):
+    """Read the provided file."""
+    this_dir = os.path.dirname(__file__)
+    file_path = os.path.join(this_dir, file_name)
+    with open(file_path) as f:
+        return f.read()
+
 
 requirements = [
     "bs4",
@@ -63,7 +73,8 @@ setup(
     name="civic-scraper",
     version="0.1.0",
     description="Command-line tool and library for scraping government agendas, minutes and other public records.",
-    long_description=__doc__,
+    long_description=read("README.md"),
+    long_description_content_type="text/markdown",
     author="Serdar Tumgoren",
     author_email="zstumgoren@gmail.com",
     url="https://github.com/biglocalnews/civic-scraper",
