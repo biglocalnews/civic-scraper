@@ -73,7 +73,7 @@ test_requirements = [
 setup(
     name="civic-scraper",
     version="0.1.0",
-    description="A command-line interface to downloading agendas, minutes and other documents produced by local government",
+    description="Tools for downloading agendas, minutes and other documents produced by local government",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     author="Serdar Tumgoren",
