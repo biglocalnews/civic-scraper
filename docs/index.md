@@ -1,6 +1,6 @@
 # civic-scraper
 
-A command-line interface to downloading agendas, minutes and other documents produced by local government
+Tools for downloading agendas, minutes and other documents produced by local government
 
 ## Links
 
