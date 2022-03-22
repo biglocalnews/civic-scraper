@@ -99,7 +99,7 @@ test_requirements = [
 
 setup(
     name="civic-scraper",
-    description="Command-line tool and library for scraping government agendas, minutes and other public records.",
+    description="Tools for downloading agendas, minutes and other documents produced by local government",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     author="Serdar Tumgoren",
