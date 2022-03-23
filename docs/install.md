@@ -1,47 +1,35 @@
 (install)=
 
-# Installation
+# Getting started
 
-## Install
+Install the library from the Python Package Index.
 
 ```
-pip install civic-scraper
+pipenv install civic-scraper
 ```
 
 Upon installation, you should have access to the {code}`civic-scraper` tool on the command line:
 
-```
-civic-scraper --help
-```
-
-You should also be able to import the {code}`civic_scraper` package from a Python script:
-
-```
-import civic_scraper
-print(civic_scraper.__version__)
+```bash
+pipenv run civic-scraper --help
 ```
 
-:::{note}
-See {ref}`the usage docs <usage>` for details on using *civic-scraper* on
-the command line and in custom scripts.
-:::
+... and start scraping from the command line:
 
-(default-cache-dir)=
-
-## Default cache directory
-
-By default, files downloaded by the CLI tool and underlying Python library code
-will be saved to the {code}`.civic-scraper` folder in the user's home directory.
-
-On Linux/Mac systems, this will be {code}`~/.civic-scraper/`.
-
-(customize-cache-dir)=
-
-## Customize cache directory
-
-To use an alternate cache directory, set the below environment variable
-(e.g. in a {code}`~/.bashrc` or {code}`~/.bash_profile` configuration file):
-
+```bash
+pipenv run civic-scraper scrape --download --url http://nc-nashcounty.civicplus.com/AgendaCenter
 ```
-export CIVIC_SCRAPER_DIR=/tmp/some_other_dir
+
+Or in a script:
+
+```python
+from civic_scraper.platforms import CivicPlusSite
+
+url = "http://nc-nashcounty.civicplus.com/AgendaCenter"
+site = CivicPlusSite(url)
+site.scrape(download=True)
+```
+
+```{note}
+There are many more options for customizing scrapes, especially by date range.  Check out the {ref}`usage` docs for details. See the {ref}`install` docs to configure the download location.
 ```

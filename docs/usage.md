@@ -19,14 +19,14 @@ the user's home directory ({code}`~/.civic-scraper` on Linux/Mac).
 Below are more details on using the [Command line] as well as
 writing [Custom scripts].
 
-:::{note}
+```{note}
 At present, `civic-scraper` only scrapes sites built on the
 [CivicPlus Agenda Center] platform, but we plan to add
 support for additional platforms and sites in the future.
 
 Check out the {ref}`contributor docs <contributing>` if you'd like
 to help with scrapers or other aspects of the project.
-:::
+```
 
 (find-a-site)=
 
@@ -50,10 +50,10 @@ Once you {ref}`install <install>` *civic-scraper* and
 {ref}`find a site to scrape <find a site>`, you're ready to begin
 using the command-line tool.
 
-:::{note}
+```{note}
 To test drive examples below, you should replace {code}`<site URL>` with
 a URL to a Civic Plus site, e.g. <http://nc-nashcounty.civicplus.com/AgendaCenter>.
-:::
+```
 
 ### Getting help
 
@@ -176,10 +176,10 @@ would performing the following actions:
 
 ## Custom scripts
 
-:::{note}
+```{note}
 In addition to this documentation, check out the [examples folder on GitHub] for
 sample scripts that demonstrate how to use *civic-scraper*.
-:::
+```
 
 *civic-scraper* provides an importable Python package for users who are comfortable creating their
 own scripts. The Python package provides access to a wider variety of features for
@@ -192,10 +192,10 @@ Once you {ref}`install <install>` *civic-scraper* and
 {ref}`find a site to scrape <find a site>`, you're ready to begin
 using the `civic_scraper` Python package.
 
-:::{note}
+```{note}
 Below we use East Palo Alto, CA as an example. More agencies
 can be found in the list of [known sites for the Civic Plus platform].
-:::
+```
 
 Create an instance of {code}`CivicPlusSite` by passing it the URL for an
 agency's CivicPlus Agenda Center site.  Then call the {code}`scrape` method:
@@ -207,10 +207,10 @@ site = CivicPlusSite(url)
 assets_metadata = site.scrape()
 ```
 
-:::{note}
+```{note}
 {code}`CivicPlusSite` is an alias for more convenient import of the actual Civic Plus class
 located at {py:class}`civic_scraper.platforms.civic_plus.site.Site`.
-:::
+```
 
 {py:meth}`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>` will automatically store
 downloaded assets in the {ref}`default cache directory <default cache dir>`.
@@ -286,10 +286,10 @@ Their values must be strings of the form {code}`YYYY-MM-DD`:
 assets_metadata = site.scrape(start_date='2020-01-01', end_date='2020-01-30')
 ```
 
-:::{note}
+```{note}
 The above will *not* download the assets by default. See {ref}`download assets script` for details
 on saving the discovered files locally.
-:::
+```
 
 ### Advanced configuration
 
