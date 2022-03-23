@@ -37,6 +37,7 @@ def local_version(version):
     """
     return ""
 
+
 setup(
     name="civic-scraper",
     description="Tools for downloading agendas, minutes and other documents produced by local government",
