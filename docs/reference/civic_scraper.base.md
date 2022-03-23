@@ -1,8 +1,8 @@
-# civic_scraper.base package
+# civic_scraper.base
 
 ## Submodules
 
-## civic_scraper.base.asset module
+### civic_scraper.base.asset
 
 ```{eval-rst}
 .. automodule:: civic_scraper.base.asset
@@ -11,7 +11,7 @@
    :show-inheritance:
 ```
 
-## civic_scraper.base.cache module
+### civic_scraper.base.cache
 
 ```{eval-rst}
 .. automodule:: civic_scraper.base.cache
@@ -20,7 +20,7 @@
    :show-inheritance:
 ```
 
-## civic_scraper.base.constants module
+### civic_scraper.base.constants
 
 ```{eval-rst}
 .. automodule:: civic_scraper.base.constants
@@ -29,19 +29,10 @@
    :show-inheritance:
 ```
 
-## civic_scraper.base.site module
+### civic_scraper.base.site
 
 ```{eval-rst}
 .. automodule:: civic_scraper.base.site
-   :members:
-   :undoc-members:
-   :show-inheritance:
-```
-
-## Module contents
-
-```{eval-rst}
-.. automodule:: civic_scraper.base
    :members:
    :undoc-members:
    :show-inheritance:
