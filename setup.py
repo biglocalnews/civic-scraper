@@ -87,7 +87,7 @@ requirements = [
     "click-option-group",
     "feedparser",
     "requests",
-    "legistar @ https://github.com/opencivicdata/python-legistar-scraper/zipball/master",
+    "scraper-legistar",
 ]
 
 test_requirements = [

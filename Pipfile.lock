@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d9d2e9fd631d248be6a3051595e43bca23ae80125dd0f986293b708774f3747f"
+            "sha256": "9725da754762ebb594fa1bb77c1b26d00b67dfcc374f0f667202d786ce1d311b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -107,13 +107,6 @@
             "markers": "python_version < '3.8'",
             "version": "==4.11.3"
         },
-        "legistar": {
-            "file": "https://github.com/opencivicdata/python-legistar-scraper/archive/03c160facc64c9297cb1c5a1663d07fd1781c65c.zip",
-            "hashes": [
-                "sha256:3c3136d8bd0e279992aec597d23d9ce44442120079a3310a5203979d8b55e842"
-            ],
-            "version": "==0.0.1"
-        },
         "lxml": {
             "hashes": [
                 "sha256:078306d19a33920004addeb5f4630781aaeabb6a8d01398045fcde085091a169",
@@ -211,6 +204,14 @@
             ],
             "markers": "python_version >= '3.7' and python_version < '4'",
             "version": "==2.0.6"
+        },
+        "scraper-legistar": {
+            "hashes": [
+                "sha256:67ad847cb6a9dc5f8569c6040f79bfccb3b7fdd98e71c6fe6532ffcf3591c075",
+                "sha256:998952073b7057c96af0b4563085ba5b2f453b00d584d5670623a92fb1a54e80"
+            ],
+            "index": "pypi",
+            "version": "==0.0.1"
         },
         "sgmllib3k": {
             "hashes": [

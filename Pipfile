@@ -8,7 +8,7 @@ bs4 = "*"
 click = "*"
 click-option-group = "*"
 feedparser = "*"
-legistar = {file = "https://github.com/opencivicdata/python-legistar-scraper/archive/03c160facc64c9297cb1c5a1663d07fd1781c65c.zip"}
+scraper-legistar = "*"
 requests = "*"
 demjson3 = "*"
 
