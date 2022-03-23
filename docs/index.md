@@ -47,6 +47,7 @@ See the {ref}`install` docs to configure the download location.
 install
 usage
 contributing
+releasing
 ```
 
 [agendas]: https://en.wikipedia.org/wiki/Agenda_(meeting)
