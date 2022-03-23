@@ -87,6 +87,7 @@ requirements = [
     "click-option-group",
     "feedparser",
     "requests",
+    "demjson3",
     "scraper-legistar",
 ]
 
