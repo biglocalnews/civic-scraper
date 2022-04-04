@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 import html
 import json
 from pathlib import Path
@@ -16,8 +16,14 @@ from civic_scraper.base.cache import Cache
 
 class PrimeGovSite(base.Site):
 
-    def __init__(self, url, cache=Cache()):
+    def __init__(self, url, place=None, state_or_province=None, cache=Cache()):
+
         self.url = url
+        self.base_url = "https://" + urlparse(url).netloc
+        self.primegov_instance = urlparse(url).netloc.split(".")[0]
+        self.place = place
+        self.state_or_province = state_or_province
+        self.cache = cache
 
         self.session = Session()
         self.session.headers[
@@ -29,43 +35,32 @@ class PrimeGovSite(base.Site):
             "response": lambda r, *args, **kwargs: r.raise_for_status()
         }
 
-    def create_asset(self, entry):
+    def create_asset(self, entry, document):
+
+        url = self._get_agenda_url(entry['id'])
+        meeting_datetime = datetime.fromisoformat(entry['dateTime'])
+        meeting_id = self._get_meeting_id(document['id'])
 
         e = {
-            "url": entry.url,
-            "asset_name": entry.title,
+            "url": url,
+            "asset_name": entry['title'],
             "committee_name": None,
-            "place": None,
-            "state_or_province": None,
+            "place": self.place,
+            "state_or_province": self.state_or_province,
             "asset_type": "Meeting",
-            "meeting_date": entry.date,
-            "meeting_time": entry.time,
-            "meeting_id": self._get_meeting_id(entry.id),
+            "meeting_date": meeting_datetime.date(),
+            "meeting_time": meeting_datetime.time(),
+            "meeting_id": meeting_id,
             "scraped_by": f"civic-scraper_{civic_scraper.__version__}",
-            "content_type": "txt",
+            "content_type": "html",
             "content_length": None,
         }
 
         return Asset(**e)
 
-    def _get_meetings(self):
+    def _get_agenda_url(self, id):
 
-        response = self.session.get(self.url)
-        return response.json()
-
-    def _get_agenda_urls(self, obj):
-
-        if 'templates' not in obj:
-            return []
-
-        agendas = []
-        for entry in obj['templates']:
-            if 'Agenda' in entry['title']:
-                for doc in entry['compiledMeetingDocumentFiles']:
-                    if doc['compileOutputType'] == 3:
-                        agendas.append(f"https://lacity.primegov.com/Portal/MeetingPreview?compiledMeetingDocumentFileId={doc['id']}")
-
-        return agendas
+        return f'{self.base_url}/Portal/MeetingPreview?compiledMeetingDocumentFileId={id}'
 
     def _get_meeting_id(self, object_id):
 
@@ -73,22 +68,25 @@ class PrimeGovSite(base.Site):
         match = re.match(pattern, self.url)
         return f'primegov_{match.group(1)}_{object_id}'
 
-    def get_agenda_items(self, url):
+    def scrape(self, start_date=None, end_date=None):
 
-        resp = self.session.get(url)
-        event_tree = lxml.html.fromstring(resp.text)
+        # API requires both start and end dates
+        if not start_date:
+            start_date = datetime.today().strftime('%m/%d/%Y')
 
-        return event_tree.xpath('//div[@class="meeting-item"]')
+        if not end_date:
+            end_date = (datetime.today() + timedelta(days=30)).strftime('%m/%d/%Y')
 
-
-    def scrape(self):
+        response = self.session.get(f'{self.base_url}/api/meeting/search?from={start_date}&to={end_date}')
 
         ac = AssetCollection()
 
-        for meeting in self._get_meetings():
-            print(meeting['title'], self._get_agenda_urls(meeting))
-            for url in self._get_agenda_urls(meeting):
-                agenda_items = self.get_agenda_items(url)
-                for item in agenda_items:
-                    cleaned_string = re.sub('\s+', ' ', item.text_content())
-                    print(cleaned_string + '\n')
+        for meeting in response.json():
+            for entry in meeting['templates']:
+                if 'Agenda' in entry['title']:
+                    for doc in entry['compiledMeetingDocumentFiles']:
+                        # HTML files have a compileOutputCode of 3
+                        if doc['compileOutputType'] == 3:
+                            ac.append(self.create_asset(meeting, doc))
+
+        return ac

@@ -5,10 +5,10 @@ from civic_scraper.platforms import PrimeGovSite
 logging.basicConfig(level="DEBUG")
 
 primegov_sites = [
-    {'site': 'https://lacity.primegov.com/api/meeting/search?CommitteeId=&from=3%2F30%2F2022&text=&to=3%2F31%2F2022',
+    {'site': 'https://lacity.primegov.com/api/meeting/',
      'config': {
-        'place': 'brookhaven',
-        'state_or_province': 'ga',
+        'place': 'los angeles',
+        'state_or_province': 'ca',
      },
     },
 ]
