@@ -1,12 +1,6 @@
 import re
 from datetime import datetime, timedelta
-import html
-import json
-from pathlib import Path
 from urllib.parse import urlparse
-
-import demjson
-import lxml.html
 from requests import Session
 
 import civic_scraper
