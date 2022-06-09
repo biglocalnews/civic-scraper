@@ -12,7 +12,6 @@ from civic_scraper.utils import parse_date
 
 
 class Site(base.Site):
-
     def __init__(
         self,
         base_url,
@@ -38,19 +37,19 @@ class Site(base.Site):
         cache=False,
         download=False,
         file_size=None,
-        asset_list=['Agenda', 'Minutes'],
+        asset_list=["Agenda", "Minutes"],
     ):
         """Scrape a government website for metadata and/or docs.
-            Args:
-                start_date (str): YYYY-MM-DD (default: current day)
-                end_date (str): YYYY-MM-DD (default: current day)
-                cache (bool): Cache source HTML containing file metadata (default: False)
-                download (bool): Download file assets such as PDFs (default: False)
-                file_size (float): Max size in Megabytes of file assets to download
-                asset_list (list): Optional list of SUPPORTED_ASSET_TYPES to
-                    to limit items to be scraped (e.g. agenda, minutes). (default: [])
-            Returns:
-                AssetCollection: A sequence of Asset instances
+        Args:
+            start_date (str): YYYY-MM-DD (default: current day)
+            end_date (str): YYYY-MM-DD (default: current day)
+            cache (bool): Cache source HTML containing file metadata (default: False)
+            download (bool): Download file assets such as PDFs (default: False)
+            file_size (float): Max size in Megabytes of file assets to download
+            asset_list (list): Optional list of SUPPORTED_ASSET_TYPES to
+                to limit items to be scraped (e.g. agenda, minutes). (default: [])
+        Returns:
+            AssetCollection: A sequence of Asset instances
         """
         webscraper = LegistarEventsScraper(
             event_info_key=self.event_info_keys["meeting_details_info"],
@@ -89,15 +88,15 @@ class Site(base.Site):
 
     def _create_asset(self, event, meeting_meta, asset_type):
         name_bits = [self._event_name(event)]
-        meeting_id = meeting_meta['meeting_id']
+        meeting_id = meeting_meta["meeting_id"]
         if meeting_id:
-            clean_id = meeting_id.split('_')[-1]
+            clean_id = meeting_id.split("_")[-1]
             name_bits.append(clean_id)
         name_bits.append(asset_type)
         kwargs = {
-            "url": event[asset_type]['url'],
+            "url": event[asset_type]["url"],
             "asset_type": asset_type.lower(),
-            "asset_name":" - ".join(name_bits),
+            "asset_name": " - ".join(name_bits),
             "content_type": None,
             "content_length": None,
         }
@@ -155,14 +154,14 @@ class Site(base.Site):
         except KeyError:
             return event["Name"]
 
-    def _skippable(self, asset, start_date, end_date):#, file_size, asset_list):
+    def _skippable(self, asset, start_date, end_date):  # , file_size, asset_list):
         start = parse_date(start_date)
         end = parse_date(end_date)
         meeting_date = parse_date(asset.meeting_date)
         status = False
         # Skip if document URL is not available
         try:
-            if not asset.url.startswith('http'):
+            if not asset.url.startswith("http"):
                 status = True
         except AttributeError:
             status = True

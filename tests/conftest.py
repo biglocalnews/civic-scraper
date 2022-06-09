@@ -17,10 +17,11 @@ import pytest
 # vcr_log = logging.getLogger("vcr")
 # vcr_log.setLevel(logging.INFO)
 
-@pytest.fixture(scope='module')
+
+@pytest.fixture(scope="module")
 def vcr_cassette_dir(request):
-    mod_name = request.module.__name__.split('tests.')[-1]
-    return os.path.join('tests/cassettes', mod_name)
+    mod_name = request.module.__name__.split("tests.")[-1]
+    return os.path.join("tests/cassettes", mod_name)
 
 
 @pytest.fixture
