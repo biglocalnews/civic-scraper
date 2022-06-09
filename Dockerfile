@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . /app
 
 # Reference: https://civic-scraper.readthedocs.io/en/latest/install.html
-RUN pip install .
+RUN pip install -e .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Reference: https://civic-scraper.readthedocs.io/en/latest/contributing.html#get-started
