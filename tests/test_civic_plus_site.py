@@ -45,7 +45,7 @@ def test_scrape_defaults():
     for asset in assets:
         assert asset.meeting_date in expected_meeting_dates
     # Check range of asset types
-    expected_asset_types = ["minutes", "agenda", "minutes", "agenda"]
+    expected_asset_types = ['agenda', 'minutes', 'agenda', 'agenda', 'minutes', 'agenda']
     actual_asset_types = [asset.asset_type for asset in assets]
     assert expected_asset_types == actual_asset_types
 
