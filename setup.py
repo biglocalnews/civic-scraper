@@ -80,6 +80,7 @@ setup(
         "flake8",
         "pytest",
         "pytest-vcr",
+        "pytz",
         "vcrpy",
     ],
     setup_requires=["setuptools_scm"],

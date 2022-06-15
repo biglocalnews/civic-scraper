@@ -9,6 +9,7 @@ docutils
 Sphinx
 pytest
 pytest-vcr
+pytz
 vcrpy
 argh
 twine

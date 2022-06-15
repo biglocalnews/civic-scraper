@@ -8,7 +8,7 @@ import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.utils import parse_date
+from civic_scraper.utils import parse_date, dtz_to_dt
 
 
 class Site(base.Site):
@@ -107,10 +107,6 @@ class Site(base.Site):
         detail_info = event[self.event_info_keys["meeting_details_info"]]
         date_info = event[self.event_info_keys["meeting_date_info"]]
         time_info = event[self.event_info_keys["meeting_time_info"]] or None
-        location_info = None
-        if self.event_info_keys["meeting_location_info"] in event.keys():
-            location_info = event[self.event_info_keys["meeting_location_info"]]
-
         time_format = None
         if time_info:
             time_format = re.match(r"\d*?:\d{2} \w{2}", time_info)
@@ -120,7 +116,6 @@ class Site(base.Site):
         else:
             meeting_datetime = " ".join((date_info, "12:00 AM"))
 
-        meeting_date = scraper.toDate(meeting_datetime)
         meeting_time = scraper.toTime(meeting_datetime)
 
         # use regex to match pattern #/#/#; raise warning if no match
@@ -140,9 +135,9 @@ class Site(base.Site):
 
         return {
             "committee_name": self._event_name(event),
-            "place": location_info,
+            "place": None,
             "state_or_province": None,
-            "meeting_date": meeting_date.strip(),
+            "meeting_date": dtz_to_dt(meeting_time),
             "meeting_time": meeting_time,
             "meeting_id": meeting_id,
             "scraped_by": f"civic-scraper_{civic_scraper.__version__}",
@@ -157,7 +152,8 @@ class Site(base.Site):
     def _skippable(self, asset, start_date, end_date):  # , file_size, asset_list):
         start = parse_date(start_date)
         end = parse_date(end_date)
-        meeting_date = parse_date(asset.meeting_date)
+        # Use a generic (non-timezone aware) date for filtering
+        meeting_date = dtz_to_dt(asset.meeting_date)
         status = False
         # Skip if document URL is not available
         try:

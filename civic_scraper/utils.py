@@ -10,5 +10,9 @@ def parse_date(date_str, format="%Y-%m-%d"):
     return datetime.strptime(date_str, format)
 
 
+def dtz_to_dt(dtz):
+    return datetime.fromordinal(dtz.toordinal())
+
+
 def default_user_home():
     return join(expanduser("~"), ".civic-scraper")

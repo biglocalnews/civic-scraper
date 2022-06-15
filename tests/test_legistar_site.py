@@ -1,4 +1,7 @@
+import datetime
+
 import pytest
+import pytz
 
 from civic_scraper.platforms import LegistarSite
 
@@ -33,15 +36,10 @@ def test_scrape_defaults():
     assert agenda.asset_type == "agenda"
     assert agenda.asset_name == "Budget and Finance Committee - 957429 - Agenda"
     assert agenda.meeting_id == "legistar_nashville_957429"
-    """
-    assert agenda.meeting_date == datetime.datetime(2022, 4, 18)
-    assert agenda.meeting_time is None
-    assert agenda.place == "nashville"
-    assert agenda.state_or_province == "tn"
-        assert agenda.content_type == "application/pdf"
-    assert agenda.content_length == "19536"
-    # Check that assets are in the correct date range
-    expected_meeting_dates = [datetime.datetime(2020, 5, day) for day in range(3, 7)]
-    for asset in assets:
-        assert asset.meeting_date in expected_meeting_dates
-    """
+    assert agenda.meeting_date == datetime.datetime(2022, 4, 18, 0, 0)
+    # Check time-zone aware meeting time
+    expected_dtz = pytz.timezone('US/Central').localize(datetime.datetime(2022, 4, 18, 17, 0))
+    assert expected_dtz == agenda.meeting_time
+    # Content Type and Length are only captured if download flag is True
+    assert agenda.content_type is None
+    assert agenda.content_length is None
