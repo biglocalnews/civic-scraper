@@ -48,6 +48,10 @@ jobs:
         name: Install Python dependencies
         run: pipenv install --dev --python `which python`
 
+      - id: typing-ext-install
+        name: Install Python dependencies
+        run: pipenv install --dev --python `which python` typing-extensions
+
       - id: build
         name: Build
         run: make test-docs
