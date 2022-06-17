@@ -140,7 +140,6 @@ def test_scrape_current_day_by_default(today_local_str, tmpdir):
     "Scrape should assume current day be default"
     url = "https://nashville.legistar.com/Calendar.aspx"
     config = {"cache": Cache(tmpdir), "timezone": "US/Central"}
-    scrape_date = "2022-04-05"
     site = LegistarSite(url, **config)
     site.scrape(download=True)
     target_dir = tmpdir.join("assets")
