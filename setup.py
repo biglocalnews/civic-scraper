@@ -81,6 +81,7 @@ setup(
         "pytest",
         "pytest-vcr",
         "pytz",
+        "typing-extensions",
         "vcrpy",
     ],
     setup_requires=["setuptools_scm"],
