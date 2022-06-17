@@ -16,3 +16,9 @@ def dtz_to_dt(dtz):
 
 def default_user_home():
     return join(expanduser("~"), ".civic-scraper")
+
+
+def mb_to_bytes(size_mb):
+    if size_mb is None:
+        return None
+    return float(size_mb) * 1048576

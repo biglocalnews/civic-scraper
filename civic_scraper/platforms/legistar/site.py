@@ -2,13 +2,14 @@ import re
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+import requests
 from legistar.events import LegistarEventsScraper
 
 import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.utils import parse_date, dtz_to_dt
+from civic_scraper.utils import parse_date, dtz_to_dt, mb_to_bytes, today_local_str
 
 
 class Site(base.Site):
@@ -34,7 +35,6 @@ class Site(base.Site):
         self,
         start_date=None,
         end_date=None,
-        cache=False,
         download=False,
         file_size=None,
         asset_list=["Agenda", "Minutes"],
@@ -43,7 +43,6 @@ class Site(base.Site):
         Args:
             start_date (str): YYYY-MM-DD (default: current day)
             end_date (str): YYYY-MM-DD (default: current day)
-            cache (bool): Cache source HTML containing file metadata (default: False)
             download (bool): Download file assets such as PDFs (default: False)
             file_size (float): Max size in Megabytes of file assets to download
             asset_list (list): Optional list of SUPPORTED_ASSET_TYPES to
@@ -51,6 +50,10 @@ class Site(base.Site):
         Returns:
             AssetCollection: A sequence of Asset instances
         """
+        # Use current day as default
+        today = today_local_str()
+        start_date = start_date or today
+        end_date = end_date or today
         webscraper = LegistarEventsScraper(
             event_info_key=self.event_info_keys["meeting_details_info"],
             retry_attempts=3,
@@ -74,7 +77,9 @@ class Site(base.Site):
                 except TypeError:
                     continue
                 # Apply date and other filters
-                if self._skippable(asset, start_date, end_date):
+                if self._skippable(
+                    asset, start_date, end_date, file_size=file_size, download=download
+                ):
                     continue
                 ac.append(asset)
         if download:
@@ -85,6 +90,11 @@ class Site(base.Site):
                     dir_str = str(asset_dir)
                     asset.download(target_dir=dir_str, session=webscraper)
         return ac
+
+    def _add_file_meta(self, asset):
+        headers = requests.head(asset.url, allow_redirects=True).headers
+        asset.content_type = headers["content-type"]
+        asset.content_length = headers["content-length"]
 
     def _create_asset(self, event, meeting_meta, asset_type):
         name_bits = [self._event_name(event)]
@@ -149,29 +159,26 @@ class Site(base.Site):
         except KeyError:
             return event["Name"]
 
-    def _skippable(self, asset, start_date, end_date):  # , file_size, asset_list):
+    def _skippable(self, asset, start_date, end_date, file_size=None, download=False):
         start = parse_date(start_date)
         end = parse_date(end_date)
         # Use a generic (non-timezone aware) date for filtering
         meeting_date = dtz_to_dt(asset.meeting_date)
-        status = False
         # Skip if document URL is not available
         try:
             if not asset.url.startswith("http"):
-                status = True
+                return True
         except AttributeError:
-            status = True
+            return True
         # Skip if meeting date isn't between/equal to start and end dates
         if not start <= meeting_date <= end:
-            status = True
-        return status
-        """
-        if file_size:
-            max_bytes = self._mb_to_bytes(file_size)
+            return True
+        # Add Content Type and Length when download specified
+        if download:
+            self._add_file_meta(asset)
+        # if file_size and download are given, then check byte count
+        if file_size and download:
+            max_bytes = mb_to_bytes(file_size)
             if float(asset.content_length) > max_bytes:
                 return True
-        if asset_list:
-            if asset.asset_type in asset_list:
-                return True
-        """
         return False
