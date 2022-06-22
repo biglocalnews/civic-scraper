@@ -10,7 +10,7 @@ sys.path.append(PROJECT_ROOT)
 
 from civic_scraper.platforms import LegistarSite
 
-#logging.basicConfig(level="DEBUG")
+logging.basicConfig(level="DEBUG")
 
 legistar_sites = [
     {
@@ -29,7 +29,7 @@ legistar_sites = [
             "timezone": "US/Alaska",
         },
     },
-   {
+    {
         "start_date": "2021-04-19",
         "end_date": "2021-04-19",
         "site": "https://petersburg.legistar.com/Calendar.aspx",
@@ -262,12 +262,9 @@ def legistar_integration():
         print(f"{obj['site']}")
         scraper = LegistarSite(obj["site"], **obj["config"])
         try:
-            kwargs = {
-                "start_date": obj["start_date"],
-                "end_date": obj["end_date"]
-            }
+            kwargs = {"start_date": obj["start_date"], "end_date": obj["end_date"]}
             try:
-                kwargs["asset_list"] = obj['asset_list']
+                kwargs["asset_list"] = obj["asset_list"]
             except KeyError:
                 pass
             data = scraper.scrape(**kwargs)
