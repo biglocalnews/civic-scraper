@@ -105,7 +105,7 @@ class Site(base.Site):
         name_bits.append(asset_type)
         kwargs = {
             "url": event[asset_type]["url"],
-            "asset_type": asset_type.lower(),
+            "asset_type": asset_type.lower().replace(' ', '_'),
             "asset_name": " - ".join(name_bits),
             "content_type": None,
             "content_length": None,
@@ -156,7 +156,7 @@ class Site(base.Site):
     def _event_name(self, event):
         try:
             return event["Name"]["label"]
-        except KeyError:
+        except (KeyError, TypeError):
             return event["Name"]
 
     def _skippable(self, asset, start_date, end_date, file_size=None, download=False):
