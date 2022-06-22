@@ -1,0 +1,2159 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/Search/?term=&CIDs=all&startDate=10%2F01%2F2020&endDate=10%2F09%2F2020&dateRange=&dateSelector=
+  response:
+    body:
+      string: "<html><head><title>Object moved</title></head><body>\r\n<h2>Object
+        moved to <a href=\"https://www.cityofcolumbuswi.com/AgendaCenter/Search/?term=&amp;CIDs=all&amp;startDate=10%2F01%2F2020&amp;endDate=10%2F09%2F2020&amp;dateRange=&amp;dateSelector=\">here</a>.</h2>\r\n</body></html>\r\n"
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '278'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:20 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/Search/?term=&CIDs=all&startDate=10%2F01%2F2020&endDate=10%2F09%2F2020&dateRange=&dateSelector=
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/Search/?term=&CIDs=all&startDate=10%2F01%2F2020&endDate=10%2F09%2F2020&dateRange=&dateSelector=
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '28371'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:22 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=l1q0acyfsvu52meozkw3hvgh; path=/; secure; HttpOnly; SameSite=None
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10072020-1620
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:23 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10072020-1620
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10072020-1620
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Cable Commission.agenda.100720.updated.pdf
+      Content-Length:
+      - '128531'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:23 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=yca0thyyhdhgezcwbrlsfzcd; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Minutes/_10072020-1620
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '194'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:23 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Minutes/_10072020-1620
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Minutes/_10072020-1620
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=
+      Content-Length:
+      - '141629'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:24 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=pu04rf0un2l0cz00kkxbxg11; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10072020-1620
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:24 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10072020-1620
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10072020-1620
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Cable Commission.agenda.100720.updated.pdf
+      Content-Length:
+      - '128531'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:25 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=3tkqy2zmzp4lstusdttterqn; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10062020-1621
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:25 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1621
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1621
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.agenda.100620.reg.pdf
+      Content-Length:
+      - '420270'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:25 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=1vefstlkjea1mu3t2atmbmhp; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10062020-1621
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:26 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1621
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1621
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.agenda.100620.reg.pdf
+      Content-Length:
+      - '420270'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:26 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=31gpb10cntritjauiq3rvgdu; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10062020-1623
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:27 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1623
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1623
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.Packet.100620.reg.pdf
+      Content-Length:
+      - '20520005'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:28 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=tqzrilnlpio1zhafxlakft3i; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10062020-1623
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:28 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1623
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1623
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.Packet.100620.reg.pdf
+      Content-Length:
+      - '20520005'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:28 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=gvqrj1kwmfoqx3cqxb0ll5er; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10062020-1622
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:28 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1622
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1622
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.agenda.100620.cow.pdf
+      Content-Length:
+      - '153547'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:29 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=phxeox2c4vfizuv4clvfqnrj; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10062020-1622
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:29 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1622
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1622
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.agenda.100620.cow.pdf
+      Content-Length:
+      - '153547'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:29 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=3rpwmq34eputbwjr2l5jmxrd; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10062020-1624
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:29 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1624
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1624
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.Packet.100620.cow.pdf
+      Content-Length:
+      - '16037105'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:30 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=phicuzyegrljqjhvsjlcl3ie; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10062020-1624
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:30 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1624
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10062020-1624
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Council.Packet.100620.cow.pdf
+      Content-Length:
+      - '16037105'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:30 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=nsengflohpwp31iy10a02fht; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10082020-1625
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:31 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10082020-1625
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10082020-1625
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=CHLPC.agenda.100820.pdf
+      Content-Length:
+      - '121058'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:31 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=eclo1oa5jhqbwfvezu5vgyzn; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Minutes/_10082020-1625
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '194'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:31 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Minutes/_10082020-1625
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Minutes/_10082020-1625
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=
+      Content-Length:
+      - '114616'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:31 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=2j2xc0js10hidesfrgzlxbfv; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10082020-1625
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:31 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10082020-1625
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10082020-1625
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=CHLPC.agenda.100820.pdf
+      Content-Length:
+      - '121058'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:32 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=i1uvzyrn1coyr0yrs2pg2tkl; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10052020-1619
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:32 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10052020-1619
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10052020-1619
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Tourism agenda.100520 - amended.pdf
+      Content-Length:
+      - '160939'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:32 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=4jqdn1ldwjcfzmyghxgzpljo; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Minutes/_10052020-1619
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '194'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:32 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Minutes/_10052020-1619
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Minutes/_10052020-1619
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=
+      Content-Length:
+      - '115887'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:33 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=kjspoafjz5fsodfuhf1zyvox; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: http://wi-columbus.civicplus.com/AgendaCenter/ViewFile/Agenda/_10052020-1619
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Length:
+      - '193'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 09 Jun 2022 23:07:33 GMT
+      ETag:
+      - '" "'
+      Location:
+      - https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10052020-1619
+      Server:
+      - Microsoft-IIS/8.5
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: HEAD
+    uri: https://www.cityofcolumbuswi.com/AgendaCenter/ViewFile/Agenda/_10052020-1619
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private, s-maxage=600,no-transform
+      Content-Disposition:
+      - inline;filename=Tourism agenda.100520 - amended.pdf
+      Content-Length:
+      - '160939'
+      Content-Security-Policy:
+      - 'frame-ancestors ''self'' https://*.granicus.com http://*.granicus.com https://platform.civicplus.com
+        https://account.civicplus.com https://analytics.civicplus.com; img-src * data:;
+        worker-src * data: blob: ''unsafe-eval'' ''unsafe-inline''; script-src * about:
+        ''unsafe-inline'' ''unsafe-eval''; style-src * ''unsafe-inline''; media-src
+        * blob:; font-src * data:; default-src *'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Thu, 09 Jun 2022 23:07:33 GMT
+      ETag:
+      - '" "'
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - CP_IsMobile=false; path=/
+      - CP_IsMobile=false; path=/
+      - ASP.NET_SessionId=fr5eeh2liywnpqngm12djtua; path=/; secure; HttpOnly; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      p3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+    status:
+      code: 200
+      message: OK
+version: 1

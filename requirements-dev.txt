@@ -9,7 +9,9 @@ docutils
 Sphinx
 pytest
 pytest-vcr
+pytz
 vcrpy
 argh
 twine
+typing-extensions
 sphinxcontrib-napoleon

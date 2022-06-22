@@ -1,5 +1,6 @@
 import csv
 import datetime
+import os
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,12 @@ import pytest
 # logging.basicConfig() # you need to initialize logging, otherwise you will not see anything from vcrpy
 # vcr_log = logging.getLogger("vcr")
 # vcr_log.setLevel(logging.INFO)
+
+
+@pytest.fixture(scope="module")
+def vcr_cassette_dir(request):
+    mod_name = request.module.__name__.split("tests.")[-1]
+    return os.path.join("tests/cassettes", mod_name)
 
 
 @pytest.fixture

@@ -32,6 +32,7 @@ sphinx-autobuild = "*"
 black = "*"
 setuptools-scm = "*"
 sphinxcontrib-napoleon = "*"
+pytz = "*"
 
 [requires]
 python_version = "3.7"
