@@ -13,19 +13,15 @@ use cases, while the Python library offers a wider range of options
 for use in custom scripts.
 
 Government agendas and other files downloaded by *civic-scraper* are saved to a
-a standard -- but {ref}`configurable <customize cache dir>` -- location in
+a standard -- but {ref}`configurable <customize-cache-dir>` -- location in
 the user's home directory ({code}`~/.civic-scraper` on Linux/Mac).
 
-Below are more details on using the [Command line] as well as
-writing [Custom scripts].
+Below are more details on using the [Command line](cli) as well as
+writing [Custom scripts](custom-scripts).
 
 ```{note}
-At present, `civic-scraper` only scrapes sites built on the
-[CivicPlus Agenda Center] platform, but we plan to add
-support for additional platforms and sites in the future.
-
-Check out the {ref}`contributor docs <contributing>` if you'd like
-to help with scrapers or other aspects of the project.
+`civic-scraper` currently supports scraping of the Civic Clerk, Civic Plus, Granicus,
+Legistar and PrimeGov platforms.
 ```
 
 (find-a-site)=
@@ -33,21 +29,28 @@ to help with scrapers or other aspects of the project.
 ## Find a site to scrape
 
 Before you can start scraping government documents, you must first pinpoint
-URLs for one or more agencies of interest. A good starting point is our list
-of roughly 1500 [known sites for the Civic Plus platform]. If an agency does
-not appear on the list, it could be that we have not yet discovered their site
-or they use a different platform such as Legistar.
+URLs for one or more agencies of interest. Alternatively, you may want
+to review our lists of known [Civic Plus sites] or [Legistar sites] to
+see if any agencies in your area use one of these platforms.
 
-We're planning to expand support to Legistar and other platforms, and we
-welcome {ref}`open-source contributions <contributing>` to help expand
-the reach of *civic-scraper*.
+In addition to Civic Plus and Legistar, *civic-scraper* currently supports 
+Civic Clerk, Granicus and PrimeGov.
+
+If your target agency uses one of these platforms, you should be able to scrape the
+site by writing a Python script that uses the appropriate platform scraper class.
+
+If your agency site is not currently supported, you can try reaching out
+to us to see if the platform is on our development roadmap. We also
+weclome {ref}`open-source contributions <contributing>` if you want to
+add support for a new platform.
+
 
 (cli)=
 
 ## Command line
 
 Once you {ref}`install <install>` *civic-scraper* and
-{ref}`find a site to scrape <find a site>`, you're ready to begin
+{ref}`find a site to scrape <find-a-site>`, you're ready to begin
 using the command-line tool.
 
 ```{note}
@@ -81,12 +84,12 @@ civic-scraper scrape --url <site URL>
 ### Download documents
 
 *civic-scraper* does not automatically download agendas or minutes by default
-since, depending on the {ref}`time period of the scrape <scrape by date cli>` and size of the documents,
+since, depending on the {ref}`time period of the scrape <scrape-by-date-cli>` and size of the documents,
 this could involve a large quantity of data.
 
 You must explicitly tell *civic-scraper* to download documents by using the
 {code}`--download` flag, which will fetch and save agendas/minutes
-to *civic-scraper*'s {ref}`cache directory <default cache dir>`:
+to *civic-scraper*'s {ref}`cache directory <default-cache-dir>`:
 
 ```
 civic-scraper scrape --download --url <site URL>
@@ -143,7 +146,7 @@ We believe it's important to keep such file
 artifacts for the sake of transparency and reproducibility.
 
 Use the {code}`--cache` flag to store these files in the
-{ref}`civic-scraper cache directory <default cache dir>`:
+{ref}`civic-scraper cache directory <default-cache-dir>`:
 
 ```
 civic-scraper scrape --cache  --url <site URL>
@@ -169,27 +172,35 @@ civic-scraper scrape \
 would performing the following actions:
 
 - Generate a [Metadata CSV] on available documents for meetings in January 2020
-- {ref}`Download <download docs cli>` agendas and minutes for meetings in the specified date range
-- {ref}`Cache <cache artifacts cli>` the HTML of search results pages containing links to agendas/minutes
+- {ref}`Download <download-docs-cli>` agendas and minutes for meetings in the specified date range
+- {ref}`Cache <cache-artifacts-cli>` the HTML of search results pages containing links to agendas/minutes
 
 (custom-scripts)=
 
 ## Custom scripts
-
-```{note}
-In addition to this documentation, check out the [examples folder on GitHub] for
-sample scripts that demonstrate how to use *civic-scraper*.
-```
 
 *civic-scraper* provides an importable Python package for users who are comfortable creating their
 own scripts. The Python package provides access to a wider variety of features for
 added flexibility and support for more advanced scenarios (e.g controlling the location of downloaded
 files or avoiding download of excessively large files).
 
+```{note}
+In order to use *civic-scraper* in a script, you must install the package and
+import one of the platform scraper classes. In the examples below,
+we use the {code}`CivicPlusSite` class. See the [platforms] folder on
+GitHub for other available platform classes.
+
+Site classes may support slightly different interfaces/features
+due to differences in features on each platform.
+
+It's a good idea to review the docstrings and methods for a class
+before attempting to use it.
+```
+
 ### Scrape metadata
 
 Once you {ref}`install <install>` *civic-scraper* and
-{ref}`find a site to scrape <find a site>`, you're ready to begin
+{ref}`find a site to scrape <find-a-site>`, you're ready to begin
 using the `civic_scraper` Python package.
 
 ```{note}
@@ -213,9 +224,9 @@ located at {py:class}`civic_scraper.platforms.civic_plus.site.Site`.
 ```
 
 {py:meth}`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>` will automatically store
-downloaded assets in the {ref}`default cache directory <default cache dir>`.
+downloaded assets in the {ref}`default cache directory <default-cache-dir>`.
 
-This location can be customized by {ref}`setting an environment variable <customize cache dir>` or by passing an
+This location can be customized by {ref}`setting an environment variable <customize-cache-dir>` or by passing an
 instance of {py:class}`civic_scraper.base.cache.Cache` to {py:class}`CivicPlusSite <civic_scraper.platforms.civic_plus.site.Site>`:
 
 ```
@@ -287,8 +298,7 @@ assets_metadata = site.scrape(start_date='2020-01-01', end_date='2020-01-30')
 ```
 
 ```{note}
-The above will *not* download the assets by default. See {ref}`download assets script` for details
-on saving the discovered files locally.
+The above will *not* download the assets by default. See {ref}`download assets script <download-assets-script>` for details on saving the discovered files locally.
 ```
 
 ### Advanced configuration
@@ -310,7 +320,7 @@ Here are more details on the parameters mentioned above:
 
 - {code}`file_size` - Limit downloads to files with max file size in megabytes.
 - {code}`asset_list` -  Limit downloads to one or more [asset types]
-  (described below in [Metadata CSV]). The default is to download all document types.
+  (described below in [Metadata CSV](metadata-csv)). The default is to download all document types.
 
 (metadata-csv)=
 
@@ -319,7 +329,7 @@ Here are more details on the parameters mentioned above:
 *civic-scraper* provides the ability to produce a CSV of metadata about agendas, minutes and other files
 discovered during a scrape. The file is automatically generated when using the {ref}`command line <cli>`
 and can be exported using {py:meth}`AssetCollection.to_csv <civic_scraper.base.asset.AssetCollection.to_csv>`
-in the context of a {ref}`custom script <export metadata script>`.
+in the context of a {ref}`custom script <export-metadata-script>`.
 
 The generated file contains the following information:
 
@@ -359,12 +369,15 @@ The generated file contains the following information:
 ## Changing the download location
 
 By default, *civic-scraper* will store downloaded agendas, minutes and
-other files in a {ref}`default directory <default cache dir>`.
+other files in a {ref}`default directory <default-cache-dir>`.
 
-You can {ref}`customize this location <customize cache dir>` by setting
+You can {ref}`customize this location <customize-cache-dir>` by setting
 the {code}`CIVIC_SCRAPER_DIR` environment variable.
 
 [civicplus agenda center]: https://www.civicplus.com/civicengage/civicengage/features
+[Legistar sites]: https://docs.google.com/spreadsheets/d/1YVn5C0nN_aAITIBGMhNiulnLpF5eo5fF6gpZTQ4oWU8/edit?usp=sharing
+[platforms]: https://github.com/biglocalnews/civic-scraper/tree/master/civic_scraper/platforms
 [examples folder on github]: https://github.com/biglocalnews/civic-scraper/tree/master/examples
+[Civic Plus sites]: https://docs.google.com/spreadsheets/d/e/2PACX-1vQaa2mt0aXGN-gMT1LHgYzDbzrxwF1aQBKCkY5QMoUGlAbFVrv47FaMwPdiISx-kdedTY8_6fiJ0Vi3/pubhtml
 [known sites for the civic plus platform]: https://docs.google.com/spreadsheets/d/e/2PACX-1vQaa2mt0aXGN-gMT1LHgYzDbzrxwF1aQBKCkY5QMoUGlAbFVrv47FaMwPdiISx-kdedTY8_6fiJ0Vi3/pubhtml
 [mime type]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
