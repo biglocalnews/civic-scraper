@@ -20,8 +20,8 @@ Below are more details on using the [Command line](cli) as well as
 writing [Custom scripts](custom-scripts).
 
 ```{note}
-`civic-scraper` currently supports scraping of the Civic Clerk, Civic Plus, Granicus,
-Legistar and PrimeGov platforms.
+`civic-scraper` currently supports scraping of five software [platforms]: Civic Clerk, Civic Plus, Granicus,
+Legistar and PrimeGov.
 ```
 
 (find-a-site)=
@@ -36,12 +36,12 @@ see if any agencies in your area use one of these platforms.
 In addition to Civic Plus and Legistar, *civic-scraper* currently supports 
 Civic Clerk, Granicus and PrimeGov.
 
-If your target agency uses one of these platforms, you should be able to scrape the
+If your target agency uses one of these [platforms], you should be able to scrape the
 site by writing a Python script that uses the appropriate platform scraper class.
 
 If your agency site is not currently supported, you can try reaching out
 to us to see if the platform is on our development roadmap. We also
-weclome {ref}`open-source contributions <contributing>` if you want to
+welcome {ref}`open-source contributions <contributing>` if you want to
 add support for a new platform.
 
 
