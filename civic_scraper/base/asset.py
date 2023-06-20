@@ -15,6 +15,7 @@ class Asset:
         committee_name (str): Name of committee that generated the asset. Ex: City Council
         place (str): Name of place associated with the asset.
             Lowercase with spaces and punctuation removed. Ex: menlopark
+        place_name (str): Human-readable place name. Ex: Menlo Park
         state_or_province (str):  Two-letter abbreviation for state or province
             associated with an asset. Ex: ca
         asset_type (str): One of SUPPORTED_ASSET_TYPES. Ex: agenda
@@ -36,6 +37,7 @@ class Asset:
         asset_name: str = None,
         committee_name: str = None,
         place: str = None,
+        place_name: str = None,
         state_or_province: str = None,
         asset_type: str = None,
         meeting_date: datetime.datetime = None,
@@ -43,12 +45,13 @@ class Asset:
         meeting_id: str = None,
         scraped_by: str = None,
         content_type: str = None,
-        content_length: str = None,
-    ):
+        content_length: str = None
+    ) -> None:
         self.url = url
         self.asset_name = asset_name
         self.committee_name = committee_name
         self.place = place
+        self.place_name = place_name
         self.state_or_province = state_or_province
         self.asset_type = asset_type
         self.meeting_date = meeting_date
@@ -104,6 +107,7 @@ class AssetCollection(list):
         """
         headers = [
             "place",
+            "place_name",
             "state_or_province",
             "meeting_date",
             "meeting_time",

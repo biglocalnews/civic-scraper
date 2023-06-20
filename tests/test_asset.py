@@ -8,6 +8,13 @@ from civic_scraper.base.asset import Asset, AssetCollection
 from .conftest import file_lines
 
 
+def test_asset_args(asset_inputs):
+    kwargs = asset_inputs[0]
+    url = kwargs.pop('url')
+    asset = Asset(url, **kwargs)
+    assert asset.place == "nashcounty"
+    assert asset.place_name == "Nash County"
+
 @pytest.fixture
 def asset_collection(asset_inputs):
     return AssetCollection([Asset(**kwargs) for kwargs in asset_inputs])
