@@ -45,21 +45,27 @@ def test_scrape_defaults():
     for asset in assets:
         assert asset.meeting_date in expected_meeting_dates
     # Check range of asset types
-    expected_asset_types = ['agenda', 'minutes', 'agenda', 'agenda', 'minutes', 'agenda']
+    expected_asset_types = [
+        "agenda",
+        "minutes",
+        "agenda",
+        "agenda",
+        "minutes",
+        "agenda",
+    ]
     actual_asset_types = [asset.asset_type for asset in assets]
     assert expected_asset_types == actual_asset_types
-
 
 
 def test_place_name_arg():
     site_url = "https://ca-losaltoshills.civicplus.com/AgendaCenter"
     site = CivicPlusSite(site_url)
     # default
-    assert site.place == 'losaltoshills'
-    assert site.place_name == None
+    assert site.place == "losaltoshills"
+    assert site.place_name is None
     # Now test with the arg
-    site2 = CivicPlusSite(site_url, place_name='Los Altos Hills')
-    assert site2.place_name == 'Los Altos Hills'
+    site2 = CivicPlusSite(site_url, place_name="Los Altos Hills")
+    assert site2.place_name == "Los Altos Hills"
 
 
 @pytest.mark.vcr()
