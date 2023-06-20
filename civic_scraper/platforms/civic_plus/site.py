@@ -20,12 +20,16 @@ logger = logging.getLogger(__name__)
 class Site(base.Site):
     def __init__(self, base_url, cache=Cache(), parser_kls=Parser, place_name=None):
         super().__init__(base_url, cache=cache, parser_kls=parser_kls)
+        self.base_url = base_url
         self.subdomain = urlparse(base_url).netloc.split(".")[0]
-        self.place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", base_url)
         self.place_name = place_name
         self.state_or_province = self._get_asset_metadata(
             r"(?<=//)\w{2}(?=-)", base_url
         )
+
+    @property
+    def place(self):
+        return self.place_name or self._get_asset_metadata(r"(?<=-)\w+(?=\.)", self.base_url)
 
     def scrape(
         self,
