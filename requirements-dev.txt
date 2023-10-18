@@ -15,3 +15,4 @@ argh
 twine
 typing-extensions
 sphinxcontrib-napoleon
+pre-commit
