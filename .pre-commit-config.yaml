@@ -53,7 +53,6 @@ repos:
           - --fix
           - --target-version=py311
           - --select=B,C,E,F,W
-          - --line-length=80
 
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
