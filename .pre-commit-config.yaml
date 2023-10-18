@@ -48,6 +48,15 @@ repos:
       language_version: python3
       args: ["--max-line-length=999", "--per-file-ignores=  civic_scraper/base/__init__.py:F401 civic_scraper/platforms/__init__.py:F401 tests/test_civic_plus_site.py: E501 tests/legistar_site.py: E402"]
 
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.0.286
+  hooks:
+      - id: ruff
+        types_or: [ python ]
+        args:
+            - --fix
+            - --select=B,C,E,F,W
+
 -   repo: https://github.com/asottile/pyupgrade
     rev: v2.31.0
     hooks:
