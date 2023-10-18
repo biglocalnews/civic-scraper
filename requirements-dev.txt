@@ -2,7 +2,6 @@ pip
 bumpversion
 wheel
 watchdog
-flake8
 tox
 coverage
 docutils
