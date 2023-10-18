@@ -85,7 +85,10 @@ setup(
         "vcrpy",
     ],
     setup_requires=["setuptools_scm"],
-    use_scm_version={"version_scheme": version_scheme, "local_scheme": local_version},
+    use_scm_version={
+        "version_scheme": version_scheme,
+        "local_scheme": local_version,
+    },
     project_urls={
         "Documentation": "https://civic-scraper.readthedocs.io",
         "Maintainer": "https://github.com/biglocalnews",

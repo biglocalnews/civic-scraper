@@ -33,7 +33,7 @@ URLs for one or more agencies of interest. Alternatively, you may want
 to review our lists of known [Civic Plus sites] or [Legistar sites] to
 see if any agencies in your area use one of these platforms.
 
-In addition to Civic Plus and Legistar, *civic-scraper* currently supports 
+In addition to Civic Plus and Legistar, *civic-scraper* currently supports
 Civic Clerk, Granicus and PrimeGov.
 
 If your target agency uses one of these [platforms], you should be able to scrape the

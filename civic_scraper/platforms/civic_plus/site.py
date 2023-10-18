@@ -14,11 +14,14 @@ from civic_scraper.utils import today_local_str
 
 from .parser import Parser
 
+
 logger = logging.getLogger(__name__)
 
 
 class Site(base.Site):
-    def __init__(self, base_url, cache=Cache(), parser_kls=Parser, place_name=None):
+    def __init__(
+        self, base_url, cache=Cache(), parser_kls=Parser, place_name=None
+    ):
         super().__init__(base_url, cache=cache, parser_kls=parser_kls)
         self.base_url = base_url
         self.subdomain = urlparse(base_url).netloc.split(".")[0]
@@ -29,7 +32,9 @@ class Site(base.Site):
 
     @property
     def place(self):
-        return self.place_name or self._get_asset_metadata(r"(?<=-)\w+(?=\.)", self.base_url)
+        return self.place_name or self._get_asset_metadata(
+            r"(?<=-)\w+(?=\.)", self.base_url
+        )
 
     def scrape(
         self,
@@ -60,9 +65,7 @@ class Site(base.Site):
         response_url, raw_html = self._search(start, end)
         # Cache the raw html from search results page
         if cache:
-            cache_path = (
-                f"{self.cache.artifacts_path}/{self._cache_page_name(response_url)}"
-            )
+            cache_path = f"{self.cache.artifacts_path}/{self._cache_page_name(response_url)}"
             self.cache.write(cache_path, raw_html)
             logger.info(f"Cached search results page HTML: {cache_path}")
         file_metadata = self.parser_kls(raw_html).parse()
@@ -114,7 +117,9 @@ class Site(base.Site):
 
     def _convert_date(self, date_str):
         if date_str:
-            return datetime.datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d/%Y")
+            return datetime.datetime.strptime(date_str, "%Y-%m-%d").strftime(
+                "%m/%d/%Y"
+            )
         else:
             return None
 
@@ -135,7 +140,9 @@ class Site(base.Site):
                 "place": self.place,
                 "place_name": self.place_name,
                 "committee_name": row["committee_name"],
-                "meeting_id": self._mk_mtg_id(self.subdomain, row["meeting_id"]),
+                "meeting_id": self._mk_mtg_id(
+                    self.subdomain, row["meeting_id"]
+                ),
                 "meeting_date": row["meeting_date"],
                 "meeting_time": row["meeting_time"],
                 "asset_name": row["meeting_title"],

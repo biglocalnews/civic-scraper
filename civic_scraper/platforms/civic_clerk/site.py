@@ -16,7 +16,6 @@ from civic_scraper.base.cache import Cache
 
 class CivicClerkSite(base.Site):
     def __init__(self, url, place=None, state_or_province=None, cache=Cache()):
-
         self.url = url
         self.base_url = "https://" + urlparse(url).netloc
         self.civicclerk_instance = urlparse(url).netloc.split(".")[0]
@@ -61,7 +60,9 @@ class CivicClerkSite(base.Site):
         match = re.match(pattern, href)
         return (
             match.group("id"),
-            "civicclerk_{}_{}".format(self.civicclerk_instance, match.group("id")),
+            "civicclerk_{}_{}".format(
+                self.civicclerk_instance, match.group("id")
+            ),
         )
 
     def get_agenda_items(self, text):
@@ -88,23 +89,25 @@ class CivicClerkSite(base.Site):
                 link_tr_text = item.xpath("./following-sibling::tr[1]")[0]
                 for tr in link_tr_text.xpath(".//a"):
                     if tr.attrib["href"] != "#":
-                        asset_url = self.base_url + "/Web" + tr.attrib["href"][2:]
+                        asset_url = (
+                            self.base_url + "/Web" + tr.attrib["href"][2:]
+                        )
                         asset_name = tr.xpath("./text()")[0]
                         assets.append((asset_url, asset_name))
         else:
-            no_agenda_str = "Agenda content has not been published for this meeting."
+            no_agenda_str = (
+                "Agenda content has not been published for this meeting."
+            )
             if no_agenda_str not in frame_tree.xpath("//text()"):
                 assets.append((event_frame_url, None))
 
         return assets
 
     def events(self):
-
         yield from self._future_events()
         yield from self._past_events()
 
     def _future_events(self):
-
         callback_id = "aspxroundpanelCurrent$pnlDetails$grdEventsCurrent"
         for page in self._paginate(callback_id):
             events = page.xpath(
@@ -113,7 +116,6 @@ class CivicClerkSite(base.Site):
             yield from events
 
     def _past_events(self):
-
         callback_id = "aspxroundpanelRecent2$ASPxPanel4$grdEventsRecent2"
         for page in self._paginate(callback_id):
             events = page.xpath(
@@ -122,7 +124,6 @@ class CivicClerkSite(base.Site):
             yield from events
 
     def _paginate(self, callback_id):
-
         response = self.session.get(self.url)
 
         tree = lxml.html.fromstring(response.text)
@@ -137,7 +138,9 @@ class CivicClerkSite(base.Site):
         payload = {}
         payload["__EVENTARGUMENT"] = None
         payload["__EVENTTARGET"] = None
-        (payload["__VIEWSTATE"],) = tree.xpath("//input[@name='__VIEWSTATE']/@value")
+        (payload["__VIEWSTATE"],) = tree.xpath(
+            "//input[@name='__VIEWSTATE']/@value"
+        )
         (payload["__VIEWSTATEGENERATOR"],) = tree.xpath(
             "//input[@name='__VIEWSTATEGENERATOR']/@value"
         )
@@ -172,7 +175,9 @@ class CivicClerkSite(base.Site):
         payload[callback_id] = html.escape(demjson.encode(callback_state))
 
         item_keys = callback_state["keys"]
-        payload["__CALLBACKPARAM"] = "c0:KV|61;{};GB|20;12|PAGERONCLICK3|PBN;".format(
+        payload[
+            "__CALLBACKPARAM"
+        ] = "c0:KV|61;{};GB|20;12|PAGERONCLICK3|PBN;".format(
             demjson.encode(item_keys)
         )
 
@@ -181,13 +186,12 @@ class CivicClerkSite(base.Site):
         previous_item_keys = None
 
         while item_keys != previous_item_keys:
-
             response = self.session.post(self.url, payload)
             previous_item_keys = item_keys
 
-            data_str = re.match(r".*?/\*DX\*/\((?P<body>.*)\)", response.text).group(
-                "body"
-            )
+            data_str = re.match(
+                r".*?/\*DX\*/\((?P<body>.*)\)", response.text
+            ).group("body")
 
             data = demjson.decode(data_str)
 
@@ -207,13 +211,18 @@ class CivicClerkSite(base.Site):
             )
 
     def scrape(self, download=True):
-
         ac = AssetCollection()
 
         for event in self.events():
-            committee_name = event.xpath("./td[contains(@id, '_3')]//text()")[1].strip()
-            str_datetime = event.xpath("./td[contains(@id, '_4')]//text()")[0].strip()
-            meeting_datetime = datetime.strptime(str_datetime, "%m/%d/%Y %I:%M %p")
+            committee_name = event.xpath("./td[contains(@id, '_3')]//text()")[
+                1
+            ].strip()
+            str_datetime = event.xpath("./td[contains(@id, '_4')]//text()")[
+                0
+            ].strip()
+            meeting_datetime = datetime.strptime(
+                str_datetime, "%m/%d/%Y %I:%M %p"
+            )
             meeting_id_num, meeting_id = self.get_meeting_id(event)
 
             event_url = f"{self.base_url}/Web/DocumentFrame.aspx?id={meeting_id_num}&mod=-1&player_tab=-2"
@@ -223,7 +232,9 @@ class CivicClerkSite(base.Site):
 
             if agenda_items:
                 assets = [
-                    self.create_asset(a, committee_name, meeting_datetime, meeting_id)
+                    self.create_asset(
+                        a, committee_name, meeting_datetime, meeting_id
+                    )
                     for a in agenda_items
                 ]
                 for a in assets:

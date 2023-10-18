@@ -28,7 +28,9 @@ def test_scrape_defaults():
     agenda = [
         asset
         for asset in assets
-        if asset.url.endswith("M=A&ID=957429&GUID=46C2C864-A1FF-4749-8B19-4915F2A65AF9")
+        if asset.url.endswith(
+            "M=A&ID=957429&GUID=46C2C864-A1FF-4749-8B19-4915F2A65AF9"
+        )
     ][0]
     assert (
         agenda.url
@@ -102,7 +104,10 @@ def test_scrape_download_filter_size(tmpdir):
     scrape_date = "2022-04-05"
     site = LegistarSite(url, **config)
     site.scrape(
-        start_date=scrape_date, end_date=scrape_date, file_size=0.3, download=True
+        start_date=scrape_date,
+        end_date=scrape_date,
+        file_size=0.3,
+        download=True,
     )
     # Byte sizes of two files for April 5, 2022
     # Agenda is 453581 bytes
@@ -133,7 +138,8 @@ def test_scrape_download_filter_type(tmpdir):
 
 
 @patch(
-    "civic_scraper.platforms.legistar.site.today_local_str", return_value="2022-04-05"
+    "civic_scraper.platforms.legistar.site.today_local_str",
+    return_value="2022-04-05",
 )
 @pytest.mark.vcr()
 def test_scrape_current_day_by_default(today_local_str, tmpdir):

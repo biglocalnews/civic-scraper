@@ -1,7 +1,9 @@
 import logging
 import sys
-import urllib3
 from pathlib import Path
+
+import urllib3
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -9,6 +11,7 @@ PROJECT_ROOT = str(Path(__file__).resolve().parent.parent)
 sys.path.append(PROJECT_ROOT)
 
 from civic_scraper.platforms import LegistarSite
+
 
 logging.basicConfig(level="DEBUG")
 
@@ -262,7 +265,10 @@ def legistar_integration():
         print(f"{obj['site']}")
         scraper = LegistarSite(obj["site"], **obj["config"])
         try:
-            kwargs = {"start_date": obj["start_date"], "end_date": obj["end_date"]}
+            kwargs = {
+                "start_date": obj["start_date"],
+                "end_date": obj["end_date"],
+            }
             try:
                 kwargs["asset_list"] = obj["asset_list"]
             except KeyError:

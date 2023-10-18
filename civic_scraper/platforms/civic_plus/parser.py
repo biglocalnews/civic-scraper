@@ -75,7 +75,9 @@ class Parser:
         return row.p.text.strip()
 
     def _mtg_date(self, row):
-        month, day, year = re.match(r"_(\d{2})(\d{2})(\d{4}).+", row.a["name"]).groups()
+        month, day, year = re.match(
+            r"_(\d{2})(\d{2})(\d{4}).+", row.a["name"]
+        ).groups()
         return datetime(int(year), int(month), int(day))
 
     def _mtg_id(self, row):

@@ -1,6 +1,7 @@
 import re
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
+
 from requests import Session
 
 import civic_scraper
@@ -18,7 +19,6 @@ class PrimeGovSite(base.Site):
     """
 
     def __init__(self, url, place=None, state_or_province=None, cache=Cache()):
-
         self.url = url
         self.base_url = "https://" + urlparse(url).netloc
         self.primegov_instance = urlparse(url).netloc.split(".")[0]
@@ -37,7 +37,6 @@ class PrimeGovSite(base.Site):
         }
 
     def create_asset(self, entry, document):
-
         url = self._get_agenda_url(entry["id"])
         meeting_datetime = datetime.fromisoformat(entry["dateTime"])
         meeting_id = self._get_meeting_id(document["id"])
@@ -60,22 +59,19 @@ class PrimeGovSite(base.Site):
         return Asset(**e)
 
     def _get_agenda_url(self, id):
-
-        return (
-            f"{self.base_url}/Portal/MeetingPreview?compiledMeetingDocumentFileId={id}"
-        )
+        return f"{self.base_url}/Portal/MeetingPreview?compiledMeetingDocumentFileId={id}"
 
     def _get_meeting_id(self, object_id):
-
         pattern = r"http[s]?:\/\/[www.]?(\S*).primegov.com\/[\S]*"
         match = re.match(pattern, self.url)
         return f"primegov_{match.group(1)}_{object_id}"
 
     def scrape(self, start_date=None, end_date=None):
-
         # API requires both start and end dates
         if not start_date or not end_date:
-            start_date = (datetime.today() - timedelta(days=30)).strftime("%m/%d/%Y")
+            start_date = (datetime.today() - timedelta(days=30)).strftime(
+                "%m/%d/%Y"
+            )
             end_date = datetime.today().strftime("%m/%d/%Y")
 
         response = self.session.get(

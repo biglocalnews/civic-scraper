@@ -20,16 +20,17 @@ def test_scrape_defaults():
     cp = CivicPlusSite(url)
     assets = cp.scrape(start_date, end_date)
     assert len(assets) >= 4
-    agenda = [asset for asset in assets if asset.url.endswith("Agenda/_05052020-382")][
-        0
-    ]
+    agenda = [
+        asset for asset in assets if asset.url.endswith("Agenda/_05052020-382")
+    ][0]
     assert (
         agenda.url
         == "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05052020-382"
     )
     assert agenda.committee_name == "Board of Commissioners"
     assert (
-        agenda.asset_name == "May 5, 2020 Recessed Meeting/Budget Work Session Agenda"
+        agenda.asset_name
+        == "May 5, 2020 Recessed Meeting/Budget Work Session Agenda"
     )
     assert agenda.place == "nashcounty"
     assert agenda.state_or_province == "nc"
@@ -41,7 +42,9 @@ def test_scrape_defaults():
     assert agenda.content_type == "application/pdf"
     assert agenda.content_length == "19536"
     # Check that assets are in the correct date range
-    expected_meeting_dates = [datetime.datetime(2020, 5, day) for day in range(3, 7)]
+    expected_meeting_dates = [
+        datetime.datetime(2020, 5, day) for day in range(3, 7)
+    ]
     for asset in assets:
         assert asset.meeting_date in expected_meeting_dates
     # Check range of asset types
@@ -233,7 +236,8 @@ def test_scrape_place_state():
 
 
 @patch(
-    "civic_scraper.platforms.civic_plus.site.today_local_str", return_value="2020-05-05"
+    "civic_scraper.platforms.civic_plus.site.today_local_str",
+    return_value="2020-05-05",
 )
 @pytest.mark.vcr()
 def test_scrape_current_day_by_default(today_local_str, tmpdir):

@@ -12,7 +12,9 @@ from civic_scraper.base.cache import Cache
 
 
 class GranicusSite(base.Site):
-    def __init__(self, rss_url, place=None, state_or_province=None, cache=Cache()):
+    def __init__(
+        self, rss_url, place=None, state_or_province=None, cache=Cache()
+    ):
         self.url = rss_url
         self.granicus_instance = urlparse(rss_url).netloc.split(".")[0]
         self.place = place

@@ -2,6 +2,7 @@ import logging
 
 from civic_scraper.platforms import PrimeGovSite
 
+
 logging.basicConfig(level="DEBUG")
 
 primegov_sites = [
@@ -44,7 +45,6 @@ primegov_sites = [
 
 
 def primegov_integration():
-
     for obj in primegov_sites:
         scraper = PrimeGovSite(obj["site"], **obj["config"])
         data = scraper.scrape()

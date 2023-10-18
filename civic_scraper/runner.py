@@ -5,6 +5,7 @@ import re
 from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -29,7 +30,7 @@ class Runner:
         self,
         start_date,
         end_date,
-        site_urls=[],
+        site_urls=None,
         cache=False,
         download=False,
     ):
@@ -58,6 +59,8 @@ class Runner:
         Returns:
             AssetCollection instance
         """
+        if site_urls is None:
+            site_urls = []
         asset_collection = AssetCollection()
         cache_obj = Cache(self.cache_path)
         logger.info(

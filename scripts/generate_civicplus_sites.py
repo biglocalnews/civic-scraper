@@ -29,6 +29,7 @@ import pandas as pd
 # Libraries
 import requests
 
+
 # Parameters
 USA = [
     "AL",
@@ -98,7 +99,6 @@ MUNICIPALITY = [
 
 
 def generate_site_csv(file_in, file_out):
-
     raw_list = []
     clean_list = []
 
@@ -198,7 +198,9 @@ def generate_site_csv(file_in, file_out):
 
     # Remove duplicates in the list -- endpoints with the same root as the result
     # of aliases
-    clean_list = pd.DataFrame(clean_list).drop_duplicates("root").to_dict("records")
+    clean_list = (
+        pd.DataFrame(clean_list).drop_duplicates("root").to_dict("records")
+    )
 
     # Write out the list of dictionaries to a csv
     with open(file_out, "a", newline="") as file:

@@ -9,23 +9,30 @@ import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.utils import parse_date, dtz_to_dt, mb_to_bytes, today_local_str
+from civic_scraper.utils import (
+    dtz_to_dt,
+    mb_to_bytes,
+    parse_date,
+    today_local_str,
+)
 
 
 class Site(base.Site):
     def __init__(
         self,
         base_url,
-        event_info_keys={
-            "meeting_details_info": "Meeting Details",
-            "meeting_date_info": "Meeting Date",
-            "meeting_time_info": "Meeting Time",
-            "meeting_location_info": "Meeting Location",
-        },
+        event_info_keys=None,
         cache=Cache(),
         parser_kls=None,
         timezone=None,
     ):
+        if event_info_keys is None:
+            event_info_keys = {
+                "meeting_details_info": "Meeting Details",
+                "meeting_date_info": "Meeting Date",
+                "meeting_time_info": "Meeting Time",
+                "meeting_location_info": "Meeting Location",
+            }
         super().__init__(base_url, cache, parser_kls)
         self.legistar_instance = urlparse(base_url).netloc.split(".")[0]
         self.timezone = timezone
@@ -37,7 +44,7 @@ class Site(base.Site):
         end_date=None,
         download=False,
         file_size=None,
-        asset_list=["Agenda", "Minutes"],
+        asset_list=None,
     ):
         """Scrape a government website for metadata and/or docs.
         Args:
@@ -51,6 +58,8 @@ class Site(base.Site):
             AssetCollection: A sequence of Asset instances
         """
         # Use current day as default
+        if asset_list is None:
+            asset_list = ["Agenda", "Minutes"]
         today = today_local_str()
         start_date = start_date or today
         end_date = end_date or today
@@ -78,7 +87,11 @@ class Site(base.Site):
                     continue
                 # Apply date and other filters
                 if self._skippable(
-                    asset, start_date, end_date, file_size=file_size, download=download
+                    asset,
+                    start_date,
+                    end_date,
+                    file_size=file_size,
+                    download=download,
                 ):
                     continue
                 ac.append(asset)
@@ -105,7 +118,7 @@ class Site(base.Site):
         name_bits.append(asset_type)
         kwargs = {
             "url": event[asset_type]["url"],
-            "asset_type": asset_type.lower().replace(' ', '_'),
+            "asset_type": asset_type.lower().replace(" ", "_"),
             "asset_name": " - ".join(name_bits),
             "content_type": None,
             "content_length": None,
@@ -159,7 +172,9 @@ class Site(base.Site):
         except (KeyError, TypeError):
             return event["Name"]
 
-    def _skippable(self, asset, start_date, end_date, file_size=None, download=False):
+    def _skippable(
+        self, asset, start_date, end_date, file_size=None, download=False
+    ):
         start = parse_date(start_date)
         end = parse_date(end_date)
         # Use a generic (non-timezone aware) date for filtering

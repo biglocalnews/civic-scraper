@@ -56,20 +56,26 @@ def run_scraper(
     try:
         scraper = SUPPORTED_SITES[scraper_type]
     except KeyError:
-        raise ValueError("Unable to instantiate scraper: " "{}".format(scraper_type))
+        raise ValueError(
+            "Unable to instantiate scraper: " "{}".format(scraper_type)
+        )
     site = scraper(endpoint)
 
     # scrape the specified site
     try:
         asset_collection = site.scrape(**scraper_args)
     except Exception:
-        raise Exception("Unable to scrape with args: " "{}".format(scraper_args))
+        raise Exception(
+            "Unable to scrape with args: " "{}".format(scraper_args)
+        )
 
     # write results to the specified file location
     try:
         asset_collection.to_csv(target_path)
     except Exception:
-        raise Exception("Unable to write asset list to path: " "{}".format(target_path))
+        raise Exception(
+            "Unable to write asset list to path: " "{}".format(target_path)
+        )
     return asset_collection
 
 

@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+
 # NOTE: To check if vcrpy/pytest-vcr
 # is using cassettes as opposed to making
 # live web requests, uncomment below
@@ -64,7 +65,7 @@ def list_dir(pth):
 
 def csv_rows(pth):
     with open(pth) as source:
-        return [row for row in csv.DictReader(source)]
+        return list(csv.DictReader(source))
 
 
 @pytest.fixture(scope="session")

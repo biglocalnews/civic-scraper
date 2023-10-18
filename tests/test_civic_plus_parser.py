@@ -10,7 +10,10 @@ def test_parse_all(search_results_html):
     assert len(data) == 88
     first = data[0]
     assert first["committee_name"] == "Airport Advisory Board"
-    assert first["url_path"] == "/AgendaCenter/ViewFile/Agenda/_11192020-808?html=true"
+    assert (
+        first["url_path"]
+        == "/AgendaCenter/ViewFile/Agenda/_11192020-808?html=true"
+    )
     assert first["meeting_date"] == datetime(2020, 11, 19)
     assert first["meeting_time"] is None
     assert (

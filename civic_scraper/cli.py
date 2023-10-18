@@ -8,6 +8,7 @@ from click_option_group import RequiredMutuallyExclusiveOptionGroup, optgroup
 from civic_scraper.runner import Runner
 from civic_scraper.utils import default_user_home, today_local_str
 
+
 TODAY = today_local_str()
 DEFAULT_USER_HOME = default_user_home()
 

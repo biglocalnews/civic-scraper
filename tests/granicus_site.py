@@ -2,6 +2,7 @@ import logging
 
 from civic_scraper.platforms import GranicusSite
 
+
 logging.basicConfig(level="DEBUG")
 
 granicus_sites = [
