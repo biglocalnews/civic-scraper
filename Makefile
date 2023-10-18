@@ -68,7 +68,7 @@ PYTHON := $(PIPENV) python -W ignore
 
 lint: ## run the linter
 	$(call banner,        💅 Linting code 💅)
-	@$(PIPENV) flake8 ./
+	@$(PIPENV) pre-commit run --all-files
 
 
 test: ## run all tests
