@@ -3,7 +3,6 @@ repos:
     rev: v4.4.0
     hooks:
       - id: trailing-whitespace
-      - id: name-tests-test
       - id: check-docstring-first
       - id: check-json
       - id: check-case-conflict
