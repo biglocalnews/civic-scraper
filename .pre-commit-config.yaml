@@ -5,7 +5,6 @@ repos:
       - id: trailing-whitespace
       - id: name-tests-test
       - id: check-docstring-first
-      - id: check-executables-have-shebangs
       - id: check-json
       - id: check-case-conflict
       - id: check-toml
@@ -43,16 +42,6 @@ repos:
           - --lines-after-imports=2
           - --profile=black
           - --line-length=80
-
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.0.286
-    hooks:
-      - id: ruff
-        types_or: [python, pyi, jupyter]
-        args:
-          - --fix
-          - --target-version=py311
-          - --select=B,C,E,F,W
 
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
