@@ -1,7 +1,7 @@
 import datetime
 
-from .asset import AssetCollection
-from .cache import Cache
+from civic_scraper.base.asset import AssetCollection
+from civic_scraper.base.cache import Cache
 
 
 class Site:

@@ -9,7 +9,7 @@ import lxml.html
 from requests import Session
 
 import civic_scraper
-from civic_scraper import base
+from civic_scraper.base import site as base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
 
