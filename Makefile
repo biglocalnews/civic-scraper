@@ -65,12 +65,12 @@ PYTHON := $(PIPENV) python -W ignore
 #
 # Tests
 #
-
+.PHONY: lint
 lint: ## run the linter
 	$(call banner,        💅 Linting code 💅)
 	@$(PIPENV) flake8 ./
 
-
+.PHONY: test
 test: ## run all tests
 	$(call banner,       🤖 Running tests 🤖)
 	@$(PIPENV) pytest -sv
@@ -79,11 +79,12 @@ test: ## run all tests
 # Releases
 #
 
+.PHONY: check-release
 check-release: ## check release for potential errors
 	$(call banner,      🔎 Checking release 🔎)
 	@$(PIPENV) twine check dist/*
 
-
+.PHONY: build-release
 build-release: ## builds source and wheel package
 	$(call banner,      📦 Building release 📦)
 	@$(PYTHON) setup.py sdist
@@ -93,12 +94,12 @@ build-release: ## builds source and wheel package
 #
 # Docs
 #
-
+.PHONY: serve-docs
 serve-docs: ## start the documentation test server
 	$(call banner,         📃 Serving docs 📃)
 	cd docs && $(PIPENV) make livehtml;
 
-
+.PHONY: test-docs
 test-docs: ## build the docs as html
 	$(call banner,        📃 Building docs 📃)
 	cd docs && $(PIPENV) make html;
@@ -106,28 +107,11 @@ test-docs: ## build the docs as html
 #
 # Extras
 #
-
+.PHONY: format
 format: ## automatically format Python code with black
 	$(call banner,       🪥 Cleaning code 🪥)
 	@$(PIPENV) black .
 
-
+.PHONY: help
 help: ## Show this help. Example: make help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
-
-
-# Mark all the commands that don't have a target
-.PHONY: help \
-        build-release \
-        check-release \
-        coverage \
-        dist \
-        format \
-        lint \
-        mypy \
-        release \
-        run \
-        serve-docs \
-        test \
-        test-docs \
-        test-release
