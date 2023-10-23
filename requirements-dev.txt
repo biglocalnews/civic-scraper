@@ -5,6 +5,9 @@ watchdog
 tox
 coverage
 docutils
+hypothesis
+icalendar
+mock
 Sphinx
 pytest
 pytest-vcr
