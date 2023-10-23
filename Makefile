@@ -117,7 +117,6 @@ help: ## Show this help. Example: make help
         check-release \
         coverage \
         dist \
-        format \
         lint \
         mypy \
         release \
