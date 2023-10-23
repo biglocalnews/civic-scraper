@@ -10,7 +10,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 PROJECT_ROOT = str(Path(__file__).resolve().parent.parent)
 sys.path.append(PROJECT_ROOT)
 
-from civic_scraper.platforms import LegistarSite
+from civic_scraper.platforms.legistar.site import Site as LegistarSite
 
 
 logging.basicConfig(level="DEBUG")
