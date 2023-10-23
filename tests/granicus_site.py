@@ -1,6 +1,6 @@
 import logging
 
-from civic_scraper.platforms import GranicusSite
+from civic_scraper.platforms.granicus.site import GranicusSite
 
 
 logging.basicConfig(level="DEBUG")

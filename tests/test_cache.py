@@ -1,8 +1,7 @@
 from unittest.mock import patch
 
 from civic_scraper.base.cache import Cache
-
-from .conftest import file_contents
+from tests.conftest import file_contents
 
 
 def test_default_cache_dir(monkeypatch):

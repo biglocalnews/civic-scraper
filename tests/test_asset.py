@@ -4,8 +4,7 @@ from unittest.mock import Mock, call, patch
 import pytest
 
 from civic_scraper.base.asset import Asset, AssetCollection
-
-from .conftest import file_lines
+from tests.conftest import file_lines
 
 
 def test_asset_args(asset_inputs):

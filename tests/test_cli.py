@@ -6,8 +6,7 @@ import pytest
 from click.testing import CliRunner
 
 from civic_scraper import cli
-
-from .conftest import csv_rows, list_dir, path_to_test_dir_file
+from tests.conftest import csv_rows, list_dir, path_to_test_dir_file
 
 
 @pytest.mark.vcr()

@@ -5,8 +5,7 @@ import pytest
 
 from civic_scraper.base.cache import Cache
 from civic_scraper.platforms.civic_plus.site import Site as CivicPlusSite
-
-from .conftest import file_contents
+from tests.conftest import file_contents
 
 
 @pytest.mark.vcr()

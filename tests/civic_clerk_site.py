@@ -1,6 +1,6 @@
 import logging
 
-from civic_scraper.platforms import CivicClerkSite
+from civic_scraper.platforms.civic_clerk.site import CivicClerkSite
 
 
 logging.basicConfig(level="DEBUG")
