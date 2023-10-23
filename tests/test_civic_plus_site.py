@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 
 from civic_scraper.base.cache import Cache
-from civic_scraper.platforms import CivicPlusSite
+from civic_scraper.platforms.civic_plus.site import Site as CivicPlusSite
 
 from .conftest import file_contents
 
