@@ -23,7 +23,7 @@ pipenv run civic-scraper scrape --download --url http://nc-nashcounty.civicplus.
 Or in a script:
 
 ```python
-from civic_scraper.platforms import CivicPlusSite
+from civic_scraper.platforms.civic_plus.site import Site as CivicPlusSite
 
 url = "http://nc-nashcounty.civicplus.com/AgendaCenter"
 site = CivicPlusSite(url)

@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 from requests import Session
 
 import civic_scraper
-from civic_scraper import base
+import civic_scraper.base.site as base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
 

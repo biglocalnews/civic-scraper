@@ -6,7 +6,7 @@ import requests
 from legistar.events import LegistarEventsScraper
 
 import civic_scraper
-from civic_scraper import base
+import civic_scraper.base.site as base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
 from civic_scraper.utils import (

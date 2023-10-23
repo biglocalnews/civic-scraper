@@ -95,7 +95,7 @@ class Runner:
 
     def _get_site_class(self, url):
         class_name = self._get_site_class_name(url)
-        target_module = "civic_scraper.platforms"
+        target_module = "civic_scraper.platforms.civic_plus.site"
         mod = importlib.import_module(target_module)
         return getattr(mod, class_name)
 

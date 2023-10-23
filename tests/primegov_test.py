@@ -1,6 +1,6 @@
 import logging
 
-from civic_scraper.platforms import PrimeGovSite
+from civic_scraper.platforms.primegov.site import PrimeGovSite
 
 
 logging.basicConfig(level="DEBUG")

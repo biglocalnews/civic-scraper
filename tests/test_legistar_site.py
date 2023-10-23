@@ -5,7 +5,7 @@ import pytest
 import pytz
 
 from civic_scraper.base.cache import Cache
-from civic_scraper.platforms import LegistarSite
+from civic_scraper.platforms.legistar.site import Site as LegistarSite
 
 
 @pytest.mark.vcr()
