@@ -123,5 +123,4 @@ help: ## Show this help. Example: make help
         run \
         serve-docs \
         test \
-        test-docs \
-        test-release
+        test-docs
