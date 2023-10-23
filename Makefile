@@ -107,11 +107,6 @@ test-docs: ## build the docs as html
 # Extras
 #
 
-format: ## automatically format Python code with black
-	$(call banner,       🪥 Cleaning code 🪥)
-	@$(PIPENV) black .
-
-
 help: ## Show this help. Example: make help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
