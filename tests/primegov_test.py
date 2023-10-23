@@ -5,7 +5,7 @@ from civic_scraper.platforms.primegov.site import PrimeGovSite
 
 logging.basicConfig(level="DEBUG")
 
-primegov_sites = [
+prime_gov_sites = [
     {
         "site": "https://lacity.primegov.com/",
         "config": {
@@ -45,7 +45,7 @@ primegov_sites = [
 
 
 def primegov_integration():
-    for obj in primegov_sites:
+    for obj in prime_gov_sites:
         scraper = PrimeGovSite(obj["site"], **obj["config"])
         data = scraper.scrape()
         assert len(data) > 0
