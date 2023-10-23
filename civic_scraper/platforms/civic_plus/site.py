@@ -7,18 +7,17 @@ from urllib.parse import urljoin, urlparse
 import requests
 
 import civic_scraper
-from civic_scraper import base
+import civic_scraper.base.site as site
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
+from civic_scraper.platforms.civic_plus.parser import Parser
 from civic_scraper.utils import today_local_str
-
-from .parser import Parser
 
 
 logger = logging.getLogger(__name__)
 
 
-class Site(base.Site):
+class Site(site.Site):
     def __init__(
         self, base_url, cache=Cache(), parser_kls=Parser, place_name=None
     ):
