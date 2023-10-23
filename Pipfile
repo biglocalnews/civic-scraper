@@ -11,6 +11,7 @@ feedparser = "*"
 scraper-legistar = "*"
 requests = "*"
 demjson3 = "*"
+civic-scraper = "*"
 
 [dev-packages]
 bumpversion = "*"
