@@ -67,7 +67,7 @@ jobs:
   test-python:
     strategy:
       matrix:
-        python: ["3.11"]
+        python: ["3.10", "3.11"]
         #        python: ["3.8", "3.9", "3.10", "3.11"]
     name: Test Python code
     runs-on: ubuntu-latest
@@ -86,7 +86,9 @@ jobs:
 
       - id: pipenv-install
         name: Install Python dependencies
-        run: pipenv install --dev --python `which python`
+        run: |
+          pipenv install --dev --python `which python`
+          pipenv install exceptiongroup
 
       - id: run
         name: Run tests
@@ -110,7 +112,9 @@ jobs:
 
       - id: pipenv-install
         name: Install Python dependencies
-        run: pipenv install --dev --python `which python`
+        run: |
+          pipenv install --dev --python `which python`
+          pipenv install --dev tomli
 
       - id: build
         name: Build release
