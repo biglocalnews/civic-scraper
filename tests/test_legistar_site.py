@@ -20,11 +20,11 @@ def test_scrape_defaults():
     site = LegistarSite(url, **config)
     assets = site.scrape(start_date, end_date)
     # 4 agendas and 1 minutes doc
-    assert len(assets) == 10
+    assert len(assets) == 5
     doc_types = {"agenda": 0, "minutes": 0}
     for asset in assets:
         doc_types[asset.asset_type] += 1
-    assert doc_types == {"agenda": 8, "minutes": 2}
+    assert doc_types == {"agenda": 4, "minutes": 1}
     agenda = [
         asset
         for asset in assets
@@ -162,4 +162,4 @@ def test_multiyear_scrape(tmpdir):
     end_date = "2022-01-04"
     site = LegistarSite(url, **config)
     assets = site.scrape(start_date=start_date, end_date=end_date)
-    assert len(assets) == 6
+    assert len(assets) == 4
