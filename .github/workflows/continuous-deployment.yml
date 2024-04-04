@@ -79,14 +79,15 @@ jobs:
       - name: Install pipenv
         run: pipx install pipenv
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
           cache: "pipenv"
 
       - id: pipenv-install
         name: Install Python dependencies
-        run: pipenv install --dev --python `which python`
+        run: pipenv install --dev
+        # run: pipenv install --dev --python `which python`
 
       - id: check-pytest-version
         name: Check Pytest Version
