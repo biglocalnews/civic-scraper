@@ -88,9 +88,9 @@ jobs:
         name: Install Python dependencies
         run: pipenv install --dev --python `which python`
 
-      - id: Check pytest version
-        name: Run tests
-        run: pipenv run pytest -sv
+      - id: check-pytest-version
+        name: Check Pytest Version
+        run: pipenv run pytest --version
 
       - id: run
         name: Run tests
