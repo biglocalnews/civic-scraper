@@ -131,7 +131,7 @@ class Site(base.Site):
         # use regex to match pattern #/#/#; raise warning if no match
 
         # get event ID
-        if type(event[scraper.event_info_key]) == dict:
+        if type(event[scraper.event_info_key]) is dict:
             url = detail_info["url"]
             query_dict = parse_qs(urlparse(url).query)
 
