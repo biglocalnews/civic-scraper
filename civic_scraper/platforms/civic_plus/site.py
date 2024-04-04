@@ -149,7 +149,7 @@ class Site(base.Site):
             asset_args.update(
                 {
                     "content_type": headers["content-type"],
-                    "content_length": headers.get("content-length"),
+                    "content_length": headers.get("content-length", -1),
                 }
             )
             assets.append(Asset(**asset_args))
