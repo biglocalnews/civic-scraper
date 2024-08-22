@@ -66,9 +66,6 @@ class Parser:
         return metadata
 
     def _committee_name(self, div):
-        # Remove span that contains
-        # arrow ▼ for toggling meeting list
-        div.h2.span.extract()
         return div.h2.text.strip()
 
     def _mtg_title(self, row):
