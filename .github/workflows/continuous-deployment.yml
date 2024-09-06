@@ -117,7 +117,9 @@ jobs:
 
       - id: build
         name: Build release
-        run: make build-release
+        run: |
+          pipenv run pip install setuptools-scm>=8.1.0 --force-reinstall --upgrade
+          make build-release
 
       - id: check
         name: Check release

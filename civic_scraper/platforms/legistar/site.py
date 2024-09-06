@@ -105,7 +105,7 @@ class Site(base.Site):
         name_bits.append(asset_type)
         kwargs = {
             "url": event[asset_type]["url"],
-            "asset_type": asset_type.lower().replace(' ', '_'),
+            "asset_type": asset_type.lower().replace(" ", "_"),
             "asset_name": " - ".join(name_bits),
             "content_type": None,
             "content_length": None,

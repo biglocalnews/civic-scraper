@@ -45,7 +45,7 @@ class Asset:
         meeting_id: str = None,
         scraped_by: str = None,
         content_type: str = None,
-        content_length: str = None
+        content_length: str = None,
     ) -> None:
         self.url = url
         self.asset_name = asset_name

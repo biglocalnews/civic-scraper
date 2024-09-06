@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from .conftest import read_fixture
+
 from civic_scraper.platforms.civic_plus.parser import Parser
 
 
@@ -38,3 +40,19 @@ def test_extract_all_asset_types_for_meeting(search_results_html):
         "agenda_packet",
     ]
     assert asset_types == expected_types
+
+
+def test_parse_alameda():
+    "Parser should extract all items on page for Alameda WD, which uses a different page structure"
+    html = read_fixture("civplus_alameda_water.html")
+    parser = Parser(html)
+    data = parser.parse()
+    assert len(data) == 2
+    first = data[0]
+    assert first["committee_name"] == "Engineering and Information Technology Committee"
+    assert first["url_path"] == "/AgendaCenter/ViewFile/Agenda/_09042024-1447"
+    assert first["meeting_date"] == datetime(2024, 9, 4)
+    assert first["meeting_time"] is None
+    assert first["meeting_title"] == "Agenda"
+    assert first["meeting_id"] == "_09042024-1447"
+    assert first["asset_type"] == "agenda"

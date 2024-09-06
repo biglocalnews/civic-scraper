@@ -29,7 +29,9 @@ class Site(base.Site):
 
     @property
     def place(self):
-        return self.place_name or self._get_asset_metadata(r"(?<=-)\w+(?=\.)", self.base_url)
+        return self.place_name or self._get_asset_metadata(
+            r"(?<=-)\w+(?=\.)", self.base_url
+        )
 
     def scrape(
         self,

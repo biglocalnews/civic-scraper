@@ -49,9 +49,7 @@ def test_scrape_defaults():
         "agenda",
         "minutes",
         "agenda",
-        "agenda",
         "minutes",
-        "agenda",
     ]
     actual_asset_types = [asset.asset_type for asset in assets]
     assert expected_asset_types == actual_asset_types
