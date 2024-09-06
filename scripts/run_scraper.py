@@ -23,6 +23,7 @@ python run_scraper.py \
     path/to/target.csv \
     --scraper_args '{"start_date": "2015-09-09", "end_date": "2015-10-14"}'
 """
+
 from civic_scraper.scrapers import SUPPORTED_SITES
 
 

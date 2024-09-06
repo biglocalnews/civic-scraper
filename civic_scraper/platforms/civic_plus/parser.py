@@ -76,9 +76,9 @@ class Parser:
         # If present, remove span that contains
         # arrow ▼ for toggling meeting list
         try:
-             div.h2.span.extract()
+            div.h2.span.extract()
         except AttributeError:
-             pass
+            pass
         header_node = div.h2 or div.h3
         return header_node.text.strip()
 

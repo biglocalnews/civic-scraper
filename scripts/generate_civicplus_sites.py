@@ -20,6 +20,7 @@ USAGE: From the command line,
     "/Users/amydipierro/GitHub/test.csv"
 
 """
+
 import csv
 import re
 

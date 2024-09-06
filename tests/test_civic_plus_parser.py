@@ -41,6 +41,7 @@ def test_extract_all_asset_types_for_meeting(search_results_html):
     ]
     assert asset_types == expected_types
 
+
 def test_parse_alameda():
     "Parser should extract all items on page for Alameda WD, which uses a different page structure"
     html = read_fixture("civplus_alameda_water.html")
@@ -52,9 +53,6 @@ def test_parse_alameda():
     assert first["url_path"] == "/AgendaCenter/ViewFile/Agenda/_09042024-1447"
     assert first["meeting_date"] == datetime(2024, 9, 4)
     assert first["meeting_time"] is None
-    assert (
-        first["meeting_title"]
-        == "Agenda"
-    )
+    assert first["meeting_title"] == "Agenda"
     assert first["meeting_id"] == "_09042024-1447"
     assert first["asset_type"] == "agenda"
