@@ -113,7 +113,7 @@ jobs:
         name: Install Python dependencies
         run: |
           pipenv install --dev --python `which python`
-          pipenv run pip install tomli
+          pipenv run pip install tomli setuptools-scm>=8.1.0
 
       - id: build
         name: Build release
