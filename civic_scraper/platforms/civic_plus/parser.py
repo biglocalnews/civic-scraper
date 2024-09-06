@@ -38,6 +38,9 @@ class Parser:
             )
 
         metadata = []
+        # Links often appear twice (once under meeting title, once in download menu)
+        # so we track which we've already seen to avoid duplicate entries
+        bookkeeping = set()
         for div in divs:
             cmte_name = self._committee_name(div)
             # Line-item data for each meeting is inside table rows.
@@ -52,6 +55,9 @@ class Parser:
                     # Skip links to page listing previous agenda versions
                     if self._previous_version_link(link):
                         continue
+                    # Skip previously harvested links
+                    if link["href"] in bookkeeping:
+                        continue
                     metadata.append(
                         {
                             "committee_name": cmte_name,
@@ -63,13 +69,18 @@ class Parser:
                             "asset_type": self._asset_type(link["href"]),
                         }
                     )
+                    bookkeeping.add(link["href"])
         return metadata
 
     def _committee_name(self, div):
-        # Remove span that contains
+        # If present, remove span that contains
         # arrow ▼ for toggling meeting list
-        div.h2.span.extract()
-        return div.h2.text.strip()
+        try:
+             div.h2.span.extract()
+        except AttributeError:
+             pass
+        header_node = div.h2 or div.h3
+        return header_node.text.strip()
 
     def _mtg_title(self, row):
         return row.p.text.strip()
