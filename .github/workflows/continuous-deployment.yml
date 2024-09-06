@@ -118,7 +118,7 @@ jobs:
       - id: build
         name: Build release
         run: |
-        pipenv run pip install --force-reinstall setuptools-scm==8.1.0
+        pipenv run pip install --force-reinstall -U setuptools-scm
         make build-release
 
       - id: check
