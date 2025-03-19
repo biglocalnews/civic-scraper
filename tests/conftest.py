@@ -119,3 +119,15 @@ def asset_inputs():
             "url": "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05042020-381",
         },
     ]
+
+
+@pytest.fixture
+def boarddocs_meetings_html():
+    """Sample HTML for BoardDocs meetings page"""
+    return read_fixture("boarddocs_meetings.html")
+
+
+@pytest.fixture
+def boarddocs_committee_html():
+    """Sample HTML for BoardDocs committee page"""
+    return read_fixture("boarddocs_committee.html")

@@ -1,0 +1,962 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: https://go.boarddocs.com/pa/stco/Board.nsf/Public
+  response:
+    body:
+      string: "<!doctype html>\n<html lang=\"en\" class=\"accessibility\">\n<head>\n\n\t\t<script
+        src=\"https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.min.js\"></script>\n
+        \   \t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js\"></script>\n
+        \   \n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/pendo-init.js\"></script>\n<script>boardType=\"1\"</script>\n<script>showPolicyValue=\"2\"</script>\n<script>policyDraft=\"\"</script>\n<script>windowTitleNew=\"State
+        College Area School District BoardDocs\xAE Pro\"; printTitle=\"BoardDocs\xAE
+        Pro\";</script>\n<title>State College Area School District BoardDocs\xAE Pro</title>\n<meta
+        name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<meta
+        name=\"DESCRIPTION\" content=\"State College Area School District - The State
+        College Area School District Board of Directors. Pictured from left to right:
+        Aaron Miller,  Jackie Huff, Anne Demo, Carline Crevecoeur, Deb Anderson (Vice
+        President), Curtis Johnson (Superintendent), Amy Bader (President), Peter
+        Buck, Gretchen Brandt, Dan Kolbe\">\n<meta name=\"keywords\" content=\"boarddocs,
+        Meetings, Meeting, Agenda, Agenda Details\">\n<meta name=\"robots\" content=\"index,
+        follow\">\n<meta name=\"format-detection\" content=\"telephone=no\" />\n<link
+        rel=\"apple-touch-icon\" href=\"//cdn.boarddocs.com/static/images/apple-touch-icon-precomposed.png\"/>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/sanitizeObject.js\"></script>\n<script
+        src=\"https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.3/purify.min.js\"
+        integrity=\"sha512-TBmnYz6kBCpcGbD55K7f4LZ+ykn3owqujFnUiTSHEto6hMA7aV4W7VDPvlqDjQImvZMKxoR0dNY5inyhxfZbmA==\"
+        crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>\n<script
+        src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js\"
+        integrity=\"sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==\"
+        crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/jquery/3.6.1/jquery-migrate-3.4.0.min.js\"></script>\n<script
+        src=\"https://code.jquery.com/ui/1.13.2/jquery-ui.min.js\" integrity=\"sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=\"
+        crossorigin=\"anonymous\"></script>\n<script src=\"/pa/stco/Board.nsf/javascript/jquery-ui.min.js\"></script>\n<script
+        src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js\"
+        integrity=\"sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN\"
+        crossorigin=\"anonymous\"></script>\n<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js\"
+        integrity=\"sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+\"
+        crossorigin=\"anonymous\"></script>\n<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css\"
+        integrity=\"sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N\"
+        crossorigin=\"anonymous\">\n<script src=\"//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/plus/javascript/jquery.mobile.custom.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/javascript/modernizr.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/plus/blockui/blockui.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/javascript/jquery.scrollTo.min.2.1.2.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/2021v02/javascript/global.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/javascript/Math.uuid.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/reskin/bootbox/bootbox.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/2021v02/javascript/domino.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/2021v02/javascript/common.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/plus/javascript/jplayer/jPlayer-2.9.2/jquery.jplayer.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/video.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/boardDocsAccessibility.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/2021v02/javascript/api.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/library.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/packet.js\"></script>\n<script
+        src=\"https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.js\" integrity=\"sha512-o4gKX6jcK0rdciOZ9X8COYkV9gviTJAbYEVW8aC3OgIRuaKDmcT9/OFXBVzHSSOxiTjsTktqrUvCUrHkQHSn9Q==\"
+        crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/policies.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/search.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/meetings.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/agenda.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/textmenu.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/skipNav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/page-title-change.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/reskin/sticky/sticky.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/javascript/moment.js\"></script>\n<script
+        type=\"text/javascript\" language=\"javascript\">\n\n\tvar bd = {};\n\tbd.session_uuid
+        = Math.uuid(16);\n    \n    bd.policy_connected=\"PsbaManagementConsole\";\n
+        \   bd.meta_search_status=\"Enabled\";\n\tbd.total_committee_available=1;\n\tbd.current_date_number
+        = 20250319;\n\tbd.current_datetime_number = 20250319085627;\n\n\tbd.app_path
+        = \"pa/stco/Board.nsf\";\n\tbd.app_is_plus = false;\n\tbd.app_is_pro = true;\n\tbd.app_is_lt
+        = false;\n\tbd.app_is_pl = false;\n\tbd.app_is_debug = \"\";\n\tbd.app_is_ios
+        = false;\n\n\tbd.cdn_release_folder = \"//cdn.boarddocs.com/2021v02\";\n\tbd.cdn_static_folder
+        = \"//cdn.boarddocs.com/static\";\n\n\tbd.workflow_track_changes_enabled =
+        true;\n\tbd.workflow_track_changes_agenda = false;\n\tbd.workflow_track_changes_policy
+        = false;\n\n\tbd.magic_line_enabled = false;\n\tbd.trackchanges_username =
+        \"Anonymous\";\n\tbd.trackchanges_userid = \"(7348A994EDEC39474F55A6BBA344E8F4)\";\n\n\tbd.policy_url
+        = \"\";\n\tbd.policy_system = 0;\n\tbd.api_enabled = true;\n\n\tbd.videoservice
+        = \"0\";\n\n\tbd.meeting_lists_enabled = true;\n\tbd.meeting_lists_use_cache
+        = false;\n\n\tbd.ck_spellcheck_enabled = true;\n\n\tbd.location_is_index =
+        true;\n\t\n\tbd.print_workflow = false;\n\tbd.print_page_break = false;\n\tbd.print_agenda_footer
+        = '';\n\tbd.print_agenda_item_header = '';\n\tbd.print_agenda_item_footer
+        = '';\n\n\tbd.user_is_super = false;\n\tbd.user_is_publisher = false;\n\tbd.user_is_publisheradmin
+        = false;\n\tbd.user_is_admin = false;\n\tbd.user_is_adminexec = false;\n\tbd.user_is_executive
+        = false;\n\tbd.user_is_voting = false;\n\n\tbd.user_is_policy_publisher =
+        false;\n\tbd.user_is_library_publisher = false;\n\tbd.user_is_library_admin
+        = false;\n\tbd.user_is_library_executive = false;\n\n\tbd.user_is_anonymous
+        = true;\n\tbd.user_not_anonymous = false;\n\tbd.user_is_annotations = false;\n\t\n\tbd.current_committee_id
+        = \"\"; // not used\n\tbd.current_meeting_id = \"\"; // not used\n\tbd.current_agendaitem_id
+        = \"\"; // not used\n\tbd.current_library_id = \"\"; // not used\n\tbd.current_policy_id
+        = \"\"; // not used\n\n\tbd.current_goto_id = \"\";\n\n\tbd.locking_enabled
+        = true;\n\tbd.locking_renew_interval = 29000; \n\tbd.locking_max_hold = 60;\n\tbd.locking_notify_interval
+        = 15000; \n\n\tbd.mcp_is_running = false;\n\tbd.mcp_current_item_id = \"\";\n\tbd.mcp_current_item_text
+        = \"\";\n\tbd.mcp_current_motion_id = \"\";\n\tbd.mcp_current_motion_text
+        = \"\";\n\n\tbd.mcp_timeout_meeting_stopped = 15001;\n\tbd.mcp_timeout_meeting_running
+        = 10001;\n\tbd.mcp_timeout_item_active = 5001;\n\tbd.mcp_timeout_voting =
+        5001;\n\t\n\tbd.mcp_current_term_yea = \"Yea\";\n\tbd.mcp_current_term_nay
+        = \"Nay\";\n\tbd.mcp_current_term_abstain = \"Abstain\";\n\tbd.mcp_current_term_not_present
+        = \"Not Present at Vote\";\n\n\tbd.mcp_current_term_unanimous = \"Unanimous\";\n\tbd.mcp_current_term_motion_carries
+        = \"Motion Carries\";\n\tbd.mcp_current_term_motion_fails = \"Motion Fails\";\n\n\tbd.server_root_hostname
+        = \"go.boarddocs.com\";\n\tbd.mcp_is_server_external = true;\n\t\nbd.current_committee_name
+        = \"\";\nbd.anonymous_redirect_enabled = false;\nbd.anonymous_redirect_hostname
+        = \"go.boarddocs.com\";\nbd.anonymous_status_url = \"https://423gszmb15.execute-api.us-east-1.amazonaws.com/prod/get/status\";\nbd.anonymous_status_refresh_rate
+        = 300000;\nbd.server_is_cnyric = false;\nbd.server_is_emgrp = true;\nvar cl
+        = function(){return false};\n</script>\n<link type=\"text/css\" href=\"/pa/stco/Board.nsf/css/reset.css\"
+        rel=\"stylesheet\" />\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/static/plus/jquery-ui-1.12.1.custom/jquery-ui.min.css\"
+        type=\"text/css\" media=\"screen\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/main.css\"
+        type=\"text/css\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/accessibility-home.css\"
+        type=\"text/css\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/policies.css\"
+        type=\"text/css\" media=\"screen\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/library.css\"
+        type=\"text/css\" media=\"screen\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/video.css\"
+        type=\"text/css\" media=\"screen\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/tooltip.css\"
+        type=\"text/css\"  media=\"screen\">\n<link href='//fonts.googleapis.com/css?family=Roboto'
+        rel='stylesheet'>\n<link href='//fonts.googleapis.com/css?family=Merriweather'
+        rel='stylesheet'>\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/policy-console.css\"
+        type=\"text/css\"  media=\"screen\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/static/font-awesome/4.7.0/css/font-awesome.min.css\"
+        type=\"text/css\"  media=\"screen\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/editorviewmode.css\"
+        media=\"screen, print\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/static/css/addtional.css\"
+        media=\"screen, print\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/addtionalprint.css\"
+        media=\"print\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/responsive-dialog.css\"
+        media=\"screen\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/responsive-print-dialog.css\"
+        media=\"screen\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/ipadStyles.css\"
+        media=\"screen\">\n<link rel=\"SHORTCUT ICON\" href=\"//cdn.boarddocs.com/static/images/favicon.ico\">\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/home.js\"></script>\n</head>\n<body
+        id=\"the-body\">\n<div aria-hidden=\"true\" aria-label=\"loading data icon\"
+        id=\"ajax-status\" style=\"position: absolute; top: 0px; left: 5px; font-size:
+        11px; color: #333; z-index: 1000; opacity: 1; display: none;\">loading<img
+        alt=\"loading data icon\" src=\"//cdn.boarddocs.com/static/images/ajax/ajax-loader.gif\"></div>\n<div
+        id=\"loading-boarddocs\">\n<div class=\"bar\"></div>\n<div class=\"logo\"><img
+        aria-label=\"Loading BoardDocs icon\" alt=\"loading boarddocs\" src=\"//cdn.boarddocs.com/static/logos/BoardDocs_DIL_logo.png\"></div>\n<div
+        class=\"spinner\"><i class=\"fa fa-refresh fa-spin fa-3x fa-fw\"></i></div>\n</div>\n<div
+        id=\"for-print\" class=\"for-print\"></div>\n<div id=\"for-screen\">\n<div
+        id=\"print-dialog\" class=\"for-print\" title=\"What would you like to print?\"
+        style=\"display: none;\">\n<div id=\"print-dialog-tabs\">\n<ul>\n     <li
+        id=\"li-1\" key=\"1\" class=\"print-agenda\"><a href=\"#tab-1\" key=\"1\"><span>Simple
+        Agenda</span></a></li>\n     <li id=\"li-2\" key=\"2\" class=\"print-agenda\"><a
+        href=\"#tab-2\" key=\"2\"><span>Detailed Agenda</span></a></li>\n     <li
+        id=\"li-3\" key=\"3\" class=\"print-agenda\"><a href=\"#tab-3\" key=\"3\"><span>Current
+        Agenda Item</span></a></li>\n     <li id=\"li-4\" key=\"4\" class=\"print-policy\"><a
+        href=\"#tab-4\" key=\"4\"><span>Current Policy Item</span></a></li>\n     <li
+        id=\"li-5\" key=\"5\" class=\"print-library\"><a href=\"#tab-5\" key=\"5\"><span>Current
+        Library Item</span></a></li>\n     <li id=\"li-6\" key=\"6\" class=\"print-goal\"><a
+        href=\"#tab-6\" key=\"6\"><span>Goal Progress Report</span></a></li>\n</ul>\n<div
+        id=\"printTab-1\" tabindex=\"0\" role=\"tab\" aria-label=\"Print Tab 1\">\n<div
+        id=\"tab-1\" key=\"1\" class=\"print-agenda tab-content-print focusing\" ></div></div>\n<div
+        id=\"tab-2\" key=\"2\" class=\"print-agenda tab-content-print\"></div>\n<div
+        id=\"tab-3\" key=\"3\" class=\"print-agenda tab-content-print\"></div>\n<div
+        id=\"tab-4\" key=\"4\" class=\"print-policy tab-content-print\"></div>\n<div
+        id=\"tab-5\" key=\"5\" class=\"print-library tab-content-print\"></div>\n<div
+        id=\"tab-6\" key=\"6\" class=\"print-goal tab-content-print\"></div>\n<div
+        id=\"print-logo\" style=\"display: none;\"><div class=\"print-logo\" style=\"text-align:
+        center;\"><img alt=\"State College Area School District Board of Directors\"
+        src=\"/pa/stco/Board.nsf/files/PRINT_LOGO/$file/MastheadLogo.jpg\"></div></div>\n<div
+        id=\"print-agenda-footer\" style=\"display: none;\"><div class=\"agenda-footer-text\"></div></div>\n<div
+        id=\"print-agenda-item-header\" style=\"display: none;\"><div class=\"agenda-item-header-text\"></div></div>\n<div
+        id=\"print-agenda-item-footer\" style=\"display: none;\"><div class=\"agenda-item-footer-text\"></div></div>\n</div>\n</div>\n<div
+        id=\"minutes-dialog\">\n<div class=\"title\">Minutes</div>\n<div class=\"buttons\">\n<a
+        class=\"print button\" href=\"#\">Print</a>\n<a class=\"close button\"  href=\"#\">Close</a>\n</div>\n<div
+        id=\"minutes\">\n<div class=\"viewminutes\"></div>\n</div>\n</div>\n<div id=\"jplayer\">\n<div
+        class=\"speaker\"><i class=\"fa fa-volume-up fa-2x\"></i></div>\n<div class=\"controls\">\n<div
+        class=\"title\">Audio Player</div>\n<div class=\"stop\"><i class=\"fa fa-stop-circle
+        fa-2x\"></i></div>\n<div class=\"play\"><i class=\"fa fa-play-circle fa-2x\"></i></div>\n<div
+        class=\"pause\"><i class=\"fa fa-pause-circle fa-2x\"></i></div>\n<div class=\"nowplaying\"></div>\n</div>\n<div
+        class=\"player\"></div>\n</div>\n<div id=\"generic-dialog\" style=\"display:
+        none;\">\n</div>\n<div id=\"ok-dialog\" style=\"display: none;\">\n</div>\n<div
+        \ id=\"video-dialog\" tabindex=\"0\" style=\"display: none;\">\n<form id=\"video-dialog-form\">\n<input
+        name=\"meeting_id\" type=\"hidden\" value=\"\" autocomplete=\"off\"><input
+        name=\"video_id\" class=\"video-id\" type=\"hidden\" value=\"\" autocomplete=\"off\">\n<div
+        class=\"video\">Video</div>\n<div class=\"agenda\">Agenda</div>\n</form>\n</div>\n<div
+        id=\"dialog-yesno\" style=\"display: none;\">\nYes or no?\n</div>\n<div id=\"dialog-okcancel\"
+        style=\"display: none;\">\n</div>\n<div id=\"dialog-vote\" style=\"display:
+        none;\">\n<div class=\"title\">Motion</div>\n<div class=\"motion\"></div>\n</div>\n<div
+        id=\"ajax-running\" style=\"position: absolute; top: 0px; left: 0px; display:
+        none;\"><img alt=\"loading data icon\" src=\"//cdn.boarddocs.com/static/images/ajax/ajax-running.gif\"></div>\n<div
+        id=\"alert-box\"></div>\n<div aria-hidden=\"true\" id=\"debug-window\" style=\"display:
+        none;\">\n<i id=\"close-debug\" class=\"fa fa-times\" ></i>\n<div style=\"margin-bottom:
+        10px; font-size: 14px;\">Information <img alt=\"refresh data icon\" id=\"refresh-info-box\"
+        style=\"cursor: pointer;\" src=\"//cdn.boarddocs.com/static/famfamfam/arrow_rotate_clockwise.png\"></div>\n<table
+        border=\"0\">\n<tr><td valign=\"top\">Browser:</td><td nowrap valign=\"top\"
+        id=\"display-browser\"></td></tr>\n<tr><td valign=\"top\">Browser Version:</td><td
+        nowrap valign=\"top\" id=\"display-browser-version\"></td></tr>\n<tr><td valign=\"top\">Server:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"info-server\" value=\"CN=Diligent-Secaucus6/O=Emgrp\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Username:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"info-username\" value=\"Anonymous\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\" colspan=\"2\"><hr></td></tr>\n<tr><td valign=\"top\">Meeting:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"current-meeting\" value=\"\" autocomplete=\"off\" /></td></tr>\n<tr><td
+        valign=\"top\">Meeting Status:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-meeting-status\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">New Meeting:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"new-current-meeting\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Agenda Item:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-agenda-item\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Committee:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-committee\" name=\"current_committee\"
+        value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td valign=\"top\">Voting
+        Item:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\"
+        type=\"text\" id=\"current-voting-item\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Policy Item:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-policy-item\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Policy Book:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-policy-book\" value=\"Policy Manual\"
+        autocomplete=\"off\"/></td></tr>\n<tr><td valign=\"top\">Policy Status:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"current-policy-status\" value=\"\" autocomplete=\"off\" /></td></tr>\n<tr><td
+        valign=\"top\">Library Item:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-library-item\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Library Type:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-library-type\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\" colspan=\"2\"><hr></td></tr>\n<tr><td valign=\"top\">Roles:</td><td
+        nowrap valign=\"top\" id=\"info-roles\"></td></tr>\n<tr><td valign=\"top\">Super:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"is-super\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Publisher:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-publisher\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Publisher Admin:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-publisher-admin\" value=\"false\"autocomplete=\"off\"
+        /></td></tr>\n<tr><td valign=\"top\">Admin:</td><td nowrap valign=\"top\"><input
+        aria-hidden=\"true\" aria-label=\"x\" type=\"text\" id=\"is-admin\" value=\"false\"
+        autocomplete=\"off\"/></td></tr>\n<tr><td valign=\"top\">AdminExec:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"is-admin-exec\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Executive:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-executive\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Voting:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-voting\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Policy Pub:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-policy-publisher\" value=\"false\"
+        autocomplete=\"off\" /></td></tr>\n<tr><td valign=\"top\">Library Pub:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"is-library-publisher\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Library Admin:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-library-admin\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Library Exec:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-library-executive\" value=\"false\"
+        autocomplete=\"off\"/></td></tr>\n<tr><td valign=\"top\">Anonymous:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"is-anonymous\" value=\"true\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Support:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-support\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\" colspan=\"2\"><hr></td></tr>\n<tr><td valign=\"top\">Meeting
+        Lists:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\"
+        type=\"text\" id=\"is-meeting-lists-enabled\" value=\"true\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Response:</td><td nowrap valign=\"top\"><div id=\"ajax-log\"
+        style=\"max-height: 200px; overflow: auto;\"></div></td></tr>\n</table>\n</div>\n<!--
+        HEADER -->\n<nav id=\"header\" class=\"navbar navbar-expand-lg navbar-drak
+        bg-drak\">\n<div id=\"SiteTitle1\" class=\"line1 navbar-left introedit__sitetitle1\">State
+        College Area School District</div>\n<div id=\"SiteTitle2\" class=\"line2 navbar-left
+        introedit__sitetitle2\">240 Villa Crest Drive, State College, PA 16801 | (814)
+        231-1016</div>\n<ul id=\"navbarMainSection1\" class=\"navbar-nav ml-auto\">\n<li><a
+        class=\"dropdown-item-new\" aria-label=\"Home\" href=\"http://www.scasd.org\"
+        id=\"btn-home\"  style=\"outline:none;\"><i class=\"fa fa-home fa-lg\"></i></a></li>\n<li><a
+        \ class=\"dropdown-item-new\" role=\"button\" aria-label=\"Search\" href=\"#\"
+        id=\"btn-search\"  style=\"outline:none;\"><i class=\"fa fa-search fa-lg\"></i></a></li>\n<li
+        class=\"dropdown\">\n<a id=\"btn-user-menu\" aria-label=\"User Menu\" class=\"dropdown-toggle\"
+        data-toggle=\"dropdown\" href=\"#\"><i class=\"fa fa-user-o fa-lg\"></i><span
+        class=\"fa fa-caret-down\"></span></a>\n<ul class=\"dropdown-menu \">\n<li
+        ><a class=\"dropdown-item pull-left\" href=\"https://go.boarddocs.com/pa/stco/Board.nsf/Private?open&login\"
+        id=\"btn-login\" aria-label=\"Login\">Log In</a></li>\n</ul>\n      </li>\n\t<li
+        class=\"dropdown\">\n        <a id=\"btn-board-committe-menu\" aria-label=\"Board/Committee
+        Menu\" class=\"nav-link dropdown-toggle\" href=\"#\" data-toggle=\"dropdown\">\n
+        \       <span id=\"display-committee-name\"></span><i class=\"fa fa-university
+        fa-lg\"></i><span class=\"fa fa-caret-down\"></span></a> \n        <ul  id
+        =\"sumukh\" class=\"dropdown-menu\">\n<li ><a href=\"#\" class=\"dropdown-item
+        committee-trigger\" committeeid=\"A8EGER437CB9\" aria-label=\"Board of School
+        Directors\">Board of School Directors</a></li>\n</ul>\n      </li>\n<li id=\"wrap-change-vote\"><a
+        href=\"#\" id=\"btn-change-vote\"><i class=\"fa fa-hand-paper-o fa-lg\"></i>
+        Change Vote</a></li>\n</ul>\n<div id=\"navigation\">\n<a href=\"http://www.scasd.org\"
+        id=\"btn-home-nav\">Home</a>\n</div>\n</nav>\n<div id=\"bd\">\n<header>\n<div
+        id=\"tab-left-nav\">\n<div id=\"subheader\" class=\"ui-helper-clearfix\" role=\"banner\">\n<div
+        class=\"wrap-site-logo\"><img alt=\"State College Area School District Logo\"
+        id=\"site-logo\" src=\"/pa/stco/Board.nsf/files/SITE_LOGO/$file/SCASDfinal.png\"></div>\n<ul
+        class=\"dropdown\" id=\"nav-header\">\n<li id=\"li-welcome\" class=\"droppdown\"><a
+        href=\"#tab-welcome\"><span>Featured</span></a></li>\n<li id=\"li-meetings\"
+        class=\"droppdown\" aria-expanded=\"false\"><a  tabindex=\"1\" href=\"#tab-meetings\"><span
+        id=\"mainMeetings\">Meetings <i id=\"arrowkey\" class=\"fa fa-chevron-down\"
+        aria-label=\"Meetings Dropdown Menu\"></i></span></a>\n<div class=\"tab-menu\">\n<img
+        alt=\"policy dropdown-menu\" src=\"//cdn.boarddocs.com/static/famfamfam/bullet_arrow_down.png\">\n<div
+        id=\"meetings-menu-items\" class=\"tab-menuitems\">\n<div tab=\"meetings\"
+        aria-label=\"Meetings  : Active\" key=\"active\" class=\"tab-menuitem\" id=\"menuitem-meetings-active\">Active</div>\n</div>\n</div>\n</li>\n<li
+        id=\"li-agenda\" class=\"droppdown\" style=\"display: none;\"><a href=\"#tab-agenda\"><span>Agenda</span></a></li>\n\n\t\t\t\t<li
+        id=\"li-policies\" class=\"droppdown\" aria-expanded=\"false\">\n\t\t\t\t\t\t<a
+        tabindex=\"1\" href=\"#tab-policies\">\n\t\t\t\t\t\t\t\t<span id=\"mainPolicy\">Policies\t\n\t\t\t\t\t\t\t\t\t<i
+        id=\"dropdownarrowpolicies\" class=\"fa fa-chevron-down\" aria-label=\"Policy
+        Dropdown Menu\"></i>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\n<div
+        class=\"tab-menu\">\n<img alt=\"policy dropdown-menu\" src=\"//cdn.boarddocs.com/static/famfamfam/bullet_arrow_down.png\">\n<div
+        id=\"policies-menu-items\" class=\"tab-menuitems\">\n<div tab=\"policies\"
+        aria-label=\"Policies  : Active\" key=\"active\" class=\"tab-menuitem\" id=\"menuitem-policies-active\">Active</div>\n\n<script>policyDraft=\"No
+        Draft\"</script>\n</div>\n</div>\n</li>\n<li id=\"li-library\"  class=\"droppdown\"
+        ><a href=\"#tab-library\"><span id=\"mainLibrary\">Library <i id=\"library-menu-arrow\"
+        class=\"fa fa-chevron-down\" role=\"option\" aria-label=\"Library Dropdown
+        Menu\"></i></span></a>\n<div class=\"tab-menu\">\n<img alt=\"library drop
+        down menu\" src=\"//cdn.boarddocs.com/static/famfamfam/bullet_arrow_down.png\">\n<div
+        id=\"library-menu-items\" class=\"tab-menuitems\">\n<div id=\"library-general\"
+        tab=\"library\" aria-label=\"Library  : General\" key=\"general\" class=\"tab-menuitem\">General</div>\n<div
+        id=\"library-events\" tab=\"library\" aria-label=\"Library  : Events\" key=\"event\"
+        class=\"tab-menuitem\">Events</div>\n<div id=\"library-sgoals\" tab=\"library\"
+        aria-label=\"Library  : Strategic Goals\" key=\"goal\" class=\"tab-menuitem\">Strategic
+        Goals</div>\n<div id=\"library-bd-members\" tab=\"library\" aria-label=\"Library
+        \ : Board Members\" key=\"board\" class=\"tab-menuitem\"><h2>Board Members</h2></div>\n</div>\n</div>\n</li>\n<li
+        id=\"li-search\" style=\"display: none;\"><a href=\"#tab-search\"><span>Search</span></a></li>\n</ul>\n</div>\n<div
+        id=\"tab-welcome\" class=\"tab-content\">\n<div id=\"wrap-packet\"><div id=\"packet-accordion\"
+        data-columns class=\"pane-wrap\"></div></div>\n</div>\n<div id=\"tab-meetings\"
+        class=\"tab-content XXXui-helper-clearfix\">\n<div class=\"tab-title\">\n<span
+        id=\"meeting-tab-title-prefix\"></span>\n<div id=\"committee-select\"><select
+        aria-hidden=\"true\" aria-label=\"Committee Selector\" name=\"committeeid\"
+        class=\"select ui-widget-content ui-corner-all\" autocomplete=\"off\"><option
+        value=\"A8EGER437CB9\">Board of School Directors</option></select></div>\n</div>\n<div
+        class=\"XXcontainer-fluid meetingContent\">\n<div class=\"tab-row\">\n<div
+        class=\"pane-navigation\">\n<div id=\"wrap-meetings\" style=\"display: none;\">\n<div
+        \ class=\"search-box not-policy-console\">\n<div id=\"Search_Meetings\"  class=\"search-buttons\"
+        tabindex=\"0\">\n<a class=\"search lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a
+        class=\"clear lefMenu\"><i   class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input
+        id=\"Search-Meetings\"  aria-label=\"Search Meetings\" class=\"search-input\"
+        type=\"text\" placeholder=\"Search Meetings\"autocomplete=\"off\">\n<div class=\"search-results
+        pane-wrap\">\n</div>\n</div>\n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"meetings\" class=\"pane-wrap\"></div>\n</div>\n<div id=\"wrap-drafts\"
+        style=\"display: none;\">\n<div  class=\"search-box not-policy-console\">\n<div
+        id=\"Search_Drafts\"  class=\"search-buttons\" tabindex=\"0\">\n<a class=\"search
+        lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a class=\"clear lefMenu\"><i
+        \  class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input id=\"Search-Drafts\"
+        \ aria-label=\"Search Drafts\" class=\"search-input\" type=\"text\" placeholder=\"Search
+        Drafts\"autocomplete=\"off\">\n<div class=\"search-results pane-wrap\">\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"drafts\" class=\"pane-wrap\"></div>\n</div>\n<div id=\"wrap-templates\"
+        style=\"display: none;\">\n<div  class=\"search-box not-policy-console\">\n<div
+        id=\"Search_Templates\"  class=\"search-buttons\" tabindex=\"0\">\n<a class=\"search
+        lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a class=\"clear lefMenu\"><i
+        \  class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input id=\"Search-Templates\"
+        \ aria-label=\"Search Templates\" class=\"search-input\" type=\"text\" placeholder=\"Search
+        Templates\"autocomplete=\"off\">\n<div class=\"search-results pane-wrap\">\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"templates\" class=\"pane-wrap\"></div>\n</div>\n<div id=\"wrap-my-items\"
+        style=\"display: none;\">\n<div  class=\"search-box not-policy-console\">\n<div
+        id=\"Search_My_Agenda_Items\"  class=\"search-buttons\" tabindex=\"0\">\n<a
+        class=\"search lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a class=\"clear
+        lefMenu\"><i   class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input id=\"Search-My-Agenda-Items\"
+        \ aria-label=\"Search My Agenda Items\" class=\"search-input\" type=\"text\"
+        placeholder=\"Search My Agenda Items\"autocomplete=\"off\">\n<div class=\"search-results
+        pane-wrap\">\n</div>\n</div>\n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        key=\"my-items\" id=\"my-agenda-items\" class=\"pane-wrap\"></div>\n</div>\n</div>\n<div
+        class=\"pane-content\" id=\"pane-content-meetings\">\n<div id=\"meeting-content\">\n</div>\n</div>\n</div>\n</div>\n</div>\n<div
+        id=\"tab-policies\" class=\"tab-content\">\n<div class=\"tab-title\">Policies</div>\n<div
+        class=\"XXcontainer-fluid policyContent\">\n<div class=\"tab-row\">\n<div
+        class=\"pane-navigation\">\n<div id=\"wrap-policies\">\n<div  class=\"search-box
+        not-policy-console\">\n<div id=\"Search_Policies\"  class=\"search-buttons\"
+        tabindex=\"0\">\n<a class=\"search lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a
+        class=\"clear lefMenu\"><i   class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input
+        id=\"Search-Policies\"  aria-label=\"Search Policies\" class=\"search-input\"
+        type=\"text\" placeholder=\"Search Policies\"autocomplete=\"off\">\n<div class=\"search-results
+        pane-wrap\">\n</div>\n</div>\n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"policies\" class=\"pane-wrap\"></div>\n</div>\n</div>\n<div class=\"pane-content\">\n<div
+        id=\"policy-content\">\n</div>\n</div>\n</div>\n</div>\n</div>\n<div id=\"tab-library\"
+        class=\"tab-content XXXui-helper-clearfix\">\n<div class=\"tab-title\">Library</div>\n<div
+        class=\"XXcontainer-fluid libraryContent\">\n<div class=\"tab-row\">\n<div
+        class=\"pane-navigation\">\n<div id=\"wrap-library\">\n<div  class=\"search-box
+        not-policy-console\">\n<div id=\"Search_Library\"  class=\"search-buttons\"
+        tabindex=\"0\">\n<a class=\"search lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a
+        class=\"clear lefMenu\"><i   class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input
+        id=\"Search-Library\"  aria-label=\"Search Library\" class=\"search-input\"
+        type=\"text\" placeholder=\"Search Library\"autocomplete=\"off\">\n<div class=\"search-results
+        pane-wrap\">\n</div>\n</div>\n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"library-categories\"></div>\n<div id=\"library\" class=\"pane-wrap\"></div>\n</div>\n</div>\n<div
+        class=\"pane-content\">\n<div id=\"library-content\">\n</div>\n</div>\n</div>\n</div>\n</div>\n<div
+        id=\"tab-agenda\" class=\"tab-content XXXui-helper-clearfix\">\n<div class=\"tab-title\">Agenda</div>\n<div
+        class=\"XXcontainer-fluid AgendaContent\">\n<div class=\"tab-row\">\n<div
+        class=\"pane-navigation\">\n<div  class=\"search-box not-policy-console\">\n<div
+        id=\"Search_Agenda\"  class=\"search-buttons\" tabindex=\"0\">\n<a class=\"search
+        lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a class=\"clear lefMenu\"><i
+        \  class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input id=\"Search-Agenda\"
+        \ aria-label=\"Search Agenda\" class=\"search-input\" type=\"text\" placeholder=\"Search
+        Agenda\"autocomplete=\"off\">\n<div class=\"search-results pane-wrap\">\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"wrap-agenda\" class=\"XXXXXXui-corner-bottom XXXXXXui-widget-content\">\n
+        \  <div id=\"agenda\" class=\"pane-wrap\"></div>\n</div>\n</div>\n<div class=\"pane-content\">\n<div
+        id=\"agenda-content\">\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</header>\n<div
+        style=\"clear: both;\"></div>\n</div>\n<footer role=\"contentinfo\" id=\"ft\">\n<!--
+        FOOTER -->\n<div id=\"copyright\">\n<div class=\"pull-right\"><a target=_blank
+        href=\"http://www.boarddocs.com\" >BoardDocs</a>&reg; A Diligent Brand, <span
+        style=\"cursor: pointer;\" id=\"debugclick\">&copy;</span> 2002-2025</div>\n</div>\n</footer>\n<div
+        id=\"search\" aria-modal=\"true\">\n<form id=\"search-form\">\n<input aria-label=\"Site
+        Search\" id=\"searchstring\" name=\"searchstring\" placeholder=\"Search...\"
+        autocomplete=\"off\">\n<input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        style=\"display: none;\" disabled=\"disabled\" size=\"1\" autocomplete=\"off\"/>\n<div
+        tabindex=\"0\" id=\"hitcount\"></div>\n<div id=\"loadingMessage\"></div>\n<input
+        aria-hidden=\"true\" aria-label=\"x\" type=\"text\" style=\"display: none;\"
+        disabled=\"disabled\" size=\"1\" autocomplete=\"off\"/>\n<div id=\"search-filter-buttons\">\n<button
+        type=\"button\" name=\"meetings\" class=\"btn btn-sm btn-default\">Meetings</button>\n<input
+        aria-label=\"Search Meetings\" class=\"search-filter\" name=\"meetings\" type=\"checkbox\"
+        value=\"1\" checked />\n<button type=\"button\" name=\"policies\" class=\"btn
+        btn-sm btn-default\">Policies</button>\n<input aria-label=\"Search Policies\"
+        class=\"search-filter\" name=\"policies\" type=\"checkbox\" value=\"1\" checked
+        />\n<button type=\"button\" name=\"library\" class=\"btn btn-sm btn-default\">Library</button>\n<input
+        aria-label=\"Search Library Items\" class=\"search-filter\" name=\"library\"
+        type=\"checkbox\" value=\"1\" checked />\n<button type=\"button\" name=\"minutes\"
+        class=\"btn btn-sm btn-default\">Minutes</button>\n<input aria-label=\"Search
+        Minutes\" class=\"search-filter\" name=\"minutes\" type=\"checkbox\" value=\"1\"
+        checked />\n<button type=\"button\" name=\"attachments\" class=\"btn btn-sm
+        btn-default\">Include Attachments</button>\n<input aria-label=\"Search Attachments\"
+        class=\"search-filter\" name=\"attachments\" type=\"checkbox\" value=\"1\"
+        checked />\n</div>\n</form>\n\n<div aria-label=\"Search result display\" class=\"modal
+        fade search-result-modal\" role=\"dialog\">\n  <div class=\"modal-dialog modal-lg\"
+        role=\"document\">\n    <div class=\"modal-content\">\n     <!--<div class=\"modal-header\">\n
+        \       <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span
+        aria-hidden=\"true\">&times;</span></button>\n\t\t<section class=\"modal-title\"></section>\n
+        \     </div>-->\n      <div class=\"modal-body\">\n\t\t\n       <div id=\"search-result-display\"></div>\n
+        \     </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\"
+        class=\"btn btn-default takeme\">Navigate There</button>\n        <button
+        type=\"button\" key=\"close\" class=\"btn btn-primary\" data-dismiss=\"modal\">Close</button>\n
+        \     </div>\n\n    </div>\n  </div>\n</div>\n\n\n\n\n\t\t<div id=\"meta-notice\">\n\t\t\t<section
+        class=\"title\">MetaSearch Notice</section>\n\t\t\t<p>MetaSearch is intended
+        for research, information and reference purposes only. Search results are
+        not intended as legal advice for you or your organization and are not a substitute
+        for obtaining legal advice from a qualified attorney in your jurisdiction.</p>\n\t\t\t<p>Using
+        our Services does not give you ownership of any intellectual property rights
+        in our Services or the content you may access. Search results from our Services
+        may contain copyrighted material and, if so, you may not use such content
+        unless you obtain permission from its owner or are otherwise permitted by
+        law. </p>\n\t\t\t<p>Our Services may display content that does not belong
+        to Emerald Data Solutions or its affiliates. This content is the sole responsibility
+        of the entity that makes it available.</p>\n\t\t</div>\t\n\t\n<div id=\"search-results\"
+        Xclass=\"pane-wrap\"></div>\n<i  id=\"search-close\" tabindex=\"0\" class=\"fa
+        fa-times fa-2x\" aria-label=\"Close Site Search\"></i>\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/main.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/downloadWord.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/searchFunctionality.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/DownloadManager.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/tab-nav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/agenda-nav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/agenda-content-nav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/meetings-content-nav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/print-title.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/pendo-integration.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/video-modal-navigation.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/meetingButtonFocusHandler.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/ajax-accessibility-updates.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/removeDuplicatesFromXML.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/seo-event-schema.js\"></script>\n</body>\n</html>\n"
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '36531'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 19 Mar 2025 12:56:28 GMT
+      Expires:
+      - Mon, 24 Mar 2025 23:59:59 GMT
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Lotus-Domino
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      X-origurl:
+      - /pa/stco/Board.nsf/Public
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: https://go.boarddocs.com/pa/stco/Board.nsf/Public
+  response:
+    body:
+      string: "<!doctype html>\n<html lang=\"en\" class=\"accessibility\">\n<head>\n\n\t\t<script
+        src=\"https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.min.js\"></script>\n
+        \   \t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js\"></script>\n
+        \   \n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/pendo-init.js\"></script>\n<script>boardType=\"1\"</script>\n<script>showPolicyValue=\"2\"</script>\n<script>policyDraft=\"\"</script>\n<script>windowTitleNew=\"State
+        College Area School District BoardDocs\xAE Pro\"; printTitle=\"BoardDocs\xAE
+        Pro\";</script>\n<title>State College Area School District BoardDocs\xAE Pro</title>\n<meta
+        name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<meta
+        name=\"DESCRIPTION\" content=\"State College Area School District - The State
+        College Area School District Board of Directors. Pictured from left to right:
+        Aaron Miller,  Jackie Huff, Anne Demo, Carline Crevecoeur, Deb Anderson (Vice
+        President), Curtis Johnson (Superintendent), Amy Bader (President), Peter
+        Buck, Gretchen Brandt, Dan Kolbe\">\n<meta name=\"keywords\" content=\"boarddocs,
+        Meetings, Meeting, Agenda, Agenda Details\">\n<meta name=\"robots\" content=\"index,
+        follow\">\n<meta name=\"format-detection\" content=\"telephone=no\" />\n<link
+        rel=\"apple-touch-icon\" href=\"//cdn.boarddocs.com/static/images/apple-touch-icon-precomposed.png\"/>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/sanitizeObject.js\"></script>\n<script
+        src=\"https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.3/purify.min.js\"
+        integrity=\"sha512-TBmnYz6kBCpcGbD55K7f4LZ+ykn3owqujFnUiTSHEto6hMA7aV4W7VDPvlqDjQImvZMKxoR0dNY5inyhxfZbmA==\"
+        crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>\n<script
+        src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js\"
+        integrity=\"sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==\"
+        crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/jquery/3.6.1/jquery-migrate-3.4.0.min.js\"></script>\n<script
+        src=\"https://code.jquery.com/ui/1.13.2/jquery-ui.min.js\" integrity=\"sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=\"
+        crossorigin=\"anonymous\"></script>\n<script src=\"/pa/stco/Board.nsf/javascript/jquery-ui.min.js\"></script>\n<script
+        src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js\"
+        integrity=\"sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN\"
+        crossorigin=\"anonymous\"></script>\n<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js\"
+        integrity=\"sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+\"
+        crossorigin=\"anonymous\"></script>\n<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css\"
+        integrity=\"sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N\"
+        crossorigin=\"anonymous\">\n<script src=\"//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/plus/javascript/jquery.mobile.custom.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/javascript/modernizr.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/plus/blockui/blockui.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/javascript/jquery.scrollTo.min.2.1.2.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/2021v02/javascript/global.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/javascript/Math.uuid.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/reskin/bootbox/bootbox.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/2021v02/javascript/domino.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/2021v02/javascript/common.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/plus/javascript/jplayer/jPlayer-2.9.2/jquery.jplayer.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/video.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/boardDocsAccessibility.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/2021v02/javascript/api.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/library.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/packet.js\"></script>\n<script
+        src=\"https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.js\" integrity=\"sha512-o4gKX6jcK0rdciOZ9X8COYkV9gviTJAbYEVW8aC3OgIRuaKDmcT9/OFXBVzHSSOxiTjsTktqrUvCUrHkQHSn9Q==\"
+        crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/policies.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/search.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/meetings.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/agenda.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/textmenu.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/skipNav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/page-title-change.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/reskin/sticky/sticky.js\"></script>\n<script
+        type=\"text/javascript\" src=\"//cdn.boarddocs.com/static/javascript/moment.js\"></script>\n<script
+        type=\"text/javascript\" language=\"javascript\">\n\n\tvar bd = {};\n\tbd.session_uuid
+        = Math.uuid(16);\n    \n    bd.policy_connected=\"PsbaManagementConsole\";\n
+        \   bd.meta_search_status=\"Enabled\";\n\tbd.total_committee_available=1;\n\tbd.current_date_number
+        = 20250319;\n\tbd.current_datetime_number = 20250319085627;\n\n\tbd.app_path
+        = \"pa/stco/Board.nsf\";\n\tbd.app_is_plus = false;\n\tbd.app_is_pro = true;\n\tbd.app_is_lt
+        = false;\n\tbd.app_is_pl = false;\n\tbd.app_is_debug = \"\";\n\tbd.app_is_ios
+        = false;\n\n\tbd.cdn_release_folder = \"//cdn.boarddocs.com/2021v02\";\n\tbd.cdn_static_folder
+        = \"//cdn.boarddocs.com/static\";\n\n\tbd.workflow_track_changes_enabled =
+        true;\n\tbd.workflow_track_changes_agenda = false;\n\tbd.workflow_track_changes_policy
+        = false;\n\n\tbd.magic_line_enabled = false;\n\tbd.trackchanges_username =
+        \"Anonymous\";\n\tbd.trackchanges_userid = \"(7348A994EDEC39474F55A6BBA344E8F4)\";\n\n\tbd.policy_url
+        = \"\";\n\tbd.policy_system = 0;\n\tbd.api_enabled = true;\n\n\tbd.videoservice
+        = \"0\";\n\n\tbd.meeting_lists_enabled = true;\n\tbd.meeting_lists_use_cache
+        = false;\n\n\tbd.ck_spellcheck_enabled = true;\n\n\tbd.location_is_index =
+        true;\n\t\n\tbd.print_workflow = false;\n\tbd.print_page_break = false;\n\tbd.print_agenda_footer
+        = '';\n\tbd.print_agenda_item_header = '';\n\tbd.print_agenda_item_footer
+        = '';\n\n\tbd.user_is_super = false;\n\tbd.user_is_publisher = false;\n\tbd.user_is_publisheradmin
+        = false;\n\tbd.user_is_admin = false;\n\tbd.user_is_adminexec = false;\n\tbd.user_is_executive
+        = false;\n\tbd.user_is_voting = false;\n\n\tbd.user_is_policy_publisher =
+        false;\n\tbd.user_is_library_publisher = false;\n\tbd.user_is_library_admin
+        = false;\n\tbd.user_is_library_executive = false;\n\n\tbd.user_is_anonymous
+        = true;\n\tbd.user_not_anonymous = false;\n\tbd.user_is_annotations = false;\n\t\n\tbd.current_committee_id
+        = \"\"; // not used\n\tbd.current_meeting_id = \"\"; // not used\n\tbd.current_agendaitem_id
+        = \"\"; // not used\n\tbd.current_library_id = \"\"; // not used\n\tbd.current_policy_id
+        = \"\"; // not used\n\n\tbd.current_goto_id = \"\";\n\n\tbd.locking_enabled
+        = true;\n\tbd.locking_renew_interval = 29000; \n\tbd.locking_max_hold = 60;\n\tbd.locking_notify_interval
+        = 15000; \n\n\tbd.mcp_is_running = false;\n\tbd.mcp_current_item_id = \"\";\n\tbd.mcp_current_item_text
+        = \"\";\n\tbd.mcp_current_motion_id = \"\";\n\tbd.mcp_current_motion_text
+        = \"\";\n\n\tbd.mcp_timeout_meeting_stopped = 15001;\n\tbd.mcp_timeout_meeting_running
+        = 10001;\n\tbd.mcp_timeout_item_active = 5001;\n\tbd.mcp_timeout_voting =
+        5001;\n\t\n\tbd.mcp_current_term_yea = \"Yea\";\n\tbd.mcp_current_term_nay
+        = \"Nay\";\n\tbd.mcp_current_term_abstain = \"Abstain\";\n\tbd.mcp_current_term_not_present
+        = \"Not Present at Vote\";\n\n\tbd.mcp_current_term_unanimous = \"Unanimous\";\n\tbd.mcp_current_term_motion_carries
+        = \"Motion Carries\";\n\tbd.mcp_current_term_motion_fails = \"Motion Fails\";\n\n\tbd.server_root_hostname
+        = \"go.boarddocs.com\";\n\tbd.mcp_is_server_external = true;\n\t\nbd.current_committee_name
+        = \"\";\nbd.anonymous_redirect_enabled = false;\nbd.anonymous_redirect_hostname
+        = \"go.boarddocs.com\";\nbd.anonymous_status_url = \"https://423gszmb15.execute-api.us-east-1.amazonaws.com/prod/get/status\";\nbd.anonymous_status_refresh_rate
+        = 300000;\nbd.server_is_cnyric = false;\nbd.server_is_emgrp = true;\nvar cl
+        = function(){return false};\n</script>\n<link type=\"text/css\" href=\"/pa/stco/Board.nsf/css/reset.css\"
+        rel=\"stylesheet\" />\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/static/plus/jquery-ui-1.12.1.custom/jquery-ui.min.css\"
+        type=\"text/css\" media=\"screen\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/main.css\"
+        type=\"text/css\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/accessibility-home.css\"
+        type=\"text/css\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/policies.css\"
+        type=\"text/css\" media=\"screen\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/library.css\"
+        type=\"text/css\" media=\"screen\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/video.css\"
+        type=\"text/css\" media=\"screen\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/tooltip.css\"
+        type=\"text/css\"  media=\"screen\">\n<link href='//fonts.googleapis.com/css?family=Roboto'
+        rel='stylesheet'>\n<link href='//fonts.googleapis.com/css?family=Merriweather'
+        rel='stylesheet'>\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/2021v02/css/policy-console.css\"
+        type=\"text/css\"  media=\"screen\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/static/font-awesome/4.7.0/css/font-awesome.min.css\"
+        type=\"text/css\"  media=\"screen\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/editorviewmode.css\"
+        media=\"screen, print\">\n<link rel=\"stylesheet\" href=\"//cdn.boarddocs.com/static/css/addtional.css\"
+        media=\"screen, print\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/addtionalprint.css\"
+        media=\"print\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/responsive-dialog.css\"
+        media=\"screen\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/responsive-print-dialog.css\"
+        media=\"screen\">\n<link rel=\"stylesheet\" href=\"/pa/stco/Board.nsf/css/ipadStyles.css\"
+        media=\"screen\">\n<link rel=\"SHORTCUT ICON\" href=\"//cdn.boarddocs.com/static/images/favicon.ico\">\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/home.js\"></script>\n</head>\n<body
+        id=\"the-body\">\n<div aria-hidden=\"true\" aria-label=\"loading data icon\"
+        id=\"ajax-status\" style=\"position: absolute; top: 0px; left: 5px; font-size:
+        11px; color: #333; z-index: 1000; opacity: 1; display: none;\">loading<img
+        alt=\"loading data icon\" src=\"//cdn.boarddocs.com/static/images/ajax/ajax-loader.gif\"></div>\n<div
+        id=\"loading-boarddocs\">\n<div class=\"bar\"></div>\n<div class=\"logo\"><img
+        aria-label=\"Loading BoardDocs icon\" alt=\"loading boarddocs\" src=\"//cdn.boarddocs.com/static/logos/BoardDocs_DIL_logo.png\"></div>\n<div
+        class=\"spinner\"><i class=\"fa fa-refresh fa-spin fa-3x fa-fw\"></i></div>\n</div>\n<div
+        id=\"for-print\" class=\"for-print\"></div>\n<div id=\"for-screen\">\n<div
+        id=\"print-dialog\" class=\"for-print\" title=\"What would you like to print?\"
+        style=\"display: none;\">\n<div id=\"print-dialog-tabs\">\n<ul>\n     <li
+        id=\"li-1\" key=\"1\" class=\"print-agenda\"><a href=\"#tab-1\" key=\"1\"><span>Simple
+        Agenda</span></a></li>\n     <li id=\"li-2\" key=\"2\" class=\"print-agenda\"><a
+        href=\"#tab-2\" key=\"2\"><span>Detailed Agenda</span></a></li>\n     <li
+        id=\"li-3\" key=\"3\" class=\"print-agenda\"><a href=\"#tab-3\" key=\"3\"><span>Current
+        Agenda Item</span></a></li>\n     <li id=\"li-4\" key=\"4\" class=\"print-policy\"><a
+        href=\"#tab-4\" key=\"4\"><span>Current Policy Item</span></a></li>\n     <li
+        id=\"li-5\" key=\"5\" class=\"print-library\"><a href=\"#tab-5\" key=\"5\"><span>Current
+        Library Item</span></a></li>\n     <li id=\"li-6\" key=\"6\" class=\"print-goal\"><a
+        href=\"#tab-6\" key=\"6\"><span>Goal Progress Report</span></a></li>\n</ul>\n<div
+        id=\"printTab-1\" tabindex=\"0\" role=\"tab\" aria-label=\"Print Tab 1\">\n<div
+        id=\"tab-1\" key=\"1\" class=\"print-agenda tab-content-print focusing\" ></div></div>\n<div
+        id=\"tab-2\" key=\"2\" class=\"print-agenda tab-content-print\"></div>\n<div
+        id=\"tab-3\" key=\"3\" class=\"print-agenda tab-content-print\"></div>\n<div
+        id=\"tab-4\" key=\"4\" class=\"print-policy tab-content-print\"></div>\n<div
+        id=\"tab-5\" key=\"5\" class=\"print-library tab-content-print\"></div>\n<div
+        id=\"tab-6\" key=\"6\" class=\"print-goal tab-content-print\"></div>\n<div
+        id=\"print-logo\" style=\"display: none;\"><div class=\"print-logo\" style=\"text-align:
+        center;\"><img alt=\"State College Area School District Board of Directors\"
+        src=\"/pa/stco/Board.nsf/files/PRINT_LOGO/$file/MastheadLogo.jpg\"></div></div>\n<div
+        id=\"print-agenda-footer\" style=\"display: none;\"><div class=\"agenda-footer-text\"></div></div>\n<div
+        id=\"print-agenda-item-header\" style=\"display: none;\"><div class=\"agenda-item-header-text\"></div></div>\n<div
+        id=\"print-agenda-item-footer\" style=\"display: none;\"><div class=\"agenda-item-footer-text\"></div></div>\n</div>\n</div>\n<div
+        id=\"minutes-dialog\">\n<div class=\"title\">Minutes</div>\n<div class=\"buttons\">\n<a
+        class=\"print button\" href=\"#\">Print</a>\n<a class=\"close button\"  href=\"#\">Close</a>\n</div>\n<div
+        id=\"minutes\">\n<div class=\"viewminutes\"></div>\n</div>\n</div>\n<div id=\"jplayer\">\n<div
+        class=\"speaker\"><i class=\"fa fa-volume-up fa-2x\"></i></div>\n<div class=\"controls\">\n<div
+        class=\"title\">Audio Player</div>\n<div class=\"stop\"><i class=\"fa fa-stop-circle
+        fa-2x\"></i></div>\n<div class=\"play\"><i class=\"fa fa-play-circle fa-2x\"></i></div>\n<div
+        class=\"pause\"><i class=\"fa fa-pause-circle fa-2x\"></i></div>\n<div class=\"nowplaying\"></div>\n</div>\n<div
+        class=\"player\"></div>\n</div>\n<div id=\"generic-dialog\" style=\"display:
+        none;\">\n</div>\n<div id=\"ok-dialog\" style=\"display: none;\">\n</div>\n<div
+        \ id=\"video-dialog\" tabindex=\"0\" style=\"display: none;\">\n<form id=\"video-dialog-form\">\n<input
+        name=\"meeting_id\" type=\"hidden\" value=\"\" autocomplete=\"off\"><input
+        name=\"video_id\" class=\"video-id\" type=\"hidden\" value=\"\" autocomplete=\"off\">\n<div
+        class=\"video\">Video</div>\n<div class=\"agenda\">Agenda</div>\n</form>\n</div>\n<div
+        id=\"dialog-yesno\" style=\"display: none;\">\nYes or no?\n</div>\n<div id=\"dialog-okcancel\"
+        style=\"display: none;\">\n</div>\n<div id=\"dialog-vote\" style=\"display:
+        none;\">\n<div class=\"title\">Motion</div>\n<div class=\"motion\"></div>\n</div>\n<div
+        id=\"ajax-running\" style=\"position: absolute; top: 0px; left: 0px; display:
+        none;\"><img alt=\"loading data icon\" src=\"//cdn.boarddocs.com/static/images/ajax/ajax-running.gif\"></div>\n<div
+        id=\"alert-box\"></div>\n<div aria-hidden=\"true\" id=\"debug-window\" style=\"display:
+        none;\">\n<i id=\"close-debug\" class=\"fa fa-times\" ></i>\n<div style=\"margin-bottom:
+        10px; font-size: 14px;\">Information <img alt=\"refresh data icon\" id=\"refresh-info-box\"
+        style=\"cursor: pointer;\" src=\"//cdn.boarddocs.com/static/famfamfam/arrow_rotate_clockwise.png\"></div>\n<table
+        border=\"0\">\n<tr><td valign=\"top\">Browser:</td><td nowrap valign=\"top\"
+        id=\"display-browser\"></td></tr>\n<tr><td valign=\"top\">Browser Version:</td><td
+        nowrap valign=\"top\" id=\"display-browser-version\"></td></tr>\n<tr><td valign=\"top\">Server:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"info-server\" value=\"CN=Diligent-Secaucus6/O=Emgrp\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Username:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"info-username\" value=\"Anonymous\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\" colspan=\"2\"><hr></td></tr>\n<tr><td valign=\"top\">Meeting:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"current-meeting\" value=\"\" autocomplete=\"off\" /></td></tr>\n<tr><td
+        valign=\"top\">Meeting Status:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-meeting-status\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">New Meeting:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"new-current-meeting\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Agenda Item:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-agenda-item\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Committee:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-committee\" name=\"current_committee\"
+        value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td valign=\"top\">Voting
+        Item:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\"
+        type=\"text\" id=\"current-voting-item\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Policy Item:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-policy-item\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Policy Book:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-policy-book\" value=\"Policy Manual\"
+        autocomplete=\"off\"/></td></tr>\n<tr><td valign=\"top\">Policy Status:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"current-policy-status\" value=\"\" autocomplete=\"off\" /></td></tr>\n<tr><td
+        valign=\"top\">Library Item:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-library-item\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Library Type:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"current-library-type\" value=\"\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\" colspan=\"2\"><hr></td></tr>\n<tr><td valign=\"top\">Roles:</td><td
+        nowrap valign=\"top\" id=\"info-roles\"></td></tr>\n<tr><td valign=\"top\">Super:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"is-super\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Publisher:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-publisher\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Publisher Admin:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-publisher-admin\" value=\"false\"autocomplete=\"off\"
+        /></td></tr>\n<tr><td valign=\"top\">Admin:</td><td nowrap valign=\"top\"><input
+        aria-hidden=\"true\" aria-label=\"x\" type=\"text\" id=\"is-admin\" value=\"false\"
+        autocomplete=\"off\"/></td></tr>\n<tr><td valign=\"top\">AdminExec:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"is-admin-exec\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Executive:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-executive\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Voting:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-voting\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Policy Pub:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-policy-publisher\" value=\"false\"
+        autocomplete=\"off\" /></td></tr>\n<tr><td valign=\"top\">Library Pub:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"is-library-publisher\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Library Admin:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-library-admin\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Library Exec:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-library-executive\" value=\"false\"
+        autocomplete=\"off\"/></td></tr>\n<tr><td valign=\"top\">Anonymous:</td><td
+        nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        id=\"is-anonymous\" value=\"true\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Support:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\"
+        aria-label=\"x\" type=\"text\" id=\"is-support\" value=\"false\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\" colspan=\"2\"><hr></td></tr>\n<tr><td valign=\"top\">Meeting
+        Lists:</td><td nowrap valign=\"top\"><input aria-hidden=\"true\" aria-label=\"x\"
+        type=\"text\" id=\"is-meeting-lists-enabled\" value=\"true\" autocomplete=\"off\"/></td></tr>\n<tr><td
+        valign=\"top\">Response:</td><td nowrap valign=\"top\"><div id=\"ajax-log\"
+        style=\"max-height: 200px; overflow: auto;\"></div></td></tr>\n</table>\n</div>\n<!--
+        HEADER -->\n<nav id=\"header\" class=\"navbar navbar-expand-lg navbar-drak
+        bg-drak\">\n<div id=\"SiteTitle1\" class=\"line1 navbar-left introedit__sitetitle1\">State
+        College Area School District</div>\n<div id=\"SiteTitle2\" class=\"line2 navbar-left
+        introedit__sitetitle2\">240 Villa Crest Drive, State College, PA 16801 | (814)
+        231-1016</div>\n<ul id=\"navbarMainSection1\" class=\"navbar-nav ml-auto\">\n<li><a
+        class=\"dropdown-item-new\" aria-label=\"Home\" href=\"http://www.scasd.org\"
+        id=\"btn-home\"  style=\"outline:none;\"><i class=\"fa fa-home fa-lg\"></i></a></li>\n<li><a
+        \ class=\"dropdown-item-new\" role=\"button\" aria-label=\"Search\" href=\"#\"
+        id=\"btn-search\"  style=\"outline:none;\"><i class=\"fa fa-search fa-lg\"></i></a></li>\n<li
+        class=\"dropdown\">\n<a id=\"btn-user-menu\" aria-label=\"User Menu\" class=\"dropdown-toggle\"
+        data-toggle=\"dropdown\" href=\"#\"><i class=\"fa fa-user-o fa-lg\"></i><span
+        class=\"fa fa-caret-down\"></span></a>\n<ul class=\"dropdown-menu \">\n<li
+        ><a class=\"dropdown-item pull-left\" href=\"https://go.boarddocs.com/pa/stco/Board.nsf/Private?open&login\"
+        id=\"btn-login\" aria-label=\"Login\">Log In</a></li>\n</ul>\n      </li>\n\t<li
+        class=\"dropdown\">\n        <a id=\"btn-board-committe-menu\" aria-label=\"Board/Committee
+        Menu\" class=\"nav-link dropdown-toggle\" href=\"#\" data-toggle=\"dropdown\">\n
+        \       <span id=\"display-committee-name\"></span><i class=\"fa fa-university
+        fa-lg\"></i><span class=\"fa fa-caret-down\"></span></a> \n        <ul  id
+        =\"sumukh\" class=\"dropdown-menu\">\n<li ><a href=\"#\" class=\"dropdown-item
+        committee-trigger\" committeeid=\"A8EGER437CB9\" aria-label=\"Board of School
+        Directors\">Board of School Directors</a></li>\n</ul>\n      </li>\n<li id=\"wrap-change-vote\"><a
+        href=\"#\" id=\"btn-change-vote\"><i class=\"fa fa-hand-paper-o fa-lg\"></i>
+        Change Vote</a></li>\n</ul>\n<div id=\"navigation\">\n<a href=\"http://www.scasd.org\"
+        id=\"btn-home-nav\">Home</a>\n</div>\n</nav>\n<div id=\"bd\">\n<header>\n<div
+        id=\"tab-left-nav\">\n<div id=\"subheader\" class=\"ui-helper-clearfix\" role=\"banner\">\n<div
+        class=\"wrap-site-logo\"><img alt=\"State College Area School District Logo\"
+        id=\"site-logo\" src=\"/pa/stco/Board.nsf/files/SITE_LOGO/$file/SCASDfinal.png\"></div>\n<ul
+        class=\"dropdown\" id=\"nav-header\">\n<li id=\"li-welcome\" class=\"droppdown\"><a
+        href=\"#tab-welcome\"><span>Featured</span></a></li>\n<li id=\"li-meetings\"
+        class=\"droppdown\" aria-expanded=\"false\"><a  tabindex=\"1\" href=\"#tab-meetings\"><span
+        id=\"mainMeetings\">Meetings <i id=\"arrowkey\" class=\"fa fa-chevron-down\"
+        aria-label=\"Meetings Dropdown Menu\"></i></span></a>\n<div class=\"tab-menu\">\n<img
+        alt=\"policy dropdown-menu\" src=\"//cdn.boarddocs.com/static/famfamfam/bullet_arrow_down.png\">\n<div
+        id=\"meetings-menu-items\" class=\"tab-menuitems\">\n<div tab=\"meetings\"
+        aria-label=\"Meetings  : Active\" key=\"active\" class=\"tab-menuitem\" id=\"menuitem-meetings-active\">Active</div>\n</div>\n</div>\n</li>\n<li
+        id=\"li-agenda\" class=\"droppdown\" style=\"display: none;\"><a href=\"#tab-agenda\"><span>Agenda</span></a></li>\n\n\t\t\t\t<li
+        id=\"li-policies\" class=\"droppdown\" aria-expanded=\"false\">\n\t\t\t\t\t\t<a
+        tabindex=\"1\" href=\"#tab-policies\">\n\t\t\t\t\t\t\t\t<span id=\"mainPolicy\">Policies\t\n\t\t\t\t\t\t\t\t\t<i
+        id=\"dropdownarrowpolicies\" class=\"fa fa-chevron-down\" aria-label=\"Policy
+        Dropdown Menu\"></i>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\n<div
+        class=\"tab-menu\">\n<img alt=\"policy dropdown-menu\" src=\"//cdn.boarddocs.com/static/famfamfam/bullet_arrow_down.png\">\n<div
+        id=\"policies-menu-items\" class=\"tab-menuitems\">\n<div tab=\"policies\"
+        aria-label=\"Policies  : Active\" key=\"active\" class=\"tab-menuitem\" id=\"menuitem-policies-active\">Active</div>\n\n<script>policyDraft=\"No
+        Draft\"</script>\n</div>\n</div>\n</li>\n<li id=\"li-library\"  class=\"droppdown\"
+        ><a href=\"#tab-library\"><span id=\"mainLibrary\">Library <i id=\"library-menu-arrow\"
+        class=\"fa fa-chevron-down\" role=\"option\" aria-label=\"Library Dropdown
+        Menu\"></i></span></a>\n<div class=\"tab-menu\">\n<img alt=\"library drop
+        down menu\" src=\"//cdn.boarddocs.com/static/famfamfam/bullet_arrow_down.png\">\n<div
+        id=\"library-menu-items\" class=\"tab-menuitems\">\n<div id=\"library-general\"
+        tab=\"library\" aria-label=\"Library  : General\" key=\"general\" class=\"tab-menuitem\">General</div>\n<div
+        id=\"library-events\" tab=\"library\" aria-label=\"Library  : Events\" key=\"event\"
+        class=\"tab-menuitem\">Events</div>\n<div id=\"library-sgoals\" tab=\"library\"
+        aria-label=\"Library  : Strategic Goals\" key=\"goal\" class=\"tab-menuitem\">Strategic
+        Goals</div>\n<div id=\"library-bd-members\" tab=\"library\" aria-label=\"Library
+        \ : Board Members\" key=\"board\" class=\"tab-menuitem\"><h2>Board Members</h2></div>\n</div>\n</div>\n</li>\n<li
+        id=\"li-search\" style=\"display: none;\"><a href=\"#tab-search\"><span>Search</span></a></li>\n</ul>\n</div>\n<div
+        id=\"tab-welcome\" class=\"tab-content\">\n<div id=\"wrap-packet\"><div id=\"packet-accordion\"
+        data-columns class=\"pane-wrap\"></div></div>\n</div>\n<div id=\"tab-meetings\"
+        class=\"tab-content XXXui-helper-clearfix\">\n<div class=\"tab-title\">\n<span
+        id=\"meeting-tab-title-prefix\"></span>\n<div id=\"committee-select\"><select
+        aria-hidden=\"true\" aria-label=\"Committee Selector\" name=\"committeeid\"
+        class=\"select ui-widget-content ui-corner-all\" autocomplete=\"off\"><option
+        value=\"A8EGER437CB9\">Board of School Directors</option></select></div>\n</div>\n<div
+        class=\"XXcontainer-fluid meetingContent\">\n<div class=\"tab-row\">\n<div
+        class=\"pane-navigation\">\n<div id=\"wrap-meetings\" style=\"display: none;\">\n<div
+        \ class=\"search-box not-policy-console\">\n<div id=\"Search_Meetings\"  class=\"search-buttons\"
+        tabindex=\"0\">\n<a class=\"search lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a
+        class=\"clear lefMenu\"><i   class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input
+        id=\"Search-Meetings\"  aria-label=\"Search Meetings\" class=\"search-input\"
+        type=\"text\" placeholder=\"Search Meetings\"autocomplete=\"off\">\n<div class=\"search-results
+        pane-wrap\">\n</div>\n</div>\n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"meetings\" class=\"pane-wrap\"></div>\n</div>\n<div id=\"wrap-drafts\"
+        style=\"display: none;\">\n<div  class=\"search-box not-policy-console\">\n<div
+        id=\"Search_Drafts\"  class=\"search-buttons\" tabindex=\"0\">\n<a class=\"search
+        lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a class=\"clear lefMenu\"><i
+        \  class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input id=\"Search-Drafts\"
+        \ aria-label=\"Search Drafts\" class=\"search-input\" type=\"text\" placeholder=\"Search
+        Drafts\"autocomplete=\"off\">\n<div class=\"search-results pane-wrap\">\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"drafts\" class=\"pane-wrap\"></div>\n</div>\n<div id=\"wrap-templates\"
+        style=\"display: none;\">\n<div  class=\"search-box not-policy-console\">\n<div
+        id=\"Search_Templates\"  class=\"search-buttons\" tabindex=\"0\">\n<a class=\"search
+        lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a class=\"clear lefMenu\"><i
+        \  class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input id=\"Search-Templates\"
+        \ aria-label=\"Search Templates\" class=\"search-input\" type=\"text\" placeholder=\"Search
+        Templates\"autocomplete=\"off\">\n<div class=\"search-results pane-wrap\">\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"templates\" class=\"pane-wrap\"></div>\n</div>\n<div id=\"wrap-my-items\"
+        style=\"display: none;\">\n<div  class=\"search-box not-policy-console\">\n<div
+        id=\"Search_My_Agenda_Items\"  class=\"search-buttons\" tabindex=\"0\">\n<a
+        class=\"search lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a class=\"clear
+        lefMenu\"><i   class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input id=\"Search-My-Agenda-Items\"
+        \ aria-label=\"Search My Agenda Items\" class=\"search-input\" type=\"text\"
+        placeholder=\"Search My Agenda Items\"autocomplete=\"off\">\n<div class=\"search-results
+        pane-wrap\">\n</div>\n</div>\n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        key=\"my-items\" id=\"my-agenda-items\" class=\"pane-wrap\"></div>\n</div>\n</div>\n<div
+        class=\"pane-content\" id=\"pane-content-meetings\">\n<div id=\"meeting-content\">\n</div>\n</div>\n</div>\n</div>\n</div>\n<div
+        id=\"tab-policies\" class=\"tab-content\">\n<div class=\"tab-title\">Policies</div>\n<div
+        class=\"XXcontainer-fluid policyContent\">\n<div class=\"tab-row\">\n<div
+        class=\"pane-navigation\">\n<div id=\"wrap-policies\">\n<div  class=\"search-box
+        not-policy-console\">\n<div id=\"Search_Policies\"  class=\"search-buttons\"
+        tabindex=\"0\">\n<a class=\"search lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a
+        class=\"clear lefMenu\"><i   class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input
+        id=\"Search-Policies\"  aria-label=\"Search Policies\" class=\"search-input\"
+        type=\"text\" placeholder=\"Search Policies\"autocomplete=\"off\">\n<div class=\"search-results
+        pane-wrap\">\n</div>\n</div>\n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"policies\" class=\"pane-wrap\"></div>\n</div>\n</div>\n<div class=\"pane-content\">\n<div
+        id=\"policy-content\">\n</div>\n</div>\n</div>\n</div>\n</div>\n<div id=\"tab-library\"
+        class=\"tab-content XXXui-helper-clearfix\">\n<div class=\"tab-title\">Library</div>\n<div
+        class=\"XXcontainer-fluid libraryContent\">\n<div class=\"tab-row\">\n<div
+        class=\"pane-navigation\">\n<div id=\"wrap-library\">\n<div  class=\"search-box
+        not-policy-console\">\n<div id=\"Search_Library\"  class=\"search-buttons\"
+        tabindex=\"0\">\n<a class=\"search lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a
+        class=\"clear lefMenu\"><i   class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input
+        id=\"Search-Library\"  aria-label=\"Search Library\" class=\"search-input\"
+        type=\"text\" placeholder=\"Search Library\"autocomplete=\"off\">\n<div class=\"search-results
+        pane-wrap\">\n</div>\n</div>\n<script type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"library-categories\"></div>\n<div id=\"library\" class=\"pane-wrap\"></div>\n</div>\n</div>\n<div
+        class=\"pane-content\">\n<div id=\"library-content\">\n</div>\n</div>\n</div>\n</div>\n</div>\n<div
+        id=\"tab-agenda\" class=\"tab-content XXXui-helper-clearfix\">\n<div class=\"tab-title\">Agenda</div>\n<div
+        class=\"XXcontainer-fluid AgendaContent\">\n<div class=\"tab-row\">\n<div
+        class=\"pane-navigation\">\n<div  class=\"search-box not-policy-console\">\n<div
+        id=\"Search_Agenda\"  class=\"search-buttons\" tabindex=\"0\">\n<a class=\"search
+        lefMenu\"><i   class=\"fa fa-search fa-lg\"></i></a>\n<a class=\"clear lefMenu\"><i
+        \  class=\"fa fa-times fa-lg\" ></i></a>\n</div>\n<input id=\"Search-Agenda\"
+        \ aria-label=\"Search Agenda\" class=\"search-input\" type=\"text\" placeholder=\"Search
+        Agenda\"autocomplete=\"off\">\n<div class=\"search-results pane-wrap\">\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/focus.js\"></script>\n<div
+        id=\"wrap-agenda\" class=\"XXXXXXui-corner-bottom XXXXXXui-widget-content\">\n
+        \  <div id=\"agenda\" class=\"pane-wrap\"></div>\n</div>\n</div>\n<div class=\"pane-content\">\n<div
+        id=\"agenda-content\">\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</header>\n<div
+        style=\"clear: both;\"></div>\n</div>\n<footer role=\"contentinfo\" id=\"ft\">\n<!--
+        FOOTER -->\n<div id=\"copyright\">\n<div class=\"pull-right\"><a target=_blank
+        href=\"http://www.boarddocs.com\" >BoardDocs</a>&reg; A Diligent Brand, <span
+        style=\"cursor: pointer;\" id=\"debugclick\">&copy;</span> 2002-2025</div>\n</div>\n</footer>\n<div
+        id=\"search\" aria-modal=\"true\">\n<form id=\"search-form\">\n<input aria-label=\"Site
+        Search\" id=\"searchstring\" name=\"searchstring\" placeholder=\"Search...\"
+        autocomplete=\"off\">\n<input aria-hidden=\"true\" aria-label=\"x\" type=\"text\"
+        style=\"display: none;\" disabled=\"disabled\" size=\"1\" autocomplete=\"off\"/>\n<div
+        tabindex=\"0\" id=\"hitcount\"></div>\n<div id=\"loadingMessage\"></div>\n<input
+        aria-hidden=\"true\" aria-label=\"x\" type=\"text\" style=\"display: none;\"
+        disabled=\"disabled\" size=\"1\" autocomplete=\"off\"/>\n<div id=\"search-filter-buttons\">\n<button
+        type=\"button\" name=\"meetings\" class=\"btn btn-sm btn-default\">Meetings</button>\n<input
+        aria-label=\"Search Meetings\" class=\"search-filter\" name=\"meetings\" type=\"checkbox\"
+        value=\"1\" checked />\n<button type=\"button\" name=\"policies\" class=\"btn
+        btn-sm btn-default\">Policies</button>\n<input aria-label=\"Search Policies\"
+        class=\"search-filter\" name=\"policies\" type=\"checkbox\" value=\"1\" checked
+        />\n<button type=\"button\" name=\"library\" class=\"btn btn-sm btn-default\">Library</button>\n<input
+        aria-label=\"Search Library Items\" class=\"search-filter\" name=\"library\"
+        type=\"checkbox\" value=\"1\" checked />\n<button type=\"button\" name=\"minutes\"
+        class=\"btn btn-sm btn-default\">Minutes</button>\n<input aria-label=\"Search
+        Minutes\" class=\"search-filter\" name=\"minutes\" type=\"checkbox\" value=\"1\"
+        checked />\n<button type=\"button\" name=\"attachments\" class=\"btn btn-sm
+        btn-default\">Include Attachments</button>\n<input aria-label=\"Search Attachments\"
+        class=\"search-filter\" name=\"attachments\" type=\"checkbox\" value=\"1\"
+        checked />\n</div>\n</form>\n\n<div aria-label=\"Search result display\" class=\"modal
+        fade search-result-modal\" role=\"dialog\">\n  <div class=\"modal-dialog modal-lg\"
+        role=\"document\">\n    <div class=\"modal-content\">\n     <!--<div class=\"modal-header\">\n
+        \       <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span
+        aria-hidden=\"true\">&times;</span></button>\n\t\t<section class=\"modal-title\"></section>\n
+        \     </div>-->\n      <div class=\"modal-body\">\n\t\t\n       <div id=\"search-result-display\"></div>\n
+        \     </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\"
+        class=\"btn btn-default takeme\">Navigate There</button>\n        <button
+        type=\"button\" key=\"close\" class=\"btn btn-primary\" data-dismiss=\"modal\">Close</button>\n
+        \     </div>\n\n    </div>\n  </div>\n</div>\n\n\n\n\n\t\t<div id=\"meta-notice\">\n\t\t\t<section
+        class=\"title\">MetaSearch Notice</section>\n\t\t\t<p>MetaSearch is intended
+        for research, information and reference purposes only. Search results are
+        not intended as legal advice for you or your organization and are not a substitute
+        for obtaining legal advice from a qualified attorney in your jurisdiction.</p>\n\t\t\t<p>Using
+        our Services does not give you ownership of any intellectual property rights
+        in our Services or the content you may access. Search results from our Services
+        may contain copyrighted material and, if so, you may not use such content
+        unless you obtain permission from its owner or are otherwise permitted by
+        law. </p>\n\t\t\t<p>Our Services may display content that does not belong
+        to Emerald Data Solutions or its affiliates. This content is the sole responsibility
+        of the entity that makes it available.</p>\n\t\t</div>\t\n\t\n<div id=\"search-results\"
+        Xclass=\"pane-wrap\"></div>\n<i  id=\"search-close\" tabindex=\"0\" class=\"fa
+        fa-times fa-2x\" aria-label=\"Close Site Search\"></i>\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/main.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/downloadWord.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/searchFunctionality.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/DownloadManager.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/tab-nav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/agenda-nav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/agenda-content-nav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/meetings-content-nav.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/print-title.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/pendo-integration.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/video-modal-navigation.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/meetingButtonFocusHandler.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/ajax-accessibility-updates.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/removeDuplicatesFromXML.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/pa/stco/Board.nsf/javascript/seo-event-schema.js\"></script>\n</body>\n</html>\n"
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '36531'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 19 Mar 2025 12:56:29 GMT
+      Expires:
+      - Mon, 24 Mar 2025 23:59:59 GMT
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Lotus-Domino
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      X-origurl:
+      - /pa/stco/Board.nsf/Public
+    status:
+      code: 200
+      message: OK
+version: 1
