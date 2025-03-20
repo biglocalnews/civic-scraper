@@ -6,4 +6,5 @@
 :maxdepth: 4
 
 civic_scraper.platforms.civic_plus
+civic_scraper.platforms.boarddocs
 ```
