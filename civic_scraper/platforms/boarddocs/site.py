@@ -6,9 +6,12 @@ import requests
 from bs4 import BeautifulSoup
 from typing import List, Dict, Any, Optional
 from datetime import datetime
+import logging  # Import the logging module
 
 from civic_scraper.base.site import Site as BaseSite
 from civic_scraper.platforms.boarddocs.parser import BoardDocsParser
+from civic_scraper.base.asset import Asset, AssetCollection
+from civic_scraper import __version__
 
 
 class BoardDocsSite(BaseSite):
@@ -34,12 +37,12 @@ class BoardDocsSite(BaseSite):
         self.session = requests.Session()
         self.headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': 'civic-scraper/1.0'
+            'User-Agent': f'civic-scraper/{__version__}'
         }
         self.parser = BoardDocsParser()
 
         # Get the state and place from URL
-        url_pattern = re.compile(r'https://go\.boarddocs\.com/([^/]+)/([^/]+)/Board\.nsf')
+        url_pattern = re.compile(r'https://go\.boarddocs\.com/([^/]+)/([^/]+)/(?:Board|board)\.nsf')
         match = url_pattern.match(self.url)
 
         if match:
@@ -48,6 +51,9 @@ class BoardDocsSite(BaseSite):
         else:
             self.state_or_province = ""
             self.place = ""
+
+        # Initialize logger
+        self.logger = logging.getLogger(__name__)
 
         # Auto-detect committee_id if not provided
         if not self.committee_id:
@@ -75,12 +81,12 @@ class BoardDocsSite(BaseSite):
         if not url.startswith(('http://', 'https://')):
             url = 'https://' + url
 
-        # Make sure URL ends with 'Board.nsf'
-        if not url.endswith('Board.nsf'):
-            parts = url.split('Board.nsf')
+        # Make sure URL ends with 'Board.nsf' or 'board.nsf'
+        if not url.endswith(('Board.nsf', 'board.nsf')):
+            parts = re.split(r'(Board|board)\.nsf', url, re.IGNORECASE)
             if len(parts) > 1:
-                # URL has 'Board.nsf' but something after it
-                url = parts[0] + 'Board.nsf'
+                # URL has 'Board.nsf' or 'board.nsf' but something after it
+                url = parts[0] + parts[1] + '.nsf'
 
         return url
 
@@ -91,8 +97,16 @@ class BoardDocsSite(BaseSite):
         Returns:
             The extracted committee_id or None if extraction fails
         """
-        # Construct the public BoardDocs page URL from the API base URL
-        url = self.url.split("/Board.nsf")[0] + "/Board.nsf/Public#"
+        url = self.url
+        if url.lower().endswith('/public'):
+            # Handle URLs ending with /Public
+            url_parts = url.split('/')
+            base_url = '/'.join(url_parts[:-1])
+            url = f"{base_url}#"
+        else:
+            # Original logic for URLs ending with Board.nsf
+            url = re.split(r'/(Board|board)\.nsf', self.url, flags=re.IGNORECASE)[0] + "/Board.nsf/Public#"
+
         committee_id = None
 
         try:
@@ -151,33 +165,59 @@ class BoardDocsSite(BaseSite):
 
     def _get_meetings_list(self, committee_id: str) -> List[Dict[str, Any]]:
         """
-        Fetch list of meetings for the specified committee.
+        Fetch list of meetings for the specified committee and extract meeting URLs from HTML.
 
         Args:
             committee_id: ID of the committee to fetch meetings for
 
         Returns:
-            List of meeting data dictionaries
+            List of meeting data dictionaries, each with a 'meeting_url' if found.
         """
         endpoint = f"{self.url}/BD-GetMeetingsList?open"
         data = {'current_committee_id': committee_id}
+        meetings_data = []
+        meeting_urls = {}
 
         try:
             response = self.session.post(endpoint, headers=self.headers, data=data)
             response.raise_for_status()
-            return response.json()
+            meetings_data = response.json()
+
+            # Fetch the initial public board page HTML to extract meeting URLs
+            public_board_url = re.split(r'/(Board|board)\.nsf', self.url, flags=re.IGNORECASE)[0] + "/Board.nsf/Public#"
+            if self.url.lower().endswith('/public'):
+                url_parts = self.url.split('/')
+                public_board_url = '/'.join(url_parts[:-1]) + "#"
+
+            response_html = self.session.get(public_board_url)
+            response_html.raise_for_status()
+            soup = BeautifulSoup(response_html.text, 'html.parser')
+
+            # Find meeting links and store their URLs
+            for link in soup.find_all('a', class_='item'):  # Changed class to 'item' - inspect your HTML
+                meeting_href = link.get('href')
+                title_span = link.find('span', class_='title')
+                if meeting_href and title_span:
+                    meeting_title = title_span.text.strip()
+                    # Try to associate the URL with a meeting in the JSON data
+                    for meeting in meetings_data:
+                        if meeting['name'] in meeting_title and meeting['numberdate'] in meeting_title:
+                            meeting['meeting_url'] = f"https://go.boarddocs.com{meeting_href}"
+                            break
+
         except Exception as e:
             self.logger.error(f"Error fetching meetings: {e}")
-            return []
+
+        return meetings_data
 
     def _is_in_date_range(self, date_str: str, start_date: Optional[str], end_date: Optional[str]) -> bool:
         """
         Check if a date is within the specified range.
 
         Args:
-            date_str: Date string in YYYYMMDD format
-            start_date: Start date string in YYYY-MM-DD format (inclusive)
-            end_date: End date string in YYYY-MM-DD format (inclusive)
+            date_str: Date string in %Y%m%d format
+            start_date: Start date string in %Y-%m-%d format (inclusive)
+            end_date: End date string in %Y-%m-%d format (inclusive)
 
         Returns:
             True if date is within range or no range specified, False otherwise
@@ -360,6 +400,21 @@ class BoardDocsSite(BaseSite):
             'raw_minutes': minutes_html
         }
 
+    # Inside the BoardDocsSite class in boarddocs_site.py
+
+    def get_meeting_meta_link(self, meeting_id: str) -> str:
+        """
+        Constructs the meta link using the meeting ID.
+
+        Args:
+            meeting_id: Unique identifier of the meeting.
+
+        Returns:
+            The meta link.
+        """
+        meta_link = f"https://go.boarddocs.com/{self.state_or_province}/{self.place}/Board.nsf/goto?open&id={meeting_id}"
+        return meta_link
+
     def get_committees(self) -> List[Dict[str, Any]]:
         """
         Get list of available committees from the BoardDocs site.
@@ -389,3 +444,49 @@ class BoardDocsSite(BaseSite):
             self.logger.error(f"Error fetching committees: {e}")
 
         return []
+
+    def scrape(self, start_date: Optional[str] = None, end_date: Optional[str] = None) -> AssetCollection:
+        """
+        Scrape BoardDocs site for meeting metadata.
+
+        Args:
+            start_date (str, optional): Start date for filtering meetings (YYYY-MM-DD). Defaults to None.
+            end_date (str, optional): End date for filtering meetings (YYYY-MM-DD). Defaults to None.
+
+        Returns:
+            AssetCollection: A collection of Asset instances representing the scraped meetings.
+        """
+        assets = AssetCollection()
+        all_meetings = self.get_meetings(start_date=start_date, end_date=end_date)
+        scraped_by = f"civic-scraper_{__version__}"
+
+        for meeting in all_meetings:
+            meeting_id_unique = meeting.get('unique')
+            meeting_name = meeting.get('name')
+            meeting_date_str = meeting.get('date_formatted')
+            place = self.place
+            state_or_province = self.state_or_province
+
+            try:
+                meeting_date = datetime.strptime(meeting_date_str, "%B %d, %Y") if meeting_date_str else None
+            except ValueError:
+                meeting_date = None
+
+            if meeting_id_unique:
+                meta_link = self.get_meeting_meta_link(meeting_id_unique)
+                asset = Asset(
+                    url=meta_link,
+                    asset_name=meeting_name,
+                    committee_name=None,  # BoardDocs doesn't directly provide committee name in this context
+                    place=place,
+                    state_or_province=state_or_province,
+                    asset_type="meeting_meta_link",
+                    meeting_date=meeting_date.isoformat() if meeting_date else None,
+                    meeting_id=f"boarddocs-{place}-{meeting_id_unique}",
+                    scraped_by=scraped_by,
+                    content_type="text/url",
+                    content_length=None
+                )
+                assets.append(asset)
+
+        return assets
