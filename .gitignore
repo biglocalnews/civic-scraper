@@ -9,3 +9,6 @@ dist/
 docs/_build/
 _data/
 .vscode
+.eggs
+civic-scraper-env
+
