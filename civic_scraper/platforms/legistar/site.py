@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 import requests
-from legistar.events import LegistarEventsScraper
+from .events import LegistarEventsScraper # Use local import to avoid stale dependencies
 
 import civic_scraper
 from civic_scraper import base
