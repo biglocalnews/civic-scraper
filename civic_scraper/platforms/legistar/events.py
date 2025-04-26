@@ -97,10 +97,11 @@ class LegistarEventsScraper(LegistarScraper):
                     if isinstance(self.event_info_key, list) and len(self.event_info_key) > 1:
                         for details_key in self.event_info_key:
                             if details_key not in event:
-                                print(f"Key '{details_key}' not found in event")
+                                #print(f"Key '{details_key}' not found in event")
+                                pass
                             else:
                                 self.event_info_key = details_key
-                                print(f"Using key '{details_key}' found in event")
+                                #print(f"Using key '{details_key}' found in event")
                                 break
                     elif self.event_info_key not in event:
                         print("No valid meeting_details_info key found in event")
