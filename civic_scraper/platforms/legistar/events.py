@@ -92,12 +92,18 @@ class LegistarEventsScraper(LegistarScraper):
             for page in self.eventPages(year):
                 events_table = page.xpath("//div[@id='ctl00_ContentPlaceHolder1_MultiPageCalendar']//table[@class='rgMasterTable']")[0]
                 for event, _, _ in self.parseDataTable(events_table):
-                    # Removing problematic iCalendar scraper
-                    # ical_url = event['iCalendar']['url']
-                    # if ical_url in scraped_events:
-                    #     continue
-                    # else:
-                    #     scraped_events.append(ical_url)
+                    
+                    # Check for the correct event_info_key to prevent failure with different table structures
+                    if isinstance(self.event_info_key, list) and len(self.event_info_key) > 1:
+                        for details_key in self.event_info_key:
+                            if details_key not in event:
+                                print(f"Key '{details_key}' not found in event")
+                            else:
+                                self.event_info_key = details_key
+                                print(f"Using key '{details_key}' found in event")
+                                break
+                    elif self.event_info_key not in event:
+                        print("No valid meeting_details_info key found in event")
 
                     if follow_links and type(event[self.event_info_key]) == dict:
                         agenda = self.agenda(event[self.event_info_key]['url'])
@@ -154,10 +160,6 @@ class LegistarEventsScraper(LegistarScraper):
                               call['Person Name']['label']))
 
         return call_list
-
-    def ical(self, ical_text):
-        value = icalendar.Calendar.from_ical(ical_text)
-        return value
 
     def _parse_detail(self, key, field_1, field_2):
         if key == 'eComment':

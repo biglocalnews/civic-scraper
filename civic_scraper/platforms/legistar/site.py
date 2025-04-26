@@ -16,8 +16,10 @@ class Site(base.Site):
     def __init__(
         self,
         base_url,
+        # Establish default keys described in the Legistar data table
         event_info_keys={
-            "meeting_details_info": "Meeting Details",
+            "meeting_details_info": ["Meeting Details", "Agenda Materials"],
+            #"meeting_details_info": "Meeting Details", # Also: "Agenda Materials"
             "meeting_date_info": "Meeting Date",
             "meeting_time_info": "Meeting Time",
             "meeting_location_info": "Meeting Location",
@@ -50,6 +52,7 @@ class Site(base.Site):
         Returns:
             AssetCollection: A sequence of Asset instances
         """
+
         # Use current day as default
         today = today_local_str()
         start_date = start_date or today
@@ -69,6 +72,7 @@ class Site(base.Site):
         start_year = int(start_date[:4])
         events = [event[0] for event in webscraper.events(since=start_year)]
         for event in events:
+
             meeting_meta = self._extract_meeting_meta(event, webscraper)
             for asset_type in asset_list:
                 # Skip if a dictionary containing 'url' key is not present for the given asset type
@@ -97,6 +101,10 @@ class Site(base.Site):
         asset.content_length = headers["content-length"]
 
     def _create_asset(self, event, meeting_meta, asset_type):
+        # Check if the asset type is available
+        if asset_type not in event:
+            raise TypeError(f"Asset type '{asset_type}' not found in event data.")
+
         name_bits = [self._event_name(event)]
         meeting_id = meeting_meta["meeting_id"]
         if meeting_id:
@@ -114,7 +122,10 @@ class Site(base.Site):
         return Asset(**kwargs)
 
     def _extract_meeting_meta(self, event, scraper):
-        detail_info = event[self.event_info_keys["meeting_details_info"]]
+
+        # Use the appropriate event_info_key based on the table structure
+        #detail_info = event[self.event_info_keys["meeting_details_info"]]
+        detail_info = event[scraper.event_info_key]
         date_info = event[self.event_info_keys["meeting_date_info"]]
         time_info = event[self.event_info_keys["meeting_time_info"]] or None
         time_format = None
@@ -156,6 +167,9 @@ class Site(base.Site):
     def _event_name(self, event):
         try:
             return event["Name"]["label"]
+        except KeyError:
+            # Fallback to a different key if "Name" is not present
+            return event["Meeting Body"]
         except (KeyError, TypeError):
             return event["Name"]
 
