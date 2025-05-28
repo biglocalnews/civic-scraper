@@ -1,313 +1,375 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-import json
-from datetime import datetime
-from urllib.parse import urljoin, urlparse
+# import json # Not strictly needed in base after refactor, but type scrapers might use it.
+from datetime import datetime, time as dt_time # Added dt_time for meeting_time
+from urllib.parse import urljoin, urlparse, quote_plus # Added quote_plus for filename sanitization
 import os
 from abc import ABC, abstractmethod
 import logging
 
-# Configure logging - Basic configuration, can be overridden by the main script
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Attempt to import from civic_scraper, with placeholders if not found (for standalone testing)
+try:
+    from civic_scraper.base.asset import Asset, AssetCollection
+    from civic_scraper.base.cache import Cache # Actual Cache class
+    # Assuming civic_scraper.__version__ might be available
+    try:
+        from civic_scraper import __version__ as CIVIC_SCRAPER_VERSION
+    except ImportError:
+        CIVIC_SCRAPER_VERSION = "unknown"
+except ImportError:
+    logger_init = logging.getLogger(__name__) # Temp logger for this block
+    logger_init.warning(
+        "Could not import Asset, AssetCollection, or Cache from civic_scraper. "
+        "Using placeholder definitions. Ensure civic_scraper is installed and in PYTHONPATH for full functionality."
+    )
+    from dataclasses import dataclass # Keep dataclass for placeholder Asset
+    @dataclass
+    class Asset: # Placeholder matching the fields from user's asset.py
+        url: str
+        asset_name: str = None # Title of an asset. Ex:  City Council Regular Meeting
+        committee_name: str = None
+        place: str = None # Lowercase with spaces and punctuation removed. Ex: menlopark
+        place_name: str = None # Human-readable place name. Ex: Menlo Park
+        state_or_province: str = None
+        asset_type: str = None # Ex: agenda
+        meeting_date: datetime = None # Date of meeting
+        meeting_time: dt_time = None # Time of meeting
+        meeting_id: str = None # Unique meeting ID
+        scraped_by: str = None
+        content_type: str = None
+        content_length: str = None
+
+    class AssetCollection(list): # Placeholder now correctly inherits from list
+        def __init__(self, *args):
+            super().__init__(*args)
+        # No 'add' method here, use 'append' as it's a list
+
+    class Cache: # Placeholder reflecting the user-provided Cache structure
+        def __init__(self, path=None): 
+            self.path = path # In real Cache, _path_from_env or _path_default are used if path is None
+            logger_init.info(f"Placeholder Cache initialized with path: {self.path}")
+
+        def write(self, name, content): # Expects string content
+            out_path_str = name
+            if self.path: 
+                 out_path_str = os.path.join(self.path, name)
+            
+            out = Path(out_path_str) 
+            out.parent.mkdir(parents=True, exist_ok=True)
+            with open(out, "w", encoding='utf-8') as fh: 
+                fh.write(content)
+            logger_init.debug(f"Placeholder Cache: wrote to {str(out)}")
+            return str(out)
+        
+        @property
+        def artifacts_path(self):
+            if not self.path: return "placeholder_artifacts"
+            return str(Path(self.path).joinpath("artifacts"))
+
+
+    from pathlib import Path 
+    CIVIC_SCRAPER_VERSION = "placeholder_version"
+
+
 logger = logging.getLogger(__name__)
 
 class GranicusBaseScraper(ABC):
     """
     Abstract base class for scraping Granicus platforms.
     """
-    def __init__(self):
-        self.base_url = None # Will be set from the input URL
+    def __init__(self, cache: Cache | None = None):
+        self.base_url = None 
+        self.cache = cache
+
+    def _generate_cache_name_from_url(self, url: str) -> str:
+        """
+        Generates a filesystem-friendly name from a URL for caching.
+        """
+        parsed_url = urlparse(url)
+        name_parts = [parsed_url.netloc]
+        path_segments = [segment for segment in parsed_url.path.split('/') if segment]
+        name_parts.extend(path_segments)
+        
+        if parsed_url.query:
+            name_parts.append(parsed_url.query)
+            
+        base_name = "_".join(name_parts)
+        sanitized_name = re.sub(r'[^\w.\-_]', '_', base_name)
+        max_len = 100 
+        return sanitized_name[:max_len] + ".html"
 
     def _fetch_html(self, url: str) -> str | None:
         """
         Fetches HTML content from a specified URL.
-        Saves HTML to a local file for debugging if enabled.
+        If a Cache object with a 'write' method is provided, it saves the fetched HTML string.
         """
+        can_write_cache = self.cache and hasattr(self.cache, 'write')
+
+        if not self.cache:
+            logger.debug(f"No cache object provided to GranicusBaseScraper for URL: {url}.")
+        elif not can_write_cache:
+            logger.warning(
+                f"The provided Cache object (type: {type(self.cache)}) does not have the expected "
+                f"'write' method. Proceeding without writing to cache for this request: {url}."
+            )
+        
         try:
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
             }
             response = requests.get(url, headers=headers, timeout=20)
-            response.raise_for_status()  # Raises an HTTPError for bad responses (4XX or 5XX)
-            return response.text
+            response.raise_for_status()
+            
+            html_text = response.text 
+
+            if can_write_cache and html_text:
+                try:
+                    cache_file_name = self._generate_cache_name_from_url(url)
+                    artifact_cache_name = os.path.join("artifacts", cache_file_name) 
+                    
+                    logger.info(f"Writing fetched HTML for {url} to cache as: {artifact_cache_name}")
+                    self.cache.write(artifact_cache_name, html_text) 
+                except Exception as e:
+                    logger.error(f"Error writing HTML for {url} to cache: {e}")
+            
+            return html_text
         except requests.exceptions.RequestException as e:
             logger.error(f"Error fetching URL {url}: {e}")
             return None
 
-    def _make_absolute_url(self, link_url: str | None) -> str | None:
-        """
-        Ensures a URL is absolute.
-        """
-        if not link_url or not self.base_url:
-            return None
-        if link_url.startswith(('http://', 'https://')):
-            return link_url
-        return urljoin(self.base_url, link_url)
+    def _debug_save_html(self, url: str, html_content: str):
+        site_name_for_file = self._extract_site_name_internal(url) if self.base_url else "unknown_site"
+        debug_html_dir = "debug_html_direct_save" 
+        if not os.path.exists(debug_html_dir):
+            os.makedirs(debug_html_dir, exist_ok=True)
+        safe_site_name = re.sub(r'[^\w\-_\.]', '_', site_name_for_file)
+        filename = os.path.join(debug_html_dir, f"{safe_site_name}_raw_{self.__class__.__name__}_{datetime.now().strftime('%Y%m%d%H%M%S')}.html")
+        try:
+            with open(filename, "w", encoding="utf-8") as f:
+                f.write(html_content)
+            logger.info(f"Saved direct debug HTML to {filename}")
+        except IOError as e:
+            logger.error(f"Failed to save direct debug HTML: {e}")
 
-    def _extract_site_name(self, url: str) -> str:
-        """
-        Extracts the site name from the URL (e.g., "cityofbradenton" from "cityofbradenton.granicus.com").
-        """
+    def _make_absolute_url(self, link_url: str | None) -> str | None:
+        if not link_url or not self.base_url: 
+            return None
+        if isinstance(link_url, str) and link_url.startswith(('http://', 'https://')):
+            return link_url
+        try:
+            return urljoin(self.base_url, link_url)
+        except ValueError:
+            logger.warning(f"Could not make absolute URL from base '{self.base_url}' and link '{link_url}'")
+            return link_url
+
+    def _extract_site_name_internal(self, url: str) -> str:
         parsed_url = urlparse(url)
         domain_parts = parsed_url.netloc.split('.')
-        # More robust check for granicus domains like city.state.granicus.com or city.granicus.com
         if 'granicus' in domain_parts:
             try:
                 granicus_index = domain_parts.index('granicus')
                 if granicus_index > 0:
-                    return domain_parts[granicus_index -1] # Return the part before 'granicus'
-            except ValueError:
-                pass # 'granicus' not in domain_parts, should not happen if pre-checked
-        # Fallback for other structures or if the above fails
-        if len(domain_parts) > 1 and domain_parts[-2] == 'granicus' and domain_parts[-1] in ['com', 'org', 'us', 'gov', 'ca', 'gov.uk']:
+                    return domain_parts[granicus_index - 1]
+            except ValueError: pass
+        if len(domain_parts) > 1 and domain_parts[-2] == 'granicus' and \
+           domain_parts[-1] in ['com', 'org', 'us', 'gov', 'ca', 'gov.uk', 'net']:
             return domain_parts[0]
         return parsed_url.netloc.replace('.', '_')
 
-
-    def _normalize_meeting_id(self, name: str) -> str:
-        """
-        Normalizes a meeting name to create a meeting ID.
-        Example: "Regular City Commission Meeting" -> "Regular-City-Commission-Meeting"
-        """
+    def _normalize_meeting_id_component(self, name: str) -> str:
         if not name:
-            return "unknown-meeting"
+            return "unknown"
+        name = str(name) 
         name = re.sub(r'[^\w\s-]', '', name)  
         name = re.sub(r'\s+', '-', name.strip())
-        return name
+        return name.lower()
     
-    def _parse_date_time(self, date_str: str | None, time_str: str | None) -> tuple[str, str]:
-        """
-        Parses date and time strings and formats them.
-        Returns (formatted_date, formatted_time)
-        """
-        parsed_date_str = ""
-        parsed_time_str = "00:00:00" # Default time
+    def _parse_date_time_to_objects(self, date_str: str | None, time_str: str | None) -> tuple[datetime | None, dt_time | None]:
+        parsed_date_obj = None
+        parsed_time_obj = None
 
         if date_str:
             clean_date_str = date_str.replace('\xa0', ' ').strip()
-            clean_date_str = re.sub(r'\s*-\s*', ' ', clean_date_str) # Normalize dashes
-            clean_date_str = re.sub(r'\s+', ' ', clean_date_str)     # Normalize whitespace
+            clean_date_str = re.sub(r'\s*-\s*', ' ', clean_date_str) 
+            clean_date_str = re.sub(r'\s+', ' ', clean_date_str)     
             
-            # Attempt to extract time if it's embedded in the date string and time_str is not provided
-            if not time_str:
-                time_in_date_match = re.search(r'(\d{1,2}[:\.]\d{2}\s*(?:AM|PM|am|pm)?)', clean_date_str)
+            if not time_str: 
+                time_in_date_match = re.search(r'(\d{1,2}(?:[:\.]\d{2})?\s*(?:AM|PM|am|pm)?)', clean_date_str) 
                 if time_in_date_match:
                     time_str = time_in_date_match.group(1)
-                    # Remove the extracted time from the date string to avoid parsing issues
                     clean_date_str = clean_date_str.replace(time_in_date_match.group(1), '').strip()
             
             try:
-                # python-dateutil is highly recommended for robust date parsing
                 import dateutil.parser
-                # Ignore timezone information if present, parse as naive datetime
-                dt_obj = dateutil.parser.parse(clean_date_str, ignoretz=True)
-                parsed_date_str = dt_obj.strftime("%Y-%m-%d")
-            except (ValueError, ImportError, OverflowError): # Added OverflowError for very old dates
-                logger.debug(f"dateutil.parser failed for '{clean_date_str}', trying manual formats.")
-                # Fallback to manual parsing if dateutil fails or isn't available
-                # Common date formats observed on Granicus sites
+                parsed_date_obj = dateutil.parser.parse(clean_date_str, ignoretz=True).replace(hour=0, minute=0, second=0, microsecond=0)
+            except (ValueError, ImportError, OverflowError, TypeError):
+                logger.debug(f"dateutil.parser failed for date '{clean_date_str}', trying manual formats.")
                 date_formats_to_try = [
-                    "%B %d, %Y",        # January 01, 2023
-                    "%b %d, %Y",         # Jan 01, 2023
-                    "%m/%d/%Y",          # 01/01/2023
-                    "%Y-%m-%d",          # 2023-01-01
-                    "%A, %B %d, %Y",   # Tuesday, January 01, 2023
-                    "%b. %d, %Y",        # Jan. 01, 2023
-                    "%B %d %Y",          # January 1 2023 (no comma)
-                    "%b %d %Y",          # Jan 1 2023 (no comma)
-                    "%m-%d-%y",          # 01-01-23 (short year)
-                    "%m/%d/%y",          # 01/01/23 (short year)
+                    "%B %d, %Y", "%b %d, %Y", "%m/%d/%Y", "%Y-%m-%d",
+                    "%A, %B %d, %Y", "%b. %d, %Y", "%B %d %Y", "%b %d %Y",
+                    "%m-%d-%y", "%m/%d/%y"
                 ]
                 for fmt in date_formats_to_try:
                     try:
-                        dt_obj = datetime.strptime(clean_date_str, fmt)
-                        parsed_date_str = dt_obj.strftime("%Y-%m-%d")
+                        parsed_date_obj = datetime.strptime(clean_date_str, fmt).replace(hour=0, minute=0, second=0, microsecond=0)
                         break
                     except ValueError:
                         continue
             
-            if not parsed_date_str:
-                logger.warning(f"Could not parse date: '{date_str}' (cleaned: '{clean_date_str}')")
+            if not parsed_date_obj:
+                logger.warning(f"Could not parse date string: '{date_str}' (cleaned: '{clean_date_str}')")
+                return None, None 
 
         if time_str:
-            time_str_cleaned = time_str.replace('.', '').replace('\xa0', ' ').strip()
-            
+            time_str_cleaned = time_str.replace('.', ':').replace('\xa0', ' ').strip() 
             time_formats_to_try = [
-                "%I:%M %p", "%H:%M %p", "%I:%M%p", "%H:%M%p",  
-                "%H:%M:%S", "%H:%M",
-                "%I:%M %p", # For "1:00 PM"
-                "%I%M %p",  # For "100 PM" (less common but possible)
+                "%I:%M %p", "%H:%M", "%I:%M%p", "%H:%M%p", "%I %p", 
+                "%H:%M:%S", 
             ]
             for fmt in time_formats_to_try:
                 try:
-                    dt_obj = datetime.strptime(time_str_cleaned, fmt)
-                    parsed_time_str = dt_obj.strftime("%H:%M:%S")
+                    parsed_time_obj = datetime.strptime(time_str_cleaned.upper(), fmt).time() 
                     break
                 except ValueError:
                     continue
-                    
-            if parsed_time_str == "00:00:00" and time_str_cleaned: # If standard parsing failed but there was a time string
-                # More aggressive parsing for formats like "1 PM" or "1300"
-                time_match_aggressive = re.match(r'(\d{1,2})(?:[:\.]?(\d{2}))?\s*(AM|PM|am|pm)?', time_str_cleaned)
+            
+            if not parsed_time_obj and time_str_cleaned: 
+                time_match_aggressive = re.match(r'(\d{1,2})(?:[:\.]?(\d{2}))?\s*(AM|PM)?', time_str_cleaned, re.I)
                 if time_match_aggressive:
                     hour_str, minute_str, ampm_str = time_match_aggressive.groups()
                     hour = int(hour_str)
                     minute = int(minute_str) if minute_str else 0
-
                     if ampm_str:
                         ampm = ampm_str.lower()
-                        if ampm == 'pm' and hour < 12:
-                            hour += 12
-                        elif ampm == 'am' and hour == 12: # Midnight case
-                            hour = 0
-                    # Basic validation for 24-hour format without AM/PM
-                    elif hour_str and len(hour_str) == 4 and not minute_str and not ampm_str: # e.g. 1300
-                        try:
-                            hour = int(hour_str[0:2])
-                            minute = int(hour_str[2:4])
-                        except ValueError:
-                            logger.warning(f"Could not parse military time '{hour_str}'")
-
-
+                        if ampm == 'pm' and hour < 12: hour += 12
+                        elif ampm == 'am' and hour == 12: hour = 0 
+                    elif not ampm_str and len(hour_str) >= 3 and minute == 0 : 
+                         if hour > 23 : 
+                            try:
+                                temp_hour = int(hour_str[:-2])
+                                temp_minute = int(hour_str[-2:])
+                                if 0 <= temp_hour <= 23 and 0 <= temp_minute <= 59:
+                                    hour = temp_hour
+                                    minute = temp_minute
+                            except ValueError: pass
                     if 0 <= hour <= 23 and 0 <= minute <= 59:
-                        parsed_time_str = f"{hour:02d}:{minute:02d}:00"
-                    else:
-                        logger.warning(f"Aggressively parsed time '{time_str_cleaned}' resulted in invalid hour/minute. Using default.")
-                else:
-                    logger.warning(f"Could not parse time: '{time_str}', using default 00:00:00.")
+                        parsed_time_obj = dt_time(hour, minute)
+            
+            if not parsed_time_obj:
+                 logger.warning(f"Could not parse time string: '{time_str_cleaned}'. Defaulting time part if date is valid.")
+        return parsed_date_obj, parsed_time_obj
 
-        return parsed_date_str, parsed_time_str
+    def _transform_to_asset_collection(
+        self, 
+        extracted_items: list[dict], 
+        site_url: str, 
+        site_place: str | None, 
+        site_state: str | None, 
+        site_committee_name: str | None, 
+        site_timezone: str | None 
+    ) -> AssetCollection:
+        asset_collection = AssetCollection()
+        site_identifier = self._extract_site_name_internal(site_url) if not site_place else self._normalize_meeting_id_component(site_place)
 
-    def _get_state_by_site(self, site_name: str) -> str:
-        """
-        Placeholder for mapping site names to state codes.
-        This would require a comprehensive list or a more sophisticated lookup.
-        """
-        # This map should be expanded or managed externally for a real application
-        site_to_state_map = {
-            "sacramento": "CA",
-            "cityofbradenton": "FL",
-            "marysvilleca": "CA",
-            "coralsprings": "FL",
-            "sibfl": "FL",
-            "rocklin-ca": "CA", # Added from test cases
-            # Add more mappings as needed
-        }
-        return site_to_state_map.get(site_name.lower(), "")
-
-    def _transform_to_standard_format(self, extracted_items: list[dict], site_url: str, committee_name_input: str | None) -> list[dict]:
-        """
-        Transforms raw extracted data into the standardized JSON format.
-        """
-        standardized_meetings = []
-        site_name = self._extract_site_name(site_url)
-        
         for item in extracted_items:
-            meeting_name = item.get('name')
-            meeting_date_str, meeting_time_str = self._parse_date_time(item.get('date'), item.get('time'))
+            meeting_name_raw = item.get('name') 
+            raw_date_str = item.get('date')
+            raw_time_str = item.get('time')
 
-            if not meeting_name or not meeting_date_str: # Date must be successfully parsed
-                logger.warning(f"Skipping item due to missing name or unparsable/empty date: Name='{meeting_name}', Date='{item.get('date')}'")
+            meeting_date_obj, meeting_time_obj = self._parse_date_time_to_objects(raw_date_str, raw_time_str)
+
+            if not meeting_name_raw or not meeting_date_obj:
+                logger.warning(f"Skipping item due to missing name or unparsable date: Name='{meeting_name_raw}', RawDate='{raw_date_str}'")
                 continue
+            
+            final_meeting_datetime = meeting_date_obj
+            if meeting_time_obj: 
+                final_meeting_datetime = datetime.combine(meeting_date_obj, meeting_time_obj)
 
-            committee = committee_name_input if committee_name_input else item.get('committee', "Unknown Committee")
+            committee_for_asset = site_committee_name if site_committee_name else item.get('committee', "Unknown Committee")
+            
+            date_str_for_id = final_meeting_datetime.strftime("%Y-%m-%d")
+            meeting_id_source_component = self._normalize_meeting_id_component(item.get('meeting_id_source', ''))
+            
+            norm_committee = self._normalize_meeting_id_component(committee_for_asset)
+            norm_meeting_name = self._normalize_meeting_id_component(meeting_name_raw) 
 
-            # Create a more unique meeting ID
-            unique_id_str = f"{meeting_date_str}-{meeting_name}-{committee}-{item.get('meeting_id_source','')}"
-            meeting_id = self._normalize_meeting_id(unique_id_str)
-
-            standard_item = {
-                "asset_name": meeting_name,
-                "committee_name": committee,
-                "place": site_name,
-                "state_or_province": self._get_state_by_site(site_name),
-                "meeting_date": meeting_date_str,
-                "meeting_time": meeting_time_str,
-                "meeting_id": meeting_id,
-                "scraped_by": "civic-scraper", # As per civic-scraper standard
-                "content_type": "application/octet-stream", # Default, can be overridden
-                "agenda_url": self._make_absolute_url(item.get('agenda_url')),
-                "video_url": self._make_absolute_url(item.get('video_url')),
-                "asset_type": "Agenda", # Default, can be overridden
-                "minutes_url": self._make_absolute_url(item.get('minutes_url')),
-                "agenda_packet_url": self._make_absolute_url(item.get('packet_url')) # 'packet_url' from item
+            if meeting_id_source_component and meeting_id_source_component != "unknown":
+                 meeting_id_str = f"granicus-{site_identifier}-{norm_committee}-{date_str_for_id}-{meeting_id_source_component}"
+            else: 
+                 meeting_id_str = f"granicus-{site_identifier}-{norm_committee}-{date_str_for_id}-{norm_meeting_name}"
+            
+            asset_type_to_url_key_map = {
+                "agenda": item.get('agenda_url'),      
+                "minutes": item.get('minutes_url'),
+                "video": item.get('video_url'),
+                "agenda_packet": item.get('packet_url') 
             }
-            standardized_meetings.append(standard_item)
-        return standardized_meetings
 
-    def _save_to_json(self, data: list[dict], site_name: str, panel_name: str | None = None) -> None:
-        """
-        Saves extracted data to a JSON file.
-        """
-        if not data:
-            logger.info(f"No data to save for {site_name} {panel_name if panel_name else ''}")
-            return
-
-        output_dir = "scraped_data"
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
+            for asset_type_key, asset_url_raw in asset_type_to_url_key_map.items():
+                if asset_url_raw:
+                    absolute_asset_url = self._make_absolute_url(asset_url_raw)
+                    if not absolute_asset_url:
+                        logger.warning(f"Could not make absolute URL for {asset_type_key} of meeting '{meeting_name_raw}'. Raw URL: {asset_url_raw}")
+                        continue
+                    
+                    try:
+                        asset = Asset(
+                            url=absolute_asset_url,
+                            asset_name=meeting_name_raw, 
+                            committee_name=committee_for_asset,
+                            place=site_place, 
+                            state_or_province=site_state, 
+                            asset_type=asset_type_key, 
+                            meeting_date=final_meeting_datetime, 
+                            meeting_time=meeting_time_obj, 
+                            meeting_id=meeting_id_str, 
+                            scraped_by=f"civic-scraper-granicus-{CIVIC_SCRAPER_VERSION}",
+                            content_type=None, 
+                            content_length=None,
+                        )
+                        asset_collection.append(asset) # Changed from add to append
+                    except Exception as e: 
+                        logger.error(f"Error creating Asset object for {asset_type_key} of meeting '{meeting_name_raw}': {e}", exc_info=True)
         
-        # Sanitize panel_name for filename
-        safe_panel_name = re.sub(r'[^\w\-_\.]', '_', panel_name.lower().replace(' ', '-')) if panel_name else ""
-        filename_panel = f"_{safe_panel_name}" if safe_panel_name else ""
-        filename = os.path.join(output_dir, f"{site_name}{filename_panel}_meetings.json")
-        
-        try:
-            with open(filename, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
-            logger.info(f"Successfully saved data to {filename}")
-        except IOError as e:
-            logger.error(f"Error saving data to JSON file {filename}: {e}")
+        return asset_collection
 
     @abstractmethod
     def _extract_meeting_details_internal(self, soup: BeautifulSoup, panel_name: str | None) -> list[dict]:
-        """
-        Abstract method to be implemented by subclasses for specific HTML structures.
-        Should parse the BeautifulSoup object and return a list of dictionaries,
-        each containing raw meeting details like:
-        {'name': str, 'date': str, 'time': str, 'agenda_url': str, 'meeting_id_source': str ...}
-        'meeting_id_source' is used for creating a more unique internal ID.
-        """
         pass
 
-    def extract_and_process_meetings(self, html_content: str, url: str, panel_name: str | None = None) -> list[dict] | None:
-        """
-        Orchestrates the extraction and processing for this scraper type.
-        Returns standardized data if successful, None otherwise.
-        """
-        self.base_url = url # Set base_url for _make_absolute_url
+    def extract_and_process_meetings(
+        self, 
+        html_content: str, 
+        site_url: str, 
+        site_place: str | None,
+        site_state: str | None,
+        site_committee_name: str | None, 
+        site_timezone: str | None
+        ) -> AssetCollection: 
+        self.base_url = site_url 
         soup = BeautifulSoup(html_content, 'html.parser')
         
         try:
-            logger.info(f"Attempting extraction with {self.__class__.__name__} for panel: {panel_name if panel_name else 'N/A'}")
-            raw_meetings = self._extract_meeting_details_internal(soup, panel_name)
+            logger.info(f"Attempting extraction with {self.__class__.__name__} for panel: {site_committee_name if site_committee_name else 'N/A'}")
+            raw_meetings = self._extract_meeting_details_internal(soup, site_committee_name) 
             
-            if not raw_meetings: # Handles None or empty list
-                logger.info(f"{self.__class__.__name__} found no meeting data or failed pre-checks for panel: {panel_name if panel_name else 'N/A'}.")
-                return None # Explicitly return None if no raw meetings
+            if not raw_meetings:
+                logger.info(f"{self.__class__.__name__} found no raw meeting data for panel: {site_committee_name if site_committee_name else 'N/A'}.")
+                return AssetCollection() 
             
             logger.info(f"{self.__class__.__name__} extracted {len(raw_meetings)} raw meeting items.")
             
-            standardized_data = self._transform_to_standard_format(raw_meetings, url, panel_name)
+            asset_collection = self._transform_to_asset_collection(
+                raw_meetings, site_url, site_place, site_state, site_committee_name, site_timezone
+            )
             
-            if standardized_data:
-                logger.info(f"{self.__class__.__name__} successfully processed data into {len(standardized_data)} items.")
-                return standardized_data
-            else:
-                logger.info(f"{self.__class__.__name__} processed data but result is empty after standardization.")
-                return None # Return None if standardization results in empty
+            logger.info(f"{self.__class__.__name__} processed data into {len(asset_collection)} assets.")
+            return asset_collection
         except Exception as e:
-            logger.error(f"Error during extraction with {self.__class__.__name__}: {e}", exc_info=True)
-            return None
+            logger.error(f"Error during extraction/processing with {self.__class__.__name__}: {e}", exc_info=True)
+            return AssetCollection() 
 
     def requires_panel_name(self) -> bool:
-        """
-        Indicates if a scraper type strictly requires a panel name for parsing.
-        Subclasses can override this if they behave differently.
-        Type 3, for example, might not strictly need it for parsing but uses it for metadata.
-        """
-        # Default to True for scrapers that usually filter by a panel on the page.
-        # GranicusType3Scraper will override this.
         return True
-

@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 import logging
-from .base import GranicusBaseScraper 
+from .base import GranicusBaseScraper # Assuming base.py is in the same directory
 
 logger = logging.getLogger(__name__)
 
@@ -18,34 +18,25 @@ class GranicusType1Scraper(GranicusBaseScraper):
             return []
 
         meetings = []
-        
         panel_found = False
-        target_panel_content_div = None # This will be the CollapsiblePanelContent
-        
-        # Find all panel headers
+        target_panel_content_div = None
         panels_headers = soup.find_all('div', class_=['CollapsiblePanelTab', 'CollapsiblePanelTabNotSelected'])
-        
         if not panels_headers:
             logger.info(f"{self.__class__.__name__}: No 'CollapsiblePanelTab' or 'CollapsiblePanelTabNotSelected' divs found on the page for panel '{panel_name}'.")
             return []
-
         for panel_header_div in panels_headers:
-            # Try to find a more specific text container within the header
-            text_container = panel_header_div.find(['a', 'h3', 'span', 'div']) # Added div for cases like Marysville
+            text_container = panel_header_div.find(['a', 'h3', 'span', 'div'])
             current_panel_name_text = panel_header_div.get_text(strip=True)
-            if text_container: # Prefer text from specific inner tag if present
+            if text_container:
                 current_panel_name_text = text_container.get_text(strip=True)
-
             if current_panel_name_text == panel_name:
                 panel_found = True
-                # The content div is the next sibling of the header div
                 content_div = panel_header_div.find_next_sibling('div', class_='CollapsiblePanelContent')
                 if content_div:
                     target_panel_content_div = content_div
                 else:
                     logger.warning(f"{self.__class__.__name__}: Panel '{panel_name}' header found, but its 'CollapsiblePanelContent' sibling is missing.")
                 break
-        
         if not panel_found:
             logger.warning(f"{self.__class__.__name__}: Panel '{panel_name}' not found.")
             available_panels = []
@@ -54,26 +45,15 @@ class GranicusType1Scraper(GranicusBaseScraper):
                 available_panels.append(text_c.get_text(strip=True) if text_c else p_header.get_text(strip=True))
             if available_panels: logger.info(f"{self.__class__.__name__}: Available panels: {available_panels}")
             else: logger.info(f"{self.__class__.__name__}: No CollapsiblePanelTab elements found on the page.")
-            return [] # Panel not found
-        
+            return []
         if not target_panel_content_div:
             logger.warning(f"{self.__class__.__name__}: Panel '{panel_name}' found but its content div (CollapsiblePanelContent) is missing or could not be identified.")
-            return [] # Panel content missing.
-
-        # Type 1 STRICTLY requires year tabs (a 'TabbedPanels' div) INSIDE the panel's content div.
+            return []
+        # STRICT: Type 1 requires year tabs (a 'TabbedPanels' div) INSIDE the panel's content div.
         tabbed_panels_container_div = target_panel_content_div.find('div', class_='TabbedPanels')
-        
         if not tabbed_panels_container_div:
             logger.info(f"{self.__class__.__name__}: Panel '{panel_name}' content found, but the characteristic 'TabbedPanels' div (for year selection) was NOT found *within* this panel's content. This structure does not match Type 1 for this panel.")
-            # Check for a single table directly within target_panel_content_div as a fallback if no TabbedPanels
-            table = target_panel_content_div.find('table', class_='listingTable')
-            if table:
-                logger.info(f"{self.__class__.__name__}: No 'TabbedPanels' div in panel '{panel_name}', but found a direct listingTable. Processing it.")
-                for row in table.find_all('tr', class_=['listingRow', 'listingRowAlt']):
-                    meeting = self._extract_meeting_from_row(row, "DefaultYear")  
-                    if meeting: meetings.append(meeting)
-                return meetings
-            return [] # If no TabbedPanels div inside the panel's content, and no direct table, it's not Type 1.
+            return []  # STRICT: No fallback allowed!
 
         # Process the TabbedPanels structure found within tabbed_panels_container_div
         year_tabs_ul = tabbed_panels_container_div.find('ul', class_='TabbedPanelsTabGroup')
@@ -85,15 +65,7 @@ class GranicusType1Scraper(GranicusBaseScraper):
 
             if not year_tabs_li_elements or not year_content_divs:
                 logger.warning(f"{self.__class__.__name__}: Panel '{panel_name}' - 'TabbedPanels' structure has TabGroup/ContentGroup but they are empty or missing <li> tabs / content divs.")
-                # Fallback: Check for a single table directly within tabbed_panels_container_div
-                table = tabbed_panels_container_div.find('table', class_='listingTable')
-                if table:
-                    logger.info(f"{self.__class__.__name__}: Processing single listingTable found directly within 'TabbedPanels' div of panel '{panel_name}'.")
-                    for row in table.find_all('tr', class_=['listingRow', 'listingRowAlt']):
-                        meeting = self._extract_meeting_from_row(row, "DefaultYear")  
-                        if meeting: meetings.append(meeting)
-                    return meetings # Return if this fallback table is processed
-                return [] # No valid structure found
+                return []
 
             if len(year_tabs_li_elements) != len(year_content_divs):
                 logger.warning(f"{self.__class__.__name__}: Mismatch between number of year tabs ({len(year_tabs_li_elements)}) and content sections ({len(year_content_divs)}) in panel '{panel_name}'. Processing based on shorter list.")
@@ -121,8 +93,7 @@ class GranicusType1Scraper(GranicusBaseScraper):
                     meeting = self._extract_meeting_from_row(row, "DefaultYear")  
                     if meeting: meetings.append(meeting)
             else:
-                logger.warning(f"{self.__class__.__name__}: Panel '{panel_name}' - 'TabbedPanels' div found, but no TabGroup/ContentGroup and no direct listingTable within it. Structure not recognized.")
-                return [] 
+                logger.warning(f"{self.__class__.__name__}: 'TabbedPanels' div found but no year groups or listingTable present for panel '{panel_name}'.")
         
         logger.info(f"{self.__class__.__name__}: Extracted {len(meetings)} meetings for panel '{panel_name}'.")
         return meetings
@@ -155,6 +126,9 @@ class GranicusType1Scraper(GranicusBaseScraper):
                 break
         meeting_data['meeting_id_source'] = meeting_id_source
 
+
+        # Link extraction: Agenda, Minutes, Video, Packet
+        # This needs to be flexible as column order and link text vary.
         
         # Agenda (often in cell 2 or by text 'Agenda')
         if len(cells) > 2: # Cell index 2
@@ -190,6 +164,11 @@ class GranicusType1Scraper(GranicusBaseScraper):
             if re.search(r'Packet|Agenda Packet', link_tag.get_text(strip=True), re.I):
                 meeting_data['packet_url'] = link_tag['href']
                 break
+        
+        # Time (often embedded in name or date, or a separate column if available)
+        # For now, _parse_date_time handles time extraction from date_str if not explicitly passed.
+        # If a dedicated time column exists, it would be handled here.
+        # Example: if len(cells) > 4 and "time_column_header" in header: meeting_data['time'] = cells[4].get_text...
         
         # Try to extract time from name or date cell text if not found by _parse_date_time implicitly
         # This is a fallback, _parse_date_time in base class already tries this.

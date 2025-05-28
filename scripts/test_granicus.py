@@ -28,7 +28,8 @@ try:
     from civic_scraper.platforms.granicus.type2 import GranicusType2Scraper
     from civic_scraper.platforms.granicus.type3 import GranicusType3Scraper
     from civic_scraper.platforms.granicus.type4 import GranicusType4Scraper
-    from civic_scraper.platforms.granicus.site import scrape_granicus_platform
+    from civic_scraper.platforms.granicus.site import GranicusSite
+    from civic_scraper.base.asset import AssetCollection
     logger.info("Successfully imported Granicus scrapers")
 except ImportError as e:
     logger.error(f"Failed to import Granicus scrapers: {str(e)}")
@@ -70,46 +71,49 @@ def test_specific_scraper(scraper_type, url, panel_name):
         bool: True if successful, False otherwise
     """
     logger.info(f"Testing {scraper_type.__name__} with URL: {url} (Panel: {panel_name})")
-    
     try:
         # Instantiate the scraper
         scraper = scraper_type()
-        
+
         # Fetch HTML content
         logger.debug(f"Fetching HTML content from {url}")
         html_content = scraper._fetch_html(url)
-        
+
         if not html_content:
             logger.error(f"Failed to fetch HTML content from {url}")
             return False
-        
+
         logger.debug(f"Successfully fetched HTML content ({len(html_content)} bytes)")
-        
-        # Extract and process meetings
-        logger.debug(f"Extracting meetings using {scraper_type.__name__}")
-        meetings = scraper.extract_and_process_meetings(html_content, url, panel_name)
-        
-        if not meetings:
-            logger.warning(f"No meetings found using {scraper_type.__name__} for {panel_name}")
-            return False
-        
-        logger.info(f"Successfully extracted {len(meetings)} meetings using {scraper_type.__name__}")
-        
-        # Create output directory if it doesn't exist
-        output_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "scraped_data")
-        os.makedirs(output_dir, exist_ok=True)
-        
-        # Save to JSON file
-        site_name = scraper._extract_site_name(url)
-        safe_panel_name = panel_name.lower().replace(' ', '-') if panel_name else ""
-        filename = os.path.join(output_dir, f"{site_name}_{safe_panel_name}_meetings.json")
-        
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(meetings, f, indent=2, ensure_ascii=False)
-        
-        logger.info(f"Saved meetings to {filename}")
-        return True
-    
+
+        # Extract and process meetings using the type scraper directly
+        asset_collection = scraper.extract_and_process_meetings(
+            html_content=html_content,
+            site_url=url,
+            site_place=None,
+            site_state=None,
+            site_committee_name=panel_name,
+            site_timezone=None
+        )
+
+        if asset_collection and len(asset_collection) > 0:
+            logger.info(f"Successfully scraped {len(asset_collection)} assets.")
+            logger.info("First few assets:")
+            for i, asset in enumerate(asset_collection):
+                if i < 5: # Print details of first 5 assets
+                    logger.info(
+                        f"  Asset {i+1}: Name='{asset.asset_name}', Date='{asset.meeting_date.strftime('%Y-%m-%d')}', "
+                        f"Type='{asset.asset_type}', URL='{asset.url}', MeetingID='{asset.meeting_id}', "
+                        f"Committee='{asset.committee_name}'"
+                    )
+                else:
+                    break
+        elif asset_collection is not None: # Empty collection
+            logger.info("Scrape completed, but no assets were found or processed.")
+        else: # Should not happen if extract_and_process_meetings returns None
+            logger.error("extract_and_process_meetings method returned None, which is unexpected. Expected AssetCollection.")
+
+        logger.info(f"--- Test for {url} (Panel: {panel_name}) finished ---")
+        return asset_collection and len(asset_collection) > 0
     except Exception as e:
         logger.error(f"Error testing {scraper_type.__name__}: {str(e)}")
         logger.debug(traceback.format_exc())
@@ -130,14 +134,15 @@ def test_scrape_granicus_platform(url, panel_name):
     
     try:
         # Call the main scraping function
-        scrape_granicus_platform(url, panel_name)
+        scraper = GranicusSite(url)
+        
         logger.info(f"Successfully tested scrape_granicus_platform for {url}")
-        return True
+        return scraper.scrape(committee_name=panel_name) is not None
     
     except Exception as e:
         logger.error(f"Error testing scrape_granicus_platform: {str(e)}")
         logger.debug(traceback.format_exc())
-        return False
+        
 
 def run_all_tests():
     """Run all scraper tests with their specific URLs."""

@@ -1,200 +1,248 @@
-"""
-Granicus Platform Scraper - Site Module
-
-This module provides a unified interface for scraping Granicus-based civic meeting platforms.
-It automatically detects and uses the appropriate scraper type (Type1-Type4) for different
-Granicus site layouts.
-
-=== QUICK START ===
-
-1. Using the Site class (recommended for integration):
-   ```python
-   from civic_scraper.platforms.granicus.site import Site
-   
-   # Initialize site
-   site = Site("https://cityofbradenton.granicus.com/ViewPublisher.php?view_id=1", 
-               panel_name="City Council")
-   
-   # Get meetings data
-   meetings = site.get_meetings()
-   ```
-
-2. Using scrape_granicus_platform() directly:
-   ```python
-   from civic_scraper.platforms.granicus.site import scrape_granicus_platform
-   
-   # Scrape and save to JSON automatically
-   scrape_granicus_platform(
-       url="https://marysvilleca.granicus.com/ViewPublisher.php?view_id=1",
-       panel_name="City Council"
-   )
-   ```
-
-=== KEY FEATURES ===
-
-- Auto-detection of Granicus site types (Type1, Type2, Type3, Type4)
-- Automatic fallback between scraper types until one succeeds
-- Standardized output format across all site types
-- Built-in JSON export with organized filenames
-
-=== PARAMETERS ===
-
-- url (str): Granicus ViewPublisher.php URL with view_id parameter
-- panel_name (str, optional): Committee/panel name for targeted scraping
-  * Required for some scraper types
-  * Used in output filename if provided
-  * Defaults to "Unknown" for Type3 scrapers when not provided
-
-=== OUTPUT ===
-
-Scraped data is saved as JSON files in ./scraped_data/ with format:
-{site_name}_{panel_name}_meetings.json
-
-"""
-
 import logging
-import os
-import sys
-from civic_scraper.base.site import Site as BaseSite
+from typing import Optional, List # List for type hinting
+from datetime import datetime # For date parsing if needed at this level
 
 try:
-    from .type1 import GranicusType1Scraper
-    from .type2 import GranicusType2Scraper
-    from .type3 import GranicusType3Scraper
-    from .type4 import GranicusType4Scraper
- 
+    from civic_scraper.base.site import Site as BaseSite 
+    from civic_scraper.base.asset import AssetCollection
+    from civic_scraper.base.cache import Cache
 except ImportError:
-    from type1 import GranicusType1Scraper
-    from type2 import GranicusType2Scraper
-    from type3 import GranicusType3Scraper
-    from type4 import GranicusType4Scraper
-
-# Define the Site class for Granicus
-class Site(BaseSite):
-    """
-    Site class for Granicus platforms.
-    This class is a wrapper around the scrape_granicus_platform function.
-    """
-    
-    def __init__(self, url, panel_name=None):
-        """
-        Initialize the Granicus site.
+    class BaseSite:
+        def __init__(self, url: str, *, 
+                     place: Optional[str] = None,
+                     state_or_province: Optional[str] = None,
+                     cache: Optional[object] = None, 
+                     parser_kls = None, 
+                     committee_id: Optional[str] = None, 
+                     timezone: Optional[str] = "US/Eastern",
+                     **kwargs): 
+            self.url = url
+            self.place = place
+            self.state_or_province = state_or_province
+            self.cache = cache
+            self.parser_kls = parser_kls
+            self.committee_id = committee_id
+            self.timezone = timezone
+        def scrape(self, start_date=None, end_date=None, committee_name=None, **kwargs) -> 'AssetCollection':
+            raise NotImplementedError
+    class AssetCollection(list):
+        def __init__(self, *args): 
+            super().__init__(*args)
         
-        Args:
-            url (str): The URL of the site
-            panel_name (str, optional): The name of the panel/committee to scrape
-        """
-        super().__init__(url)
-        self.panel_name = panel_name
-        
-    def get_meetings(self):
-        """
-        Get meetings from the Granicus site using the appropriate scraper.
-        
-        Returns:
-            list: A list of meetings in standardized format
-        """
-        return scrape_granicus_platform(self.url, self.panel_name)
+        def extend(self, assets): super().extend(assets)
+    class Cache:
+        def __init__(self, path=None): self.path = path
+        def get(self, key): return None 
+        def set(self, key, value): pass 
 
+from urllib.parse import urlparse 
 
-# Configure logging for the application
-logging.basicConfig(
-    level=logging.INFO, 
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(sys.stdout) # Ensure logs go to stdout
-    ]
-)
+from .type1 import GranicusType1Scraper
+from .type2 import GranicusType2Scraper
+from .type3 import GranicusType3Scraper
+from .type4 import GranicusType4Scraper
+
 logger = logging.getLogger(__name__)
 
-
-def scrape_granicus_platform(url: str, panel_name: str | None = None):
+class GranicusSite(BaseSite):
     """
-    Tries to scrape a Granicus URL using different scraper types.
-    Saves the data from the first successful scraper.
+    Scraper for government sites powered by Granicus.
+    It orchestrates different Granicus HTML structure parsers (Type1, Type2, etc.),
+    runs all of them, and picks the result using a prioritized logic:
+    1. If committee_name is provided, prefer results from panel-specific scrapers.
+    2. Otherwise, or if panel-specific scrapers yield no results, pick by most assets overall.
     """
-    logger.info(f"Starting scrape for URL: {url} (Panel: {panel_name if panel_name else 'N/A'})")
-    
-    # Instantiate all scraper types
-    scraper_instances = [
-        GranicusType1Scraper(),
-        GranicusType2Scraper(),
-        GranicusType4Scraper(), # Type 4 is often list-based, try before Type 3 if it's more specific
-        GranicusType3Scraper(), # Type 3 is often more general / table-based without strict paneling
-    ]
 
-    if not scraper_instances: 
-        logger.error("No scraper types have been defined. Aborting.")
-        return
-
-    temp_fetcher = scraper_instances[0] 
-    html_content = temp_fetcher._fetch_html(url) 
-
-    if not html_content:
-        logger.error(f"Failed to fetch HTML content from {url}. Aborting.")
-        return
-
-    success = False
-    for scraper in scraper_instances:
-        # Check if the scraper type requires a panel name for its primary parsing logic
-        if scraper.requires_panel_name() and not panel_name:
-            logger.info(f"{scraper.__class__.__name__} requires a panel name for its primary parsing logic, but none was provided. Skipping this scraper for this URL/panel combination.")
-            continue
-            
-        standardized_data = scraper.extract_and_process_meetings(html_content, url, panel_name)
+    def __init__(self, url: str, *, 
+                 place: Optional[str] = None,
+                 state_or_province: Optional[str] = None,
+                 cache: Optional[Cache] = None, 
+                 timezone: Optional[str] = "US/Eastern", 
+                 **kwargs 
+                ):
+        parser_kls_arg = kwargs.pop('parser_kls', None)
+        committee_id_arg = kwargs.pop('committee_id', None)
         
-        if standardized_data:
+        if 'name' in kwargs:
+            name_arg_value = kwargs.pop('name')
+            logger.warning(
+                f"GranicusSite initialized with an unexpected 'name' keyword argument (value: '{name_arg_value}'). "
+                "This argument is not used by GranicusSite and not passed to the base Site class."
+            )
+        
+        if kwargs:
+            logger.warning(
+                f"GranicusSite initialized with unexpected keyword arguments: {list(kwargs.keys())}. "
+                "These are not passed to the base Site class."
+            )
 
-            site_name_for_saving = scraper._extract_site_name(url) 
+        super().__init__(
+            url, 
+            place=place, 
+            state_or_province=state_or_province, 
+            cache=cache, 
+            timezone=timezone,
+            parser_kls=parser_kls_arg,    
+            committee_id=committee_id_arg 
+        )
+        
+        # Order can still be relevant if multiple scrapers of the same "category" (e.g. panel-specific) tie on asset count.
+        self.scraper_instances_with_info = [
+            {"instance": GranicusType1Scraper(cache=self.cache), "name": "GranicusType1Scraper"},
+            {"instance": GranicusType2Scraper(cache=self.cache), "name": "GranicusType2Scraper"},
+            {"instance": GranicusType4Scraper(cache=self.cache), "name": "GranicusType4Scraper"},
+            {"instance": GranicusType3Scraper(cache=self.cache), "name": "GranicusType3Scraper"}, # Type 3 is often general
+        ]
 
-            output_filename_panel_segment = panel_name
-            if isinstance(scraper, GranicusType3Scraper) and not panel_name:
-                 output_filename_panel_segment = None # Type 3 doesn't use panel for filename if not given for parsing
+    def scrape(
+        self,
+        start_date: Optional[str] = None, 
+        end_date: Optional[str] = None,   
+        committee_name: Optional[str] = None, 
+        download: bool = False, 
+        **kwargs 
+    ) -> AssetCollection:
+        site_description = self.place or self.url 
 
-            scraper._save_to_json(standardized_data, site_name_for_saving, output_filename_panel_segment)
-            logger.info(f"Successfully scraped and saved data using {scraper.__class__.__name__}.")
-            success = True
-            break 
+        logger.info(
+            f"Starting Granicus scrape for site: '{site_description}' URL: {self.url} "
+            f"(Panel/Committee: {committee_name if committee_name else 'N/A'})"
+        )
+
+        if not self.scraper_instances_with_info:
+            logger.error(f"No Granicus scraper types initialized for site '{site_description}'.")
+            return AssetCollection()
+
+        # Use the first scraper instance to fetch HTML, assuming all inherit _fetch_html
+        initial_html_content = self.scraper_instances_with_info[0]["instance"]._fetch_html(self.url)
+
+        if not initial_html_content:
+            logger.error(f"Failed to fetch initial HTML content from {self.url} for site '{site_description}'. Aborting scrape.")
+            return AssetCollection()
+
+        # Store results along with info about the scraper
+        results_data = [] 
+
+        for scraper_info in self.scraper_instances_with_info:
+            scraper_instance = scraper_info["instance"]
+            scraper_name = scraper_info["name"]
+            
+            logger.info(f"Attempting scrape with {scraper_name} for site '{site_description}'...")
+            
+            assets_from_this_type = AssetCollection() # Default to empty
+            if scraper_instance.requires_panel_name() and not committee_name:
+                logger.info(
+                    f"{scraper_name} requires a committee/panel name, "
+                    f"but none was provided. Skipping this scraper type for site '{site_description}'."
+                )
+            else:
+                assets_from_this_type = scraper_instance.extract_and_process_meetings(
+                    html_content=initial_html_content,
+                    site_url=self.url,
+                    site_place=self.place, 
+                    site_state=self.state_or_province, 
+                    site_committee_name=committee_name, 
+                    site_timezone=self.timezone 
+                )
+
+            if assets_from_this_type and len(assets_from_this_type) > 0:
+                logger.info(
+                    f"Successfully extracted {len(assets_from_this_type)} assets "
+                    f"using {scraper_name} for site '{site_description}'."
+                )
+            else:
+                logger.info(
+                    f"{scraper_name} did not yield assets or failed its checks for "
+                    f"site '{site_description}' URL: {self.url} (Panel: {committee_name if committee_name else 'N/A'})."
+                )
+            
+            results_data.append({
+                "assets": assets_from_this_type if assets_from_this_type else AssetCollection(),
+                "scraper_name": scraper_name,
+                "requires_panel": scraper_instance.requires_panel_name()
+            })
+        
+        # --- Smarter Result Selection Logic ---
+        best_asset_collection = AssetCollection()
+        selected_scraper_name = "None (no assets found)"
+
+        panel_specific_candidates = []
+        general_candidates = []
+
+        for res_data in results_data:
+            if committee_name and res_data["requires_panel"]:
+                panel_specific_candidates.append(res_data)
+            else: # Scrapers that don't require a panel, or if no committee_name was given
+                general_candidates.append(res_data)
+        
+        # Prioritize panel-specific results if committee_name was given and candidates exist
+        if committee_name and panel_specific_candidates:
+            # Filter out empty results from panel-specific candidates
+            non_empty_panel_specific = [cand for cand in panel_specific_candidates if len(cand["assets"]) > 0]
+            if non_empty_panel_specific:
+                best_panel_specific_res = max(non_empty_panel_specific, key=lambda x: len(x["assets"]))
+                best_asset_collection = best_panel_specific_res["assets"]
+                selected_scraper_name = best_panel_specific_res["scraper_name"]
+                logger.info(f"Prioritized panel-specific: Selected result from {selected_scraper_name} with {len(best_asset_collection)} assets.")
+
+        # If no suitable panel-specific result, consider general candidates (or all if no committee_name)
+        if len(best_asset_collection) == 0:
+            all_candidates_for_max = panel_specific_candidates + general_candidates # Consider all if panel-specific failed
+            if not committee_name: # If no committee name, all are effectively "general" for selection
+                all_candidates_for_max = results_data
+
+            non_empty_overall = [cand for cand in all_candidates_for_max if len(cand["assets"]) > 0]
+            if non_empty_overall:
+                best_overall_res = max(non_empty_overall, key=lambda x: len(x["assets"]))
+                best_asset_collection = best_overall_res["assets"]
+                selected_scraper_name = best_overall_res["scraper_name"]
+                logger.info(f"Fallback/General: Selected result from {selected_scraper_name} with {len(best_asset_collection)} assets.")
+            else:
+                 logger.warning(
+                    f"No Granicus scraper type was successful in finding any assets for site '{site_description}' URL: {self.url} "
+                    f"(Panel: {committee_name if committee_name else 'N/A'})"
+                )
+        
+        # --- Date Filtering on the chosen best_asset_collection ---
+        final_assets_to_return = best_asset_collection # Start with the selected collection
+        start_date_obj: Optional[datetime] = None
+        end_date_obj: Optional[datetime] = None
+        if start_date:
+            try:
+                start_date_obj = datetime.strptime(start_date, "%Y-%m-%d")
+            except ValueError:
+                logger.warning(f"Invalid start_date format: {start_date}. Expected YYYY-MM-DD. No start date filter applied for '{site_description}'.")
+        if end_date:
+            try:
+                end_date_obj = datetime.strptime(end_date, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+            except ValueError:
+                logger.warning(f"Invalid end_date format: {end_date}. Expected YYYY-MM-DD. No end date filter applied for '{site_description}'.")
+
+        if start_date_obj or end_date_obj:
+            if len(final_assets_to_return) > 0: # Only filter if there are assets
+                filtered_assets = AssetCollection()
+                for asset in final_assets_to_return: 
+                    if not isinstance(asset.meeting_date, datetime):
+                        logger.warning(f"Asset '{asset.asset_name}' for site '{site_description}' has invalid meeting_date type: {type(asset.meeting_date)}. Skipping date filter for this asset.")
+                        filtered_assets.append(asset) 
+                        continue
+
+                    meeting_date_naive = asset.meeting_date.replace(tzinfo=None) if asset.meeting_date.tzinfo else asset.meeting_date
+
+                    if start_date_obj and meeting_date_naive < start_date_obj:
+                        continue
+                    if end_date_obj and meeting_date_naive > end_date_obj:
+                        continue
+                    filtered_assets.append(asset) 
+                
+                logger.info(f"Returning {len(filtered_assets)} assets after date filtering (selected from {selected_scraper_name}) for site '{site_description}'.")
+                final_assets_to_return = filtered_assets
+            else:
+                 logger.info(f"No assets were selected by any scraper, so no date filtering applied for site '{site_description}'.")
         else:
-            # extract_and_process_meetings returns None if it fails or finds no data that passes its checks.
-            logger.info(f"{scraper.__class__.__name__} did not yield data or failed its internal checks for URL: {url} (Panel: {panel_name if panel_name else 'N/A'}). Trying next scraper if available.")
+            logger.info(f"No date filtering requested for site '{site_description}'.")
 
-    if not success:
-        logger.warning(f"No scraper was successful for URL: {url} (Panel: {panel_name if panel_name else 'N/A'})")
+        logger.info(f"Granicus scrape for site '{site_description}' (Panel: {committee_name}) finished. "
+                      f"Best result from {selected_scraper_name}. Returning {len(final_assets_to_return)} assets.")
+        return final_assets_to_return
 
-if __name__ == '__main__':
-
-
-    # Test cases based on provided examples
-    test_urls = [
-        {
-            "url": "https://cityofbradenton.granicus.com/ViewPublisher.php?view_id=1",  
-            "panel": "City Council",  
-            "comment": "Type 1: Bradenton City Council"
-        },
-        {
-            "url": "https://marysvilleca.granicus.com/ViewPublisher.php?view_id=1",
-            "panel": "City Council",  
-            "comment": "Type 2: Marysville City Council"
-        },
-        {
-            "url": "https://sacramento.granicus.com/ViewPublisher.php?view_id=22",  
-            "panel": "City Council",
-            "comment": "Type 3: Sacramento (e.g. City Council)"
-        },
-        {  
-            "url": "https://rocklin-ca.granicus.com/ViewPublisher.php?view_id=1",  
-            "panel": "Civil Service Commission",
-            "comment": "Type 3: Rocklin Civil Service Commission"
-        },
-        {
-            "url": "https://coralsprings.granicus.com/ViewPublisher.php?view_id=3",
-            "panel": "Coral Springs City Commission",  
-            "comment": "Type 4: Coral Springs City Commission"
-        }
-    ]
-
-    for test_case in test_urls:
-        logger.info(f"\n--- Running test for: {test_case['comment']} ---")
-        scrape_granicus_platform(test_case["url"], test_case.get("panel"))
-        logger.info("---------------------------------------------------\n")
