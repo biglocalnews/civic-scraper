@@ -2,12 +2,13 @@ import requests
 import json
 from datetime import datetime
 import os
+from civic_scraper.platforms.civic_clerk.site import extract_place_and_state_from_url
 
 SITES = [
-    # {"url": "https://turlockca.portal.civicclerk.com", "place": "turlock", "state": "ca"},
-    # {"url": "https://jacksonmi.civicclerk.com", "place": "jackson", "state": "mi"},
-    # {"url": "https://alpharettaga.civicclerk.com", "place": "alpharetta", "state": "ga"},
-    {"url": "https://islamoradafl.portal.civicclerk.com/", "place": "Islamorada", "state": "fl"},
+    {"url": "https://turlockca.portal.civicclerk.com"},
+    {"url": "https://jacksonmi.civicclerk.com"},
+    {"url": "https://alpharettaga.civicclerk.com"},
+    {"url": "https://islamoradafl.portal.civicclerk.com/"},
 ]
 
 PAGE_SIZE = 20
@@ -85,11 +86,13 @@ if __name__ == "__main__":
     output_dir = "./Civic_Clerk_Json"
     os.makedirs(output_dir, exist_ok=True)
     for site in SITES:
-        api_base = get_api_base(site["url"])
+        url = site["url"]
+        place, state = extract_place_and_state_from_url(url)
+        api_base = get_api_base(url)
         all_events = fetch_all_events(api_base)
-        print(f"Fetched {len(all_events)} events for {site['place']}, {site['state']}.")
-        event_details = [extract_event_details(ev, site["url"]) for ev in all_events]
-        out_file_name = f"scraped_events_api_{site['place']}_{site['state']}.json"
+        print(f"Fetched {len(all_events)} events for {place}, {state}.")
+        event_details = [extract_event_details(ev, url) for ev in all_events]
+        out_file_name = f"scraped_events_api_{place}_{state}.json"
         out_path = f"{output_dir}/{out_file_name}"
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(event_details, f, ensure_ascii=False, indent=2)
