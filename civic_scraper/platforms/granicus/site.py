@@ -28,12 +28,13 @@ except ImportError:
     class AssetCollection(list):
         def __init__(self, *args): 
             super().__init__(*args)
-        
+        # Removed .add() as AssetCollection is a list and uses .append()
+        # def add(self, asset): self.append(asset) 
         def extend(self, assets): super().extend(assets)
     class Cache:
         def __init__(self, path=None): self.path = path
-        def get(self, key): return None 
-        def set(self, key, value): pass 
+        def get(self, key): return None # Placeholder
+        def set(self, key, value): pass # Placeholder
 
 from urllib.parse import urlparse 
 
@@ -49,7 +50,7 @@ class GranicusSite(BaseSite):
     Scraper for government sites powered by Granicus.
     It orchestrates different Granicus HTML structure parsers (Type1, Type2, etc.),
     runs all of them, and picks the result using a prioritized logic:
-    1. If committee_name is provided, prefer results from panel-specific scrapers.
+    1. If committee_names is provided, prefer results from panel-specific scrapers.
     2. Otherwise, or if panel-specific scrapers yield no results, pick by most assets overall.
     """
 
@@ -58,6 +59,7 @@ class GranicusSite(BaseSite):
                  state_or_province: Optional[str] = None,
                  cache: Optional[Cache] = None, 
                  timezone: Optional[str] = "US/Eastern", 
+                 committee_names: Optional[List[str]] = None,
                  **kwargs 
                 ):
         parser_kls_arg = kwargs.pop('parser_kls', None)
@@ -86,6 +88,7 @@ class GranicusSite(BaseSite):
             committee_id=committee_id_arg 
         )
         
+        self.committee_names = committee_names if committee_names is not None else []
         # Order can still be relevant if multiple scrapers of the same "category" (e.g. panel-specific) tie on asset count.
         self.scraper_instances_with_info = [
             {"instance": GranicusType1Scraper(cache=self.cache), "name": "GranicusType1Scraper"},
@@ -98,7 +101,6 @@ class GranicusSite(BaseSite):
         self,
         start_date: Optional[str] = None, 
         end_date: Optional[str] = None,   
-        committee_name: Optional[str] = None, 
         download: bool = False, 
         **kwargs 
     ) -> AssetCollection:
@@ -106,7 +108,7 @@ class GranicusSite(BaseSite):
 
         logger.info(
             f"Starting Granicus scrape for site: '{site_description}' URL: {self.url} "
-            f"(Panel/Committee: {committee_name if committee_name else 'N/A'})"
+            f"(Committees: {self.committee_names if self.committee_names else 'N/A'})"
         )
 
         if not self.scraper_instances_with_info:
@@ -120,91 +122,57 @@ class GranicusSite(BaseSite):
             logger.error(f"Failed to fetch initial HTML content from {self.url} for site '{site_description}'. Aborting scrape.")
             return AssetCollection()
 
-        # Store results along with info about the scraper
         results_data = [] 
+        # If committee_names is set and non-empty, iterate and aggregate
+        committees_to_scrape = self.committee_names if self.committee_names else [None]
+        for committee_name in committees_to_scrape:
+            for scraper_info in self.scraper_instances_with_info:
+                scraper_instance = scraper_info["instance"]
+                scraper_name = scraper_info["name"]
+                
+                logger.info(f"Attempting scrape with {scraper_name} for site '{site_description}' (Committee: {committee_name})...")
+                
+                assets_from_this_type = AssetCollection() # Default to empty
+                if scraper_instance.requires_panel_name() and not committee_name:
+                    logger.info(
+                        f"{scraper_name} requires a committee/panel name, "
+                        f"but none was provided. Skipping this scraper type for site '{site_description}'."
+                    )
+                else:
+                    assets_from_this_type = scraper_instance.extract_and_process_meetings(
+                        html_content=initial_html_content,
+                        site_url=self.url,
+                        site_place=self.place, 
+                        site_state=self.state_or_province, 
+                        site_committee_name=committee_name, 
+                        site_timezone=self.timezone 
+                    )
 
-        for scraper_info in self.scraper_instances_with_info:
-            scraper_instance = scraper_info["instance"]
-            scraper_name = scraper_info["name"]
-            
-            logger.info(f"Attempting scrape with {scraper_name} for site '{site_description}'...")
-            
-            assets_from_this_type = AssetCollection() # Default to empty
-            if scraper_instance.requires_panel_name() and not committee_name:
-                logger.info(
-                    f"{scraper_name} requires a committee/panel name, "
-                    f"but none was provided. Skipping this scraper type for site '{site_description}'."
-                )
-            else:
-                assets_from_this_type = scraper_instance.extract_and_process_meetings(
-                    html_content=initial_html_content,
-                    site_url=self.url,
-                    site_place=self.place, 
-                    site_state=self.state_or_province, 
-                    site_committee_name=committee_name, 
-                    site_timezone=self.timezone 
-                )
-
-            if assets_from_this_type and len(assets_from_this_type) > 0:
-                logger.info(
-                    f"Successfully extracted {len(assets_from_this_type)} assets "
-                    f"using {scraper_name} for site '{site_description}'."
-                )
-            else:
-                logger.info(
-                    f"{scraper_name} did not yield assets or failed its checks for "
-                    f"site '{site_description}' URL: {self.url} (Panel: {committee_name if committee_name else 'N/A'})."
-                )
-            
-            results_data.append({
-                "assets": assets_from_this_type if assets_from_this_type else AssetCollection(),
-                "scraper_name": scraper_name,
-                "requires_panel": scraper_instance.requires_panel_name()
-            })
+                if assets_from_this_type and len(assets_from_this_type) > 0:
+                    logger.info(
+                        f"Successfully extracted {len(assets_from_this_type)} assets "
+                        f"using {scraper_name} for site '{site_description}' (Committee: {committee_name})."
+                    )
+                else:
+                    logger.info(
+                        f"{scraper_name} did not yield assets or failed its checks for "
+                        f"site '{site_description}' URL: {self.url} (Committee: {committee_name})."
+                    )
+                
+                results_data.append({
+                    "assets": assets_from_this_type if assets_from_this_type else AssetCollection(),
+                    "scraper_name": scraper_name,
+                    "requires_panel": scraper_instance.requires_panel_name(),
+                    "committee_name": committee_name
+                })
         
-        # --- Smarter Result Selection Logic ---
-        best_asset_collection = AssetCollection()
-        selected_scraper_name = "None (no assets found)"
-
-        panel_specific_candidates = []
-        general_candidates = []
-
+        # Aggregate all assets from all committee scrapes
+        all_assets = AssetCollection()
         for res_data in results_data:
-            if committee_name and res_data["requires_panel"]:
-                panel_specific_candidates.append(res_data)
-            else: # Scrapers that don't require a panel, or if no committee_name was given
-                general_candidates.append(res_data)
-        
-        # Prioritize panel-specific results if committee_name was given and candidates exist
-        if committee_name and panel_specific_candidates:
-            # Filter out empty results from panel-specific candidates
-            non_empty_panel_specific = [cand for cand in panel_specific_candidates if len(cand["assets"]) > 0]
-            if non_empty_panel_specific:
-                best_panel_specific_res = max(non_empty_panel_specific, key=lambda x: len(x["assets"]))
-                best_asset_collection = best_panel_specific_res["assets"]
-                selected_scraper_name = best_panel_specific_res["scraper_name"]
-                logger.info(f"Prioritized panel-specific: Selected result from {selected_scraper_name} with {len(best_asset_collection)} assets.")
+            all_assets.extend(res_data["assets"])
 
-        # If no suitable panel-specific result, consider general candidates (or all if no committee_name)
-        if len(best_asset_collection) == 0:
-            all_candidates_for_max = panel_specific_candidates + general_candidates # Consider all if panel-specific failed
-            if not committee_name: # If no committee name, all are effectively "general" for selection
-                all_candidates_for_max = results_data
-
-            non_empty_overall = [cand for cand in all_candidates_for_max if len(cand["assets"]) > 0]
-            if non_empty_overall:
-                best_overall_res = max(non_empty_overall, key=lambda x: len(x["assets"]))
-                best_asset_collection = best_overall_res["assets"]
-                selected_scraper_name = best_overall_res["scraper_name"]
-                logger.info(f"Fallback/General: Selected result from {selected_scraper_name} with {len(best_asset_collection)} assets.")
-            else:
-                 logger.warning(
-                    f"No Granicus scraper type was successful in finding any assets for site '{site_description}' URL: {self.url} "
-                    f"(Panel: {committee_name if committee_name else 'N/A'})"
-                )
-        
-        # --- Date Filtering on the chosen best_asset_collection ---
-        final_assets_to_return = best_asset_collection # Start with the selected collection
+        # --- Date Filtering on the aggregated AssetCollection ---
+        final_assets_to_return = all_assets
         start_date_obj: Optional[datetime] = None
         end_date_obj: Optional[datetime] = None
         if start_date:
@@ -219,7 +187,7 @@ class GranicusSite(BaseSite):
                 logger.warning(f"Invalid end_date format: {end_date}. Expected YYYY-MM-DD. No end date filter applied for '{site_description}'.")
 
         if start_date_obj or end_date_obj:
-            if len(final_assets_to_return) > 0: # Only filter if there are assets
+            if len(final_assets_to_return) > 0:
                 filtered_assets = AssetCollection()
                 for asset in final_assets_to_return: 
                     if not isinstance(asset.meeting_date, datetime):
@@ -235,14 +203,13 @@ class GranicusSite(BaseSite):
                         continue
                     filtered_assets.append(asset) 
                 
-                logger.info(f"Returning {len(filtered_assets)} assets after date filtering (selected from {selected_scraper_name}) for site '{site_description}'.")
+                logger.info(f"Returning {len(filtered_assets)} assets after date filtering for site '{site_description}'.")
                 final_assets_to_return = filtered_assets
             else:
-                 logger.info(f"No assets were selected by any scraper, so no date filtering applied for site '{site_description}'.")
+                logger.info(f"No assets were selected by any scraper, so no date filtering applied for site '{site_description}'.")
         else:
             logger.info(f"No date filtering requested for site '{site_description}'.")
 
-        logger.info(f"Granicus scrape for site '{site_description}' (Panel: {committee_name}) finished. "
-                      f"Best result from {selected_scraper_name}. Returning {len(final_assets_to_return)} assets.")
+        logger.info(f"Granicus scrape for site '{site_description}' (Committees: {self.committee_names}) finished. Returning {len(final_assets_to_return)} assets.")
         return final_assets_to_return
 

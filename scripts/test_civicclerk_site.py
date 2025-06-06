@@ -7,7 +7,7 @@ import os
 @pytest.fixture
 def islamorada_api_response():
     # Load the provided JSON fixture from disk
-    fixture_path = r"D:\Github_repo_local\New_repo_civic_scraper\civic-scraper\tests\fixtures\scraped_events_api_Islamorada_fl.json"
+    fixture_path = r".\civic-scraper\tests\fixtures\scraped_events_api_Islamorada_fl.json"
     with open(fixture_path, encoding='utf-8') as f:
         data = json.load(f)
     # Remove empty/invalid event dicts (some trailing objects are empty)

@@ -42,19 +42,19 @@ except ImportError as e:
 TEST_URLS = {
     "type1": {
         "url": "https://cityofbradenton.granicus.com/ViewPublisher.php?view_id=1",
-        "panel": "City Council"
+        "panel": ["Planning Commission", "City Council"]
     },
     "type2": {
         "url": "https://marysvilleca.granicus.com/ViewPublisher.php?view_id=1",
-        "panel": "City Council"
+        "panel": ["Planning Commission", "City Council"]
     },
     "type3": {
         "url": "https://sacramento.granicus.com/viewpublisher.php?view_id=22",
-        "panel": "City Council"
+        "panel": ["City Council"]
     },
     "type4": {
         "url": "https://coralsprings.granicus.com/ViewPublisher.php?view_id=3",
-        "panel": "Coral Springs City Commission"
+        "panel": ["Coral Springs City Commission"]
     }
 }
 
@@ -131,64 +131,56 @@ def test_scrape_granicus_platform(url, panel_name):
         bool: True if successful, False otherwise
     """
     logger.info(f"Testing scrape_granicus_platform with URL: {url} (Panel: {panel_name})")
-    
     try:
-        # Call the main scraping function
-        scraper = GranicusSite(url)
+        # Pass committee_names as a list to GranicusSite
+        scraper = GranicusSite(url, committee_names=[panel_name] if panel_name else None)
         
         logger.info(f"Successfully tested scrape_granicus_platform for {url}")
-        return scraper.scrape(committee_name=panel_name) is not None
+        return scraper.scrape() is not None
     
     except Exception as e:
         logger.error(f"Error testing scrape_granicus_platform: {str(e)}")
         logger.debug(traceback.format_exc())
-        
+        return False
 
 def run_all_tests():
     """Run all scraper tests with their specific URLs."""
     results = {}
-    
-    # Test Type 1 Scraper
-    results["type1"] = test_specific_scraper(
-        GranicusType1Scraper,
-        TEST_URLS["type1"]["url"],
-        TEST_URLS["type1"]["panel"]
-    )
-    
-    # Test Type 2 Scraper
-    results["type2"] = test_specific_scraper(
-        GranicusType2Scraper,
-        TEST_URLS["type2"]["url"],
-        TEST_URLS["type2"]["panel"]
-    )
-    
-    # Test Type 3 Scraper
-    results["type3"] = test_specific_scraper(
-        GranicusType3Scraper,
-        TEST_URLS["type3"]["url"],
-        TEST_URLS["type3"]["panel"]
-    )
-    
-    # Test Type 4 Scraper
-    results["type4"] = test_specific_scraper(
-        GranicusType4Scraper,
-        TEST_URLS["type4"]["url"],
-        TEST_URLS["type4"]["panel"]
-    )
-    
+
+    # Test each panel for each type scraper
+    type_scrapers = [
+        ("type1", GranicusType1Scraper),
+        ("type2", GranicusType2Scraper),
+        ("type3", GranicusType3Scraper),
+        ("type4", GranicusType4Scraper),
+    ]
+    for type_name, scraper_cls in type_scrapers:
+        url = TEST_URLS[type_name]["url"]
+        panels = TEST_URLS[type_name]["panel"]
+        # Run test for each panel individually
+        panel_results = []
+        for panel in panels:
+            result = test_specific_scraper(scraper_cls, url, panel)
+            results[f"{type_name}_{panel}"] = result
+            panel_results.append(result)
+        # Overall type result is True if all panels pass (stricter, but more accurate)
+        results[type_name] = all(panel_results)
+
     # Test the main scrape_granicus_platform function with each URL
     for scraper_type, test_data in TEST_URLS.items():
+        # For platform, pass only the first panel (to match previous logic)
+        panel = test_data["panel"][0] if isinstance(test_data["panel"], list) else test_data["panel"]
         results[f"platform_{scraper_type}"] = test_scrape_granicus_platform(
             test_data["url"],
-            test_data["panel"]
+            panel
         )
-    
+
     # Print summary of results
     logger.info("Test Results Summary:")
     for test_name, result in results.items():
         status = "PASSED" if result else "FAILED"
         logger.info(f"  {test_name}: {status}")
-    
+
     # Return True if all tests passed
     return all(results.values())
 
