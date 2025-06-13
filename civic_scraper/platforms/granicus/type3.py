@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import re
+import html # For unescaping HTML entities in URLs
 import logging
 from .base import GranicusBaseScraper # Assuming base.py is in the same directory
 
@@ -162,40 +163,56 @@ class GranicusType3Scraper(GranicusBaseScraper):
         meeting_data['agenda_url'] = None
         meeting_data['minutes_url'] = None
         meeting_data['video_url'] = None
-        meeting_data['packet_url'] = None
-
-        # Prioritize links with specific text
+        meeting_data['packet_url'] = None        # Prioritize links with specific text
         for link_tag in all_links_in_row:
             href = self._normalize_url_local(link_tag.get('href', ''))
             link_text = link_tag.get_text(strip=True).lower()
             
-            # Video
-            if not meeting_data.get('video_url') and \
-               ('viewevent.php' in href.lower() or 'mediaplayer.php' in href.lower() or \
-                any(keyword in link_text for keyword in ['video', 'watch', 'media', 'view event', 'recording', 'live'])):
-                meeting_data['video_url'] = href
-                # Check for onclick for some video links
-                onclick_attr = link_tag.get('onclick')
-                if onclick_attr:
-                    url_match = re.search(r"window\.open\('([^']+)'", onclick_attr)
+            # Video - check for MediaPlayer URLs, onclick handlers, or video-related keywords
+            if not meeting_data.get('video_url'):
+                # Check for JavaScript onclick handlers (common in Sacramento-style sites)
+                onclick_attr = link_tag.get('onclick', '')
+                video_url_candidate = None
+                
+                if onclick_attr and 'mediaplayer.php' in onclick_attr.lower():
+                    # Extract URL from onclick="window.open('URL',...)"
+                    url_match = re.search(r"window\.open\s*\(\s*['\"]([^'\"]+)['\"].*?\)", onclick_attr)
                     if url_match:
-                        meeting_data['video_url'] = self._normalize_url_local(url_match.group(1))
+                        raw_onclick_url = url_match.group(1).strip()
+                        unescaped_onclick_url = html.unescape(raw_onclick_url)
+                        video_url_candidate = self._normalize_url_local(unescaped_onclick_url)
+                elif 'viewevent.php' in href.lower() or 'mediaplayer.php' in href.lower():
+                    video_url_candidate = href
+                elif any(keyword in link_text for keyword in ['video', 'watch', 'media', 'view event', 'recording', 'live']):
+                    video_url_candidate = href
+                
+                if video_url_candidate:
+                    meeting_data['video_url'] = video_url_candidate
 
-            # Packet
-            elif not meeting_data.get('packet_url') and \
-                 (any(keyword in link_text for keyword in ['packet', 'agenda packet'])):
-                meeting_data['packet_url'] = href
-            
-            # Agenda (ensure it's not packet or minutes)
-            elif not meeting_data.get('agenda_url') and \
-                 ('agenda' in link_text or 'agendaviewer.php' in href.lower()) and \
-                 not any(keyword in link_text for keyword in ['packet', 'minutes']):
-                meeting_data['agenda_url'] = href
+            # Audio - check for MP3, audio files, or audio-related keywords  
+            if not meeting_data.get('video_url'):  # Use video_url for audio files too
+                if (href and (href.lower().endswith('.mp3') or href.lower().endswith('.mp4') or 
+                              href.lower().endswith('.wav') or 'audio' in href.lower())) or \
+                   any(keyword in link_text for keyword in ['mp3', 'audio', 'sound', 'recording']):
+                    meeting_data['video_url'] = href
 
-            # Minutes
-            elif not meeting_data.get('minutes_url') and \
-                 ('minutes' in link_text or 'minutesviewer.php' in href.lower()):
-                meeting_data['minutes_url'] = href
+            # Agenda - check for AgendaViewer URLs or "agenda" text
+            if not meeting_data.get('agenda_url'):
+                if 'agendaviewer.php' in href.lower() or \
+                   (link_text == 'agenda' or 'agenda' in link_text) and \
+                   not any(keyword in link_text for keyword in ['packet', 'minutes']):
+                    meeting_data['agenda_url'] = href
+
+            # Minutes - check for MinutesViewer URLs or "minutes" text  
+            if not meeting_data.get('minutes_url'):
+                if 'minutesviewer.php' in href.lower() or \
+                   ('minutes' in link_text and 'agenda' not in link_text):
+                    meeting_data['minutes_url'] = href
+
+            # Packet - check for packet-related keywords
+            if not meeting_data.get('packet_url'):
+                if any(keyword in link_text for keyword in ['packet', 'agenda packet', 'supplemental']):
+                    meeting_data['packet_url'] = href
         
         # Fallback: If links are not clearly labeled, try to infer from column headers if available
         if headers_text and (not meeting_data['agenda_url'] or not meeting_data['minutes_url']):

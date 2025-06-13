@@ -20,17 +20,21 @@ TEST_URLS = {
         "url": "https://cityofbradenton.granicus.com/ViewPublisher.php?view_id=1",
         "panel": ["Planning Commission", "City Council"]
     },
+    "type1_alt": {
+        "url": "https://wake-forest.granicus.com/ViewPublisher.php?view_id=3",
+        "panel": ["Board of Commissioners", "Planning Board"]
+    },
     "type2": {
         "url": "https://marysvilleca.granicus.com/ViewPublisher.php?view_id=1",
         "panel": ["Planning Commission", "City Council", "Levee Commission"]
     },
     "type3": {
         "url": "https://sacramento.granicus.com/viewpublisher.php?view_id=22",
-        "panel": ["City Council"]
+        "panel": ["City Council"] # Type 3 is not expecting to give a panel, but can be used to filter results
     },
     "type3_alt": {
         "url": "https://rocklin-ca.granicus.com/ViewPublisher.php?view_id=1",
-        "panel": ["Civil Service Board", "Civil Service Commission"]
+        "panel": ["City Council"] # Type 3 is not expecting to give a panel, but can be used to filter results
     },
     "type4": {
         "url": "https://coralsprings.granicus.com/ViewPublisher.php?view_id=3",
@@ -39,7 +43,7 @@ TEST_URLS = {
 }
 
 # Select which test to run
-SELECTED_TEST = "type4"  # Options: type1, type2, type3, type3_alt, type4
+SELECTED_TEST = "type3_alt"  # Options: type1, type1_alt, type2, type3, type3_alt, type4
 
 # Get the selected test configuration
 if SELECTED_TEST not in TEST_URLS:
@@ -54,6 +58,8 @@ if "bradenton" in site_url:
     place, state = "Bradenton", "FL"
 elif "marysvilleca" in site_url:
     place, state = "Marysville", "CA"
+elif "wake-forest" in site_url:
+    place, state = "Wake-forest", "NC"
 elif "sacramento" in site_url:
     place, state = "Sacramento", "CA"
 elif "rocklin" in site_url:

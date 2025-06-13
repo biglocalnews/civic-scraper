@@ -194,11 +194,31 @@ class GranicusBaseScraper(ABC):
             clean_date_str = re.sub(r'\s*-\s*', ' ', clean_date_str) 
             clean_date_str = re.sub(r'\s+', ' ', clean_date_str)     
             
-            if not time_str: 
+            if not time_str:
                 time_in_date_match = re.search(r'(\d{1,2}(?:[:\.]\d{2})?\s*(?:AM|PM|am|pm)?)', clean_date_str) 
                 if time_in_date_match:
-                    time_str = time_in_date_match.group(1)
-                    clean_date_str = clean_date_str.replace(time_in_date_match.group(1), '').strip()
+                    potential_time = time_in_date_match.group(1).strip()
+                    # Ensure that the matched string is a plausible time (contains ':' or AM/PM)
+                    # and not just a number that could be a day of the month.
+                    # Day numbers are typically 1-31, so we need stricter validation
+                    has_time_separators = ':' in potential_time or '.' in potential_time
+                    has_ampm = re.search(r'(AM|PM)', potential_time, re.I)
+                    
+                    # Additional check: if it's just a 1-2 digit number without separators or AM/PM,
+                    # it's likely a day number, not a time
+                    is_likely_day_number = (
+                        not has_time_separators and 
+                        not has_ampm and 
+                        potential_time.isdigit() and 
+                        1 <= int(potential_time) <= 31
+                    )
+                    
+                    # Only treat as time if it has time indicators AND is not likely a day number
+                    if (has_time_separators or has_ampm) and not is_likely_day_number:
+                        time_str = potential_time
+                        # Only modify clean_date_str if a valid time was extracted
+                        clean_date_str = clean_date_str.replace(time_in_date_match.group(1), '', 1).strip()
+                    # else: potential_time was likely just a day number, do not treat as time or modify clean_date_str
             
             try:
                 import dateutil.parser

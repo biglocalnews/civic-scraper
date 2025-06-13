@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import re
+import html # For unescaping HTML entities in URLs
 import logging
 from .base import GranicusBaseScraper # Assuming base.py is in the same directory
 
@@ -153,10 +154,21 @@ class GranicusType1Scraper(GranicusBaseScraper):
             href = link_tag['href']
             link_text = link_tag.get_text(strip=True)
             # Common patterns for video links
-            if 'ViewEvent.php' in href or 'MediaPlayer.php' in href or \
+            if ('ViewEvent.php' in href or 'MediaPlayer.php' in href or \
                re.search(r'Video|Watch|Media|View Event', link_text, re.I) or \
-               (link_tag.find('img') and link_tag.find('img').get('alt', '').lower() in ['video', 'play video']):
-                meeting_data['video_url'] = href
+               (link_tag.find('img') and link_tag.find('img').get('alt', '').lower() in ['video', 'play video'])):
+                
+                video_url_candidate = href # Default to href
+                if href and href.lower().startswith('javascript:void(0)'):
+                    onclick_attr = link_tag.get('onclick')
+                    if onclick_attr:
+                        # Regex to capture URL from window.open('URL', ...) or window.open("URL", ...)
+                        url_match = re.search(r"window\.open\s*\(\s*['\"]([^'\"]+)['\"].*?\)", onclick_attr)
+                        if url_match:
+                            raw_onclick_url = url_match.group(1).strip()
+                            video_url_candidate = html.unescape(raw_onclick_url) # Use unescaped onclick URL
+                
+                meeting_data['video_url'] = video_url_candidate
                 break # Take the first likely video link
         
         # Packet (search all links for 'Packet')
@@ -178,4 +190,3 @@ class GranicusType1Scraper(GranicusBaseScraper):
             meeting_data['time'] = time_match.group(1)
         
         return meeting_data
-

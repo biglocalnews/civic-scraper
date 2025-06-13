@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import re
+import html # For unescaping HTML entities in URLs
 import logging
 from .base import GranicusBaseScraper # Assuming base.py is in the same directory
 
@@ -193,11 +194,20 @@ class GranicusType2Scraper(GranicusBaseScraper):
         for link_tag in all_links_in_row:
             href = link_tag['href']
             link_text = link_tag.get_text(strip=True).lower()
-            if 'viewevent.php' in href.lower() or \
+            if ('viewevent.php' in href.lower() or \
                'mediaplayer.php' in href.lower() or \
-               any(keyword in link_text for keyword in ['video', 'watch', 'media', 'view event', 'recording']):
-                meeting_data['video_url'] = href
-                break # Found video, assume one per row for now
+               any(keyword in link_text for keyword in ['video', 'watch', 'media', 'view event', 'recording'])):
+                
+                video_url_candidate = href # Default to href
+                if href and href.lower().startswith('javascript:void(0)'):
+                    onclick_attr = link_tag.get('onclick')
+                    if onclick_attr:
+                        url_match = re.search(r"window\.open\s*\(\s*['\"]([^'\"]+)['\"].*?\)", onclick_attr)
+                        if url_match:
+                            raw_onclick_url = url_match.group(1).strip()
+                            video_url_candidate = html.unescape(raw_onclick_url) # Use unescaped onclick URL
+                meeting_data['video_url'] = video_url_candidate
+                break 
 
         # Agenda Packet (usually contains "Packet")
         for link_tag in all_links_in_row:
@@ -250,4 +260,3 @@ class GranicusType2Scraper(GranicusBaseScraper):
                  meeting_data['agenda_url'] = None # Minutes is specific, agenda was likely the duplicate.
             else: # Both generic or both specific (unlikely for different types)
                  meeting_data['minutes_url'] = None # Default to clearing minutes if ambiguous and identical.
-

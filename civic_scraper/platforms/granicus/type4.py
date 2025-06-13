@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import re
+import html # For unescaping HTML entities in URLs
 import logging
 from datetime import datetime # For default year context if needed
 from .base import GranicusBaseScraper # Assuming base.py is in the same directory
@@ -248,4 +249,3 @@ class GranicusType4Scraper(GranicusBaseScraper):
                 logger.debug(f"Final check failed for list item {item_idx+1}, missing name or date after all attempts.")
                 
         return meetings
-
