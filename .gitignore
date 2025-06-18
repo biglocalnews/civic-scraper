@@ -11,4 +11,5 @@ _data/
 .vscode
 .eggs
 civic-scraper-env
+web_scap
 
