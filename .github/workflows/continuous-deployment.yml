@@ -54,7 +54,7 @@ jobs:
 
       - id: build
         name: Build
-        run: make test-docs
+        run: pipenv run make test-docs
 
       - id: save
         name: Save artifact
