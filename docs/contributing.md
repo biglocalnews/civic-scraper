@@ -145,13 +145,13 @@ When you're done making changes, you'll want to check that your changes pass lin
 7. Run style checks: 
    
    ```bash
-   pipenv flake8 civic_scraper tests
+   pipenv run flake8 civic_scraper tests
    ```
 
 8. Run tests: 
 
    ```bash
-   pytest
+   pipenv run pytest
    ```
 
 9. Commit your changes and push your branch to GitHub:
