@@ -142,7 +142,7 @@ Note: While there are many ways to setup a virtual environment in Python, we rec
 
 When you're done making changes, you'll want to check that your changes pass linting requirements (using flake8) and the tests, including testing other Python versions (using tox).
 
-7. Run style checks: 
+7. Run style checks on everything in `civic_scraper/` and `tests/`: 
    
    ```bash
    pipenv run flake8 civic_scraper tests
