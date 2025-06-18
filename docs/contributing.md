@@ -69,7 +69,7 @@ Look through the GitHub issues for features. Anything tagged with "enhancement" 
 
 Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` for local development. 
 
-Note: While there are many ways to setup a virtual environment in Python, we reccomend using Pipenv in order to keep your setup aligned with the continuous deplyment configuration.
+Note: While there are many ways to setup a virtual environment in Python, we recommend using Pipenv in order to keep your setup aligned with the continuous deployment configuration.
 
 ### Fork and clone the `civic-scraper` repo 
 
@@ -96,7 +96,7 @@ Note: While there are many ways to setup a virtual environment in Python, we rec
    pip install pipenv
    ```
 
-   Or, if you use Homebrew (reccomended):
+   Or, if you use Homebrew (recommended):
 
    ```bash
    brew install pipx
