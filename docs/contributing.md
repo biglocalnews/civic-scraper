@@ -154,7 +154,7 @@ When you're done making changes, you'll want to check that your changes pass lin
    pytest
    ```
 
-6. Commit your changes and push your branch to GitHub:
+9. Commit your changes and push your branch to GitHub:
 
    ```
    $ git add .
@@ -162,7 +162,7 @@ When you're done making changes, you'll want to check that your changes pass lin
    $ git push origin name-of-your-bugfix-or-feature
    ```
 
-7. Submit a pull request through the GitHub website.
+10. Submit a pull request through the GitHub website.
 
 
 ## Pull Request Guidelines
@@ -178,4 +178,3 @@ Before you submit a pull request, check that it meets these guidelines:
    and make sure that the tests pass for all supported Python versions.
 
 [official docs]: https://civic-scraper.readthedocs.io/en/latest/?badge=latest
-[venv]: https://docs.python.org/3/library/venv.html
