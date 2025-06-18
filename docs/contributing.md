@@ -46,12 +46,12 @@ civic-scraper could always use more documentation, whether as part of the
 official civic-scraper docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
-Our [official docs] use reStructuredText and Sphinx. To contribute documentation without completing the full repo setup (only required for code logic contributions):
+Our [official docs] use reStructuredText and Sphinx. To contribute documentation without completing the full repo setup (only required for code logic):
 
 1. Fork and clone this repo
 2. Create a simple virtual environment: `python3.10 -m venv civic-scraper-env` 
 3. Activate your new virtual env: `source civic-scraper-env/bin/activate`
-4. Install requirements for documentation: `pip install -r requirements-docs.txt`
+4. Install requirements for documentation: `pip install -r docs/requirements.txt`
 5. Create a branch for your doc updates and start writing!
    - Use `make serve-docs` command to run a Sphinx server locally that displays doc pages and allows auto reloading of pages in browser when changes are made to a file.
 6. Create a GitHub Pull Request once you're ready to send us your changes
