@@ -63,8 +63,7 @@ and "help wanted" is open to whoever wants to implement it. Follow the Get Start
 
 ### Implement Features
 
-Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it. Follow the Get Started instructions below to get your local environment setup.
+Look through the GitHub issues for features. Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it. Follow the Get Started instructions below to get your local environment setup.
 
 ## Get Started!
 
