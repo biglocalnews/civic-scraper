@@ -83,14 +83,14 @@ jobs:
           python-version: ${{ matrix.python }}
           cache: "pipenv"
       
-      - name: Clean pipenv environment
-        run: pipenv --rm || true
-      
       - id: pipenv-install
         name: Install Python dependencies
         run: |
           pipenv install --dev --python `which python`
 
+      - name: List installed packages
+        run: pipenv run pip freeze
+      
       - id: run
         name: Run tests
         run: pipenv run pytest -sv
