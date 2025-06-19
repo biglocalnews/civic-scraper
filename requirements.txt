@@ -1,7 +1,0 @@
-bs4
-click
-click-option-group
-feedparser
-requests
-scraper-legistar
-demjson3

@@ -3,6 +3,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[requires]
+python_version = "3.9"
+
 [packages]
 bs4 = "*"
 click = "*"
@@ -25,7 +28,6 @@ vcrpy = "*"
 argh = "*"
 twine = "*"
 typing-extensions = "*"
-sphinxcontrib-napoleon = "*"
 
 [dev-packages]
 bumpversion = "*"
@@ -45,6 +47,6 @@ myst-parser = "*"
 sphinx-autobuild = "*"
 black = "*"
 setuptools-scm = "*"
-sphinxcontrib-napoleon = "*"
 pytz = "*"
 sphinx = "*"
+exceptiongroup = "*"

@@ -22,15 +22,16 @@ If you are reporting a bug, please include:
 - Any details about your local setup that might be helpful in troubleshooting.
 - Detailed steps to reproduce the bug.
 
-### Fix Bugs
+### Submit Feedback
 
-Look through the GitHub issues for bugs. Anything tagged with "bug"
-and "help wanted" is open to whoever wants to implement it.
+The best way to send feedback is to file an issue at <https://github.com/biglocalnews/civic-scraper/issues>.
 
-### Implement Features
+If you are proposing a feature:
 
-Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
+- Explain in detail how it would work.
+- Keep the scope as narrow as possible, to make it easier to implement.
+- Remember that this is a volunteer-driven project, and that contributions
+  are welcome :)
 
 ### Do Research
 
@@ -45,30 +46,32 @@ civic-scraper could always use more documentation, whether as part of the
 official civic-scraper docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
-Our [official docs] use restructuredText and Sphinx. To contribute documentation:
+Our [official docs] use reStructuredText and Sphinx. To contribute documentation without completing the full repo setup (only required for code logic):
 
-- Fork and clone this repo
-- Create a virtual environment and perform the next steps inside an active venv
-- `pip install -r requirements.txt` and `pip install -r requirements-dev.txt`
-- Create a branch for your doc updates and start writing!
-- Use `make docs` to build docs and/or use `make servedocs` commands to run a
-  Sphinx server that displays doc pages and allows easier reloading of pages in browser
-- Create a GitHub Pull Request once you're ready to send us your changes
+1. Fork and clone this repo
+2. Create a simple virtual environment: `python3.10 -m venv civic-scraper-env` 
+3. Activate your new virtual env: `source civic-scraper-env/bin/activate`
+4. Install requirements for documentation: `pip install -r docs/requirements.txt`
+5. Create a branch for your doc updates and start writing!
+   - Use `make serve-docs` command to run a Sphinx server locally that displays doc pages and allows auto reloading of pages in browser when changes are made to a file.
+6. Create a GitHub Pull Request once you're ready to send us your changes
 
-### Submit Feedback
+### Fix Bugs
 
-The best way to send feedback is to file an issue at <https://github.com/biglocalnews/civic-scraper/issues>.
+Look through the GitHub issues for bugs. Anything tagged with "bug"
+and "help wanted" is open to whoever wants to implement it. Follow the Get Started instructions below to get your local environment setup.
 
-If you are proposing a feature:
+### Implement Features
 
-- Explain in detail how it would work.
-- Keep the scope as narrow as possible, to make it easier to implement.
-- Remember that this is a volunteer-driven project, and that contributions
-  are welcome :)
+Look through the GitHub issues for features. Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it. Follow the Get Started instructions below to get your local environment setup.
 
 ## Get Started!
 
-Ready to contribute? Here's how to set up `civic-scraper` for local development.
+Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` for local development. 
+
+Note: While there are many ways to setup a virtual environment in Python, we recommend using Pipenv in order to keep your setup aligned with the continuous deployment configuration.
+
+### Fork and clone the `civic-scraper` repo 
 
 1. Fork the `civic-scraper` repo on GitHub.
 
@@ -78,43 +81,85 @@ Ready to contribute? Here's how to set up `civic-scraper` for local development.
    $ git clone git@github.com:your_name_here/civic-scraper.git
    ```
 
-3. Install developement dependencies and your local copy of the code
-   into a virtualenv and set up your fork for local development.
-   There are numerous ways to create virtual environments in Python.
-   Below uses the [venv] library built into recent Python versions:
+### Prep your development environment 
 
-   ```
-   # Create a virtual env alongside the civic-scraper git repo
-   python -m venv civic-scraper-env
+3. Make sure you have Python 3.10 installed: 
+    - You can check this by running:
 
-   # Activate the virtual env
-   source civic-scraper-env/bin/activate
+    ```bash
+    python3 --version
+    ```
 
-   # Install dev requirements and the Python package into the venv
-   cd civic-scraper/
-   pip install -r requirements-dev.txt
-   python setup.py develop
+4. Install `pipenv` (if you don't have it already):
+
+   ```bash
+   pip install pipenv
    ```
 
-4. Create a branch for local development:
+   Or, if you use Homebrew (recommended):
+
+   ```bash
+   brew install pipx
+   pipx install pipenv
+   ```
+
+### Create your virtual environment & install dependencies
+
+5. In the root of the project directory, run
+
+   ```bash
+   pipenv install --dev
+   ```
+
+💡 Pro Tips
+
+- If you ever get weird errors when setting up your virtual environment, try removing and recreating it: 
+
+   ```bash
+   pipenv --rm
+   pipenv install --dev
+   ```
+- To install a new package:
+
+   ```bash
+   pipenv install package-name
+   ```
+
+   - Add `--dev` to the above if the new package is just for development (like pytest)
+
+## Making changes 
+
+6. Create a branch for local development on your fork:
 
    ```
    $ git checkout -b name-of-your-bugfix-or-feature
    ```
 
-   Now you can make your changes locally.
+7. Make your changes and be sure to add/update tests!
 
-5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox:
+### Check your changes
 
+When you're done making changes, you'll want to check that your changes pass linting requirements (using flake8) and the tests, including testing other Python versions (using tox).
+
+7. Run style checks on everything in `civic_scraper/` and `tests/`: 
+   
+   ```bash
+   pipenv run flake8 civic_scraper tests
    ```
-   $ flake8 civic_scraper tests
-   $ py.test
-   $ tox
+
+8. Run tests: 
+
+   ```bash
+   pipenv run pytest
    ```
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+9. Check formatting using
 
-6. Commit your changes and push your branch to GitHub:
+   ```bash
+   pipenv run flake8
+   ```
+
+10. Commit your changes and push your branch to GitHub:
 
    ```
    $ git add .
@@ -122,7 +167,8 @@ Ready to contribute? Here's how to set up `civic-scraper` for local development.
    $ git push origin name-of-your-bugfix-or-feature
    ```
 
-7. Submit a pull request through the GitHub website.
+11. Submit a pull request through the GitHub website.
+
 
 ## Pull Request Guidelines
 
@@ -132,9 +178,8 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, please be sure to review the docs
    and include necessary updates. For example, new classes, methods
    and functions should be documented.
-3. The pull request should work for Python version 3.6 or higher. Check
+3. The pull request should work for Python version 3.8 or higher. Check
    <https://travis-ci.com/github/biglocalnews/civic-scraper/pull_requests>
    and make sure that the tests pass for all supported Python versions.
 
 [official docs]: https://civic-scraper.readthedocs.io/en/latest/?badge=latest
-[venv]: https://docs.python.org/3/library/venv.html
