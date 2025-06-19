@@ -49,7 +49,7 @@ articles, and such.
 Our [official docs] use reStructuredText and Sphinx. To contribute documentation without completing the full repo setup (only required for code logic):
 
 1. Fork and clone this repo
-2. Create a simple virtual environment: `python3.9 -m venv civic-scraper-env` 
+2. Create a simple virtual environment: `python3 -m venv civic-scraper-env` 
 3. Activate your new virtual env: `source civic-scraper-env/bin/activate`
 4. Install requirements for documentation: `pip install -r docs/requirements.txt`
 5. Create a branch for your doc updates and start writing!

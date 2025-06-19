@@ -4,3 +4,5 @@ myst-parser==3.0.1
 demjson3==3.0.6
 lxml==5.4.0
 beautifulsoup4==4.13.4
+sphinxcontrib-napoleon
+sphinx_rtd_theme
