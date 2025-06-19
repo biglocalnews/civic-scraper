@@ -75,6 +75,9 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
 
+      - name: Clean pipenv environment
+        run: pipenv --rm || true
+
       - name: Install pipenv
         run: pipx install pipenv
 
@@ -87,7 +90,6 @@ jobs:
         name: Install Python dependencies
         run: |
           pipenv install --dev --python `which python`
-          pipenv run pip install exceptiongroup
 
       - id: run
         name: Run tests
