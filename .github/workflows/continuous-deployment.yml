@@ -83,10 +83,14 @@ jobs:
           python-version: ${{ matrix.python }}
           cache: "pipenv"
       
+      - name: Show Python path and version
+        run: |
+          echo "Python path: $(which python)"
+          python --version
+
       - id: pipenv-install
         name: Install Python dependencies
-        run: |
-          pipenv --python $(which python) install --dev
+        run: pipenv --python $(which python) install --dev
 
       - name: List installed packages
         run: pipenv run pip freeze
