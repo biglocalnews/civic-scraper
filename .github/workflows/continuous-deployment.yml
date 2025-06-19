@@ -86,7 +86,7 @@ jobs:
       - id: pipenv-install
         name: Install Python dependencies
         run: |
-          pipenv install --dev --python `which python`
+          pipenv --python $(which python) install --dev
 
       - name: List installed packages
         run: pipenv run pip freeze
