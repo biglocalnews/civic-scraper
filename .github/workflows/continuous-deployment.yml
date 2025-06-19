@@ -33,28 +33,20 @@ jobs:
     name: Test Sphinx build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install pipenv
-        run: pipx install pipenv
-
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.9"
-          cache: "pipenv"
 
-      - id: pipenv-install
-        name: Install Python dependencies
-        run: pipenv install --dev --python `which python`
-
-      - id: typing-ext-install
-        name: Install Python dependencies
-        run: pipenv install --dev --python `which python` typing-extensions
+      - name: Install requirements
+        run: pip install -r docs/requirements.txt 
 
       - id: build
-        name: Build
-        run: pipenv run make test-docs
+        name: Build documentation
+        run: make test-docs
 
       - id: save
         name: Save artifact
