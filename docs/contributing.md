@@ -151,7 +151,7 @@ When you're done making changes, you'll want to check that your changes pass lin
 
    ```bash
    pipenv run pytest
-  ```
+   ```
 
 9. Check formatting using
 
