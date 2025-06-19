@@ -46,7 +46,7 @@ jobs:
 
       - id: build
         name: Build documentation
-        run: make test-docs
+        run: cd docs && make html
 
       - id: save
         name: Save artifact
