@@ -75,9 +75,6 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
 
-      - name: Clean pipenv environment
-        run: pipenv --rm || true
-
       - name: Install pipenv
         run: pipx install pipenv
 
@@ -85,7 +82,10 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           cache: "pipenv"
-
+      
+      - name: Clean pipenv environment
+        run: pipenv --rm || true
+      
       - id: pipenv-install
         name: Install Python dependencies
         run: |
