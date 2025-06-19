@@ -151,9 +151,15 @@ When you're done making changes, you'll want to check that your changes pass lin
 
    ```bash
    pipenv run pytest
+  ```
+
+9. Check formatting using
+
+   ```bash
+   pipenv run flake8
    ```
 
-9. Commit your changes and push your branch to GitHub:
+10. Commit your changes and push your branch to GitHub:
 
    ```
    $ git add .
@@ -161,7 +167,7 @@ When you're done making changes, you'll want to check that your changes pass lin
    $ git push origin name-of-your-bugfix-or-feature
    ```
 
-10. Submit a pull request through the GitHub website.
+11. Submit a pull request through the GitHub website.
 
 
 ## Pull Request Guidelines

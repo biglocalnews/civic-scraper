@@ -7,8 +7,8 @@ import pytz
 from civic_scraper.base.cache import Cache
 from civic_scraper.platforms import LegistarSite
 
-# TODO: Bring back tests (remove skip decorator) when python-lesistar-scraper is resolved.
 
+# TODO: Bring back tests (remove skip decorator) when python-lesistar-scraper is resolved.
 @pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
 def test_scrape_defaults():
@@ -117,6 +117,7 @@ def test_scrape_download_filter_size(tmpdir):
     actual_files = [f.basename for f in target_dir.listdir()]
     expected = ["legistar_nashville_922861_minutes.pdf"]
     assert actual_files == expected
+
 
 @pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
