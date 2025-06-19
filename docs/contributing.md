@@ -49,7 +49,7 @@ articles, and such.
 Our [official docs] use reStructuredText and Sphinx. To contribute documentation without completing the full repo setup (only required for code logic):
 
 1. Fork and clone this repo
-2. Create a simple virtual environment: `python3.10 -m venv civic-scraper-env` 
+2. Create a simple virtual environment: `python3.9 -m venv civic-scraper-env` 
 3. Activate your new virtual env: `source civic-scraper-env/bin/activate`
 4. Install requirements for documentation: `pip install -r docs/requirements.txt`
 5. Create a branch for your doc updates and start writing!
@@ -83,7 +83,7 @@ Note: While there are many ways to setup a virtual environment in Python, we rec
 
 ### Prep your development environment 
 
-3. Make sure you have Python 3.10 installed: 
+3. Make sure you have Python 3.9 installed: 
     - You can check this by running:
 
     ```bash
@@ -178,7 +178,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, please be sure to review the docs
    and include necessary updates. For example, new classes, methods
    and functions should be documented.
-3. The pull request should work for Python version 3.8 or higher. Check
+3. The pull request should work for Python version 3.9 or higher. Check
    <https://travis-ci.com/github/biglocalnews/civic-scraper/pull_requests>
    and make sure that the tests pass for all supported Python versions.
 
