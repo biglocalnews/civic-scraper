@@ -14,7 +14,8 @@ from .civic_plus.site import Site as CivicPlusSite
 from .granicus.site import GranicusSite
 from .legistar.site import Site as LegistarSite
 from .boarddocs.site import Site as BoardDocsSite
-
+# from .simbli.site import SimbliSite
+from .icompass.site import ICompassSite
 
 try:
     from .primegov.site import  PrimeGovSite
