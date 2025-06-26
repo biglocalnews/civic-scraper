@@ -64,7 +64,7 @@ print("-"*60)
 site = ICompassSite(site_url, cache=Cache('/tmp/cache'), place=place, state_or_province=state, committee_names=committees)
 
 print("Starting scrape...")
-assets: AssetCollection = site.scrape(start_date = '2025-01-01')
+assets: AssetCollection = site.scrape(start_date = '2024-01-01')
 print("-"*60)
 
 # Save assets to JSON

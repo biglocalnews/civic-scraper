@@ -79,6 +79,10 @@ class ICompassSite(base.Site):
             committee_links = [cl for cl in committee_links if cl[0] in self.committee_names]
         assets = AssetCollection()
         scraped_by = f"civic-scraper_{__version__}"
+        # parse start/end date filters
+        start_date_obj = datetime.fromisoformat(start_date).date() if start_date else None
+        end_date_obj = datetime.fromisoformat(end_date).date() if end_date else None
+
         # Iterate through committees and meetings
         for name, com_url in committee_links:
             print(f"[INFO] Starting scrape for committee: {name}")
@@ -113,6 +117,15 @@ class ICompassSite(base.Site):
                     print(f"[WARNING] Could not fetch date for {info_url}: {e}")
 
                 meeting_id = f"icompass-{self.place}-{m['meeting_id']}"
+                # filter by date if provided
+                if meeting_date:
+                    if start_date_obj and meeting_date < start_date_obj:
+                        print(f"[INFO] Skipping meeting {meeting_id} before start_date {start_date}")
+                        continue
+                    if end_date_obj and meeting_date > end_date_obj:
+                        print(f"[INFO] Skipping meeting {meeting_id} after end_date {end_date}")
+                        continue
+
                 asset = Asset(
                     url=info_url,
                     asset_name=m.get('name'),
