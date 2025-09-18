@@ -16,7 +16,8 @@ from .legistar.site import Site as LegistarSite
 from .boarddocs.site import Site as BoardDocsSite
 # from .simbli.site import SimbliSite
 from .icompass.site import ICompassSite
-from .escribe.site import EscribeSite 
+from .escribe.site import EscribeSite
+from .onbase.site import OnBaseSite
 
 try:
     from .primegov.site import  PrimeGovSite
