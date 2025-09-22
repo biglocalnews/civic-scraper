@@ -20,6 +20,10 @@ TEST_URLS = {
         "url": "https://cityofbradenton.granicus.com/ViewPublisher.php?view_id=1",
         "panel": ["Planning Commission", "City Council"]
     },
+    "type1_new": {
+        "url": "https://mooresvillenc.granicus.com/ViewPublisher.php?view_id=1",
+        "panel": ["Board of Commissioners"]
+    },
     "type1_alt": {
         "url": "https://wake-forest.granicus.com/ViewPublisher.php?view_id=3",
         "panel": ["Board of Commissioners", "Planning Board"]
@@ -36,14 +40,30 @@ TEST_URLS = {
         "url": "https://rocklin-ca.granicus.com/ViewPublisher.php?view_id=1",
         "panel": ["City Council"] # Type 3 is not expecting to give a panel, but can be used to filter results
     },
+    "type3_new": {
+        "url": "https://townofsurfsidefl.granicus.com/ViewPublisher.php?view_id=6",
+        "panel": ["Town Commission"] # Type 3 is not expecting to give a panel, but can be used to filter results
+    },
+    "type3_type5_fallback": {
+        "url": "https://horrycounty.granicus.com/ViewPublisher.php?view_id=7",
+        "panel": ["County Council","Planning Commission","Public Safety Committee"],
+    },
     "type4": {
         "url": "https://coralsprings.granicus.com/ViewPublisher.php?view_id=3",
         "panel": ["Coral Springs City Commission","Development Review Committee"]
+    },
+    "type5": {
+        "url": "https://sarasotacounty.granicus.com/ViewPublisher.php?view_id=51",
+        "panel": ["County Commissioners"]
+    },
+    "type3_pismo": {
+        "url": "https://pismobeach.granicus.com/ViewPublisher.php?view_id=8",
+        "panel": ["City Council"]
     }
 }
 
 # Select which test to run
-SELECTED_TEST = "type3_alt"  # Options: type1, type1_alt, type2, type3, type3_alt, type4
+SELECTED_TEST = "type3_pismo"  # Options: type1, type1_alt, type2, type3, type3_alt, type4
 
 # Get the selected test configuration
 if SELECTED_TEST not in TEST_URLS:
@@ -56,6 +76,12 @@ committees = test_config["panel"]
 # Extract site details for configuration
 if "bradenton" in site_url:
     place, state = "Bradenton", "FL"
+elif "mooresvillenc" in site_url:
+    place, state = "Mooresville", "NC"
+elif "sarasotacounty" in site_url:
+    place, state = "Sarasota", "FL"
+elif "surfsidefl" in site_url:
+    place, state = "Surfside", "FL"
 elif "marysvilleca" in site_url:
     place, state = "Marysville", "CA"
 elif "wake-forest" in site_url:
@@ -66,6 +92,10 @@ elif "rocklin" in site_url:
     place, state = "Rocklin", "CA"
 elif "coralsprings" in site_url:
     place, state = "Coral Springs", "FL"
+elif "horrycounty" in site_url:
+    place, state = "Horry County", "SC"
+elif "pismobeach" in site_url:
+    place, state = "Pismo Beach", "FL"
 else:
     place, state = "Unknown", "Unknown"
 

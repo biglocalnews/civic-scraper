@@ -14,7 +14,7 @@ from civic_scraper.base.cache import Cache
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def main():
-    config_path = os.path.join(os.path.dirname(__file__), 'test_config.json')
+    config_path = os.path.join(os.path.dirname(__file__), 'test_config_copy.json')
     with open(config_path, 'r') as f:
         config = json.load(f)
 

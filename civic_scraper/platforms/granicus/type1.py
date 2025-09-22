@@ -110,10 +110,29 @@ class GranicusType1Scraper(GranicusBaseScraper):
             return None
         
         meeting_data = {}
-        # Name is usually in the first cell
-        meeting_data['name'] = cells[0].get_text(separator=' ', strip=True).replace('\xa0', ' ')
-        # Date is usually in the second cell
-        meeting_data['date'] = cells[1].get_text(strip=True).replace('\xa0', ' ')
+        # Base extraction
+        name_cell_text = cells[0].get_text(separator=' ', strip=True).replace('\xa0', ' ')
+        date_cell_text = cells[1].get_text(strip=True).replace('\xa0', ' ')
+
+        meeting_data['name'] = name_cell_text
+        meeting_data['date'] = date_cell_text
+
+        # Heuristic: Some tables shift so that the real date is stored in the name cell and
+        # the 'date' cell starts the asset columns (showing words like 'Agenda', 'Minutes', or is blank).
+        # Detect if date cell is NOT a date but looks like an asset label. If so, treat name cell as date
+        # and keep meeting name as the date string (handled later by recovery logic in base).
+        non_date_tokens = {"agenda", "minutes", "video", "packet", "agenda packet"}
+        looks_like_date = bool(re.search(r'[0-9]{4}|\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b', date_cell_text, re.I)) and any(ch.isdigit() for ch in date_cell_text)
+        if not looks_like_date:
+            token_lower = date_cell_text.strip().lower()
+            if token_lower in non_date_tokens or token_lower == '' or token_lower == '—':
+                meeting_data['suspected_column_shift'] = True
+                # In these cases, the date will be parsed from 'name' via fallback. Mark date as placeholder.
+                meeting_data['date'] = token_lower if token_lower else 'Agenda'  # preserve token for logging
+            else:
+                meeting_data['suspected_column_shift'] = False
+        else:
+            meeting_data['suspected_column_shift'] = False
         
         # Try to get a source for meeting_id (e.g. clip_id, event_id)
         meeting_id_source = ""
@@ -131,20 +150,28 @@ class GranicusType1Scraper(GranicusBaseScraper):
         # Link extraction: Agenda, Minutes, Video, Packet
         # This needs to be flexible as column order and link text vary.
         
-        # Agenda (often in cell 2 or by text 'Agenda')
-        if len(cells) > 2: # Cell index 2
-            agenda_cell_content = cells[2]
+        # Decide starting index for asset columns. If a shift is suspected, assets begin at cell 1.
+        # Normal layout: [0]=Name, [1]=Date, [2]=Agenda, [3]=Minutes, [4]=Video, [5]=Packet
+        # Shifted layout: [0]=Date (stored as name), [1]=Agenda, [2]=Minutes, etc.
+        asset_start_index = 2
+        if meeting_data.get('suspected_column_shift'):
+            asset_start_index = 1
+
+        # Agenda column
+        if len(cells) > asset_start_index:
+            agenda_cell_content = cells[asset_start_index]
             agenda_link_tag = agenda_cell_content.find('a', href=True, text=re.compile(r'Agenda', re.I))
-            if not agenda_link_tag: # If no text match, assume link in cell 2 is agenda if it's a link
+            if not agenda_link_tag:
                 agenda_link_tag = agenda_cell_content.find('a', href=True)
             if agenda_link_tag:
                 meeting_data['agenda_url'] = agenda_link_tag['href']
-        
-        # Minutes (often in cell 3 or by text 'Minutes')
-        if len(cells) > 3: # Cell index 3
-            minutes_cell_content = cells[3]
+
+        # Minutes column
+        minutes_index = asset_start_index + 1
+        if len(cells) > minutes_index:
+            minutes_cell_content = cells[minutes_index]
             minutes_link_tag = minutes_cell_content.find('a', href=True, text=re.compile(r'Minutes', re.I))
-            if not minutes_link_tag: # If no text match, assume link in cell 3 is minutes if it's a link
+            if not minutes_link_tag:
                 minutes_link_tag = minutes_cell_content.find('a', href=True)
             if minutes_link_tag:
                 meeting_data['minutes_url'] = minutes_link_tag['href']
