@@ -71,9 +71,9 @@ class MunicodeSite(base.Site):
             "response": lambda r, *args, **kwargs: r.raise_for_status()
         }
 
-    def get_site_raw_data(self, url):
+    def get_site_raw_data(self):
         try:
-            response = requests.get(url, headers=HEADERS, timeout=10)
+            response = requests.get(self.url, headers=HEADERS, timeout=10)
             response.raise_for_status()
             return response
         except requests.RequestException as e:
@@ -240,7 +240,7 @@ class MunicodeSite(base.Site):
             """Fetch and parse meeting data from a given Municode Meetings URL."""
             logger.info(f"Fetching data from: {url}")
 
-            response=self.get_site_raw_data(url)
+            response=self.get_site_raw_data()
 
             try:
                 
@@ -401,6 +401,28 @@ class MunicodeSite(base.Site):
                 
             
         return assets
+    
+    def scrape(self, start_date=None, end_date=None):
+        if is_new_pattern_url(url):
+            # Use new logic
+            response = site.get_site_raw_data(url)
+            outer_html = site.get_particular_outer_html(response, "div", "view-content")
+            if not outer_html:
+                print("No 'view-content' found, skipping.")
+                return None
+            meeting_data = site.parse_meetings(outer_html, base_url=url)
+            meeting_data = site.normalize_output_format(meeting_data)
+            print(f"Found {len(meeting_data)} meetings (new style).")
+            return meeting_data
+        else:
+            # Use classic logic
+            meeting_info = site.fetch_meeting_data(url)
+            print(f"Found {len(meeting_info)} meetings (classic style).")
+            assets = site.build_asset_data(meeting_info, place=site.place, state_or_province=site.state_or_province)
+            print(f"Extracted {len(assets)} assets.")
+            return assets
+
+
 
 def is_new_pattern_url(url):
     # Add all new-style domains here

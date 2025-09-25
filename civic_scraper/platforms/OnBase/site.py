@@ -58,15 +58,15 @@ class OnBaseSite(base.Site):
                 asset = self.create_asset(meeting, asset_name, asset_url)
                 ac.append(asset)
 
-        if download and len(ac) > 0:
-            asset_dir = Path(self.cache.path, "assets")
-            asset_dir.mkdir(parents=True, exist_ok=True)
-            for asset in ac:
-                if asset.url:
-                    # Optionally set a default content_type if None
-                    if asset.content_type is None:
-                        asset.content_type = "application/octet-stream"
-                    asset.download(target_dir=str(asset_dir), session=self.session)
+        # if download and len(ac) > 0:
+        #     asset_dir = Path(self.cache.path, "assets")
+        #     asset_dir.mkdir(parents=True, exist_ok=True)
+        #     for asset in ac:
+        #         if asset.url:
+        #             # Optionally set a default content_type if None
+        #             if asset.content_type is None:
+        #                 asset.content_type = "application/octet-stream"
+        #             asset.download(target_dir=str(asset_dir), session=self.session)
 
         return ac
 
@@ -149,17 +149,17 @@ class OnBaseSite(base.Site):
         }
         return Asset(**asset_data)
 
-if __name__ == "__main__":
-    urls = [
-        "https://agendaonline.mymanatee.org/OnBaseAgendaOnline/Meetings/Search?dropid=11&mtids=107&dropsv=01%2F01%2F2021%2000%3A00%3A00&dropev=01%2F01%2F2040%2000%3A00%3A00",
-        "https://www.modestogov.com/749/City-Council-Agendas-Minutes",
-        "https://meetings.cob.org/",
-        "https://boccmeetings.jocogov.org/onbaseagendaonline",
-        "https://agendaonline.mymanatee.org/OnBaseAgendaOnline/",
-        "https://meetings.cityofwestsacramento.org/OnBaseAgendaOnline",
-    ]
-    import json
-    for url in urls:
-        site = OnBaseSite(url)
-        ac = site.scrape()
-        print(ac)
+# if __name__ == "__main__":
+#     urls = [
+#         "https://agendaonline.mymanatee.org/OnBaseAgendaOnline/Meetings/Search?dropid=11&mtids=107&dropsv=01%2F01%2F2021%2000%3A00%3A00&dropev=01%2F01%2F2040%2000%3A00%3A00",
+#         "https://www.modestogov.com/749/City-Council-Agendas-Minutes",
+#         "https://meetings.cob.org/",
+#         "https://boccmeetings.jocogov.org/onbaseagendaonline",
+#         "https://agendaonline.mymanatee.org/OnBaseAgendaOnline/",
+#         "https://meetings.cityofwestsacramento.org/OnBaseAgendaOnline",
+#     ]
+#     import json
+#     for url in urls:
+#         site = OnBaseSite(url)
+#         ac = site.scrape()
+#         print(ac)
