@@ -5,7 +5,7 @@ import logging
 import requests
 from datetime import datetime, date
 from pathlib import Path
-from urllib.parse import urlparse, urljoin, quote # Added quote for URL encoding
+from urllib.parse import urlparse, urljoin, quote  # Added quote for URL encoding
 
 import lxml.html
 from bs4 import BeautifulSoup
@@ -20,6 +20,7 @@ from civic_scraper.base.cache import Cache
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def extract_place_and_state_from_url(url):
     """
     Extracts the place and state from a CivicClerk URL.
@@ -31,16 +32,17 @@ def extract_place_and_state_from_url(url):
     """
     from urllib.parse import urlparse
     import re
+
     netloc = urlparse(url).netloc
     # Remove subdomains like 'www.'
-    netloc = netloc.replace('www.', '')
+    netloc = netloc.replace("www.", "")
     # Remove .portal. or .civicclerk.com
-    if '.portal.' in netloc:
-        sub = netloc.split('.portal.')[0]
+    if ".portal." in netloc:
+        sub = netloc.split(".portal.")[0]
     else:
-        sub = netloc.split('.civicclerk.com')[0]
+        sub = netloc.split(".civicclerk.com")[0]
     # Remove trailing slashes
-    sub = sub.strip('/')
+    sub = sub.strip("/")
     # Extract place and state (last 2 letters are state)
     m = re.match(r"([a-zA-Z]+)([a-zA-Z]{2})$", sub)
     if m:
@@ -48,7 +50,8 @@ def extract_place_and_state_from_url(url):
         state = m.group(2)
         return place.lower(), state.lower()
     # fallback: just return sub, ''
-    return sub.lower(), ''
+    return sub.lower(), ""
+
 
 class CivicClerkSite(base.Site):
     def __init__(self, url, cache=Cache()):
@@ -67,7 +70,7 @@ class CivicClerkSite(base.Site):
 
     def get_api_base(self):
         """Return the CivicClerk API base URL for events."""
-        site_url = self.initial_url.rstrip('/')
+        site_url = self.initial_url.rstrip("/")
         if ".portal." in site_url:
             domain = site_url.split(".portal.")[0].replace("https://", "")
         else:
@@ -84,7 +87,7 @@ class CivicClerkSite(base.Site):
             params = {
                 "$orderby": "startDateTime asc, eventName asc",
                 "$top": PAGE_SIZE,
-                "$skip": skip
+                "$skip": skip,
             }
             # Optionally filter by date range
             if start_date:
@@ -106,11 +109,11 @@ class CivicClerkSite(base.Site):
         return all_events
 
     def standardise_asset_url(self, meeting_id, fileId):
-        site_url = self.initial_url.rstrip('/')
+        site_url = self.initial_url.rstrip("/")
         return f"{site_url}/event/{meeting_id}/files/agenda/{fileId}"
 
     def standardise_meeting_url(self, meeting_id):
-        site_url = self.initial_url.rstrip('/')
+        site_url = self.initial_url.rstrip("/")
         return f"{site_url}/event/{meeting_id}/overview"
 
     def extract_event_details(self, event):
@@ -118,8 +121,8 @@ class CivicClerkSite(base.Site):
         meeting_date = None
         if meeting_date_raw:
             try:
-                dt = datetime.fromisoformat(meeting_date_raw.replace('Z', '+00:00'))
-                meeting_date = dt.strftime('%Y-%m-%d %H:%M:%S')
+                dt = datetime.fromisoformat(meeting_date_raw.replace("Z", "+00:00"))
+                meeting_date = dt.strftime("%Y-%m-%d %H:%M:%S")
             except Exception:
                 meeting_date = meeting_date_raw
         assets = event.get("publishedFiles", [])
@@ -128,12 +131,16 @@ class CivicClerkSite(base.Site):
             publish_on_raw = asset.get("publishOn")
             if publish_on_raw:
                 try:
-                    dt = datetime.fromisoformat(publish_on_raw.replace('Z', '+00:00'))
-                    asset["publishOn"] = dt.strftime('%Y-%m-%d %H:%M:%S')
+                    dt = datetime.fromisoformat(publish_on_raw.replace("Z", "+00:00"))
+                    asset["publishOn"] = dt.strftime("%Y-%m-%d %H:%M:%S")
                 except Exception:
                     pass
             fileId = asset.get("fileId")
-            asset_url = self.standardise_asset_url(event.get("id"), fileId) if fileId is not None else None
+            asset_url = (
+                self.standardise_asset_url(event.get("id"), fileId)
+                if fileId is not None
+                else None
+            )
             asset_obj = Asset(
                 url=asset_url,
                 asset_name=asset.get("fileName"),
@@ -146,7 +153,7 @@ class CivicClerkSite(base.Site):
                 meeting_id=event.get("id"),
                 scraped_by="civic_scraper",
                 content_type=asset.get("contentType"),
-                content_length=asset.get("fileSize")
+                content_length=asset.get("fileSize"),
             )
             asset_objs.append(asset_obj)
         return asset_objs
@@ -163,4 +170,3 @@ class CivicClerkSite(base.Site):
             for asset in assets:
                 ac.append(asset)
         return ac
-

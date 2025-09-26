@@ -1,6 +1,7 @@
 """
 BoardDocs platform implementation for civic-scraper.
 """
+
 import re
 import requests
 from bs4 import BeautifulSoup
@@ -29,7 +30,7 @@ class Site(BaseSite):
         parser_kls=None,
         committee_id: Optional[str] = None,
         timezone: Optional[str] = "US/Eastern",
-        **kwargs
+        **kwargs,
     ):
         """
         Initialize BoardDocs site with standardized parameters.
@@ -45,19 +46,21 @@ class Site(BaseSite):
             **kwargs: Backward compatibility parameters
         """
         # Support for backward compatibility with original method signature
-        if 'start_date' in kwargs:
-            self._start_date = kwargs.pop('start_date')
+        if "start_date" in kwargs:
+            self._start_date = kwargs.pop("start_date")
         else:
             self._start_date = None
 
-        if 'end_date' in kwargs:
-            self._end_date = kwargs.pop('end_date')
+        if "end_date" in kwargs:
+            self._end_date = kwargs.pop("end_date")
         else:
             self._end_date = None
 
         # Extract place and state from URL if not provided
         normalized_url = self._normalize_url(url)
-        url_pattern = re.compile(r'https://go\.boarddocs\.com/([^/]+)/([^/]+)/(?:Board|board)\.nsf')
+        url_pattern = re.compile(
+            r"https://go\.boarddocs\.com/([^/]+)/([^/]+)/(?:Board|board)\.nsf"
+        )
         match = url_pattern.match(normalized_url)
 
         if match and not state_or_province:
@@ -76,15 +79,15 @@ class Site(BaseSite):
             cache=cache,
             parser_kls=parser_kls or BoardDocsParser,
             committee_id=committee_id,
-            timezone=timezone
+            timezone=timezone,
         )
 
     def _init_platform_specific(self):
         """Initialize BoardDocs-specific attributes."""
         self.session = requests.Session()
         self.headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': f'civic-scraper/{__version__}'
+            "Content-Type": "application/x-www-form-urlencoded",
+            "User-Agent": f"civic-scraper/{__version__}",
         }
         self.logger = logging.getLogger(__name__)
 
@@ -99,7 +102,7 @@ class Site(BaseSite):
         download: bool = False,
         cache: bool = False,
         file_size: Optional[float] = None,
-        asset_list: Optional[List[str]] = None
+        asset_list: Optional[List[str]] = None,
     ) -> AssetCollection:
         """
         Scrape BoardDocs site for meeting metadata.
@@ -125,9 +128,13 @@ class Site(BaseSite):
         if cache:
             self.logger.warning("Caching is not supported for BoardDocs platform")
         if file_size:
-            self.logger.warning("File size filtering is not supported for BoardDocs platform")
+            self.logger.warning(
+                "File size filtering is not supported for BoardDocs platform"
+            )
         if asset_list:
-            self.logger.warning("Asset type filtering is not supported for BoardDocs platform")
+            self.logger.warning(
+                "Asset type filtering is not supported for BoardDocs platform"
+            )
 
         # Get meetings filtered by date range
         assets = AssetCollection()
@@ -135,14 +142,18 @@ class Site(BaseSite):
         scraped_by = f"civic-scraper_{__version__}"
 
         for meeting in all_meetings:
-            meeting_id_unique = meeting.get('unique')
-            meeting_name = meeting.get('name')
-            meeting_date_str = meeting.get('date_formatted')
+            meeting_id_unique = meeting.get("unique")
+            meeting_name = meeting.get("name")
+            meeting_date_str = meeting.get("date_formatted")
             place = self.place
             state_or_province = self.state_or_province
 
             try:
-                meeting_date = datetime.strptime(meeting_date_str, "%B %d, %Y") if meeting_date_str else None
+                meeting_date = (
+                    datetime.strptime(meeting_date_str, "%B %d, %Y")
+                    if meeting_date_str
+                    else None
+                )
             except ValueError:
                 meeting_date = None
 
@@ -160,7 +171,7 @@ class Site(BaseSite):
                     meeting_id=f"boarddocs-{place}-{meeting_id_unique}",
                     scraped_by=scraped_by,
                     content_type="text/url",
-                    content_length=None
+                    content_length=None,
                 )
                 assets.append(asset)
 
@@ -178,22 +189,22 @@ class Site(BaseSite):
             The normalized URL with proper structure
         """
         # Remove trailing slash if present
-        url = url.rstrip('/')
+        url = url.rstrip("/")
 
         # Remove '/Public' if present at the end
-        if url.endswith('/Public'):
+        if url.endswith("/Public"):
             url = url[:-7]  # Remove '/Public'
 
         # Ensure URL has http/https prefix
-        if not url.startswith(('http://', 'https://')):
-            url = 'https://' + url
+        if not url.startswith(("http://", "https://")):
+            url = "https://" + url
 
         # Make sure URL ends with 'Board.nsf' or 'board.nsf'
-        if not url.endswith(('Board.nsf', 'board.nsf')):
-            parts = re.split(r'(Board|board)\.nsf', url, re.IGNORECASE)
+        if not url.endswith(("Board.nsf", "board.nsf")):
+            parts = re.split(r"(Board|board)\.nsf", url, re.IGNORECASE)
             if len(parts) > 1:
                 # URL has 'Board.nsf' or 'board.nsf' but something after it
-                url = parts[0] + parts[1] + '.nsf'
+                url = parts[0] + parts[1] + ".nsf"
 
         return url
 
@@ -210,16 +221,16 @@ class Site(BaseSite):
         Returns:
             List of meeting dictionaries with metadata
         """
-        committee_id = kwargs.get('committee_id', self.committee_id)
-        start_date = kwargs.get('start_date', self._start_date)
-        end_date = kwargs.get('end_date', self._end_date)
+        committee_id = kwargs.get("committee_id", self.committee_id)
+        start_date = kwargs.get("start_date", self._start_date)
+        end_date = kwargs.get("end_date", self._end_date)
 
         meetings_data = self._get_meetings_list(committee_id)
         processed_meetings = []
 
         for meeting_data in meetings_data:
             # Skip if not within date range
-            meeting_date = meeting_data.get('numberdate', '')
+            meeting_date = meeting_data.get("numberdate", "")
             if not self._is_in_date_range(meeting_date, start_date, end_date):
                 continue
 
@@ -238,14 +249,17 @@ class Site(BaseSite):
             The extracted committee_id or None if extraction fails
         """
         url = self.url
-        if url.lower().endswith('/public'):
+        if url.lower().endswith("/public"):
             # Handle URLs ending with /Public
-            url_parts = url.split('/')
-            base_url = '/'.join(url_parts[:-1])
+            url_parts = url.split("/")
+            base_url = "/".join(url_parts[:-1])
             url = f"{base_url}#"
         else:
             # Original logic for URLs ending with Board.nsf
-            url = re.split(r'/(Board|board)\.nsf', self.url, flags=re.IGNORECASE)[0] + "/Board.nsf/Public#"
+            url = (
+                re.split(r"/(Board|board)\.nsf", self.url, flags=re.IGNORECASE)[0]
+                + "/Board.nsf/Public#"
+            )
 
         committee_id = None
 
@@ -254,16 +268,16 @@ class Site(BaseSite):
             response.raise_for_status()
             html_content = response.text
 
-            soup = BeautifulSoup(html_content, 'html.parser')
+            soup = BeautifulSoup(html_content, "html.parser")
 
             # Find the <select> element with name="committeeid"
-            select_element = soup.find('select', {'name': 'committeeid'})
+            select_element = soup.find("select", {"name": "committeeid"})
 
             if select_element:
                 # Find the first <option> tag within the <select>
-                option_element = select_element.find('option')
+                option_element = select_element.find("option")
                 if option_element:
-                    committee_id = option_element.get('value')
+                    committee_id = option_element.get("value")
 
         except Exception as e:
             self.logger.error(f"Error extracting committee ID: {e}")
@@ -281,7 +295,7 @@ class Site(BaseSite):
             List of meeting data dictionaries, each with a 'meeting_url' if found.
         """
         endpoint = f"{self.url}/BD-GetMeetingsList?open"
-        data = {'current_committee_id': committee_id}
+        data = {"current_committee_id": committee_id}
         meetings_data = []
         meeting_urls = {}
 
@@ -291,25 +305,35 @@ class Site(BaseSite):
             meetings_data = response.json()
 
             # Fetch the initial public board page HTML to extract meeting URLs
-            public_board_url = re.split(r'/(Board|board)\.nsf', self.url, flags=re.IGNORECASE)[0] + "/Board.nsf/Public#"
-            if self.url.lower().endswith('/public'):
-                url_parts = self.url.split('/')
-                public_board_url = '/'.join(url_parts[:-1]) + "#"
+            public_board_url = (
+                re.split(r"/(Board|board)\.nsf", self.url, flags=re.IGNORECASE)[0]
+                + "/Board.nsf/Public#"
+            )
+            if self.url.lower().endswith("/public"):
+                url_parts = self.url.split("/")
+                public_board_url = "/".join(url_parts[:-1]) + "#"
 
             response_html = self.session.get(public_board_url)
             response_html.raise_for_status()
-            soup = BeautifulSoup(response_html.text, 'html.parser')
+            soup = BeautifulSoup(response_html.text, "html.parser")
 
             # Find meeting links and store their URLs
-            for link in soup.find_all('a', class_='item'):  # Changed class to 'item' - inspect your HTML
-                meeting_href = link.get('href')
-                title_span = link.find('span', class_='title')
+            for link in soup.find_all(
+                "a", class_="item"
+            ):  # Changed class to 'item' - inspect your HTML
+                meeting_href = link.get("href")
+                title_span = link.find("span", class_="title")
                 if meeting_href and title_span:
                     meeting_title = title_span.text.strip()
                     # Try to associate the URL with a meeting in the JSON data
                     for meeting in meetings_data:
-                        if meeting['name'] in meeting_title and meeting['numberdate'] in meeting_title:
-                            meeting['meeting_url'] = f"https://go.boarddocs.com{meeting_href}"
+                        if (
+                            meeting["name"] in meeting_title
+                            and meeting["numberdate"] in meeting_title
+                        ):
+                            meeting["meeting_url"] = (
+                                f"https://go.boarddocs.com{meeting_href}"
+                            )
                             break
 
         except Exception as e:
@@ -317,7 +341,9 @@ class Site(BaseSite):
 
         return meetings_data
 
-    def _is_in_date_range(self, date_str: str, start_date: Optional[str], end_date: Optional[str]) -> bool:
+    def _is_in_date_range(
+        self, date_str: str, start_date: Optional[str], end_date: Optional[str]
+    ) -> bool:
         """
         Check if a date is within the specified range.
 
@@ -349,7 +375,9 @@ class Site(BaseSite):
         except ValueError:
             return False
 
-    def _process_meeting(self, meeting_data: Dict[str, Any], committee_id: str) -> Optional[Dict[str, Any]]:
+    def _process_meeting(
+        self, meeting_data: Dict[str, Any], committee_id: str
+    ) -> Optional[Dict[str, Any]]:
         """
         Process a single meeting to extract agenda and minutes.
 
@@ -361,15 +389,15 @@ class Site(BaseSite):
             Processed meeting dictionary or None if processing fails
         """
         # Extract basic meeting info
-        meeting_id = meeting_data.get('unique', '')
+        meeting_id = meeting_data.get("unique", "")
         if not meeting_id:
             return None
 
         # Format date information
-        date_number = meeting_data.get('numberdate', '')
-        date_formatted = ''
-        year = ''
-        month = ''
+        date_number = meeting_data.get("numberdate", "")
+        date_formatted = ""
+        year = ""
+        month = ""
 
         if date_number:
             try:
@@ -386,7 +414,9 @@ class Site(BaseSite):
         if agenda_html:
             try:
                 structured_agenda = self.parser_kls().parse_agenda_html(agenda_html)
-                agenda_content = self.parser_kls().format_structured_agenda(structured_agenda)
+                agenda_content = self.parser_kls().format_structured_agenda(
+                    structured_agenda
+                )
             except Exception as e:
                 self.logger.error(f"Error parsing agenda: {e}")
                 agenda_content = "Failed to parse agenda."
@@ -403,17 +433,17 @@ class Site(BaseSite):
 
         # Build result dictionary
         processed_meeting = {
-            'name': meeting_data.get('name', ''),
-            'numberdate': date_number,
-            'date_formatted': date_formatted,
-            'year': year,
-            'month': month,
-            'unique': meeting_id,
-            'place': self.place,
-            'state_province': self.state_or_province,
-            'asset_type': 'meeting',
-            'agenda_content': agenda_content,
-            'minutes_content': minutes_content
+            "name": meeting_data.get("name", ""),
+            "numberdate": date_number,
+            "date_formatted": date_formatted,
+            "year": year,
+            "month": month,
+            "unique": meeting_id,
+            "place": self.place,
+            "state_province": self.state_or_province,
+            "asset_type": "meeting",
+            "agenda_content": agenda_content,
+            "minutes_content": minutes_content,
         }
 
         return processed_meeting
@@ -429,7 +459,7 @@ class Site(BaseSite):
             Agenda HTML content or None if fetch fails
         """
         endpoint = f"{self.url}/BD-GetAgenda?open"
-        data = {'id': meeting_id}
+        data = {"id": meeting_id}
 
         try:
             response = self.session.post(endpoint, headers=self.headers, data=data)
@@ -451,17 +481,16 @@ class Site(BaseSite):
             Minutes HTML content or None if fetch fails
         """
         endpoint = f"{self.url}/BD-GetMinutes?open"
-        data = {
-            'id': meeting_id,
-            'current_committee_id': committee_id
-        }
+        data = {"id": meeting_id, "current_committee_id": committee_id}
 
         try:
             response = self.session.post(endpoint, headers=self.headers, data=data)
             response.raise_for_status()
             return response.text
         except Exception as e:
-            self.logger.error(f"Error fetching minutes for meeting ID {meeting_id}: {e}")
+            self.logger.error(
+                f"Error fetching minutes for meeting ID {meeting_id}: {e}"
+            )
             return None
 
     def get_meeting_details(self, meeting_id: str, **kwargs) -> Dict[str, Any]:
@@ -476,7 +505,7 @@ class Site(BaseSite):
         Returns:
             Dictionary with meeting details
         """
-        committee_id = kwargs.get('committee_id', self.committee_id)
+        committee_id = kwargs.get("committee_id", self.committee_id)
 
         # Fetch agenda and minutes
         agenda_html = self._get_agenda(meeting_id)
@@ -487,7 +516,9 @@ class Site(BaseSite):
         if agenda_html:
             try:
                 structured_agenda = self.parser_kls().parse_agenda_html(agenda_html)
-                agenda_content = self.parser_kls().format_structured_agenda(structured_agenda)
+                agenda_content = self.parser_kls().format_structured_agenda(
+                    structured_agenda
+                )
             except Exception as e:
                 self.logger.error(f"Error parsing agenda: {e}")
 
@@ -500,11 +531,11 @@ class Site(BaseSite):
 
         # Return meeting details
         return {
-            'unique': meeting_id,
-            'agenda_content': agenda_content,
-            'minutes_content': minutes_content,
-            'raw_agenda': agenda_html,
-            'raw_minutes': minutes_html
+            "unique": meeting_id,
+            "agenda_content": agenda_content,
+            "minutes_content": minutes_content,
+            "raw_agenda": agenda_html,
+            "raw_minutes": minutes_html,
         }
 
     def get_meeting_meta_link(self, meeting_id: str) -> str:
@@ -537,13 +568,15 @@ class Site(BaseSite):
                     return response.json()
                 except ValueError:
                     # If not JSON, parse as HTML
-                    soup = BeautifulSoup(response.text, 'html.parser')
+                    soup = BeautifulSoup(response.text, "html.parser")
                     committees = []
-                    for option in soup.select('option'):
-                        committee_id = option.get('value')
+                    for option in soup.select("option"):
+                        committee_id = option.get("value")
                         committee_name = option.text.strip()
                         if committee_id:
-                            committees.append({'id': committee_id, 'name': committee_name})
+                            committees.append(
+                                {"id": committee_id, "name": committee_name}
+                            )
                     return committees
         except Exception as e:
             self.logger.error(f"Error fetching committees: {e}")

@@ -14,12 +14,13 @@ from .civic_plus.site import Site as CivicPlusSite
 from .granicus.site import GranicusSite
 from .legistar.site import Site as LegistarSite
 from .boarddocs.site import Site as BoardDocsSite
+
 # from .simbli.site import SimbliSite
 from .icompass.site import ICompassSite
-from .escribe.site import EscribeSite 
+from .escribe.site import EscribeSite
 
 try:
-    from .primegov.site import  PrimeGovSite
+    from .primegov.site import PrimeGovSite
 except ImportError:
     # PrimeGov platform may not be fully implemented
     pass

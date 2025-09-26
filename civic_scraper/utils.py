@@ -29,7 +29,7 @@ def mb_to_bytes(size_mb):
 def asset_generated_id(input_string):
     """Generates a unique ID based on the hash of an input string."""
     # Use SHA-256 for a robust hash, take the first 16 chars for brevity
-    return hashlib.sha256(input_string.encode('utf-8')).hexdigest()[:16]
+    return hashlib.sha256(input_string.encode("utf-8")).hexdigest()[:16]
 
 
 def parse_datetime_formats(datetime_str, formats, timezone_str):
@@ -52,7 +52,9 @@ def parse_datetime_formats(datetime_str, formats, timezone_str):
                 dt = tz.localize(dt, is_dst=None)
             else:
                 # Assume the parsed time is already in the target timezone
-                dt = tz.localize(dt, is_dst=None)  # Or consider dt.replace(tzinfo=tz) if appropriate
+                dt = tz.localize(
+                    dt, is_dst=None
+                )  # Or consider dt.replace(tzinfo=tz) if appropriate
         except pytz.UnknownTimeZoneError:
             # Log warning or handle error if timezone string is invalid
             pass  # Keep dt naive if timezone is invalid
@@ -61,7 +63,9 @@ def parse_datetime_formats(datetime_str, formats, timezone_str):
             # For simplicity, we might just keep it naive or apply a fixed offset
             pass
     if dt is None:
-        raise ValueError(f"Could not parse datetime string '{datetime_str}' with any provided format.")
+        raise ValueError(
+            f"Could not parse datetime string '{datetime_str}' with any provided format."
+        )
     return dt
 
 

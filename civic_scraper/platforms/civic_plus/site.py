@@ -22,18 +22,18 @@ class Site(base.Site):
     """CivicPlus site implementation."""
 
     def __init__(
-        self, 
-        url, 
-        place=None, 
+        self,
+        url,
+        place=None,
         state_or_province=None,
-        cache=None, 
-        parser_kls=None, 
+        cache=None,
+        parser_kls=None,
         committee_id=None,
         timezone=None,
-        **kwargs
+        **kwargs,
     ):
         """Initialize CivicPlus site.
-        
+
         Args:
             url (str): Base URL for the CivicPlus site
             place (str, optional): Name of the place/municipality
@@ -44,19 +44,19 @@ class Site(base.Site):
             timezone (str, optional): Timezone for dates
         """
         # Handle deprecated parameters for backward compatibility
-        if 'place_name' in kwargs:
+        if "place_name" in kwargs:
             warnings.warn(
-                "The place_name parameter is deprecated, use place instead", 
-                DeprecationWarning, 
-                stacklevel=2
+                "The place_name parameter is deprecated, use place instead",
+                DeprecationWarning,
+                stacklevel=2,
             )
-            place = kwargs.pop('place_name')
-        
+            place = kwargs.pop("place_name")
+
         # Extract state and subdomain from URL
         subdomain = urlparse(url).netloc.split(".")[0]
         extracted_state = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", url)
         extracted_place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", url)
-        
+
         # Initialize base class with standardized parameters
         super().__init__(
             url=url,
@@ -65,9 +65,9 @@ class Site(base.Site):
             cache=cache,
             parser_kls=parser_kls or Parser,
             committee_id=committee_id,
-            timezone=timezone
+            timezone=timezone,
         )
-        
+
     def _init_platform_specific(self):
         """Initialize CivicPlus specific attributes."""
         self.subdomain = urlparse(self.url).netloc.split(".")[0]
@@ -98,7 +98,7 @@ class Site(base.Site):
         start = start_date or today
         end = end_date or today
         response_url, raw_html = self._search(start, end)
-        
+
         # Cache the raw html from search results page
         if cache:
             cache_path = (
@@ -106,13 +106,13 @@ class Site(base.Site):
             )
             self.cache.write(cache_path, raw_html)
             logger.info(f"Cached search results page HTML: {cache_path}")
-            
+
         file_metadata = self.parser_kls(raw_html).parse()
         assets = self._build_asset_collection(file_metadata)
-        
+
         if download:
             self._download_assets(assets, file_size, asset_list)
-            
+
         return assets
 
     def _cache_page_name(self, response_url):
