@@ -25,7 +25,7 @@ mkdir logs
 Ensure that these folders are listed in the gitignore.
 
 ### 2. Set Up Google Credentials
-Download the `GOOGLE_APPLICATION_CREDENTIALS.json` file needed to programmatically access the main_meetings_list Google Sheet and put in the env folder.
+Contact Aïcha Camara @necabotheking for `GOOGLE_APPLICATION_CREDENTIALS.json` file needed to programmatically access the main_meetings_list Google Sheet. Please put in the file in the env folder.
 
 ### 3. Create .env File
 Create a `.env` file with the `SPREADSHEET_ID` variable.  (The `SPREADSHEET_ID` can be found in the main_meetings_list Google Sheet URL after `/d/` and before `/edit`.)
