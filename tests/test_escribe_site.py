@@ -106,7 +106,7 @@ def test_scraper_returns_assets():
 
         logging.info("Running test_scraper_returns_assets")
         logging.info(
-            f"Found {len(assets)} total assets for {configuration_data["place"]}\n"
+            f"Found {len(assets)} total assets for {configuration_data['place']}\n"
         )
 
         # NOTE: UNCOMMENT THE CODE BELOW TO LOG ASSET INFORMATION
@@ -161,7 +161,7 @@ def test_each_committee_returns_assets():
 
         assets = site.scrape()
 
-        logging.info(f"Testing committees for site: {configuration_data['place']}")
+        logging.info(f"Testing committees for site: '{configuration_data['place']}'")
         assert isinstance(
             assets, AssetCollection
         ), f"Expected AssetCollection, got {type(assets)}"

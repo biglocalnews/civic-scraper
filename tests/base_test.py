@@ -116,7 +116,7 @@ def test_scraper_returns_assets():
 
         logging.info("Running test_scraper_returns_assets")
         logging.info(
-            f"Found {len(assets)} total assets for {configuration_data["place"]}\n"
+            f"Found {len(assets)} total assets for {configuration_data['place']}\n"
         )
 
         # NOTE: UNCOMMENT THE CODE BELOW TO LOG ASSET INFORMATION
