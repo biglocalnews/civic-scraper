@@ -5,7 +5,9 @@ import logging
 import warnings
 
 import requests
-from legistar.events import LegistarEventsScraper
+from .events import (
+    LegistarEventsScraper,
+)  # Use local import to avoid stale dependencies
 
 import civic_scraper
 from civic_scraper import base
@@ -15,9 +17,10 @@ from civic_scraper.utils import parse_date, dtz_to_dt, mb_to_bytes, today_local_
 
 logger = logging.getLogger(__name__)
 
+
 class Site(base.Site):
     """Legistar platform implementation."""
-    
+
     def __init__(
         self,
         url,
@@ -27,10 +30,10 @@ class Site(base.Site):
         parser_kls=None,
         committee_id=None,
         timezone=None,
-        **kwargs
+        **kwargs,
     ):
         """Initialize Legistar site.
-        
+
         Args:
             url (str): Base URL for the Legistar site
             place (str, optional): Name of the place/municipality
@@ -41,35 +44,38 @@ class Site(base.Site):
             timezone (str, optional): Timezone for dates
         """
         # Handle deprecated parameters for backward compatibility
-        if 'base_url' in kwargs:
+        if "base_url" in kwargs:
             warnings.warn(
                 "The base_url parameter is deprecated, use url instead",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
-            url = kwargs.pop('base_url')
-            
+            url = kwargs.pop("base_url")
+
         # Handle event_info_keys parameter
-        event_info_keys = kwargs.get('event_info_keys', {
-            "meeting_details_info": "Meeting Details",
-            "meeting_date_info": "Meeting Date",
-            "meeting_time_info": "Meeting Time",
-            "meeting_location_info": "Meeting Location",
-        })
-        
+        event_info_keys = kwargs.get(
+            "event_info_keys",
+            {
+                "meeting_details_info": "Meeting Details",
+                "meeting_date_info": "Meeting Date",
+                "meeting_time_info": "Meeting Time",
+                "meeting_location_info": "Meeting Location",
+            },
+        )
+
         # Initialize base class with standardized parameters
         super().__init__(
             url=url,
             place=place,
-            state_or_province=state_or_province, 
+            state_or_province=state_or_province,
             cache=cache or Cache(),
             parser_kls=parser_kls,
             committee_id=committee_id,
-            timezone=timezone
+            timezone=timezone,
         )
-        
+
         self.event_info_keys = event_info_keys
-        
+
     def _init_platform_specific(self):
         """Initialize Legistar-specific attributes."""
         self.legistar_instance = urlparse(self.url).netloc.split(".")[0]
@@ -84,7 +90,7 @@ class Site(base.Site):
         asset_list=None,
     ):
         """Scrape a government website for metadata and/or docs.
-        
+
         Args:
             start_date (str, optional): YYYY-MM-DD (default: current day)
             end_date (str, optional): YYYY-MM-DD (default: current day)
@@ -92,21 +98,21 @@ class Site(base.Site):
             cache (bool, optional): Cache source HTML (default: False) - not used in Legistar
             file_size (float, optional): Max size in MB to download (default: None)
             asset_list (list, optional): List of asset types to scrape (default: ["Agenda", "Minutes"])
-            
+
         Returns:
             AssetCollection: Collection of scraped assets
         """
         if cache:
             logger.warning("Caching source HTML is not supported for Legistar platform")
-            
+
         # Use default asset types if none provided
         asset_types = asset_list or ["Agenda", "Minutes"]
-        
+
         # Use current day as default
         today = today_local_str()
         start = start_date or today
         end = end_date or today
-        
+
         # Configure and instantiate the LegistarEventsScraper
         webscraper = LegistarEventsScraper(
             event_info_key=self.event_info_keys["meeting_details_info"],
@@ -123,8 +129,9 @@ class Site(base.Site):
         assets = AssetCollection()
         start_year = int(start[:4])
         events = [event[0] for event in webscraper.events(since=start_year)]
-        
+
         for event in events:
+
             meeting_meta = self._extract_meeting_meta(event, webscraper)
             for asset_type in asset_types:
                 # Skip if a dictionary containing 'url' key is not present for the given asset type
@@ -138,22 +145,24 @@ class Site(base.Site):
                 ):
                     continue
                 assets.append(asset)
-                
+
         # Download assets if requested
         if download:
-            self._download_assets_with_session(assets, file_size, asset_types, webscraper)
-            
+            self._download_assets_with_session(
+                assets, file_size, asset_types, webscraper
+            )
+
         return assets
 
     def _download_assets_with_session(
-        self, 
-        assets: AssetCollection, 
-        file_size: float = None, 
+        self,
+        assets: AssetCollection,
+        file_size: float = None,
         asset_list: list = None,
-        session = None
+        session=None,
     ) -> None:
         """Download assets using an existing session.
-        
+
         Args:
             assets: AssetCollection to download from
             file_size: Maximum file size in MB to download
@@ -162,7 +171,7 @@ class Site(base.Site):
         """
         asset_dir = Path(self.cache.path, "assets")
         asset_dir.mkdir(parents=True, exist_ok=True)
-        
+
         for asset in assets:
             if self._skippable(asset, file_size, asset_list):
                 continue
@@ -172,7 +181,7 @@ class Site(base.Site):
 
     def _add_file_meta(self, asset):
         """Add content-type and content-length to asset.
-        
+
         Args:
             asset: Asset to add metadata to
         """
@@ -182,15 +191,19 @@ class Site(base.Site):
 
     def _create_asset(self, event, meeting_meta, asset_type):
         """Create an asset from an event.
-        
+
         Args:
             event: Event data
             meeting_meta: Meeting metadata
             asset_type: Type of asset to create
-            
+
         Returns:
             Asset: Created asset
         """
+        # Check if the asset type is available
+        if asset_type not in event:
+            raise TypeError(f"Asset type '{asset_type}' not found in event data.")
+
         name_bits = [self._event_name(event)]
         meeting_id = meeting_meta["meeting_id"]
         if meeting_id:
@@ -211,11 +224,11 @@ class Site(base.Site):
 
     def _extract_meeting_meta(self, event, scraper):
         """Extract meeting metadata from event.
-        
+
         Args:
             event: Event data
             scraper: Scraper instance
-            
+
         Returns:
             dict: Meeting metadata
         """
@@ -256,28 +269,33 @@ class Site(base.Site):
 
     def _event_name(self, event):
         """Extract event name.
-        
+
         Args:
             event: Event data
-            
+
         Returns:
             str: Event name
         """
         try:
             return event["Name"]["label"]
+        except KeyError:
+            # Fallback to a different key if "Name" is not present
+            return event["Meeting Body"]
         except (KeyError, TypeError):
             return event["Name"]
 
-    def _skippable_event(self, asset, start_date, end_date, file_size=None, download=False):
+    def _skippable_event(
+        self, asset, start_date, end_date, file_size=None, download=False
+    ):
         """Determine if an asset should be skipped.
-        
+
         Args:
             asset: Asset to check
             start_date: Start date for filtering
             end_date: End date for filtering
             file_size: Maximum file size in MB
             download: Whether to download assets
-            
+
         Returns:
             bool: True if asset should be skipped, False otherwise
         """

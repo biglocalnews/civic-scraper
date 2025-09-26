@@ -3,5 +3,5 @@ click
 click-option-group
 feedparser
 requests
-scraper-legistar
+#scraper-legistar
 demjson3
