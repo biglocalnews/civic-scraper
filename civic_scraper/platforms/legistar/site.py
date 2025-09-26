@@ -3,7 +3,9 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 import requests
-from .events import LegistarEventsScraper # Use local import to avoid stale dependencies
+from .events import (
+    LegistarEventsScraper,
+)  # Use local import to avoid stale dependencies
 
 import civic_scraper
 from civic_scraper import base
@@ -19,7 +21,7 @@ class Site(base.Site):
         # Establish default keys described in the Legistar data table
         event_info_keys={
             "meeting_details_info": ["Meeting Details", "Agenda Materials"],
-            #"meeting_details_info": "Meeting Details", # Also: "Agenda Materials"
+            # "meeting_details_info": "Meeting Details", # Also: "Agenda Materials"
             "meeting_date_info": "Meeting Date",
             "meeting_time_info": "Meeting Time",
             "meeting_location_info": "Meeting Location",
@@ -124,7 +126,7 @@ class Site(base.Site):
     def _extract_meeting_meta(self, event, scraper):
 
         # Use the appropriate event_info_key based on the table structure
-        #detail_info = event[self.event_info_keys["meeting_details_info"]]
+        # detail_info = event[self.event_info_keys["meeting_details_info"]]
         detail_info = event[scraper.event_info_key]
         date_info = event[self.event_info_keys["meeting_date_info"]]
         time_info = event[self.event_info_keys["meeting_time_info"]] or None

@@ -1,6 +1,7 @@
 """
 BoardDocs parser implementation for civic-scraper.
 """
+
 from bs4 import BeautifulSoup
 import json
 from typing import Dict, Any
@@ -22,13 +23,13 @@ class BoardDocsParser:
         if not html_content:
             return "No minutes content available"
 
-        soup = BeautifulSoup(html_content, 'html.parser')
+        soup = BeautifulSoup(html_content, "html.parser")
         output_text = []
 
-        for element in soup.find_all(['p', 'li']):
-            text = element.get_text(separator='\n', strip=True)
+        for element in soup.find_all(["p", "li"]):
+            text = element.get_text(separator="\n", strip=True)
             if text:
-                if element.name == 'li':
+                if element.name == "li":
                     output_text.append("  * " + text)
                 else:
                     output_text.append(text)
@@ -53,59 +54,68 @@ class BoardDocsParser:
             return json.loads(html_content)
         except json.JSONDecodeError:
             # If not valid JSON, parse as HTML
-            soup = BeautifulSoup(html_content, 'html.parser')
-            structured_agenda = {'categories': []}
+            soup = BeautifulSoup(html_content, "html.parser")
+            structured_agenda = {"categories": []}
 
             # Find all category containers
-            category_containers = soup.find_all('dl', class_='wrap-category')
+            category_containers = soup.find_all("dl", class_="wrap-category")
 
             for category in category_containers:
                 # Extract category header
-                category_header = category.find('dt', class_='category')
+                category_header = category.find("dt", class_="category")
                 if not category_header:
                     continue
 
-                category_order = category_header.find('span', class_='order')
+                category_order = category_header.find("span", class_="order")
                 category_order = category_order.text.strip() if category_order else ""
 
-                category_name = category_header.find('span', class_='category-name')
+                category_name = category_header.find("span", class_="category-name")
                 category_name = category_name.text.strip() if category_name else ""
 
-                category_id = category_header.get('id', '')
-                category_unique = category_header.get('unique', '')
+                category_id = category_header.get("id", "")
+                category_unique = category_header.get("unique", "")
 
                 # Find agenda items for this category
                 items = []
-                agenda_items = soup.find_all('li', class_='item')
+                agenda_items = soup.find_all("li", class_="item")
                 for item in agenda_items:
-                    if item.get('categoryid') == category_id or item.get('categoryunique') == category_unique:
-                        item_order = item.find('span', class_='order')
+                    if (
+                        item.get("categoryid") == category_id
+                        or item.get("categoryunique") == category_unique
+                    ):
+                        item_order = item.find("span", class_="order")
                         item_order = item_order.text.strip() if item_order else ""
 
-                        item_title = item.find('span', class_='title')
+                        item_title = item.find("span", class_="title")
                         item_title = item_title.text.strip() if item_title else ""
 
-                        action_type_div = item.find('div', class_='actiontype')
-                        action_type = action_type_div.text.strip() if action_type_div else ""
+                        action_type_div = item.find("div", class_="actiontype")
+                        action_type = (
+                            action_type_div.text.strip() if action_type_div else ""
+                        )
 
-                        has_attachment = bool(item.find('i', class_='fa-file-text-o'))
+                        has_attachment = bool(item.find("i", class_="fa-file-text-o"))
 
-                        items.append({
-                            'order': item_order,
-                            'title': item_title,
-                            'action_type': action_type,
-                            'has_attachment': has_attachment,
-                            'item_id': item.get('id', ''),
-                            'item_unique': item.get('unique', '')
-                        })
+                        items.append(
+                            {
+                                "order": item_order,
+                                "title": item_title,
+                                "action_type": action_type,
+                                "has_attachment": has_attachment,
+                                "item_id": item.get("id", ""),
+                                "item_unique": item.get("unique", ""),
+                            }
+                        )
 
-                structured_agenda['categories'].append({
-                    'order': category_order,
-                    'name': category_name,
-                    'id': category_id,
-                    'unique': category_unique,
-                    'items': items
-                })
+                structured_agenda["categories"].append(
+                    {
+                        "order": category_order,
+                        "name": category_name,
+                        "id": category_id,
+                        "unique": category_unique,
+                        "items": items,
+                    }
+                )
 
             return structured_agenda
 
@@ -121,12 +131,20 @@ class BoardDocsParser:
         """
         formatted_text = []
 
-        for category in structured_agenda.get('categories', []):
-            formatted_text.append(f"{category.get('order', '')} {category.get('name', '')}")
+        for category in structured_agenda.get("categories", []):
+            formatted_text.append(
+                f"{category.get('order', '')} {category.get('name', '')}"
+            )
 
-            for item in category.get('items', []):
-                attachment_indicator = "[Has Attachment]" if item.get('has_attachment') else ""
-                action_type = f"({item.get('action_type', '')})" if item.get('action_type') else ""
+            for item in category.get("items", []):
+                attachment_indicator = (
+                    "[Has Attachment]" if item.get("has_attachment") else ""
+                )
+                action_type = (
+                    f"({item.get('action_type', '')})"
+                    if item.get("action_type")
+                    else ""
+                )
                 formatted_text.append(
                     f"  {item.get('order', '')} {item.get('title', '')} {action_type} {attachment_indicator}"
                 )
