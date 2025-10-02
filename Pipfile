@@ -11,7 +11,6 @@ bs4 = "*"
 click = "*"
 click-option-group = "*"
 feedparser = "*"
-scraper-legistar = "*"
 requests = "*"
 demjson3 = "*"
 bumpversion = "*"
@@ -28,6 +27,8 @@ vcrpy = "*"
 argh = "*"
 twine = "*"
 typing-extensions = "*"
+legistar = {git = "https://github.com/opencivicdata/python-legistar-scraper.git", ref = "master"}
+
 
 [dev-packages]
 bumpversion = "*"

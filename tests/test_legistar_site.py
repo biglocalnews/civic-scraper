@@ -9,8 +9,8 @@ from civic_scraper.platforms import LegistarSite
 
 
 # TODO: Bring back tests (remove skip decorator) when python-lesistar-scraper is resolved.
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
-@pytest.mark.vcr()
+# @pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
+# @pytest.mark.vcr()
 def test_scrape_defaults():
     """
     Test default behavior of Legistar Site.scrape
@@ -20,7 +20,9 @@ def test_scrape_defaults():
     url = "https://nashville.legistar.com/Calendar.aspx"
     config = {"timezone": "US/Central"}
     site = LegistarSite(url, **config)
+    print("site", site.__repr__())
     assets = site.scrape(start_date, end_date)
+    print("assets", assets)
     # 4 agendas and 1 minutes doc
     assert len(assets) == 5
     doc_types = {"agenda": 0, "minutes": 0}
