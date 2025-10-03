@@ -51,9 +51,9 @@ class Site(base.Site):
             AssetCollection: A sequence of Asset instances
         """
         # Use current day as default
-        # today = today_local_str()
-        # start_date = start_date or today
-        # end_date = end_date or today
+        today = today_local_str()
+        start_date = start_date or today
+        end_date = end_date or today
         webscraper = LegistarEventsScraper(
             event_info_key=self.event_info_keys["meeting_details_info"],
             retry_attempts=3,
@@ -65,20 +65,16 @@ class Site(base.Site):
         webscraper.EVENTSPAGE = self.url
         print("webscraper.EVENTSPAGE:", webscraper.EVENTSPAGE)
         webscraper.TIMEZONE = self.timezone
-        # webscraper.date_format = "%m/%d/%Y %I:%M %p"
+        webscraper.date_format = "%m/%d/%Y %I:%M %p"
 
         ac = AssetCollection()
-        # start_year = int(start_date[:4]) TEMP
-        start_year = 2022
+        start_year = int(start_date[:4])
         print(f"start_year: {start_year}")
         events_since_start_year = webscraper.events(since=start_year)
-        # print(f"events_since_start_year: {list(events_since_start_year)}")
-        # events = [event[0] for event in events_since_start_year]
-        # print(f"events: {events}")
-        # for event in events:
+        events = [event[0] for event in events_since_start_year]
         print("starting iterator...")
-        for event in events_since_start_year:
-            print(f"event: {event}")
+        for event in events:
+            print(f"\n\nevent: {event}")
             meeting_meta = self._extract_meeting_meta(event, webscraper)
             for asset_type in asset_list:
                 # Skip if a dictionary containing 'url' key is not present for the given asset type
