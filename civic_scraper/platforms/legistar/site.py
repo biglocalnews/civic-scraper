@@ -61,20 +61,15 @@ class Site(base.Site):
 
         # required to instantiate webscraper
         webscraper.BASE_URL = urlparse(self.url).netloc
-        print("webscraper.BASE_URL:", webscraper.BASE_URL)
         webscraper.EVENTSPAGE = self.url
-        print("webscraper.EVENTSPAGE:", webscraper.EVENTSPAGE)
         webscraper.TIMEZONE = self.timezone
         webscraper.date_format = "%m/%d/%Y %I:%M %p"
 
         ac = AssetCollection()
         start_year = int(start_date[:4])
-        print(f"start_year: {start_year}")
         events_since_start_year = webscraper.events(since=start_year)
         events = [event[0] for event in events_since_start_year]
-        print("starting iterator...")
         for event in events:
-            print(f"\n\nevent: {event}")
             meeting_meta = self._extract_meeting_meta(event, webscraper)
             for asset_type in asset_list:
                 # Skip if a dictionary containing 'url' key is not present for the given asset type
