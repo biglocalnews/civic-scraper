@@ -62,7 +62,6 @@ setup(
         # "scraper-legistar",
         # TEMP until we get a new release
         "git+https://github.com/opencivicdata/python-legistar-scraper.git@4ca46ef10f15c53005678363ac465d04123e7177#egg=scraper-legistar"
-
     ],
     license="Apache 2.0 license",
     zip_safe=False,
