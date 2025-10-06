@@ -61,7 +61,7 @@ setup(
         "demjson3",
         # "scraper-legistar",
         # TEMP until we get a new release
-        "scraper-legistar @ git+https://github.com/opencivicdata/python-legistar-scraper.git@4ca46ef10f15c53005678363ac465d04123e7177#egg=scraper_legistar"
+        "legistar @ git+https://github.com/opencivicdata/python-legistar-scraper.git@4ca46ef10f15c53005678363ac465d04123e7177#egg=legistar"
     ],
     license="Apache 2.0 license",
     zip_safe=False,
