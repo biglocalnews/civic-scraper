@@ -18,3 +18,4 @@ sphinxcontrib-napoleon
 bs4
 feedparser
 demjson
+google-api-python-client

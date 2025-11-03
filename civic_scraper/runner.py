@@ -71,10 +71,10 @@ class Runner:
         for url in site_urls:
             try:
                 SiteClass = self._get_site_class(url)
-                
+
                 # Extract place and state/province from URL if possible
                 place, state_or_province = self._extract_location_from_url(url)
-                
+
                 # Initialize site with standardized parameters
                 site = SiteClass(
                     url=url,
@@ -82,9 +82,9 @@ class Runner:
                     state_or_province=state_or_province,
                     cache=cache_obj if cache else None,
                 )
-                
+
                 logger.info(f"\tScraping {url}")
-                
+
                 # Call scrape with standardized parameters
                 _collection = site.scrape(
                     start_date=start_date,
@@ -94,23 +94,23 @@ class Runner:
                     file_size=file_size,
                     asset_list=asset_list,
                 )
-                
+
                 asset_collection.extend(_collection)
             except Exception as e:
                 logger.error(f"Error scraping {url}: {e}")
                 continue
-                
+
         metadata_file = asset_collection.to_csv(cache_obj.metadata_files_path)
         logger.info(f"Wrote asset metadata CSV: {metadata_file}")
-        
+
         logger.info(f"Found {len(asset_collection)} asset(s)")
-        
+
         return asset_collection
 
     def _get_site_class(self, url):
         """Get the appropriate site class based on URL patterns."""
         class_name = self._get_site_class_name(url)
-        
+
         # Map class names to module paths
         class_to_module = {
             "CivicPlusSite": "civic_scraper.platforms.civic_plus.site",
@@ -118,14 +118,14 @@ class Runner:
             "BoardDocsSite": "civic_scraper.platforms.boarddocs.site",
             "LegistarSite": "civic_scraper.platforms.legistar.site",
         }
-        
+
         if class_name not in class_to_module:
             raise ScraperError(f"Unsupported site type: {class_name}")
-            
+
         # Import the module and get the Site class
         module_path = class_to_module[class_name]
         module = importlib.import_module(module_path)
-        
+
         return module.Site
 
     def _get_site_class_name(self, url):
@@ -133,40 +133,40 @@ class Runner:
         if re.search(r"(civicplus|AgendaCenter)", url):
             return "CivicPlusSite"
         elif re.search(r"(granicus|granicusid)", url):
-            return "GranicusSite"  
+            return "GranicusSite"
         elif re.search(r"boarddocs", url):
             return "BoardDocsSite"
         elif re.search(r"legistar", url):
             return "LegistarSite"
         else:
             raise ScraperError(f"Could not determine site type from URL: {url}")
-            
+
     def _extract_location_from_url(self, url):
         """
         Extract place and state/province from URL if possible.
-        
+
         Args:
             url: Site URL
-            
+
         Returns:
             tuple: (place, state_or_province)
         """
         place = None
         state_or_province = None
-        
+
         parsed_url = urlparse(url)
         domain = parsed_url.netloc
-        
+
         # CivicPlus pattern: ca-cityname.civicplus.com
         civicplus_match = re.search(r"([a-z]{2})-([a-z]+)\.civicplus", domain)
         if civicplus_match:
             state_or_province = civicplus_match.group(1)
             place = civicplus_match.group(2)
-            
+
         # BoardDocs pattern: go.boarddocs.com/ca/cityname
         boarddocs_match = re.search(r"boarddocs\.com/([a-z]{2})/([a-z]+)", url)
         if boarddocs_match:
             state_or_province = boarddocs_match.group(1)
             place = boarddocs_match.group(2)
-            
+
         return place, state_or_province

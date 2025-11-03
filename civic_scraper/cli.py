@@ -87,7 +87,9 @@ def cli():
     type=click.File("r"),
     help="CSV containing a 'url' field for target sites.",
 )
-def scrape(start_date, end_date, download, cache, file_size, asset_types, url, urls_file):
+def scrape(
+    start_date, end_date, download, cache, file_size, asset_types, url, urls_file
+):
     """Scrape one or more government sites."""
     cache_path = os.environ.get("CIVIC_SCRAPER_DIR", DEFAULT_USER_HOME)
     runner = Runner(cache_path=cache_path)
