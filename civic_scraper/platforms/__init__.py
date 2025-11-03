@@ -18,6 +18,10 @@ from .boarddocs.site import Site as BoardDocsSite
 # from .simbli.site import SimbliSite
 from .icompass.site import ICompassSite
 from .escribe.site import EscribeSite
+<<<<<<< HEAD
+from .onbase.site import OnBaseSite
+=======
+>>>>>>> master
 
 try:
     from .primegov.site import PrimeGovSite

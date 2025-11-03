@@ -1,0 +1,267 @@
+{
+    "sites": {
+        "fl-sarasotacounty": {
+            "state": "FL",
+            "place": "Sarasota County",
+            "platform": "granicus",
+            "url": "https://sarasotacounty.granicus.com/ViewPublisher.php?view_id=51",
+            "committees": [
+                "County Commissioners"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "nc-mooresville": {
+            "state": "NC",
+            "place": "Mooresville",
+            "platform": "granicus",
+            "url": "https://mooresvillenc.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "Board of Commissioners"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "ca-winters": {
+            "state": "CA",
+            "place": "Winters",
+            "platform": "granicus",
+            "url": "https://cityofwinters.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "City Council"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "fl-surfside": {
+            "state": "FL",
+            "place": "Surfside",
+            "platform": "granicus",
+            "url": "https://townofsurfsidefl.granicus.com/ViewPublisher.php?view_id=6",
+            "committees": [
+                "Town Commission"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "fl-biscaynepark": {
+            "state": "FL",
+            "place": "Biscayne Park",
+            "platform": "granicus",
+            "url": "https://biscayneparkfl.granicus.com/ViewPublisher.php?view_id=1",
+            "start_date": "2025-01-01"
+        },
+        "fl-miami-shores": {
+            "state": "FL",
+            "place": "Miami Shores",
+            "platform": "granicus",
+            "url": "https://msvfl.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "Village Council"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "sc-horrycounty": {
+            "state": "SC",
+            "place": "Horry County",
+            "platform": "granicus",
+            "url": "https://horrycounty.granicus.com/ViewPublisher.php?view_id=7",
+            "committees": [
+                "County Council",
+                "Planning Commission",
+                "Public Safety Committee"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "ca-slocounty": {
+            "state": "CA",
+            "place": "San Luis Obispo County",
+            "platform": "granicus",
+            "url": "https://slocounty.granicus.com/ViewPublisher.php?view_id=48",
+            "committees": [
+                "Board of Supervisors",
+                "Planning Commission"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "ca-pismobeach": {
+            "state": "CA",
+            "place": "Pismo Beach",
+            "platform": "granicus",
+            "url": "https://pismobeach.granicus.com/ViewPublisher.php?view_id=8",
+            "committees": [
+                "City Council"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "ca-sanmiguelcsd": {
+            "state": "CA",
+            "place": "San Miguel Community Services District",
+            "platform": "granicus",
+            "url": "https://sanmiguelcsd.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "Board of Directors"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "fl-bradenton": {
+            "state": "FL",
+            "place": "Bradenton",
+            "platform": "granicus",
+            "url": "https://cityofbradenton.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "City Council", 
+                "Planning Commission",
+                "Community Redevelopment Agency Board"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "id-eagle": {
+            "state": "ID",
+            "place": "Eagle",
+            "platform": "granicus",
+            "url": "https://eagle-id.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "City Council"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "nc-wendell": {
+            "state": "NC",
+            "place": "Wendell",
+            "platform": "granicus",
+            "url": "https://townofwendellnc.granicus.com/ViewPublisher.php?view_id=2",
+            "committees": [
+                "Town Board of Commissioners"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "fl-northmiamibeach": {
+            "state": "FL",
+            "place": "North Miami Beach",
+            "platform": "granicus",
+            "url": "https://citynmb.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "City Commission Meetings",
+                "City Commission Workshops",
+                "Commission Conference",
+                "Special Commission Meeting"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "fl-monroecountyschools": {
+            "state": "FL",
+            "place": "Monroe County Schools",
+            "platform": "granicus",
+            "url": "https://monroe-k12.granicus.com/ViewPublisher.php?view_id=1",
+            "start_date": "2025-01-01"
+        },
+        "fl-monroecounty": {
+            "state": "FL",
+            "place": "Monroe County",
+            "platform": "granicus",
+            "url": "https://monroecounty-fl.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "Board of County Commissioners",
+                "County Board"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "fl-coralsprings": {
+            "state": "FL",
+            "place": "Coral Springs",
+            "platform": "granicus",
+            "url": "https://coralsprings.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "Coral Springs City Commission"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "fl-miami": {
+            "state": "FL",
+            "place": "Miami",
+            "platform": "granicus",
+            "url": "https://miamifl.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "City Commission Meetings",
+                "City Commission Meetings - Budget Hearings",
+                "City Commission Meetings - Special Meetings",
+                "Historic and Environmental Preservation Board",
+                "Planning, Zoning and Appeals Board",
+                "Urban Development Review Board"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "nc-durhamcounty": {
+            "state": "NC",
+            "place": "Durham County",
+            "platform": "granicus",
+            "url": "https://durhamcounty.granicus.com/ViewPublisher.php?view_id=3",
+            "committees": [
+                "Board of County Commissioners"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "ca-rocklin": {
+            "state": "CA",
+            "place": "Rocklin",
+            "platform": "granicus",
+            "url": "https://rocklin-ca.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "City Council"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "ca-southlaketahoe": {
+            "state": "CA",
+            "place": "South Lake Tahoe",
+            "platform": "granicus",
+            "url": "https://slt.granicus.com/ViewPublisher.php?view_id=6",
+            "committees": [
+                "City Council"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "ca-marysville": {
+            "state": "CA",
+            "place": "Marysville",
+            "platform": "granicus",
+            "url": "https://marysvilleca.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "City Council"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "ca-liveoak": {
+            "state": "CA",
+            "place": "Live Oak",
+            "platform": "granicus",
+            "url": "https://liveoakca.granicus.com/ViewPublisher.php?view_id=1",
+            "committees": [
+                "City Council"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "tx-arlington": {
+            "state": "TX",
+            "place": "Arlington",
+            "platform": "granicus",
+            "url": "https://arlingtontx.granicus.com/ViewPublisher.php?view_id=9",
+            "start_date": "2025-01-01"
+        },
+        "nc-wakeforest": {
+            "state": "NC",
+            "place": "Wake Forest",
+            "platform": "granicus",
+            "url": "https://wake-forest.granicus.com/ViewPublisher.php?view_id=3",
+            "commitees": [
+                "Board of Commissioners",
+                "Commissioners Work Sessions"
+            ],
+            "start_date": "2025-01-01"
+        },
+        "nc-gastonia": {
+            "state": "NC",
+            "place": "Gastonia",
+            "platform": "granicus",
+            "url": "https://cityofgastonia.granicus.com/ViewPublisher.php?view_id=1",
+            "start_date": "2025-01-01"
+        }
+    }
+}

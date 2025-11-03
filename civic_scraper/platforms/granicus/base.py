@@ -368,6 +368,28 @@ class GranicusBaseScraper(ABC):
                 raw_date_str, raw_time_str
             )
 
+            # --- Fallback Recovery Logic ---
+            # Some Granicus Type1 tables (and possibly others) have column shifts where
+            # the scraped 'date' field actually contains an asset label like 'Agenda'
+            # and the meeting date appears in the 'name' field (e.g. name='September 2, 2025', date='Agenda').
+            # If the primary parse failed BUT the name looks like a date, attempt to recover.
+            if meeting_name_raw and (meeting_date_obj is None) and raw_date_str:
+                probable_asset_label = str(raw_date_str).strip().lower()
+                # Common non-date tokens that indicate the date column was mis-read
+                non_date_tokens = {"agenda", "minutes", "video", "packet", "agenda packet", "agendapacket"}
+                # Heuristic: only attempt if raw_date_str is a known non-date token OR contains no digits
+                if (probable_asset_label in non_date_tokens) or not any(ch.isdigit() for ch in probable_asset_label):
+                    alt_date_obj, _ = self._parse_date_time_to_objects(meeting_name_raw, raw_time_str)
+                    if alt_date_obj:
+                        logger.info(
+                            "Recovered meeting date from 'name' field after failing to parse 'date' field. "
+                            f"Name='{meeting_name_raw}', RawDate='{raw_date_str}'"
+                        )
+                        meeting_date_obj = alt_date_obj
+                        # Keep meeting_name_raw as-is (it's the date string). Optionally could assign a generic title.
+                        # If in future we want a friendlier asset_name, we could do:
+                        # meeting_name_raw = f"{site_committee_name or 'Meeting'} - {alt_date_obj.strftime('%B %d, %Y')}"
+
             if not meeting_name_raw or not meeting_date_obj:
                 logger.warning(
                     f"Skipping item due to missing name or unparsable date: Name='{meeting_name_raw}', RawDate='{raw_date_str}'"
@@ -408,6 +430,9 @@ class GranicusBaseScraper(ABC):
 
             for asset_type_key, asset_url_raw in asset_type_to_url_key_map.items():
                 if asset_url_raw:
+                    # Ignore placeholder javascript void links (not real downloadable/streaming assets)
+                    if isinstance(asset_url_raw, str) and asset_url_raw.lower().startswith('javascript:void'):
+                        continue
                     absolute_asset_url = self._make_absolute_url(asset_url_raw)
                     if not absolute_asset_url:
                         logger.warning(
