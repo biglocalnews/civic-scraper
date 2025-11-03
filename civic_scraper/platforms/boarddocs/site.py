@@ -84,11 +84,31 @@ class Site(BaseSite):
 
     def _init_platform_specific(self):
         """Initialize BoardDocs-specific attributes."""
+        self.url = self._normalize_url(url)
+        self.committee_id = kwargs.get("committee_id")
+        self.start_date = kwargs.get("start_date")
+        self.end_date = kwargs.get("end_date")
         self.session = requests.Session()
         self.headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "User-Agent": f"civic-scraper/{__version__}",
         }
+        self.parser = BoardDocsParser()
+
+        # Get the state and place from URL
+        url_pattern = re.compile(
+            r"https://go\.boarddocs\.com/([^/]+)/([^/]+)/(?:Board|board)\.nsf"
+        )
+        match = url_pattern.match(self.url)
+
+        if match:
+            self.state_or_province = match.group(1)
+            self.place = match.group(2)
+        else:
+            self.state_or_province = ""
+            self.place = ""
+
+        # Initialize logger
         self.logger = logging.getLogger(__name__)
 
         # Auto-detect committee_id if not provided
@@ -283,6 +303,39 @@ class Site(BaseSite):
             self.logger.error(f"Error extracting committee ID: {e}")
 
         return committee_id
+
+    def get_meetings(self, **kwargs) -> List[Dict[str, Any]]:
+        """
+        Get list of meetings from the BoardDocs platform.
+
+        Args:
+            **kwargs: Optional parameters to override instance attributes
+                - committee_id: Committee ID to use for this request
+                - start_date: Start date for filtering meetings
+                - end_date: End date for filtering meetings
+
+        Returns:
+            List of meeting dictionaries with metadata
+        """
+        committee_id = kwargs.get("committee_id", self.committee_id)
+        start_date = kwargs.get("start_date", self.start_date)
+        end_date = kwargs.get("end_date", self.end_date)
+
+        meetings_data = self._get_meetings_list(committee_id)
+        processed_meetings = []
+
+        for meeting_data in meetings_data:
+            # Skip if not within date range
+            meeting_date = meeting_data.get("numberdate", "")
+            if not self._is_in_date_range(meeting_date, start_date, end_date):
+                continue
+
+            # Process meeting data
+            processed_meeting = self._process_meeting(meeting_data, committee_id)
+            if processed_meeting:
+                processed_meetings.append(processed_meeting)
+
+        return processed_meetings
 
     def _get_meetings_list(self, committee_id: str) -> List[Dict[str, Any]]:
         """
@@ -582,3 +635,55 @@ class Site(BaseSite):
             self.logger.error(f"Error fetching committees: {e}")
 
         return []
+
+    def scrape(
+        self, start_date: Optional[str] = None, end_date: Optional[str] = None
+    ) -> AssetCollection:
+        """
+        Scrape BoardDocs site for meeting metadata.
+
+        Args:
+            start_date (str, optional): Start date for filtering meetings (YYYY-MM-DD). Defaults to None.
+            end_date (str, optional): End date for filtering meetings (YYYY-MM-DD). Defaults to None.
+
+        Returns:
+            AssetCollection: A collection of Asset instances representing the scraped meetings.
+        """
+        assets = AssetCollection()
+        all_meetings = self.get_meetings(start_date=start_date, end_date=end_date)
+        scraped_by = f"civic-scraper_{__version__}"
+
+        for meeting in all_meetings:
+            meeting_id_unique = meeting.get("unique")
+            meeting_name = meeting.get("name")
+            meeting_date_str = meeting.get("date_formatted")
+            place = self.place
+            state_or_province = self.state_or_province
+
+            try:
+                meeting_date = (
+                    datetime.strptime(meeting_date_str, "%B %d, %Y")
+                    if meeting_date_str
+                    else None
+                )
+            except ValueError:
+                meeting_date = None
+
+            if meeting_id_unique:
+                meta_link = self.get_meeting_meta_link(meeting_id_unique)
+                asset = Asset(
+                    url=meta_link,
+                    asset_name=meeting_name,
+                    committee_name=None,  # BoardDocs doesn't directly provide committee name in this context
+                    place=place,
+                    state_or_province=state_or_province,
+                    asset_type="meeting_meta_link",
+                    meeting_date=meeting_date.isoformat() if meeting_date else None,
+                    meeting_id=f"boarddocs-{place}-{meeting_id_unique}",
+                    scraped_by=scraped_by,
+                    content_type="text/url",
+                    content_length=None,
+                )
+                assets.append(asset)
+
+        return assets
