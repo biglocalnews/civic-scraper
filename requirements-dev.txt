@@ -15,3 +15,4 @@ argh
 twine
 typing-extensions
 sphinxcontrib-napoleon
+google-api-python-client

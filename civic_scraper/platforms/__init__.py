@@ -4,4 +4,3 @@ from .granicus.site import GranicusSite
 from .legistar.site import Site as LegistarSite
 from .primegov.site import PrimeGovSite
 from .boarddocs.site import BoardDocsSite
-
