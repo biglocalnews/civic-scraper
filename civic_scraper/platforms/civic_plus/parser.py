@@ -3,7 +3,7 @@ from datetime import datetime
 
 import bs4
 
-from civic_scraper.base.constants import SUPPORTED_ASSET_TYPES
+from civic_scraper.base.constants import ASSET_TYPES
 
 
 class ParsingError(Exception):
@@ -96,7 +96,7 @@ class Parser:
         if url_path.endswith("packet=true"):
             return "agenda_packet"
         asset_type = url_path.split("/")[3].lower()
-        if asset_type in SUPPORTED_ASSET_TYPES:
+        if asset_type in ASSET_TYPES:
             return asset_type
         else:
             msg = f"Unexpected asset type ({asset_type}) for {url_path}"

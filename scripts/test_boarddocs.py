@@ -9,7 +9,7 @@ from datetime import datetime
 # Add the parent directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from civic_scraper.platforms.boarddocs.site import BoardDocsSite
+from civic_scraper.platforms.boarddocs.site import Site
 from civic_scraper.platforms.boarddocs.exporter import BoardDocsExporter
 
 
@@ -22,7 +22,7 @@ def main():
     output_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'output')
     
     # Create BoardDocs site instance without committee_id
-    site = BoardDocsSite(url)
+    site = Site(url)
     
     print(f"Scraping meetings from {site.url}")
     

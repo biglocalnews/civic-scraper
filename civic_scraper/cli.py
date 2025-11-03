@@ -7,6 +7,7 @@ from click_option_group import RequiredMutuallyExclusiveOptionGroup, optgroup
 
 from civic_scraper.runner import Runner
 from civic_scraper.utils import default_user_home, today_local_str
+from civic_scraper.base.constants import ASSET_TYPES
 
 TODAY = today_local_str()
 DEFAULT_USER_HOME = default_user_home()
@@ -61,6 +62,20 @@ def cli():
         " environment variable"
     ),
 )
+@click.option(
+    "-f",
+    "--file-size",
+    type=float,
+    default=None,
+    help="Maximum file size in megabytes for downloaded assets.",
+)
+@click.option(
+    "-a",
+    "--asset-types",
+    multiple=True,
+    type=click.Choice(ASSET_TYPES, case_sensitive=False),
+    help=f"Types of assets to scrape. Available types: {', '.join(ASSET_TYPES)}.",
+)
 @optgroup.group(
     "Site sources",
     cls=RequiredMutuallyExclusiveOptionGroup,
@@ -72,7 +87,9 @@ def cli():
     type=click.File("r"),
     help="CSV containing a 'url' field for target sites.",
 )
-def scrape(start_date, end_date, download, cache, url, urls_file):
+def scrape(
+    start_date, end_date, download, cache, file_size, asset_types, url, urls_file
+):
     """Scrape one or more government sites."""
     cache_path = os.environ.get("CIVIC_SCRAPER_DIR", DEFAULT_USER_HOME)
     runner = Runner(cache_path=cache_path)
@@ -81,6 +98,8 @@ def scrape(start_date, end_date, download, cache, url, urls_file):
         "end_date": end_date,
         "cache": cache,
         "download": download,
+        "file_size": file_size,
+        "asset_list": list(asset_types) if asset_types else None,
     }
     if url:
         kwargs["site_urls"] = [url]

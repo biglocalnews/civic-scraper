@@ -20,8 +20,8 @@ Below are more details on using the [Command line](cli) as well as
 writing [Custom scripts](custom-scripts).
 
 ```{note}
-`civic-scraper` currently supports scraping of five software [platforms]: Civic Clerk, Civic Plus, Granicus,
-Legistar and PrimeGov.
+`civic-scraper` supports scraping of five software [platforms]: Civic Clerk, Civic Plus, Granicus,
+Legistar and PrimeGov. All platforms now have a standardized interface for easier use across different platforms.
 ```
 
 (find-a-site)=
@@ -43,7 +43,6 @@ If your agency site is not currently supported, you can try reaching out
 to us to see if the platform is on our development roadmap. We also
 welcome {ref}`open-source contributions <contributing>` if you want to
 add support for a new platform.
-
 
 (cli)=
 
@@ -93,6 +92,20 @@ to *civic-scraper*'s {ref}`cache directory <default-cache-dir>`:
 
 ```
 civic-scraper scrape --download --url <site URL>
+```
+
+You can also limit downloads by file size:
+
+```
+# Only download files up to 10MB
+civic-scraper scrape --download --file-size=10 --url <site URL>
+```
+
+And you can filter by asset type:
+
+```
+# Only download agenda documents
+civic-scraper scrape --download --asset-types=agenda --url <site URL>
 ```
 
 (scrape-by-date-cli)=
@@ -166,13 +179,15 @@ civic-scraper scrape \
   --download \
   --start-date=2020-01-01 \
   --end-date=2020-01-31 \
+  --file-size=20 \
+  --asset-types=agenda --asset-types=minutes \
   --url <site URL>
 ```
 
 would performing the following actions:
 
 - Generate a [Metadata CSV] on available documents for meetings in January 2020
-- {ref}`Download <download-docs-cli>` agendas and minutes for meetings in the specified date range
+- {ref}`Download <download-docs-cli>` agendas and minutes for meetings in the specified date range, limited to 20MB per file
 - {ref}`Cache <cache-artifacts-cli>` the HTML of search results pages containing links to agendas/minutes
 
 (custom-scripts)=
@@ -186,15 +201,45 @@ files or avoiding download of excessively large files).
 
 ```{note}
 In order to use *civic-scraper* in a script, you must install the package and
-import one of the platform scraper classes. In the examples below,
-we use the {code}`CivicPlusSite` class. See the [platforms] folder on
-GitHub for other available platform classes.
+import one of the platform scraper classes. 
 
-Site classes may support slightly different interfaces/features
-due to differences in features on each platform.
+All platforms now have a standardized interface, with Site classes that accept the same 
+constructor parameters and scrape() method parameters. This makes it much easier to 
+work with multiple platforms or switch between them.
+```
 
-It's a good idea to review the docstrings and methods for a class
-before attempting to use it.
+### Standardized Platform Interface
+
+All platforms now follow a standardized interface:
+
+```python
+from civic_scraper.platforms import CivicPlusSite, GranicusSite, BoardDocsSite, LegistarSite
+
+# Constructor parameters
+site = PlatformSite(
+    url="https://example.com",           # URL to the site (required)
+    place="cityname",                    # Name of the place (optional)
+    state_or_province="ca",              # State/province code (optional)
+    cache=None,                          # Cache instance (optional)
+    parser_kls=None,                     # Custom parser class (optional)
+    committee_id=None,                   # Committee ID (optional, used by some platforms)
+    timezone="US/Eastern"                # Timezone (optional)
+)
+
+# Scrape method parameters
+assets = site.scrape(
+    start_date="2023-01-01",             # Start date YYYY-MM-DD (optional)
+    end_date="2023-01-31",               # End date YYYY-MM-DD (optional)
+    download=False,                      # Download files (optional, default: False)
+    cache=False,                         # Cache HTML (optional, default: False)
+    file_size=10,                        # Max file size in MB (optional)
+    asset_list=["agenda", "minutes"]     # List of asset types to filter by (optional)
+)
+```
+
+```{note}
+Some parameters may not be applicable to certain platforms. When a parameter is not supported,
+the platform will typically log a warning message and ignore the parameter.
 ```
 
 ### Scrape metadata
@@ -219,8 +264,8 @@ assets_metadata = site.scrape()
 ```
 
 ```{note}
-{code}`CivicPlusSite` is an alias for more convenient import of the actual Civic Plus class
-located at {py:class}`civic_scraper.platforms.civic_plus.site.Site`.
+All platform implementations now use the same standard interface, making it easy to switch between
+platforms or work with multiple platforms in the same script.
 ```
 
 {py:meth}`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>` will automatically store
@@ -239,8 +284,6 @@ url = 'https://ca-eastpaloalto.civicplus.com/AgendaCenter'
 site = CivicPlusSite(url, cache=Cache('/tmp'))
 assets_metadata = site.scrape()
 ```
-
-(export-metadata-script)=
 
 ### Export metadata to CSV
 
@@ -265,7 +308,7 @@ assets_metadata.to_csv('/tmp/civic-scraper/metadata')
 There are two primary ways to download file assets discovered by a scrape.
 
 You can trigger downloads by passing {code}`download=True` to
-{py:meth}`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>`:
+{py:meth}`site.scrape <civic_scraper.base.site.Site.scrape>`:
 
 ```
 site.scrape(download=True)
@@ -288,7 +331,7 @@ user's local time).
 
 Scraping can be modified to capture assets from different date ranges by
 supplying the optional {code}`start_date` and/or {code}`end_date` arguments
-to {py:meth}`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>`.
+to {py:meth}`site.scrape <civic_scraper.base.site.Site.scrape>`.
 
 Their values must be strings of the form {code}`YYYY-MM-DD`:
 
@@ -305,7 +348,7 @@ The above will *not* download the assets by default. See {ref}`download assets s
 
 You can exercise more fine-grained control over the size and type of files to download
 using the {code}`file_size` and {code}`asset_list` arguments to
-{py:meth}`CivicPlusSite.scrape <civic_scraper.platforms.civic_plus.site.Site.scrape>`:
+{py:meth}`site.scrape <civic_scraper.base.site.Site.scrape>` on any platform:
 
 ```
 # Download only minutes that are 20MB or smaller
@@ -316,11 +359,17 @@ site.scrape(
 )
 ```
 
-Here are more details on the parameters mentioned above:
+Here are more details on the standardized parameters available on all platforms:
 
-- {code}`file_size` - Limit downloads to files with max file size in megabytes.
-- {code}`asset_list` -  Limit downloads to one or more [asset types]
-  (described below in [Metadata CSV](metadata-csv)). The default is to download all document types.
+- {code}`start_date` (str, optional): YYYY-MM-DD start date (defaults to today)
+- {code}`end_date` (str, optional): YYYY-MM-DD end date (defaults to today)
+- {code}`download` (bool, optional): Download file assets (default: False)
+- {code}`cache` (bool, optional): Cache source HTML (default: False)
+- {code}`file_size` (float, optional): Maximum file size in MB to download
+- {code}`asset_list` (list, optional): List of asset types to limit scraping
+
+These parameters work the same way across all supported platforms, providing a consistent interface
+for your scraping needs.
 
 (metadata-csv)=
 

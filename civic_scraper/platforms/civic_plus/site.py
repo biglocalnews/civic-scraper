@@ -3,6 +3,7 @@ import logging
 import re
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
+import warnings
 
 import requests
 
@@ -18,20 +19,58 @@ logger = logging.getLogger(__name__)
 
 
 class Site(base.Site):
-    def __init__(self, base_url, cache=Cache(), parser_kls=Parser, place_name=None):
-        super().__init__(base_url, cache=cache, parser_kls=parser_kls)
-        self.base_url = base_url
-        self.subdomain = urlparse(base_url).netloc.split(".")[0]
-        self.place_name = place_name
-        self.state_or_province = self._get_asset_metadata(
-            r"(?<=//)\w{2}(?=-)", base_url
+    """CivicPlus site implementation."""
+
+    def __init__(
+        self,
+        url,
+        place=None,
+        state_or_province=None,
+        cache=None,
+        parser_kls=None,
+        committee_id=None,
+        timezone=None,
+        **kwargs,
+    ):
+        """Initialize CivicPlus site.
+
+        Args:
+            url (str): Base URL for the CivicPlus site
+            place (str, optional): Name of the place/municipality
+            state_or_province (str, optional): State or province
+            cache (Cache, optional): Cache instance
+            parser_kls (class, optional): Parser class
+            committee_id (str, optional): Not used for CivicPlus
+            timezone (str, optional): Timezone for dates
+        """
+        # Handle deprecated parameters for backward compatibility
+        if "place_name" in kwargs:
+            warnings.warn(
+                "The place_name parameter is deprecated, use place instead",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            place = kwargs.pop("place_name")
+
+        # Extract state and subdomain from URL
+        subdomain = urlparse(url).netloc.split(".")[0]
+        extracted_state = self._get_asset_metadata(r"(?<=//)\w{2}(?=-)", url)
+        extracted_place = self._get_asset_metadata(r"(?<=-)\w+(?=\.)", url)
+
+        # Initialize base class with standardized parameters
+        super().__init__(
+            url=url,
+            place=place or extracted_place,
+            state_or_province=state_or_province or extracted_state,
+            cache=cache,
+            parser_kls=parser_kls or Parser,
+            committee_id=committee_id,
+            timezone=timezone,
         )
 
-    @property
-    def place(self):
-        return self.place_name or self._get_asset_metadata(
-            r"(?<=-)\w+(?=\.)", self.base_url
-        )
+    def _init_platform_specific(self):
+        """Initialize CivicPlus specific attributes."""
+        self.subdomain = urlparse(self.url).netloc.split(".")[0]
 
     def scrape(
         self,
@@ -45,13 +84,12 @@ class Site(base.Site):
         """Scrape a government website for metadata and/or docs.
 
         Args:
-            start_date (str): YYYY-MM-DD (default: current day)
-            end_date (str): YYYY-MM-DD (default: current day)
-            cache (bool): Cache source HTML containing file metadata (default: False)
-            download (bool): Download file assets such as PDFs (default: False)
-            file_size (float): Max size in Megabytes of file assets to download
-            asset_list (list): Optional list of SUPPORTED_ASSET_TYPES to
-                to limit items to be scraped (e.g. agenda, minutes). (default: [])
+            start_date (str, optional): YYYY-MM-DD (default: current day)
+            end_date (str, optional): YYYY-MM-DD (default: current day)
+            cache (bool, optional): Cache source HTML containing file metadata (default: False)
+            download (bool, optional): Download file assets such as PDFs (default: False)
+            file_size (float, optional): Max size in Megabytes of file assets to download
+            asset_list (list, optional): List of asset types to limit scraping
 
         Returns:
             AssetCollection: A sequence of Asset instances
@@ -60,6 +98,7 @@ class Site(base.Site):
         start = start_date or today
         end = end_date or today
         response_url, raw_html = self._search(start, end)
+
         # Cache the raw html from search results page
         if cache:
             cache_path = (
@@ -67,26 +106,14 @@ class Site(base.Site):
             )
             self.cache.write(cache_path, raw_html)
             logger.info(f"Cached search results page HTML: {cache_path}")
+
         file_metadata = self.parser_kls(raw_html).parse()
         assets = self._build_asset_collection(file_metadata)
-        if download:
-            asset_dir = Path(self.cache.path, "assets")
-            asset_dir.mkdir(parents=True, exist_ok=True)
-            for asset in assets:
-                if self._skippable(asset, file_size, asset_list):
-                    continue
-                asset.download(str(asset_dir))
-        return assets
 
-    def _skippable(self, asset, file_size, asset_list):
-        if file_size:
-            max_bytes = self._mb_to_bytes(file_size)
-            if float(asset.content_length) > max_bytes:
-                return True
-        if asset_list:
-            if asset.asset_type in asset_list:
-                return True
-        return False
+        if download:
+            self._download_assets(assets, file_size, asset_list)
+
+        return assets
 
     def _cache_page_name(self, response_url):
         return (
@@ -135,7 +162,6 @@ class Site(base.Site):
             asset_args = {
                 "state_or_province": self.state_or_province,
                 "place": self.place,
-                "place_name": self.place_name,
                 "committee_name": row["committee_name"],
                 "meeting_id": self._mk_mtg_id(self.subdomain, row["meeting_id"]),
                 "meeting_date": row["meeting_date"],
