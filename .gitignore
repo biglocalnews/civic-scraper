@@ -13,3 +13,5 @@ _data/
 civic-scraper-env
 web_scap
 
+env/*
+logs/*

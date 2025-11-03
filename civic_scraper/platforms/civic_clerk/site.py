@@ -1,11 +1,14 @@
 import html
 import re
-from datetime import datetime
+import json
+import logging
+import requests
+from datetime import datetime, date
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin, quote  # Added quote for URL encoding
 
-import demjson3 as demjson
 import lxml.html
+from bs4 import BeautifulSoup
 from requests import Session
 
 import civic_scraper
@@ -13,228 +16,157 @@ from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
 
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+def extract_place_and_state_from_url(url):
+    """
+    Extracts the place and state from a CivicClerk URL.
+    Examples:
+        https://turlockca.portal.civicclerk.com -> ("turlock", "ca")
+        https://jacksonmi.civicclerk.com -> ("jackson", "mi")
+        https://alpharettaga.civicclerk.com -> ("alpharetta", "ga")
+        https://islamoradafl.portal.civicclerk.com/ -> ("islamorada", "fl")
+    """
+    from urllib.parse import urlparse
+    import re
+
+    netloc = urlparse(url).netloc
+    # Remove subdomains like 'www.'
+    netloc = netloc.replace("www.", "")
+    # Remove .portal. or .civicclerk.com
+    if ".portal." in netloc:
+        sub = netloc.split(".portal.")[0]
+    else:
+        sub = netloc.split(".civicclerk.com")[0]
+    # Remove trailing slashes
+    sub = sub.strip("/")
+    # Extract place and state (last 2 letters are state)
+    m = re.match(r"([a-zA-Z]+)([a-zA-Z]{2})$", sub)
+    if m:
+        place = m.group(1)
+        state = m.group(2)
+        return place.lower(), state.lower()
+    # fallback: just return sub, ''
+    return sub.lower(), ""
+
 
 class CivicClerkSite(base.Site):
-    def __init__(self, url, place=None, state_or_province=None, cache=Cache()):
-
-        self.url = url
-        self.base_url = "https://" + urlparse(url).netloc
-        self.civicclerk_instance = urlparse(url).netloc.split(".")[0]
-        self.place = place
-        self.state_or_province = state_or_province
+    def __init__(self, url, cache=Cache()):
+        """
+        CivicClerkSite scraper.
+        Args:
+            url (str): The base URL for the CivicClerk portal.
+            cache (Cache): Optional cache object.
+        Note:
+            Place and state_or_province are now auto-extracted from the URL.
+        """
+        self.initial_url = url  # User-provided URL
+        self.place, self.state_or_province = extract_place_and_state_from_url(url)
         self.cache = cache
+        self.resolved_url = url  # For logging, could be extended for redirects
 
-        self.session = Session()
-        self.session.headers["User-Agent"] = (
-            "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
-        )
-
-        # Raise an error if a request gets a failing status code
-        self.session.hooks = {
-            "response": lambda r, *args, **kwargs: r.raise_for_status()
-        }
-
-    def create_asset(self, asset, committee_name, meeting_datetime, meeting_id):
-        asset_url, asset_name = asset
-        asset_type = "Meeting"
-
-        e = {
-            "url": asset_url,
-            "asset_name": asset_name,
-            "committee_name": committee_name,
-            "place": None,
-            "state_or_province": None,
-            "asset_type": asset_type,
-            "meeting_date": meeting_datetime.date(),
-            "meeting_time": meeting_datetime.time(),
-            "meeting_id": meeting_id,
-            "scraped_by": f"civic-scraper_{civic_scraper.__version__}",
-            "content_type": "txt",
-            "content_length": None,
-        }
-        return Asset(**e)
-
-    def get_meeting_id(self, event):
-        link = event.xpath("./td[contains(@id, '_3')]//a")[0]
-        href = link.attrib["href"]
-        pattern = r".*?\((?P<id>.*?),.*"
-        match = re.match(pattern, href)
-        return (
-            match.group("id"),
-            "civicclerk_{}_{}".format(self.civicclerk_instance, match.group("id")),
-        )
-
-    def get_agenda_items(self, text):
-        event_tree = lxml.html.fromstring(text)
-
-        event_frame = event_tree.xpath("//iframe[@id='docViewer']")[0]
-
-        if "src" not in event_frame.attrib:
-            return []
-
-        event_frame_url = self.base_url + event_frame.attrib["src"]
-
-        frame_response = self.session.get(event_frame_url)
-        frame_tree = lxml.html.fromstring(frame_response.text)
-        frame_has_table = True if frame_tree.xpath("//table") else False
-
-        assets = []
-
-        if frame_has_table:
-            assets_list = frame_tree.xpath(
-                "//tr[./td[@class='dx-wrap dxtl dxtl__B0' and not(@colspan)]]"
-            )
-            for item in assets_list:
-                link_tr_text = item.xpath("./following-sibling::tr[1]")[0]
-                for tr in link_tr_text.xpath(".//a"):
-                    if tr.attrib["href"] != "#":
-                        asset_url = self.base_url + "/Web" + tr.attrib["href"][2:]
-                        asset_name = tr.xpath("./text()")[0]
-                        assets.append((asset_url, asset_name))
+    def get_api_base(self):
+        """Return the CivicClerk API base URL for events."""
+        site_url = self.initial_url.rstrip("/")
+        if ".portal." in site_url:
+            domain = site_url.split(".portal.")[0].replace("https://", "")
         else:
-            no_agenda_str = "Agenda content has not been published for this meeting."
-            if no_agenda_str not in frame_tree.xpath("//text()"):
-                assets.append((event_frame_url, None))
+            domain = site_url.split(".civicclerk.com")[0].replace("https://", "")
+        return f"https://{domain}.api.civicclerk.com/v1/Events"
 
-        return assets
+    def fetch_all_events(self, start_date=None, end_date=None):
+        """Fetch all events from the CivicClerk API, optionally filtered by date range."""
+        api_base = self.get_api_base()
+        all_events = []
+        skip = 0
+        PAGE_SIZE = 20
+        while True:
+            params = {
+                "$orderby": "startDateTime asc, eventName asc",
+                "$top": PAGE_SIZE,
+                "$skip": skip,
+            }
+            # Optionally filter by date range
+            if start_date:
+                params["$filter"] = f"startDateTime ge {start_date}"
+            if end_date:
+                if "$filter" in params:
+                    params["$filter"] += f" and startDateTime le {end_date}"
+                else:
+                    params["$filter"] = f"startDateTime le {end_date}"
+            logger.info(f"Fetching events $skip={skip} from {api_base}")
+            resp = requests.get(api_base, params=params)
+            resp.raise_for_status()
+            data = resp.json()
+            events = data.get("value", [])
+            if not events:
+                break
+            all_events.extend(events)
+            skip += PAGE_SIZE
+        return all_events
 
-    def events(self):
+    def standardise_asset_url(self, meeting_id, fileId):
+        site_url = self.initial_url.rstrip("/")
+        return f"{site_url}/event/{meeting_id}/files/agenda/{fileId}"
 
-        yield from self._future_events()
-        yield from self._past_events()
+    def standardise_meeting_url(self, meeting_id):
+        site_url = self.initial_url.rstrip("/")
+        return f"{site_url}/event/{meeting_id}/overview"
 
-    def _future_events(self):
-
-        callback_id = "aspxroundpanelCurrent$pnlDetails$grdEventsCurrent"
-        for page in self._paginate(callback_id):
-            events = page.xpath(
-                "//table[@id='aspxroundpanelCurrent_pnlDetails_grdEventsCurrent_DXMainTable']/tr[@class='dxgvDataRow_CustomThemeModerno']"
+    def extract_event_details(self, event):
+        meeting_date_raw = event.get("startDateTime")
+        meeting_date = None
+        if meeting_date_raw:
+            try:
+                dt = datetime.fromisoformat(meeting_date_raw.replace("Z", "+00:00"))
+                meeting_date = dt.strftime("%Y-%m-%d %H:%M:%S")
+            except Exception:
+                meeting_date = meeting_date_raw
+        assets = event.get("publishedFiles", [])
+        asset_objs = []
+        for asset in assets:
+            publish_on_raw = asset.get("publishOn")
+            if publish_on_raw:
+                try:
+                    dt = datetime.fromisoformat(publish_on_raw.replace("Z", "+00:00"))
+                    asset["publishOn"] = dt.strftime("%Y-%m-%d %H:%M:%S")
+                except Exception:
+                    pass
+            fileId = asset.get("fileId")
+            asset_url = (
+                self.standardise_asset_url(event.get("id"), fileId)
+                if fileId is not None
+                else None
             )
-            yield from events
-
-    def _past_events(self):
-
-        callback_id = "aspxroundpanelRecent2$ASPxPanel4$grdEventsRecent2"
-        for page in self._paginate(callback_id):
-            events = page.xpath(
-                "//table[@id='aspxroundpanelRecent2_ASPxPanel4_grdEventsRecent2_DXMainTable']/tr[@class='dxgvDataRow_CustomThemeModerno']"
+            asset_obj = Asset(
+                url=asset_url,
+                asset_name=asset.get("fileName"),
+                committee_name=event.get("eventCategoryName"),
+                place=self.place,
+                place_name=self.place,  # Could be improved if human-readable name is available
+                state_or_province=self.state_or_province,
+                asset_type=asset.get("fileType"),
+                meeting_date=meeting_date,
+                meeting_id=event.get("id"),
+                scraped_by="civic_scraper",
+                content_type=asset.get("contentType"),
+                content_length=asset.get("fileSize"),
             )
-            yield from events
+            asset_objs.append(asset_obj)
+        return asset_objs
 
-    def _paginate(self, callback_id):
-
-        response = self.session.get(self.url)
-
-        tree = lxml.html.fromstring(response.text)
-
-        yield tree
-
-        # The first page of results is embedded in the full html
-        # page. Subsequent pages of results will be extracted from
-        # partial html returned from an endpoint intended for AJAX
-
-        # Set up the pagination payload with it's constant values
-        payload = {}
-        payload["__EVENTARGUMENT"] = None
-        payload["__EVENTTARGET"] = None
-        (payload["__VIEWSTATE"],) = tree.xpath("//input[@name='__VIEWSTATE']/@value")
-        (payload["__VIEWSTATEGENERATOR"],) = tree.xpath(
-            "//input[@name='__VIEWSTATEGENERATOR']/@value"
-        )
-        (payload["__EVENTVALIDATION"],) = tree.xpath(
-            "//input[@name='__EVENTVALIDATION']/@value"
-        )
-        payload["__CALLBACKID"] = callback_id
-
-        # To get the next page of results from the AJAX endpoint,
-        # it's basically a post request with a 'PBN' argument. But,
-        # we also have to pass around the callback state that
-        # the endpoint expects
-        (event_callback_source,) = tree.xpath(
-            """//script[contains(text(), "var dxo = new ASPxClientGridView('{}');")]/text()""".format(
-                callback_id.replace("$", "_")
-            )
-        )
-
-        callback_state = demjson.decode(
-            re.search(
-                r"^dxo\.stateObject = \((?P<body>.*)\);$",
-                event_callback_source,
-                re.MULTILINE,
-            ).group("body")
-        )
-
-        # You may wonder why we are encoding the callback_state back to a string
-        # right after we decoded it from a string.
-        #
-        # The reasons is that the original string uses single quotes and is
-        # not html-escaped, and we need to use double quotes and html escape.
-        payload[callback_id] = html.escape(demjson.encode(callback_state))
-
-        item_keys = callback_state["keys"]
-        payload["__CALLBACKPARAM"] = "c0:KV|61;{};GB|20;12|PAGERONCLICK3|PBN;".format(
-            demjson.encode(item_keys)
-        )
-
-        # We'll break when we attempt to paginate to a next
-        # page but we get the same keys
-        previous_item_keys = None
-
-        while item_keys != previous_item_keys:
-
-            response = self.session.post(self.url, payload)
-            previous_item_keys = item_keys
-
-            data_str = re.match(r".*?/\*DX\*/\((?P<body>.*)\)", response.text).group(
-                "body"
-            )
-
-            data = demjson.decode(data_str)
-
-            table_tree = lxml.html.fromstring(data["result"]["html"])
-
-            yield table_tree
-
-            callback_state = data["result"]["stateObject"]
-
-            payload[callback_id] = html.escape(demjson.encode(callback_state))
-
-            item_keys = callback_state["keys"]
-            payload["__CALLBACKPARAM"] = (
-                "c0:KV|61;"
-                + demjson.encode(callback_state["keys"])
-                + ";GB|20;12|PAGERONCLICK3|PBN;"
-            )
-
-    def scrape(self, download=True):
-
+    def scrape(self, download=True, start_date=None, end_date=None):
+        """Scrape meetings and their assets from the CivicClerk site using the API."""
         ac = AssetCollection()
-
-        for event in self.events():
-            committee_name = event.xpath("./td[contains(@id, '_3')]//text()")[1].strip()
-            str_datetime = event.xpath("./td[contains(@id, '_4')]//text()")[0].strip()
-            meeting_datetime = datetime.strptime(str_datetime, "%m/%d/%Y %I:%M %p")
-            meeting_id_num, meeting_id = self.get_meeting_id(event)
-
-            event_url = f"{self.base_url}/Web/DocumentFrame.aspx?id={meeting_id_num}&mod=-1&player_tab=-2"
-            event_response = self.session.get(event_url)
-
-            agenda_items = self.get_agenda_items(event_response.text)
-
-            if agenda_items:
-                assets = [
-                    self.create_asset(a, committee_name, meeting_datetime, meeting_id)
-                    for a in agenda_items
-                ]
-                for a in assets:
-                    ac.append(a)
-
-        if download:
-            asset_dir = Path(self.cache.path, "assets")
-            asset_dir.mkdir(parents=True, exist_ok=True)
-            for asset in ac:
-                if asset.url:
-                    dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=self.session)
-
+        logger.info(f"Starting to scrape meetings from {self.resolved_url}")
+        if start_date or end_date:
+            logger.info(f"Date range: Start={start_date}, End={end_date}")
+        events = self.fetch_all_events(start_date=start_date, end_date=end_date)
+        for event in events:
+            assets = self.extract_event_details(event)
+            for asset in assets:
+                ac.append(asset)
         return ac
