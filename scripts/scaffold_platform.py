@@ -63,7 +63,7 @@ class Site(base.Site):
 
     def __init__(self, base_url, cache=Cache()):
         """Initialize scraper.
-        
+
         Args:
             base_url (str): Base URL of the jurisdiction website
             cache (Cache): Cache instance (default: new Cache())
@@ -73,13 +73,13 @@ class Site(base.Site):
 
     def scrape(self, start_date=None, end_date=None, cache=False, download=False):
         """Scrape the jurisdiction website for meeting documents.
-        
+
         Args:
             start_date (str): YYYY-MM-DD format (default: today)
             end_date (str): YYYY-MM-DD format (default: today)
             cache (bool): Cache raw HTML (default: False)
             download (bool): Download PDF/doc files (default: False)
-        
+
         Returns:
             AssetCollection: Collection of Asset instances
         """
@@ -105,24 +105,24 @@ from civic_scraper.platforms.{platform_name} import {class_name}
 @pytest.mark.vcr()
 def test_scrape_defaults(civic_scraper_dir, set_default_env):
     """Test basic scraping functionality with defaults.
-    
+
     On first run: VCR records HTTP interactions to cassette
     On subsequent runs: VCR replays mocked responses
-    
+
     TODO: Update the expected count based on what's actually on the website.
     Inspect {base_url} to count how many documents you expect to find,
     then replace the assertion below with the exact number.
     """
     site = {class_name}("{base_url}/")
     assets = site.scrape()
-    
+
     # TODO: Replace X with the number of documents you expect to find
     # (e.g., if the website shows 3 agendas on the first page, use 3)
     assert len(assets) == X, "Should find exactly X assets (update X based on what's on the website)"
-    
+
     # Verify result type
     assert hasattr(assets, '__iter__'), "Assets should be iterable"
-    
+
     # Verify first asset has required fields
     asset = assets[0]
     assert asset.url.startswith("https://"), "URL should be absolute"
@@ -133,15 +133,15 @@ def test_scrape_defaults(civic_scraper_dir, set_default_env):
 @pytest.mark.vcr()
 def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
     """Test scraping with specific date range.
-    
+
     TODO: Adjust dates and expected count based on your target website.
     """
     site = {class_name}("{base_url}/")
     start_date = "2024-01-01"
     end_date = "2024-01-31"
-    
+
     assets = site.scrape(start_date=start_date, end_date=end_date)
-    
+
     # TODO: Replace Y with the expected count for this date range
     assert len(assets) == Y, "Should find exactly Y assets in the date range"
 
@@ -150,7 +150,7 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
 def test_site_initialization():
     """Test Site can be initialized."""
     site = {class_name}("{base_url}/")
-    
+
     assert site.base_url == "{base_url}/"
     assert site.url == "{base_url}/"
 '''
