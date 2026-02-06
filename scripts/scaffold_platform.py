@@ -35,15 +35,14 @@ PYTHON API:
 
 import argparse
 from pathlib import Path
-from datetime import datetime
 
 
 # Templates for generated files
 
-INIT_TEMPLATE = '''from .site import Site as {class_name}
+INIT_TEMPLATE = """from .site import Site as {class_name}
 
 __all__ = ["{class_name}"]
-'''
+"""
 
 SITE_TEMPLATE = '''"""
 Scraper for {platform_name}
@@ -159,18 +158,18 @@ def test_site_initialization():
 
 def platform_to_class_name(platform_name):
     """Convert platform_name (your_jurisdiction) to ClassName."""
-    parts = platform_name.split('_')
-    return ''.join(word.capitalize() for word in parts) + 'Site'
+    parts = platform_name.split("_")
+    return "".join(word.capitalize() for word in parts) + "Site"
 
 
 def scaffold_platform(platform_name, base_url, repo_root=None):
     """Generate scaffolding for a new platform scraper.
-    
+
     Args:
         platform_name (str): Platform name, lowercase with underscores (e.g., 'your_jurisdiction')
         base_url (str): Base URL of the jurisdiction website
         repo_root (str): Root of the repository (default: current directory)
-    
+
     Returns:
         dict: Paths of created files
     """
@@ -178,58 +177,57 @@ def scaffold_platform(platform_name, base_url, repo_root=None):
         repo_root = Path.cwd()
     else:
         repo_root = Path(repo_root)
-    
+
     # Validate platform name
-    if not platform_name.replace('_', '').isalnum():
-        raise ValueError(f"Platform name must be alphanumeric with underscores: {platform_name}")
-    
+    if not platform_name.replace("_", "").isalnum():
+        raise ValueError(
+            f"Platform name must be alphanumeric with underscores: {platform_name}"
+        )
+
     class_name = platform_to_class_name(platform_name)
     test_module = f"test_{platform_name}_site"
-    
+
     # Define paths
     platform_dir = repo_root / "civic_scraper" / "platforms" / platform_name
     init_file = platform_dir / "__init__.py"
     site_file = platform_dir / "site.py"
     test_file = repo_root / "tests" / f"{test_module}.py"
     cassettes_dir = repo_root / "tests" / "cassettes" / test_module
-    
+
     # Check if already exists
     if platform_dir.exists():
         raise FileExistsError(f"Platform directory already exists: {platform_dir}")
-    
+
     # Create directories
     platform_dir.mkdir(parents=True, exist_ok=False)
     cassettes_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Generate __init__.py
     init_content = INIT_TEMPLATE.format(class_name=class_name)
-    with open(init_file, 'w') as f:
+    with open(init_file, "w") as f:
         f.write(init_content)
-    
+
     # Generate site.py
-    site_content = SITE_TEMPLATE.format(
-        platform_name=platform_name,
-        base_url=base_url
-    )
-    with open(site_file, 'w') as f:
+    site_content = SITE_TEMPLATE.format(platform_name=platform_name, base_url=base_url)
+    with open(site_file, "w") as f:
         f.write(site_content)
-    
+
     # Generate test file
     test_content = TEST_TEMPLATE.format(
         platform_name=platform_name,
         class_name=class_name,
         test_module=test_module,
-        base_url=base_url
+        base_url=base_url,
     )
-    with open(test_file, 'w') as f:
+    with open(test_file, "w") as f:
         f.write(test_content)
-    
+
     return {
-        'platform_dir': str(platform_dir),
-        'init_file': str(init_file),
-        'site_file': str(site_file),
-        'test_file': str(test_file),
-        'cassettes_dir': str(cassettes_dir),
+        "platform_dir": str(platform_dir),
+        "init_file": str(init_file),
+        "site_file": str(site_file),
+        "test_file": str(test_file),
+        "cassettes_dir": str(cassettes_dir),
     }
 
 
@@ -240,31 +238,28 @@ if __name__ == "__main__":
     parser.add_argument(
         "--platform",
         required=True,
-        help="Platform name (lowercase with underscores, e.g., your_jurisdiction)"
+        help="Platform name (lowercase with underscores, e.g., your_jurisdiction)",
     )
     parser.add_argument(
         "--url",
         required=True,
-        help="Base URL of the jurisdiction website (e.g., https://your-jurisdiction-gov.com)"
+        help="Base URL of the jurisdiction website (e.g., https://your-jurisdiction-gov.com)",
     )
 
     args = parser.parse_args()
 
     try:
-        files = scaffold_platform(
-            platform_name=args.platform,
-            base_url=args.url
-        )
-        
+        files = scaffold_platform(platform_name=args.platform, base_url=args.url)
+
         class_name = platform_to_class_name(args.platform)
         test_module = f"test_{args.platform}_site"
-        
+
         print("✓ Scaffolding created successfully!")
         print()
         print("Created files:")
         print(f"  {files['platform_dir']}/")
-        print(f"    ├── __init__.py")
-        print(f"    └── site.py")
+        print("    ├── __init__.py")
+        print("    └── site.py")
         print(f"  {files['test_file']}")
         print(f"  {files['cassettes_dir']}/")
         print()
@@ -274,7 +269,7 @@ if __name__ == "__main__":
         print("  3. Implement Site.scrape() to make tests pass")
         print("  4. First test run records HTTP cassettes")
         print("  5. Subsequent runs replay from cassettes")
-        
+
     except FileExistsError as e:
         print(f"Error: {e}")
         exit(1)
