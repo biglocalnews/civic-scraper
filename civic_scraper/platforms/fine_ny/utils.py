@@ -1,0 +1,329 @@
+"""
+Utility functions for Fine NY scraper.
+
+These functions are testable components of the scraping logic.
+"""
+
+import logging
+from datetime import datetime
+from urllib.parse import urljoin
+
+import requests
+from bs4 import BeautifulSoup
+
+logger = logging.getLogger(__name__)
+
+BASE_URL = "https://finetownny.gov"
+CATEGORIES_PATH = "/meetings/meetings/"
+DETAIL_PATH = "/meetings/detail/"
+
+# Supported asset types (matching civic_scraper.base.constants.SUPPORTED_ASSET_TYPES)
+SUPPORTED_ASSET_TYPES = ["agenda", "minutes", "other"]
+
+
+def fetch_page(url):
+    """Fetch a page and return BeautifulSoup object.
+
+    Args:
+        url (str): URL to fetch
+
+    Returns:
+        BeautifulSoup: Parsed HTML or None if request fails
+
+    Raises:
+        requests.RequestException: If request fails
+    """
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    }
+    response = requests.get(url, headers=headers, timeout=30)
+    response.raise_for_status()
+    return BeautifulSoup(response.text, 'html.parser')
+
+
+def get_categories(base_url):
+    """Get list of meeting categories (committees).
+
+    Args:
+        base_url (str): Base URL (e.g., https://finetownny.gov/meetings)
+
+    Returns:
+        list: List of dicts with 'name' and 'url' keys
+
+    Example:
+        [
+            {'name': 'Town Board', 'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2026'},
+            {'name': 'CF Arena', 'url': 'https://finetownny.gov/meetings/meetings/CF%20Arena/2026'},
+            ...
+        ]
+    """
+    url = urljoin(base_url, CATEGORIES_PATH)
+    soup = fetch_page(url)
+
+    categories = []
+    # Find all category links
+    links = soup.find_all('a', class_='dtp-meeting-category-link')
+
+    for link in links:
+        name = link.get_text(strip=True)
+        href = link.get('href')
+        if href:
+            categories.append({
+                'name': name,
+                'url': href
+            })
+
+    return categories
+
+
+def get_meetings_for_category_year(url):
+    """Get list of meetings for a specific category and year.
+
+    Args:
+        url (str): Category year URL (e.g., .../meetings/Town%20Board/2026)
+
+    Returns:
+        list: List of dicts with 'title', 'url', and 'detail_id' keys
+
+    Example:
+        [
+            {
+                'title': 'February 11, 2026: February Regular Town Board Meeting',
+                'url': 'https://finetownny.gov/meetings/detail/30',
+                'detail_id': '30'
+            },
+            ...
+        ]
+    """
+    soup = fetch_page(url)
+
+    meetings = []
+    # Find all meeting links in the current year
+    links = soup.find_all('a', {'aria-label': 'Link to meeting details page'})
+
+    for link in links:
+        href = link.get('href')
+        if href and '/meetings/detail/' in href:
+            # Extract detail_id from URL
+            detail_id = href.split('/meetings/detail/')[-1].rstrip('/')
+            title = link.get_text(strip=True)
+            meetings.append({
+                'title': title,
+                'url': href,
+                'detail_id': detail_id
+            })
+
+    return meetings
+
+
+def get_other_years(url):
+    """Get links to other years for a category.
+
+    Args:
+        url (str): Category page URL
+
+    Returns:
+        list: List of dicts with 'year' and 'url' keys
+
+    Example:
+        [
+            {'year': '2025', 'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2025'},
+            {'year': '2024', 'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2024'},
+            ...
+        ]
+    """
+    soup = fetch_page(url)
+
+    years = []
+    # Find other years section
+    year_links = soup.find_all('a', class_='dtp-meeting-year')
+
+    for link in year_links:
+        year = link.get_text(strip=True)
+        href = link.get('href')
+        if href:
+            years.append({
+                'year': year,
+                'url': href
+            })
+
+    return years
+
+
+def get_meeting_details(detail_url):
+    """Extract meeting details from a meeting detail page.
+
+    Args:
+        detail_url (str): Meeting detail page URL
+
+    Returns:
+        dict: Meeting details including metadata and documents
+
+    Example:
+        {
+            'committee_name': 'Town Board',
+            'meeting_title': 'February Regular Town Board Meeting',
+            'meeting_date': datetime(2026, 2, 11),
+            'meeting_time': '6:30 pm',
+            'venue': 'Municipal Office Building',
+            'address': '4078 State Highway 3',
+            'zipcode': 'Star Lake, NY 13690',
+            'documents': [
+                {
+                    'type': 'agenda',
+                    'url': 'https://..../2025_DEC_AGENDA.pdf',
+                    'name': '2025 DEC AGENDA.pdf'
+                },
+                ...
+            ]
+        }
+    """
+    soup = fetch_page(detail_url)
+
+    # Extract committee name
+    committee_elem = soup.find(class_='dtp-meeting-category')
+    committee_name = committee_elem.get_text(strip=True) if committee_elem else None
+
+    # Extract meeting title
+    title_elem = soup.find(class_='dtp-meeting-title')
+    meeting_title = title_elem.get_text(strip=True) if title_elem else None
+
+    # Extract meeting date and time from <time> element
+    time_elem = soup.find('time')
+    meeting_date = None
+    meeting_time = None
+    if time_elem:
+        datetime_attr = time_elem.get('datetime')
+        if datetime_attr:
+            try:
+                meeting_date = datetime.strptime(datetime_attr, '%Y-%m-%d').date()
+            except ValueError:
+                logger.warning(f"Could not parse date: {datetime_attr}")
+
+        # Extract time from text content (e.g., "February 11, 2026, 6:30 pm")
+        time_text = time_elem.get_text(strip=True)
+        # Extract the time portion (after the last comma)
+        if ',' in time_text:
+            parts = time_text.split(',')
+            if len(parts) >= 2:
+                meeting_time = parts[-1].strip()
+
+    # Extract venue info
+    venue_elem = soup.find(class_='dtp-meeting-venue')
+    venue = venue_elem.get_text(strip=True) if venue_elem else None
+
+    address_elem = soup.find(class_='dtp-meeting-address1')
+    address = address_elem.get_text(strip=True) if address_elem else None
+
+    zipcode_elem = soup.find(class_='dtp-meeting-zipcode')
+    zipcode = zipcode_elem.get_text(strip=True) if zipcode_elem else None
+
+    # Extract documents (agendas and minutes)
+    documents = _extract_documents(soup)
+
+    return {
+        'committee_name': committee_name,
+        'meeting_title': meeting_title,
+        'meeting_date': meeting_date,
+        'meeting_time': meeting_time,
+        'venue': venue,
+        'address': address,
+        'zipcode': zipcode,
+        'documents': documents
+    }
+
+
+def _extract_documents(soup):
+    """Extract agenda and minutes documents from meeting detail page.
+
+    Args:
+        soup (BeautifulSoup): Parsed HTML
+
+    Returns:
+        list: List of dicts with 'type', 'url', 'name' keys
+    """
+    documents = []
+
+    # Find agenda section
+    agenda_header = soup.find('h3', class_='dtp-meeting-agenda')
+    if agenda_header:
+        # Find document links in the agenda section
+        agenda_section = agenda_header.find_parent()
+        if agenda_section:
+            agenda_links = agenda_section.find_all('a', href=True)
+            for link in agenda_links:
+                href = link.get('href')
+                if href and (href.endswith('.pdf') or 'application/pdf' in link.get('title', '')):
+                    documents.append({
+                        'type': 'agenda',
+                        'url': href,
+                        'name': link.get_text(strip=True)
+                    })
+
+    # Find minutes section
+    minutes_header = soup.find('h3', class_='dtp-meeting-minutes')
+    if minutes_header:
+        # Find document links in the minutes section
+        minutes_section = minutes_header.find_parent()
+        if minutes_section:
+            minutes_links = minutes_section.find_all('a', href=True)
+            for link in minutes_links:
+                href = link.get('href')
+                if href and (href.endswith('.pdf') or 'application/pdf' in link.get('title', '')):
+                    documents.append({
+                        'type': 'minutes',
+                        'url': href,
+                        'name': link.get_text(strip=True)
+                    })
+
+    return documents
+
+
+def parse_meeting_datetime(date_str, time_str):
+    """Parse meeting date and time strings into datetime object.
+
+    Args:
+        date_str (str): Date string (e.g., "2026-02-11" or date object)
+        time_str (str): Time string (e.g., "6:30 pm")
+
+    Returns:
+        datetime: Combined datetime object
+    """
+    if isinstance(date_str, str):
+        try:
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            return None
+    else:
+        date_obj = date_str
+
+    # Parse time if available
+    if time_str:
+        try:
+            time_obj = datetime.strptime(time_str, '%I:%M %p').time()
+        except ValueError:
+            # Try other formats
+            try:
+                time_obj = datetime.strptime(time_str, '%I:%M%p').time()
+            except ValueError:
+                logger.warning(f"Could not parse time: {time_str}")
+                time_obj = None
+    else:
+        time_obj = None
+
+    if time_obj:
+        return datetime.combine(date_obj, time_obj)
+    else:
+        return datetime.combine(date_obj, datetime.min.time())
+
+
+def extract_detail_id_from_url(url):
+    """Extract detail ID from meeting detail URL.
+
+    Args:
+        url (str): URL like https://finetownny.gov/meetings/detail/30
+
+    Returns:
+        str: Detail ID (e.g., "30")
+    """
+    return url.split('/meetings/detail/')[-1].rstrip('/')

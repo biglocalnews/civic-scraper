@@ -99,3 +99,7 @@ class Runner:
     def _get_site_class_name(self, url):
         if re.search(r"(civicplus|AgendaCenter)", url):
             return "CivicPlusSite"
+        # TODO - Eventually might be good to allow an explicit
+        # --platform flag to be set.
+        if re.search(r"finetownny\.gov", url):
+            return "FineNYSite"
