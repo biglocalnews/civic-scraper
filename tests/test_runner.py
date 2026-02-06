@@ -1,5 +1,5 @@
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, call, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
@@ -95,17 +95,18 @@ def test_runner_downloads_assets(asset_collection, asset_mock, civic_scraper_dir
     "Runner should trigger download on assets if requested"
     url = "http://nc-nashcounty.civicplus.com/AgendaCenter"
     start_date = end_date = "2020-05-05"
+    # The VCR cassette produces 2 assets. Configure the mock
+    # AssetCollection to yield mock assets so the runner's
+    # download loop can iterate over them.
+    ac_instance = asset_collection.return_value
+    mock_assets = [MagicMock(), MagicMock()]
+    ac_instance.__iter__ = Mock(return_value=iter(mock_assets))
     r = Runner(civic_scraper_dir)
     r.scrape(start_date, end_date, site_urls=[url], download=True)
     # Check AssetCollection is instantiated and to_csv called by default
     asset_collection.assert_called_once()
-    ac_instance = asset_collection.return_value
     ac_instance.to_csv.assert_called_once()
-    # Check Asset.download is called
+    # Check Asset.download is called on each asset
     assets_dir = str(Path(civic_scraper_dir).joinpath("assets"))
-    asset_instance = asset_mock.return_value
-    # Asset.download called twice with the assets_dir path
-    asset_instance.has_calls(
-        call(assets_dir),
-        call(assets_dir),
-    )
+    for mock_asset in mock_assets:
+        mock_asset.download.assert_called_once_with(assets_dir)
