@@ -29,7 +29,6 @@ twine = "*"
 typing-extensions = "*"
 scraper-legistar = "0.0.2"
 
-
 [dev-packages]
 bumpversion = "*"
 watchdog = "*"
@@ -51,3 +50,4 @@ setuptools-scm = "*"
 pytz = "*"
 sphinx = "*"
 exceptiongroup = "*"
+pytest-cov = "*"

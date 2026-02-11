@@ -1,0 +1,313 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+    method: GET
+    uri: https://finetownny.gov/meetings/meetings/
+  response:
+    body:
+      string: "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\"
+        />\n        <meta http-equiv=\"refresh\" content=\"0;url='http://finetownny.gov/meetings/meetings'\"
+        />\n\n        <title>Redirecting to http://finetownny.gov/meetings/meetings</title>\n
+        \   </head>\n    <body>\n        Redirecting to <a href=\"http://finetownny.gov/meetings/meetings\">http://finetownny.gov/meetings/meetings</a>.\n
+        \   </body>\n</html>"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 11 Feb 2026 22:03:00 GMT
+      Location:
+      - http://finetownny.gov/meetings/meetings
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; IncludeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      X-Backend-Server:
+      - Windows 98 SE
+      X-Cache-Status:
+      - MISS
+      X-Contact:
+      - ateam@digitaltowpath.org
+      X-Content-Type-Options:
+      - nosniff
+      X-Firewall:
+      - Dual-homed Windows ME
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Hacker:
+      - Too easy, please move along.
+      X-Powered-By:
+      - Curiosity/Coffee
+      X-Security:
+      - Um...you see I run PHP, right?
+      X-WAF:
+      - Epic regex.
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+    method: GET
+    uri: http://finetownny.gov/meetings/meetings
+  response:
+    body:
+      string: "<html>\r\n<head><title>301 Moved Permanently</title></head>\r\n<body>\r\n<center><h1>301
+        Moved Permanently</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '162'
+      Content-Type:
+      - text/html
+      Date:
+      - Wed, 11 Feb 2026 22:03:00 GMT
+      Location:
+      - https://finetownny.gov/meetings/meetings
+      Server:
+      - nginx
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+    method: GET
+    uri: https://finetownny.gov/meetings/meetings
+  response:
+    body:
+      string: "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\"
+        />\n        <meta http-equiv=\"refresh\" content=\"0;url='https://finetownny.gov/categories'\"
+        />\n\n        <title>Redirecting to https://finetownny.gov/categories</title>\n
+        \   </head>\n    <body>\n        Redirecting to <a href=\"https://finetownny.gov/categories\">https://finetownny.gov/categories</a>.\n
+        \   </body>\n</html>"
+    headers:
+      Cache-Control:
+      - no-cache, private
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 11 Feb 2026 22:03:01 GMT
+      Location:
+      - https://finetownny.gov/categories
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; IncludeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      X-Backend-Server:
+      - Windows 98 SE
+      X-Cache-Status:
+      - MISS
+      X-Contact:
+      - ateam@digitaltowpath.org
+      X-Content-Type-Options:
+      - nosniff
+      X-Firewall:
+      - Dual-homed Windows ME
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Hacker:
+      - Too easy, please move along.
+      X-Powered-By:
+      - Curiosity/Coffee
+      X-Security:
+      - Um...you see I run PHP, right?
+      X-WAF:
+      - Epic regex.
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+    method: GET
+    uri: https://finetownny.gov/categories
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1de3PbOJL/+1x13wGnrYudqqGoh19xJO96FCfxnu24Yufmpi5XLpCEJNokwSVB
+        K5qt+e7XDZASnzJFO97NrH5TGUsA2N1odDcaJAUM/uPdp9HNr1enZCpc53hrgH+IQ73JsMW8FhYw
+        ah1vEcDAZYJCO+Fr7G+R/TBs/Y/25UQbcdenwjYc1iIm9wTzxLB1djpk1oS14isd27snAXOGrVDM
+        HRZOGRMtIuY+G7YE+yZ0MwxbZBqw8bClAxEzYILpYspcFupUcNe+xyZ6eG97oW6xMY0c0YaSP5um
+        e+txk5pTNhwfMssYdzv9Hjuklnk47vb2zF633x+bfePgoHew392l0LR1jEJtbf2b6pEfcJ8FYj5s
+        8clRaAt261E33ZkbPvMIH5P3toc9KrvMAREyCmDe7ZfrisbY71TTGTOQa1VjW2QIX4DqbG9CRlSw
+        CQ9sFlZcGAVO6jIctvBI18fQBwH98ebtCX/QzQyVrYHkdlzkQY6OSFoNA1213NoqWkXMU8t1U44z
+        mtdbYk5pEDIx/HLzXjtEI5M0UOvD1oR5LIAhD1KXjmKLIKML1OkgNAPbF2n7uaMPVJXGJvdAAzIa
+        Xdy+O7u+OrkZfTz9fPv+7Pz08uTilAxJS7c9i31r+1O/9TbTfnT2Dup7/YNs8em7s5vbi0/v8OIx
+        dUKWrT75/Pnk8sPpihZnFydQD6J8lOwXNm67dALKz5G7ujo/G53cnH26vP3y+RyvKB+/3HWfT2Xb
+        PLXRzdl/n96efxqdnMvOK9vMNvpyDRr6fPrh7Prm9PMp6iDuxEBXesWhls5bcFuLCqrRgFFN1quP
+        U+pZDjS7pA/2BMID9+KGBrjKfdxSfbatYWtvvxPXqxq0jtZ+t3XcBgfXzCiEGBBXoVVQ0EJQrPIW
+        zDQg+HeDmveTgEeepUk1HxHwiR2d+r5jm7IZqBOikf5mt3ug777ZO9B7h/1D/eziw22n2+20/3r1
+        4fXbFJWA+YyKI+Lx+GO6MrR/Aw40Ejxd6nPwbeB0RH4HTaKUx03UeAE9Lipor1OmIBfa1u97r4d9
+        39/t6t03h139/OS/TnvtO3/yfB132Bh8lfsLBWyp+SAf7jHAj3FwZyzkLtOp4zQP8Y/PNi6zbDps
+        AZdHQwoJAzMt6V2o3/0tYsG8fddQvOOlW2WU4YMCMSDobvhwa3J+bzP444UQBqV+VFFcUtBO39rf
+        M83DzvhgfPCG7e/1dsess9+3Dox9trvX7XT29w72x529dbWTlbFoQ5K7lK9Ddw/3O7SzS+mh8cbc
+        OzjY7fYODwzT3GUG7faNXWrRXnevIHptza0leuwxPApMltbunXNrCf8WZPGFLqNQCJUTditnNV0w
+        13dg7oNUA1oZ1INocztjjolm+WCzWXPx06mUmvCQns8Dkc4IbEtMhxZ7sE2myS8/EdsDd6KOFmKi
+        Mey2O2i1usrOBga35jhMlv1ATIeGIegDkydN5U4EYwT2b/EBgq4Gk5z6HnArMmXUdLnFNODLHO67
+        IIoceyC6FRMtxJplxG1tQVvVORpbyp/uItcHdqHIRObuYQvbxSQf7DCCoZprU9uymKeNOTCgkE0S
+        Q3j4T7NocE+ScKJRI+ROBLkARBStQ0JBAwF/Xa1PfpOTuiY4d4TttwgNbKo51ECD+SuIQlAUshSF
+        GDSIB6SseqDT44xKsfdqykLeqS4hHcUt4BitU1rJCHEVQCwO5ikeEFpQj8OWZYdgcnMMsZBkKrsV
+        AfVCH+YBz5xLokt5B/AtEUtVIFH4o7FvPswZmjNJChx7MhVkbH9jFsodE5BE0n1LZlVt7ES2lWol
+        W9IsM80A0awkYy/PTXTsO1v0/RpSXOLwCSczW0yJDCiCkym4FEGLzHFEpBPOdLkcmELrNAZGJAQM
+        cFZowScThwXgZ45D/ZBZSexQrZMEJYwbolJUw1QNDSY48/6paAHSsNVwozLBEtALy5tVCi8vV0PI
+        IC2SOVjWhm6kbORyaUJFxVVhANa0UIptxpaLcxGUl5N5mUvyGOhqSIqtszarhiex9OVwYUpZofoi
+        yVUYjHngwowiptzCtQlEaSpDZaXVh4wG5hSmKRkJ4m+rmQ5sz49E0ivkmFhQYqAJUTVjyNSjRSBe
+        mGzKHYsF4F5xi7SpSJerJ0HWX5LIq0KHMdFmUyTlhlpvIVFkuDZo44E6kcxP7xNWBGyXwDrUgylL
+        ujmzlINnZKtzwWqZEQN7oTUawopFiyliMgCfQYsweczR9uzVxKoNLsFAx4Gprq/CIHJyYQj+1Oja
+        Y4CULEVXg/FxiQXrfwtM8RnI55GZATQZvRNucbisDmolkPE0yacX8XYh/zqkkpB8GzJnvNaVK2cv
+        +McCTyZB69CUNj6loc/9yIcgFETrKaZ0AqhNYL1x/7DoYr6mCnLmzRdWIWX5C1MBZtF3sM40Uo7h
+        9DWZPsms7llcZEAbXZYgrw4Uqf7olqG59RdQ0x1ghgtwYRI249ZM74jrmG++vA7WMtynYKA7j0w1
+        z4GNjTdEXRvn47FtwnL7xY38U8I4X1EHL2blCVIhHuwQRxqfI+RbvSSyniHd4bn8Io8n+kkeZX5D
+        4j40s8IqrO0EusFpYIUa3lgwuQuJv2BN438ezzMWiJ+lkOQVGS1EzDdpgmdxqpeZFqow0CPn5bi/
+        TF83U2BD1PV++Ugbluuzho7eTPOIc+RMzoFzvqYOnsVf62Bj538IO8dSzYgs4Pvili7vcP+seOfr
+        6mBj6/WxsXWhU8+LIKhDA+phZodP83nw8nZ/IuXABztKDvJZyZFvVwd/EB+on6M9rxwl95HXcLAG
+        TpW7jby+6T3Rb1b6iqvefFvDIerrChG/WVfb0Gsb98Yovp9RyGfj5hrPAeqrCjFS5PPFVfjnMYmn
+        zsir8C/3vMlikO8InKXXCD7kx3rg9G7Zx3xVFWpbO2LzxKmAvDp+nLQ15RA69IGFIQ+asWumeMRJ
+        zDdfXgdrWe5T8LxxvgobI2+I2kZu4suXzBvzwGRYosn77+zFjX4EcpDTpRzqmRTbOMHGCRpjDSeI
+        gjUy7TSaaR0xQqb5wjrYmHd9bMwbzHtqT6YzOm/GrZneER8V23xxHWxMvD42Jg4mLp+nmA4LGtzF
+        QTRTPUI+TRkh53xNHWwMvT42hg6GPqMevWcevnQ+Y4Fm2aEI7HVuE6bRbBwQv8RikGsUg7yLxcg3
+        q4ONC9THxgXABfDXd5oD5qfNqFA+0IxzszFAXIMI5Bx/TfILirCx/yU29t8Qte2fhzM2ocKc2kzD
+        myUCf5jViHWzQUB8WspARrEM+TZ18Acx/s1z9Lp4osOsdBKPzdTrwn5kOLapeVys95OR+qpDXAI7
+        8oq6/ltyJRmSS8Uw37AKtY3/uxvNU+PyKvzLPVTFl9UjzxbrBeUf6ZEqvusue5ivqEJtS0dsHqgW
+        kFfHj5O4LJxBxy1E8JfRzZg1UztiFPPNl9fBWnb7FDxvhK/CxsQboqaJ4w4+fM6Y3EHL4LxBfoRo
+        pn/EaSwA+RgLkG9QBxujr4+N0cdGj0vTZuyaKR6hrF2+LdAAGzOvj42ZLz9pJmj2H/GCTJJzjyT/
+        fH0dbEy+PjYmr+NafY27J2k00zniHJnmC+tgY9z1sTFu3RzjZrcebcasmdoRo/fkBPnmy+tgY+L1
+        sTFxNPEJd8Yavt64zs3ANJopHwGG/gG4y/ccw8xWmnXxBzH3l3w4VJ8XYqBb9kN181T1QAe/xL1/
+        ZcmAys0uK3faBVs35La4w5bWxY0QKW7Tu+CT3962fKd1uU1wxb6/uNO6rFc748atRLyDsmYJX1Mb
+        KGvxBsokVQSXpr65NLzXOvtZ74g7XboNr9zJWG7ZnCKjNn9UKwPSiu/GJ5unyraqXTuOZmnSSAW3
+        MwdR7lmyp6/amDh+DrAcosG0m1yWk2P5FRSe3gwVK2W5ZNIqOWch3iR1oE+78pCKnFnkZY0VJ3uc
+        7JD8DxIxMchkE+jYPFN2W7bbcFrYVH3AZ7m5Jrfvqxa6WrdXMh9VcPn3ggiShSrOVyF9JL6sTUN1
+        KSYYf178Ledeznwl72znp/3ja+YwUxCajMQcBqBf7H8a6ac3MKzxb5u1+MyPuebYoSD4Py3ypFvn
+        t31+DIPHYuRiK/CKCTL5ufXyw+j9f/Y6MivTe53efuuRDnj32W1lP+E2stgltNkxD5Y53uKX3asl
+        RtTJC1dOiM0mj++lTZz64Y+a/J9Nq+mEYj3d1kxFfiAN/8ojMZUqdl07hBj8bFqWlNWGZkh3TU3n
+        r16BH0PbN1AJepY7vT2PjpGi2jluHd2mrlqBZ9Tp6mQykx2m593MFflconARzOFjziFtiktDJrc6
+        T1TsGtpu5axVnM/zbYpzer4Fzn2upfVLmiFUbypOZEAJ8LlHLDr2Z7dzcIivhwq2+P1Lf2AERIeJ
+        evHW6E/k8lfS7e+/6SRzuJrFj195Rui/TRX6eHBPwL3J8dWUe+wIT7ORX8lOv7v3WjvcPdT63V43
+        YZG0fk+/VbTd6+XbnrrUdo4S1sk1Cz/BWsGPEjeRP7L4ywRL25BZt46xQhWi6WW9aaD7i0QlztGU
+        KnH5sNRjyOW+QPJ+427/YOFf5S0Sdae2AcV0wvagtmz/9vRthmXDqpfloN+LlbrhUPRlefiLx3G3
+        eMjuPQ5qYUGAqXo2ksxms/aYmgwfvKJudD/geFYNnvj1Z+hxt9Pp9Ppd+O/NXqd7UL4gTweO9zEx
+        SJcXXRhTA/ecT/iULReIzKUzl+u2WoWlORWDgXL4MjdWtRlXXhQXnamHp11o+yXaRdQ6sOXghzqv
+        ZWmKbbx/hfOCzHM9BqxBzFuX4t5Tt1CZ5Xi55IMXwEgtjRW+PDJXtfJ3lZaXfoRFL8omB3ktotSA
+        CXwF5ROsb0Z6UrKfdzWjZOvtZrxkN3SYV9xQ42Mt5reC3Q02xZNfYr5PYesH9gM157A8dmxzvoLp
+        lWpIrmTDJUt0xFV3WQ4qbrJkHI08n8/mUZ/unqRbWF0mGEyD5AILm8uTiMqbFgpLhFiVbsSZRfw1
+        l2cs3iiVhwxBRvYSSUeVtn+OYMolxryYrFr2xBYU5uOZT8V0EQbSIQUfoOEhR+9UU0wbsS35RZ34
+        2SaYjoZ47InHZmhEbTSlzIx3nLtW2WVB2YiyXqmbYfCJeVWL+0LHcm7k8InttY7P+QQERfYFAkVx
+        ao09nqiiss3lzaPkHD7wtm1qc6pRi85s3B9zWx7Ct52e4MP7OUgqmDn1OErJQjnVUxMiVWgbtoN3
+        3u9CPEgQMg0NzFnL1Gl3IZ6uBsQ11/bssTrOD0gFuBXH8JXg9zCRv0qmsqHBheDubYCn4rTb24SG
+        cw9Ewol+G483Sg70W/cswYeIPctBguvyhYREQI5J/QL3Xmf/zR4F9m/2DIP2aafbtXqHe71uZ9wH
+        tnTcs/YZtZ7E3eU4+xRYf7eOm67cRkiEamdj+zcZvmMxQKC1Ka46q/Euf1Rj5Fr5rtY+rTElmHSh
+        lcItvW4GUxKftallnT6ACOeQ1GDWvLPtcGpt/0TGkafi7s5r8vdCaLDHZCem4OKviy7wVEXy6lVC
+        dlm4s73jyzw8xBO4eKCFJp49eEQwEXy9/Vo1ZSFwIRZki3LY8cTCtgxWKFdb/XhgZ9s0NZk/4kGE
+        26/fkt/zYo2kVkexVoPI2ymKjrBsmZRewQCd4ZMAdWrXEUFn/an0CmR5RLa5j8uS7fI2k8j+5COh
+        8KhEZQniMb/gFnVWtUM4dA5ZCvA1+DdQLfS6nHOC5bGq2yocEfWkY7vyqt+rCaphYx7ExLWFrS8n
+        nv+6QrzSGhC6tHx5XvUqWWEVDFGeBvNVjRDMQyOxYrMgRNeJmNphwmZO4HPcBnOA+ODxlSQDiIuf
+        PGeuaJaQNKnncUgpWGKjViW9ct2siypd4invkTwauFpJcY9hFFmVTyDkSZWODKgrBwbBvMdaINbx
+        oQRyrX1EWh/5DLMuA38UrOJFqA6djMNGq7ojaVhMhVRpxa2BfwyXj+1JFMBadsqIiu+JoMRFi5sw
+        eZidui4kVJCvukXDqTw/42s8JSSTRHvwVfePvwZfPfwH9E+8OWrSvMebkwkNMQUqMx45Ft7ucHHp
+        jbYDOWOGdDiH6O7CX8aRD8gOXgBWi3pgENse4LPtwbei6EqOmkrBBMoXJ47zs0DfPpFfCUi1wjrS
+        UNdfJg6qqHxmd/LZVm0q4ZTPrpbBS1G5oJ484lZ1LhXbqoNPghUxMsG6sTJBbJQrpHucN+KfRPH0
+        gRUUH8tiRoF8bSiUTyrBa2rSNB0esjMwxnNcNQG9ERbUvDheTUDU+d9a7RG1G9Yb4QTJSF/L/QfA
+        TRfKjke97lAnyASg7RtIoRL7gdACUQiIg75x+3R8koGO7QfcZ8Eis8M4wseyZqaWnDI8FWeg9pqS
+        4c1fZiVPokG4xYz7uK8leJ7JLY1nJfh/j1Jb3YHq2vKaYunvrzNFywav38qPy1XBct1cvibIr77k
+        2eCwLpaHg+sutb12dv0D63F1pPhAnwrXOd76fzDruHUohgAA
+    headers:
+      Cache-Control:
+      - no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Wed, 11 Feb 2026 22:03:01 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; IncludeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      X-Backend-Server:
+      - Windows 98 SE
+      X-Cache-Status:
+      - MISS
+      X-Contact:
+      - ateam@digitaltowpath.org
+      X-Content-Type-Options:
+      - nosniff
+      X-Firewall:
+      - Dual-homed Windows ME
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Hacker:
+      - Too easy, please move along.
+      X-Powered-By:
+      - Curiosity/Coffee
+      X-Security:
+      - Um...you see I run PHP, right?
+      X-WAF:
+      - Epic regex.
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
