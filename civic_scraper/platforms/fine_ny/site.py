@@ -6,8 +6,6 @@ Base URL: https://finetownny.gov/categories
 
 import logging
 from datetime import datetime
-from pathlib import Path
-
 import requests
 
 import civic_scraper
@@ -97,6 +95,7 @@ class Site(base.Site):
         end_date = end_date or today
 
         ac = AssetCollection()
+        processed_details = set()  # Track meeting detail IDs to avoid duplicates
 
         # Step 1: Get all categories (committees)
         try:
@@ -136,6 +135,9 @@ class Site(base.Site):
 
                     # Process each meeting
                     for meeting in meetings:
+                        if meeting['detail_id'] in processed_details:
+                            continue
+                        processed_details.add(meeting['detail_id'])
                         try:
                             asset_count = self._process_meeting(
                                 meeting,
@@ -143,7 +145,6 @@ class Site(base.Site):
                                 start_date,
                                 end_date,
                                 ac,
-                                download
                             )
                             logger.debug(f"Added {asset_count} assets from meeting {meeting['detail_id']}")
                         except Exception as e:
@@ -168,7 +169,7 @@ class Site(base.Site):
         logger.info(f"Scraping complete. Found {len(ac)} total assets")
         return ac
 
-    def _process_meeting(self, meeting, category_name, start_date, end_date, ac, download):
+    def _process_meeting(self, meeting, category_name, start_date, end_date, ac):
         """Process a single meeting and add assets to collection.
 
         Args:
@@ -177,7 +178,6 @@ class Site(base.Site):
             start_date (str): YYYY-MM-DD format
             end_date (str): YYYY-MM-DD format
             ac (AssetCollection): Collection to add assets to
-            download (bool): Whether to download files
 
         Returns:
             int: Number of assets added
@@ -256,15 +256,5 @@ class Site(base.Site):
 
             ac.append(asset)
             asset_count += 1
-
-            # Download if requested
-            if download:
-                try:
-                    asset_dir = Path(self.cache.path, "assets")
-                    asset_dir.mkdir(parents=True, exist_ok=True)
-                    asset.download(target_dir=str(asset_dir))
-                    logger.debug(f"Downloaded {doc_url}")
-                except Exception as e:
-                    logger.warning(f"Failed to download {doc_url}: {e}")
 
         return asset_count
