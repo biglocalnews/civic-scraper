@@ -127,7 +127,7 @@ for asset in assets:
 Every platform has this structure:
 
 ```
-civic_scraper/platforms/your_jurisdiction/
+civic_scraper/platforms/your_platform/
 ├── __init__.py          # Can be empty or export your Site class
 └── site.py              # Main Site implementation
 ```
@@ -137,10 +137,10 @@ civic_scraper/platforms/your_jurisdiction/
 | Item | Convention | Example |
 |------|-----------|---------|
 | Site class | Use name `Site` | `class Site(base.Site):` |
-| Platform module | Lowercase with underscores | `your_jurisdiction/` |
-| URL pattern | Extract from domain | `your-jurisdiction-gov.com` → subdomain `yourjurisdiction` |
+| Platform module | Lowercase with underscores | `your_platform/` |
+| URL pattern | Extract from domain | `example-city.gov` → subdomain `examplecity` |
 | Asset type | Lowercase, matches `SUPPORTED_ASSET_TYPES` | `'agenda'`, `'minutes'` |
-| Meeting ID | Combine platform + place + unique ID | `your_jurisdiction_yourplace_2024_01_15_agenda` |
+| Meeting ID | Combine platform + place + unique ID | `your_platform_yourplace_2024_01_15_agenda` |
 
 ### Import Patterns
 
@@ -198,17 +198,17 @@ Use the scaffold script to generate all boilerplate files at once:
 
 ```bash
 python scripts/scaffold_platform.py \
-  --platform your_jurisdiction \
-  --url https://your-jurisdiction-gov.com/meetings
+  --platform your_platform \
+  --url https://example-city.gov/meetings
 ```
 
 The `--url` should be the **meetings page URL** — the web page that lists agendas, minutes, and other meeting documents — not just the bare domain. It works with or without a trailing slash.
 
 This creates:
-- `civic_scraper/platforms/your_jurisdiction/__init__.py`
-- `civic_scraper/platforms/your_jurisdiction/site.py` (with Site class stub)
-- `tests/test_your_jurisdiction_site.py` (with test stubs)
-- `tests/cassettes/test_your_jurisdiction_site/` (directory for cassettes)
+- `civic_scraper/platforms/your_platform/__init__.py`
+- `civic_scraper/platforms/your_platform/site.py` (with Site class stub)
+- `tests/test_your_platform_site.py` (with test stubs)
+- `tests/cassettes/test_your_platform_site/` (directory for cassettes)
 
 Your Site class and tests are ready to run (they'll fail with `NotImplementedError`, which is expected).
 
@@ -226,19 +226,19 @@ If your scraper makes 2 HTTP requests (e.g., `/meetings` then `/meetings/board-1
 
 ### Step 3: Review Scaffolded Tests
 
-The scaffold script already created `tests/test_your_jurisdiction_site.py` with basic test stubs. These tests are ready to run immediately.
+The scaffold script already created `tests/test_your_platform_site.py` with basic test stubs. These tests are ready to run immediately.
 
 Run them to see them fail (expected):
 
 ```bash
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py
+pipenv run pytest -sv tests/test_your_platform_site.py
 ```
 
 **Tests will FAIL** with `NotImplementedError: Scraper not yet implemented`. This is correct! ✓
 
 Expected output:
 ```
-FAILED tests/test_your_jurisdiction_site.py::test_scrape_defaults - NotImplementedError: Scraper not yet implemented
+FAILED tests/test_your_platform_site.py::test_scrape_defaults - NotImplementedError: Scraper not yet implemented
 ```
 
 This failure is good because it means:
@@ -259,10 +259,10 @@ Now implement the Site class to make all tests pass. The first time you run your
 Update the `__init__.py`:
 
 ```python
-# civic_scraper/platforms/your_jurisdiction/__init__.py
-from .site import YourJurisdictionSite
+# civic_scraper/platforms/your_platform/__init__.py
+from .site import YourPlatformSite
 
-__all__ = ["YourJurisdictionSite"]
+__all__ = ["YourPlatformSite"]
 ```
 
 ### Step 6: Run All Tests
@@ -270,7 +270,7 @@ __all__ = ["YourJurisdictionSite"]
 Now run all your tests:
 
 ```bash
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py
+pipenv run pytest -sv tests/test_your_platform_site.py
 ```
 
 **All tests should PASS**. ✓
@@ -290,7 +290,7 @@ Example: Your extraction logic isn't finding meetings because the HTML structure
 @pytest.mark.vcr()
 def test_handles_different_html_structure():
     """Test scraper works with actual website HTML."""
-    site = YourJurisdictionSite("https://your-jurisdiction-gov.com/meetings")
+    site = YourPlatformSite("https://example-city.gov/meetings")
     assets = site.scrape()
     # ... test fails
     # Fix _extract_metadata() to handle actual structure
@@ -325,28 +325,47 @@ Always use `civic_scraper_dir` and `set_default_env` fixtures in your tests to e
 # Run all tests
 pipenv run pytest -sv
 
-# Run only Your Jurisdiction tests
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py
+# Run only Your Platform tests
+pipenv run pytest -sv tests/test_your_platform_site.py
 
 # Run a single test
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_defaults
+pipenv run pytest -sv tests/test_your_platform_site.py::test_scrape_defaults
 
 # First run after implementing scrape(): Records HTTP interactions to cassettes/ (requires internet)
 # Subsequent runs: Uses recorded cassettes (fast, no network required)
 ```
 
+### Test Coverage
+
+Use `pytest-cov` to see which lines of your scraper are exercised by tests:
+
+```bash
+# Coverage for the entire project
+make coverage
+
+# HTML report (interactive, shows line-by-line coverage)
+make coverage-html
+# then open htmlcov/index.html
+
+# Coverage for just your platform
+pipenv run pytest --cov=civic_scraper.platforms.your_platform \
+  --cov-report=term-missing tests/test_your_platform_*.py
+```
+
+The `term-missing` report shows which lines aren't covered, so you know where to add tests.
+
 ### Inspecting Cassettes
 
-Cassettes are stored as YAML files in `tests/cassettes/test_your_jurisdiction_site/`:
+Cassettes are stored as YAML files in `tests/cassettes/test_your_platform_site/`:
 
 ```bash
 # View a cassette
-cat tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+cat tests/cassettes/test_your_platform_site/test_scrape_defaults.yaml
 
 # Shows structure like:
 # - request:
 #     method: GET
-#     uri: https://your-jurisdiction-gov.com/meetings
+#     uri: https://example-city.gov/meetings
 #   response:
 #     status:
 #       code: 200
@@ -361,13 +380,13 @@ If the website changes and your scraper breaks:
 
 ```bash
 # Delete the cassette to force re-recording
-rm tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+rm tests/cassettes/test_your_platform_site/test_scrape_defaults.yaml
 
 # Re-run the test (it will record fresh HTTP interactions)
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_defaults
+pipenv run pytest -sv tests/test_your_platform_site.py::test_scrape_defaults
 
 # Commit the new cassette to git
-git add tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+git add tests/cassettes/test_your_platform_site/test_scrape_defaults.yaml
 ```
 
 ---
@@ -568,10 +587,10 @@ if re.search(r"(pattern1|pattern2|pattern3)", url):
 
 ```bash
 # Check code style (flake8)
-pipenv run flake8 civic_scraper/platforms/your_jurisdiction/
+pipenv run flake8 civic_scraper/platforms/your_platform/
 
 # Auto-format code (black)
-pipenv run black civic_scraper/platforms/your_jurisdiction/
+pipenv run black civic_scraper/platforms/your_platform/
 ```
 
 ### Code Style Rules
@@ -607,8 +626,8 @@ Some websites block automated requests. Try:
 This usually means the HTML changed. Regenerate the cassette:
 
 ```bash
-rm tests/cassettes/test_your_jurisdiction_site/*.yaml
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py
+rm tests/cassettes/test_your_platform_site/*.yaml
+pipenv run pytest -sv tests/test_your_platform_site.py
 ```
 
 ### "BeautifulSoup doesn't find elements I see in browser"

@@ -15,24 +15,24 @@ USAGE:
 From the command line:
 
   python scripts/scaffold_platform.py \
-    --platform your_jurisdiction \
-    --url https://your-jurisdiction-gov.com/meetings
+    --platform your_platform \
+    --url https://example-city.gov/meetings
 
 The --url should be the web page that lists the meetings (not the bare
 domain). It works with or without a trailing slash.
 
 This creates:
-  civic_scraper/platforms/your_jurisdiction/__init__.py
-  civic_scraper/platforms/your_jurisdiction/site.py
-  tests/test_your_jurisdiction_site.py
-  tests/cassettes/test_your_jurisdiction_site/
+  civic_scraper/platforms/your_platform/__init__.py
+  civic_scraper/platforms/your_platform/site.py
+  tests/test_your_platform_site.py
+  tests/cassettes/test_your_platform_site/
 
 PYTHON API:
   from scripts.scaffold_platform import scaffold_platform
 
   scaffold_platform(
-      platform_name="your_jurisdiction",
-      base_url="https://your-jurisdiction-gov.com/meetings"
+      platform_name="your_platform",
+      base_url="https://example-city.gov/meetings"
   )
 """
 
@@ -166,7 +166,7 @@ def test_site_initialization():
 
 
 def platform_to_class_name(platform_name):
-    """Convert platform_name (your_jurisdiction) to ClassName."""
+    """Convert platform_name (your_platform) to ClassName."""
     parts = platform_name.split("_")
     return "".join(word.capitalize() for word in parts) + "Site"
 
@@ -175,7 +175,7 @@ def scaffold_platform(platform_name, base_url, repo_root=None):
     """Generate scaffolding for a new platform scraper.
 
     Args:
-        platform_name (str): Platform name, lowercase with underscores (e.g., 'your_jurisdiction')
+        platform_name (str): Platform name, lowercase with underscores (e.g., 'your_platform')
         base_url (str): Base URL of the jurisdiction website
         repo_root (str): Root of the repository (default: current directory)
 
@@ -250,12 +250,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--platform",
         required=True,
-        help="Platform name (lowercase with underscores, e.g., your_jurisdiction)",
+        help="Platform name (lowercase with underscores, e.g., your_platform)",
     )
     parser.add_argument(
         "--url",
         required=True,
-        help="URL of the meetings page (e.g., https://your-jurisdiction-gov.com/meetings)",
+        help="URL of the meetings page (e.g., https://example-city.gov/meetings)",
     )
 
     args = parser.parse_args()

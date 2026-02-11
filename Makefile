@@ -75,6 +75,17 @@ test: ## run all tests
 	$(call banner,       🤖 Running tests 🤖)
 	@$(PIPENV) pytest -sv
 
+
+coverage: ## test coverage for entire project
+	$(call banner,      📊 Test coverage 📊)
+	@$(PIPENV) pytest --cov=civic_scraper --cov-report=term-missing tests/
+
+
+coverage-html: ## test coverage as HTML report (open htmlcov/index.html)
+	$(call banner,   📊 Test coverage (HTML) 📊)
+	@$(PIPENV) pytest --cov=civic_scraper --cov-report=html tests/
+	@echo "Open htmlcov/index.html in your browser"
+
 #
 # Releases
 #
@@ -121,6 +132,7 @@ help: ## Show this help. Example: make help
         build-release \
         check-release \
         coverage \
+        coverage-html \
         dist \
         format \
         lint \
