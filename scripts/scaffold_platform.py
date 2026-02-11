@@ -74,17 +74,19 @@ class Site(base.Site):
         super().__init__(base_url, cache=cache)
         self.base_url = base_url
 
-    def scrape(self, start_date=None, end_date=None, cache=False, download=False):
+    def scrape(self, start_date=None, end_date=None, cache=False, **kwargs):
         """Scrape the jurisdiction website for meeting documents.
 
         Args:
             start_date (str): YYYY-MM-DD format (default: today)
             end_date (str): YYYY-MM-DD format (default: today)
             cache (bool): Cache raw HTML (default: False)
-            download (bool): Download PDF/doc files (default: False)
 
         Returns:
             AssetCollection: Collection of Asset instances
+
+        Note: Do NOT implement download logic here. The Runner handles
+        downloading assets after scrape() returns.
         """
         # TODO: Implement scraper logic
         # 1. Fetch data from the website
