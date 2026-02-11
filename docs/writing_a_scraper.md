@@ -199,8 +199,10 @@ Use the scaffold script to generate all boilerplate files at once:
 ```bash
 python scripts/scaffold_platform.py \
   --platform your_jurisdiction \
-  --url https://your-jurisdiction-gov.com
+  --url https://your-jurisdiction-gov.com/meetings
 ```
+
+The `--url` should be the **meetings page URL** — the web page that lists agendas, minutes, and other meeting documents — not just the bare domain. It works with or without a trailing slash.
 
 This creates:
 - `civic_scraper/platforms/your_jurisdiction/__init__.py`
@@ -223,15 +225,15 @@ Before writing any code, investigate the actual website:
    - Document links and their patterns
    - Date formats
 
-**Cassettes are auto-recorded by VCR:**
+**Cassettes are auto-recorded by VCR — no separate generation step needed:**
 
-When you write tests with `@pytest.mark.vcr()` and run them for the first time:
+You do **not** need to run a special command to generate cassettes. VCR records them automatically the first time your *implemented* scraper makes real HTTP requests during a test. Here's the timeline:
 
-1. **First run:** VCR captures all HTTP requests/responses from your scraper
-2. **Creates cassette:** Saves interactions to `tests/cassettes/{test_module}/{test_name}.yaml`
-3. **Subsequent runs:** VCR replays mocked responses (no live requests, fast tests)
+1. **After scaffolding:** Tests exist but `scrape()` raises `NotImplementedError` — no HTTP requests happen, so **no cassettes are recorded yet**. This is expected.
+2. **After implementing `scrape()`:** The first test run makes live HTTP requests to the government website. VCR captures all requests/responses and saves them as cassette files in `tests/cassettes/{test_module}/{test_name}.yaml`.
+3. **Subsequent runs:** VCR replays the recorded responses (no live requests, fast tests).
 
-This means if your scraper makes 2 HTTP requests (e.g., `/meetings` then `/meetings/board-1`), both get recorded in a single cassette automatically. You don't need to manually create or configure cassettes—VCR handles it.
+If your scraper makes 2 HTTP requests (e.g., `/meetings` then `/meetings/board-1`), both get recorded in a single cassette automatically. You don't need to manually create or configure cassettes — VCR handles it.
 
 ### Step 3: Review Scaffolded Tests
 
@@ -255,11 +257,13 @@ This failure is good because it means:
 - ✓ Site class imports correctly
 - ✓ Tests define what needs to be implemented
 
+**Note:** No cassettes are recorded at this point — your scraper hasn't made any HTTP requests yet. Cassettes will be recorded automatically later, the first time you run tests after implementing `scrape()` (see Step 4).
+
 **You can modify or add more tests** to match your actual scraper requirements. The key is that tests fail first, then you implement code to make them pass (TDD).
 
 ### Step 4: Implement the Site Class
 
-Now implement the Site class to make all tests pass.
+Now implement the Site class to make all tests pass. The first time you run your tests after implementing `scrape()`, VCR will automatically record the HTTP interactions as cassette files (this requires internet access). Subsequent test runs replay from the recorded cassettes.
 
 ### Step 5: Export Your Scraper
 
@@ -297,7 +301,7 @@ Example: Your extraction logic isn't finding meetings because the HTML structure
 @pytest.mark.vcr()
 def test_handles_different_html_structure():
     """Test scraper works with actual website HTML."""
-    site = YourJurisdictionSite("https://your-jurisdiction-gov.com/")
+    site = YourJurisdictionSite("https://your-jurisdiction-gov.com/meetings")
     assets = site.scrape()
     # ... test fails
     # Fix _extract_metadata() to handle actual structure
@@ -338,7 +342,7 @@ pipenv run pytest -sv tests/test_your_jurisdiction_site.py
 # Run a single test
 pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_defaults
 
-# First run: Records HTTP interactions to cassettes/ (requires live internet)
+# First run after implementing scrape(): Records HTTP interactions to cassettes/ (requires internet)
 # Subsequent runs: Uses recorded cassettes (fast, no network required)
 ```
 
@@ -353,7 +357,7 @@ cat tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
 # Shows structure like:
 # - request:
 #     method: GET
-#     uri: https://your-jurisdiction-gov.com/
+#     uri: https://your-jurisdiction-gov.com/meetings
 #   response:
 #     status:
 #       code: 200

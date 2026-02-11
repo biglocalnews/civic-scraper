@@ -16,7 +16,10 @@ From the command line:
 
   python scripts/scaffold_platform.py \
     --platform your_jurisdiction \
-    --url https://your-jurisdiction-gov.com
+    --url https://your-jurisdiction-gov.com/meetings
+
+The --url should be the web page that lists the meetings (not the bare
+domain). It works with or without a trailing slash.
 
 This creates:
   civic_scraper/platforms/your_jurisdiction/__init__.py
@@ -29,7 +32,7 @@ PYTHON API:
 
   scaffold_platform(
       platform_name="your_jurisdiction",
-      base_url="https://your-jurisdiction-gov.com"
+      base_url="https://your-jurisdiction-gov.com/meetings"
   )
 """
 
@@ -113,12 +116,14 @@ def test_scrape_defaults(civic_scraper_dir, set_default_env):
     Inspect {base_url} to count how many documents you expect to find,
     then replace the assertion below with the exact number.
     """
-    site = {class_name}("{base_url}/")
+    site = {class_name}("{base_url}")
     assets = site.scrape()
 
-    # TODO: Replace X with the number of documents you expect to find
-    # (e.g., if the website shows 3 agendas on the first page, use 3)
-    assert len(assets) == X, "Should find exactly X assets (update X based on what's on the website)"
+    # TODO: Replace EXPECTED_COUNT with the number of documents you expect to find.
+    # Visit {base_url} in a browser to count agendas/minutes on the page.
+    EXPECTED_COUNT = None  # ← Set this to an integer (e.g., 3)
+    assert EXPECTED_COUNT is not None, "Set EXPECTED_COUNT to the number of documents on the page"
+    assert len(assets) == EXPECTED_COUNT
 
     # Verify result type
     assert hasattr(assets, '__iter__'), "Assets should be iterable"
@@ -136,23 +141,25 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
 
     TODO: Adjust dates and expected count based on your target website.
     """
-    site = {class_name}("{base_url}/")
+    site = {class_name}("{base_url}")
     start_date = "2024-01-01"
     end_date = "2024-01-31"
 
     assets = site.scrape(start_date=start_date, end_date=end_date)
 
-    # TODO: Replace Y with the expected count for this date range
-    assert len(assets) == Y, "Should find exactly Y assets in the date range"
+    # TODO: Replace EXPECTED_COUNT with the expected count for this date range.
+    EXPECTED_COUNT = None  # ← Set this to an integer
+    assert EXPECTED_COUNT is not None, "Set EXPECTED_COUNT to the number of documents in the date range"
+    assert len(assets) == EXPECTED_COUNT
 
 
 @pytest.mark.vcr()
 def test_site_initialization():
     """Test Site can be initialized."""
-    site = {class_name}("{base_url}/")
+    site = {class_name}("{base_url}")
 
-    assert site.base_url == "{base_url}/"
-    assert site.url == "{base_url}/"
+    assert site.base_url == "{base_url}"
+    assert site.url == "{base_url}"
 '''
 
 
@@ -177,6 +184,9 @@ def scaffold_platform(platform_name, base_url, repo_root=None):
         repo_root = Path.cwd()
     else:
         repo_root = Path(repo_root)
+
+    # Normalize URL: strip trailing slash(es)
+    base_url = base_url.rstrip("/")
 
     # Validate platform name
     if not platform_name.replace("_", "").isalnum():
@@ -243,7 +253,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--url",
         required=True,
-        help="Base URL of the jurisdiction website (e.g., https://your-jurisdiction-gov.com)",
+        help="URL of the meetings page (e.g., https://your-jurisdiction-gov.com/meetings)",
     )
 
     args = parser.parse_args()
@@ -265,10 +275,10 @@ if __name__ == "__main__":
         print()
         print("Next steps:")
         print(f"  1. Run tests: pipenv run pytest -sv tests/{test_module}.py")
-        print("  2. Tests will fail (NotImplementedError)")
-        print("  3. Implement Site.scrape() to make tests pass")
-        print("  4. First test run records HTTP cassettes")
-        print("  5. Subsequent runs replay from cassettes")
+        print("     (They will fail with NotImplementedError — that's expected!)")
+        print("  2. Implement Site.scrape() to make tests pass")
+        print("  3. Run tests again — VCR auto-records HTTP cassettes on first passing run")
+        print("  4. Subsequent runs replay from cassettes (fast, no network needed)")
 
     except FileExistsError as e:
         print(f"Error: {e}")
