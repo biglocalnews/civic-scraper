@@ -7,6 +7,27 @@ import pytz
 from civic_scraper.base.cache import Cache
 from civic_scraper.platforms import LegistarSite
 
+# The VCR cassettes were recorded in 2025. The legistar scraper iterates
+# from current_year+1 down to start_year, so as years pass it makes more
+# requests than the cassettes contain. Pin the year to match recording time.
+#
+# If the cassettes are ever re-recorded, update this value to match the
+# recording year so the scraper's year range aligns with the cassette data.
+_CASSETTE_NOW = datetime.datetime(2025, 6, 1, tzinfo=pytz.utc)
+
+
+@pytest.fixture(autouse=True)
+def _pin_legistar_year():
+    """Ensure LegistarScraper.now() returns _CASSETTE_NOW in every test.
+
+    autouse=True causes this fixture to run automatically for all tests
+    in this module. This makes the scraper's year iteration (which starts
+    at now().year + 1 and counts down) produce the same sequence of HTTP
+    requests that were captured in the VCR cassettes.
+    """
+    with patch("legistar.base.LegistarScraper.now", return_value=_CASSETTE_NOW):
+        yield
+
 
 @pytest.mark.vcr()
 def test_scrape_defaults():
