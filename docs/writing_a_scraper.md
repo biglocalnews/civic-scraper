@@ -212,18 +212,7 @@ This creates:
 
 Your Site class and tests are ready to run (they'll fail with `NotImplementedError`, which is expected).
 
-### Step 2: Inspect the Website & Understand VCR
-
-Before writing any code, investigate the actual website:
-
-1. Visit your target government website in your browser
-2. Find the meetings/agendas section
-3. Right-click → "Inspect" to see the HTML structure
-4. Identify:
-   - The page URLs you need to request (e.g., `/meetings`, `/meetings/{board}`)
-   - HTML elements containing meetings (divs, table rows, etc.)
-   - Document links and their patterns
-   - Date formats
+### Step 2: Understand VCR test setup
 
 **Cassettes are auto-recorded by VCR — no separate generation step needed:**
 
