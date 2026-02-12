@@ -1,7 +1,5 @@
 """
-Scraper for fine_ny
-
-Base URL: https://finetownny.gov/categories
+Scraper for Digital TownPath sites (e.g. finetownny.gov)
 """
 
 import logging
@@ -17,25 +15,24 @@ from . import utils
 
 logger = logging.getLogger(__name__)
 
-# Hardcoded constants for Fine NY
+# Hardcoded constants for finetownny.gov
 PLACE = "fineny"
 PLACE_NAME = "Fine New York"
 STATE = "ny"
-BASE_MEETINGS_URL = "https://finetownny.gov"
 
 
 class Site(base.Site):
-    """Scraper for fine_ny."""
+    """Scraper for Digital TownPath sites (e.g. finetownny.gov)."""
 
     def __init__(self, base_url, cache=Cache()):
         """Initialize scraper.
 
         Args:
-            base_url (str): Base URL of the jurisdiction website (ignored; always uses https://finetownny.gov)
+            base_url (str): Base URL of the Digital TownPath site (e.g. https://finetownny.gov)
             cache (Cache): Cache instance (default: new Cache())
         """
-        super().__init__(BASE_MEETINGS_URL, cache=cache)
-        self.base_url = BASE_MEETINGS_URL
+        super().__init__(base_url, cache=cache)
+        self.base_url = base_url
         self.session = utils.create_session()
 
     def scrape(self, start_date=None, end_date=None, cache=False, download=False):
@@ -50,44 +47,10 @@ class Site(base.Site):
         Returns:
             AssetCollection: Collection of Asset instances
 
-        Approach:
-
-        Implement Scraper.scraper method for the town of Fine, New York.
-        * No matter what URL parameter is supplied always use https://finetownny.gov/categories
-        as the base_url
-        * Implement logic as testable functions in a utils/ module, and write tests for each function
-        * Break logic further into helper functions as necessary.
-        * Some Asset properties will always be the same and can be hardcoded:
-          * Always use "ny" as the state_or_provice
-          * Always use "Fine NY" as the place_name
-          * Always use "fineny" as the place
-
-        * The base URL contains a list of links to "categories" which correspond to committees.
-        * Each committee link has a URL like https://finetownny.gov/meetings/meetings/Town%20Board/2026,
-        * Each committee page contains a list of meetings for a given year (ex: 2026) and contains a
-          list of other years that are structured the same way as this page.
-        * Each meeting link listed on a committee page links to a meeting detail page
-        * Each meeting detail page may or may not contain a link to one or more agenda PDFs
-        * Each meeting detail page may or may not contain a link to one or more meeting minutes PDFs
-        * Each agenda or minutes PDF should be represented as an Assset in the AssetCollection returned
-          by the scrape() method.
-        * The detail page URL will be like https://finetownny.gov/meetings/detail/30. The "30" we will extract
-          as a detail_id to be used as part of the Asset.meeting_id
-        * On the meeting detail page, you can obtain the following Asset properties. I'll include examples
-            from the HTML.
-            url (str): link to PDF
-            asset_name (str): Example: February Regular Town Board Meeting from <h3 class="dtp-meeting-title">February Regular Town Board Meeting</h3>
-            committee_name (str): Ex: Town Board from <h2 class="title dtp-meeting-category">Town Board</h2>
-            place (str): Always "fineny"
-            place_name (str): Always "Fine New York"
-            state_or_province (str): Always "ny"
-            asset_type (str): One of SUPPORTED_ASSET_TYPES. Ex: agenda
-            meeting_date (datetime.datetime): Ex: 2026-02-11 from <time datetime="2026-02-11">February 11, 2026, 6:30 pm</time>
-            meeting_time (datetime.time): Ex: 6:30 pm from <time datetime="2026-02-11">February 11, 2026, 6:30 pm</time>
-            meeting_id (str): Ex: fineny-{date}-{detail_id}
-            scraped_by (str): civic_scraper.__version__
-            content_type (str): File type of the asset as given by HTTP headers. Ex: 'application/pdf'
-            content_length (str): Asset size in bytes
+        The base URL should point to a Digital TownPath site root
+        (e.g. https://finetownny.gov). The scraper navigates from
+        {base_url}/meetings/meetings/ to discover categories, meetings,
+        and documents.
         """
         # Use today as default dates
         today = today_local_str()

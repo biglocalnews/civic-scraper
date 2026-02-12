@@ -3,4 +3,4 @@ from .civic_plus.site import Site as CivicPlusSite
 from .granicus.site import GranicusSite
 from .legistar.site import Site as LegistarSite
 from .primegov.site import PrimeGovSite
-from .fine_ny.site import Site as FineNYSite
+from .dtp_scraper.site import Site as DtpScraperSite

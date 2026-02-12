@@ -1,7 +1,7 @@
 """
-Tests for fine_ny scraper
+Tests for DTP scraper
 
-Run with: pipenv run pytest -sv tests/test_fine_ny_site.py
+Run with: pipenv run pytest -sv tests/test_dtp_scraper_site.py
 """
 
 import datetime
@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
-from civic_scraper.platforms.fine_ny import FineNySite
+from civic_scraper.platforms.dtp_scraper import DtpScraperSite
 
 # The VCR cassettes were recorded on this date. When scrape() is called
 # without explicit dates it defaults to "today", which must match the
@@ -25,7 +25,7 @@ def _pin_today():
     won't match meetings in the cassettes and tests will fail.
     """
     with patch(
-        "civic_scraper.platforms.fine_ny.site.today_local_str",
+        "civic_scraper.platforms.dtp_scraper.site.today_local_str",
         return_value=_CASSETTE_DATE,
     ):
         yield
@@ -38,7 +38,7 @@ def test_scrape_defaults(civic_scraper_dir, set_default_env):
     On first run: VCR records HTTP interactions to cassette
     On subsequent runs: VCR replays mocked responses
     """
-    site = FineNySite("https://finetownny.gov/categories/")
+    site = DtpScraperSite("https://finetownny.gov/categories/")
     assets = site.scrape()
 
     # Based on VCR recording on Feb. 12, 2026, there should be exactly 1 asset
@@ -58,7 +58,7 @@ def test_scrape_defaults(civic_scraper_dir, set_default_env):
 def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
     """Test scraping with specific date range.
     """
-    site = FineNySite("https://finetownny.gov/categories/")
+    site = DtpScraperSite("https://finetownny.gov/categories/")
     start_date = "2026-01-01"  # Same as test meeting date
     end_date = "2026-02-05"
 
@@ -71,8 +71,8 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
 @pytest.mark.vcr()
 def test_site_initialization():
     """Test Site can be initialized."""
-    site = FineNySite("https://finetownny.gov/categories/")
+    site = DtpScraperSite("https://finetownny.gov/categories/")
 
-    # Fine NY always uses the same base URL regardless of what's passed in
-    assert site.base_url == "https://finetownny.gov"
-    assert site.url == "https://finetownny.gov"
+    # DTP scraper uses whatever base URL is passed in
+    assert site.base_url == "https://finetownny.gov/categories/"
+    assert site.url == "https://finetownny.gov/categories/"

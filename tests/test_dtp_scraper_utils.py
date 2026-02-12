@@ -1,7 +1,7 @@
 """
-Tests for Fine NY utility functions.
+Tests for Digital TownPath utility functions.
 
-Run with: pipenv run pytest -sv tests/test_fine_ny_utils.py
+Run with: pipenv run pytest -sv tests/test_dtp_scraper_utils.py
 """
 
 import datetime
@@ -9,7 +9,7 @@ import datetime
 import pytest
 from bs4 import BeautifulSoup
 
-from civic_scraper.platforms.fine_ny import utils
+from civic_scraper.platforms.dtp_scraper import utils
 
 
 # --- Pure function tests (no HTTP) ---

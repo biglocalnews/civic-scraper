@@ -102,4 +102,4 @@ class Runner:
         # TODO - Eventually might be good to allow an explicit
         # --platform flag to be set.
         if re.search(r"finetownny\.gov", url):
-            return "FineNYSite"
+            return "DtpScraperSite"

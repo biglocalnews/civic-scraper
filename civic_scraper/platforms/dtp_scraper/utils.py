@@ -1,5 +1,5 @@
 """
-Utility functions for Fine NY scraper.
+Utility functions for Digital TownPath scraper (e.g. finetownny.gov).
 
 These functions are testable components of the scraping logic.
 """
