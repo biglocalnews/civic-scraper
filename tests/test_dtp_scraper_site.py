@@ -22,7 +22,6 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
     assert len(assets) == 2, "Should find exactly 2 assets in the date range"
 
 
-@pytest.mark.vcr()
 def test_site_initialization():
     """Test Site can be initialized."""
     site = DtpScraperSite("https://finetownny.gov/categories/")
@@ -30,3 +29,16 @@ def test_site_initialization():
     # DTP scraper uses whatever base URL is passed in
     assert site.base_url == "https://finetownny.gov/categories/"
     assert site.url == "https://finetownny.gov/categories/"
+
+
+def test_can_scrape_supported():
+    assert DtpScraperSite.can_scrape("https://finetownny.gov/categories/") is True
+
+
+def test_can_scrape_unsupported():
+    assert DtpScraperSite.can_scrape("https://example.com/meetings") is False
+
+
+def test_unsupported_domain_raises():
+    with pytest.raises(ValueError, match="Unsupported site"):
+        DtpScraperSite("https://example.com/meetings")

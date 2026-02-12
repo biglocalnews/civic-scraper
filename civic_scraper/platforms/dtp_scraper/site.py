@@ -40,8 +40,6 @@ class Site(base.Site):
         Args:
             base_url (str): Base URL of the DigitalTowPath site (e.g. https://finetownny.gov)
             cache (Cache): Cache instance (default: new Cache())
-
-        Currently only supports finetownny.gov, which is hardcoded in constants.
         """
 
         domain = urlparse(base_url).netloc
@@ -77,6 +75,14 @@ class Site(base.Site):
         and documents. If this pattern doesn't hold up for future
         DTP sites, we'll need to modify this.
         """
+        # Parse date range up front so we fail fast on bad input
+        try:
+            start_dt = datetime.strptime(start_date, "%Y-%m-%d").date()
+            end_dt = datetime.strptime(end_date, "%Y-%m-%d").date()
+        except ValueError:
+            logger.error(f"Invalid date format: {start_date} or {end_date}")
+            return AssetCollection()
+
         ac = AssetCollection()
         processed_details = set()  # Track meeting detail IDs to avoid duplicates
 
@@ -84,7 +90,9 @@ class Site(base.Site):
         # so each scraper should not be implementing things like determining cache paths
         if "cache" in kwargs:
             logger.warning("Caching not implemented.")
-        # NOTE: Each scraper should not re-implement downloading assets, as this is a core function of the runner. The scraper should just return the URLs and metadata, and the runner should handle downloading.
+        # NOTE: Each scraper should not re-implement downloading assets, as this is a core
+        # function of the runner. The scraper should just return the URLs and metadata, and
+        # the runner should handle downloading.
         if "download" in kwargs:
             logger.warning(
                 "scrape(download=...) not implemented. Runner should handle downloading."
@@ -139,8 +147,8 @@ class Site(base.Site):
                             asset_count = self._process_meeting(
                                 meeting,
                                 category_name,
-                                start_date,
-                                end_date,
+                                start_dt,
+                                end_dt,
                                 ac,
                             )
                             logger.debug(
@@ -172,14 +180,14 @@ class Site(base.Site):
         logger.info(f"Scraping complete. Found {len(ac)} total assets")
         return ac
 
-    def _process_meeting(self, meeting, category_name, start_date, end_date, ac):
+    def _process_meeting(self, meeting, category_name, start_dt, end_dt, ac):
         """Process a single meeting and add assets to collection.
 
         Args:
             meeting (dict): Meeting info from utils.get_meetings_for_category_year()
             category_name (str): Committee/category name
-            start_date (str): YYYY-MM-DD format
-            end_date (str): YYYY-MM-DD format
+            start_dt (datetime.date): Start of date range (inclusive)
+            end_dt (datetime.date): End of date range (inclusive)
             ac (AssetCollection): Collection to add assets to
 
         Returns:
@@ -195,14 +203,6 @@ class Site(base.Site):
         meeting_date = meeting_details.get("meeting_date")
         if not meeting_date:
             logger.warning(f"No meeting date for {detail_id}")
-            return 0
-
-        # Parse dates for comparison
-        try:
-            start_dt = datetime.strptime(start_date, "%Y-%m-%d").date()
-            end_dt = datetime.strptime(end_date, "%Y-%m-%d").date()
-        except ValueError:
-            logger.error(f"Invalid date format: {start_date} or {end_date}")
             return 0
 
         if not (start_dt <= meeting_date <= end_dt):
@@ -222,7 +222,8 @@ class Site(base.Site):
             # Create asset name
             asset_name = f"{meeting_details.get('meeting_title', 'Meeting')} - {doc_type.capitalize()}"
 
-            # Get file metadata via session (reuses cookies/headers)
+            # TODO: HEAD-per-document is slow and arguably a Runner/download-time
+            # concern. Consider moving to base Asset or Runner layer.
             content_type = None
             content_length = None
             try:

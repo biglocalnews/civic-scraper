@@ -15,10 +15,6 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 CATEGORIES_PATH = "/meetings/meetings/"
-DETAIL_PATH = "/meetings/detail/"
-
-# Supported asset types (matching civic_scraper.base.constants.SUPPORTED_ASSET_TYPES)
-SUPPORTED_ASSET_TYPES = ["agenda", "minutes", "other"]
 
 # Polite delay between requests (seconds)
 REQUEST_DELAY = 1.0
@@ -142,8 +138,7 @@ def get_meetings_for_category_year(url, session=None):
     for link in links:
         href = link.get("href")
         if href and "/meetings/detail/" in href:
-            # Extract detail_id from URL
-            detail_id = href.split("/meetings/detail/")[-1].rstrip("/")
+            detail_id = extract_detail_id_from_url(href)
             title = link.get_text(strip=True)
             meetings.append({"title": title, "url": href, "detail_id": detail_id})
 
