@@ -74,19 +74,18 @@ class Site(base.Site):
         super().__init__(base_url, cache=cache)
         self.base_url = base_url
 
-    def scrape(self, start_date=None, end_date=None, cache=False, **kwargs):
+    def scrape(self, start_date: str, end_date: str, **kwargs) -> AssetCollection:
         """Scrape the jurisdiction website for meeting documents.
 
         Args:
-            start_date (str): YYYY-MM-DD format (default: today)
-            end_date (str): YYYY-MM-DD format (default: today)
-            cache (bool): Cache raw HTML (default: False)
+            start_date (str): YYYY-MM-DD format (required)
+            end_date (str): YYYY-MM-DD format (required)
 
         Returns:
             AssetCollection: Collection of Asset instances
 
-        Note: Do NOT implement download logic here. The Runner handles
-        downloading assets after scrape() returns.
+        Note: Do NOT implement download or caching logic here.
+        The Runner handles those concerns after scrape() returns.
         """
         # TODO: Implement scraper logic
         # 1. Fetch data from the website
@@ -102,70 +101,18 @@ Run with: pipenv run pytest -sv tests/{test_module}.py
 """
 
 import datetime
-from unittest.mock import patch
 
 import pytest
 
 from civic_scraper.platforms.{platform_name} import {class_name}
 
-# The VCR cassettes were recorded on this date. When scrape() is called
-# without explicit dates it defaults to "today", which must match the
-# cassette data. If cassettes are re-recorded, update this value.
-#
-# TODO: Set this to the date you first record the cassettes (YYYY-MM-DD).
-_CASSETTE_DATE = None  # ← e.g., "2026-02-11"
-
-
-@pytest.fixture(autouse=True)
-def _pin_today():
-    """Pin today_local_str() to the cassette recording date.
-
-    Without this, scrape() defaults to the real current date, which
-    won't match meetings in the cassettes and tests will fail.
-    """
-    if _CASSETTE_DATE is None:
-        yield  # No pinning until cassettes are recorded
-    else:
-        with patch(
-            "civic_scraper.platforms.{platform_name}.site.today_local_str",
-            return_value=_CASSETTE_DATE,
-        ):
-            yield
-
-
-@pytest.mark.vcr()
-def test_scrape_defaults(civic_scraper_dir, set_default_env):
-    """Test basic scraping functionality with defaults.
-
-    On first run: VCR records HTTP interactions to cassette
-    On subsequent runs: VCR replays mocked responses
-
-    TODO: Update the expected count based on what's actually on the website.
-    Inspect {base_url} to count how many documents you expect to find,
-    then replace the assertion below with the exact number.
-    """
-    site = {class_name}("{base_url}")
-    assets = site.scrape()
-
-    # TODO: Replace EXPECTED_COUNT with the number of documents you expect to find.
-    # Visit {base_url} in a browser to count agendas/minutes on the page.
-    EXPECTED_COUNT = None  # ← Set this to an integer (e.g., 3)
-    assert EXPECTED_COUNT is not None, "Set EXPECTED_COUNT to the number of documents on the page"
-    assert len(assets) == EXPECTED_COUNT
-
-    # Verify result type
-    assert hasattr(assets, '__iter__'), "Assets should be iterable"
-
-    # Verify first asset has required fields
-    asset = assets[0]
-    assert asset.url.startswith("https://"), "URL should be absolute"
-    assert asset.asset_type in ["agenda", "minutes", "other"], "Asset type should be recognized"
-    assert isinstance(asset.meeting_date, datetime.datetime), "Meeting date should be datetime"
-
 
 @pytest.mark.vcr()
 def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
     """Test scraping with specific date range.
+
+    On first run: VCR records HTTP interactions to cassette
+    On subsequent runs: VCR replays mocked responses
 
     TODO: Adjust dates and expected count based on your target website.
     """
@@ -173,7 +120,7 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
     start_date = "2024-01-01"
     end_date = "2024-01-31"
 
-    assets = site.scrape(start_date=start_date, end_date=end_date)
+    assets = site.scrape(start_date, end_date)
 
     # TODO: Replace EXPECTED_COUNT with the expected count for this date range.
     EXPECTED_COUNT = None  # ← Set this to an integer

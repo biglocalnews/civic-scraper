@@ -82,15 +82,19 @@ All scrapers inherit from `base.Site` and implement a `scrape()` method.
 
 **Required:**
 - Inherit from `civic_scraper.base.Site`
-- Implement `scrape(start_date=None, end_date=None, cache=False, download=False)` method
+- Implement `scrape(start_date, end_date, **kwargs)` method
 - Return an `AssetCollection` instance
 
 **What `scrape()` should do:**
-1. Accept optional `start_date` and `end_date` (YYYY-MM-DD format)
+1. Accept `start_date` and `end_date` as required positional arguments (YYYY-MM-DD format). Accept `**kwargs` so the Runner can pass extra keyword arguments without erroring.
 2. Fetch meeting data from the government website
 3. Extract metadata for each meeting document (URL, date, type, etc.)
 4. Create `Asset` instances for each document found
 5. Return all assets as an `AssetCollection`
+
+**What `scrape()` should NOT do:**
+- Download files (the Runner handles that)
+- Cache HTML artifacts (the Runner handles that)
 
 **Refer to the scaffolded code** in your platform directory (`site.py`) for the actual implementation pattern. Look at existing platforms like `civic_scraper/platforms/civic_plus/site.py` for reference implementations.
 
@@ -149,7 +153,6 @@ civic_scraper/platforms/your_jurisdiction/
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.utils import today_local_str
 
 # For HTTP requests:
 import requests
@@ -175,11 +178,6 @@ Asset types are defined in `civic_scraper/base/constants.py`. Common ones:
 ### Dates and Time Handling
 
 ```python
-from civic_scraper.utils import today_local_str
-
-# Get today's date in YYYY-MM-DD format
-today = today_local_str()  # "2024-01-15"
-
 # Convert strings to datetime objects:
 meeting_date = datetime.datetime.strptime("2024-01-15", "%Y-%m-%d")
 
@@ -238,7 +236,7 @@ pipenv run pytest -sv tests/test_your_jurisdiction_site.py
 
 Expected output:
 ```
-FAILED tests/test_your_jurisdiction_site.py::test_scrape_defaults - NotImplementedError: Scraper not yet implemented
+FAILED tests/test_your_jurisdiction_site.py::test_scrape_with_date_range - NotImplementedError: Scraper not yet implemented
 ```
 
 This failure is good because it means:
@@ -329,7 +327,7 @@ pipenv run pytest -sv
 pipenv run pytest -sv tests/test_your_jurisdiction_site.py
 
 # Run a single test
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_defaults
+pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_with_date_range
 
 # First run after implementing scrape(): Records HTTP interactions to cassettes/ (requires internet)
 # Subsequent runs: Uses recorded cassettes (fast, no network required)
@@ -341,7 +339,7 @@ Cassettes are stored as YAML files in `tests/cassettes/test_your_jurisdiction_si
 
 ```bash
 # View a cassette
-cat tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+cat tests/cassettes/test_your_jurisdiction_site/test_scrape_with_date_range.yaml
 
 # Shows structure like:
 # - request:
@@ -361,40 +359,14 @@ If the website changes and your scraper breaks:
 
 ```bash
 # Delete the cassette to force re-recording
-rm tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+rm tests/cassettes/test_your_jurisdiction_site/test_scrape_with_date_range.yaml
 
 # Re-run the test (it will record fresh HTTP interactions)
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_defaults
+pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_with_date_range
 
 # Commit the new cassette to git
-git add tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+git add tests/cassettes/test_your_jurisdiction_site/test_scrape_with_date_range.yaml
 ```
-
-### Pinning Dates to Cassette Recording Time
-
-Many scrapers default to "today" when no date range is provided. Since cassettes are recorded on a specific date, tests will break when run on a different day — the date filter won't match the cassette data.
-
-**Fix:** Pin `today_local_str()` to the date the cassettes were recorded using `unittest.mock.patch` and an `autouse` fixture:
-
-```python
-from unittest.mock import patch
-
-# Update this when cassettes are re-recorded
-_CASSETTE_DATE = "2026-02-11"
-
-@pytest.fixture(autouse=True)
-def _pin_today():
-    """Pin today_local_str() to the cassette recording date."""
-    with patch(
-        "civic_scraper.platforms.your_platform.site.today_local_str",
-        return_value=_CASSETTE_DATE,
-    ):
-        yield
-```
-
-The `autouse=True` means this fixture runs automatically for every test in the module — no need to pass it as an argument. Tests that pass explicit `start_date`/`end_date` are unaffected since they don't use the default.
-
-**When re-recording cassettes**, update `_CASSETTE_DATE` to match the new recording date.
 
 ---
 
@@ -521,8 +493,7 @@ civic-scraper scrape --urls-file sites.csv
 civic-scraper scrape --url https://your-platform-domain.com/ \
     --start-date 2024-01-01 \
     --end-date 2024-01-31 \
-    --download \
-    --cache
+    --download
 ```
 
 ### Step 4: Verify Integration

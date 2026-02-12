@@ -16,8 +16,6 @@ import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.utils import today_local_str
-
 from . import utils
 
 logger = logging.getLogger(__name__)
@@ -63,14 +61,12 @@ class Site(base.Site):
         """Determine if site can be scraped by this scraper."""
         return urlparse(url).netloc in SITES
 
-    def scrape(self, start_date=None, end_date=None, cache=False, download=False):
+    def scrape(self, start_date: str, end_date: str, **kwargs) -> AssetCollection:
         """Scrape the jurisdiction website for meeting documents.
 
         Args:
-            start_date (str): YYYY-MM-DD format (default: today)
-            end_date (str): YYYY-MM-DD format (default: today)
-            cache (bool): Cache raw HTML (default: False)
-            download (bool): Download PDF/doc files (default: False)
+            start_date (str): YYYY-MM-DD format (required)
+            end_date (str): YYYY-MM-DD format (required)
 
         Returns:
             AssetCollection: Collection of Asset instances
@@ -80,13 +76,16 @@ class Site(base.Site):
         {base_url}/meetings/meetings/ to discover categories, meetings,
         and documents.
         """
-        # Use today as default dates
-        today = today_local_str()
-        start_date = start_date or today
-        end_date = end_date or today
-
         ac = AssetCollection()
         processed_details = set()  # Track meeting detail IDs to avoid duplicates
+
+        # NOTE: Caching implementation needs to be rethought. It is only specific to the CLI,
+        # so each scraper should not be implementing things like determining cache paths
+        if "cache" in kwargs:
+            logger.warning("Caching not implemented.")
+        # NOTE: Each scraper should not re-implement downloading assets, as this is a core function of the runner. The scraper should just return the URLs and metadata, and the runner should handle downloading.
+        if "download" in kwargs:
+            logger.warning("scrape(download=...) not implemented. Runner should handle downloading.")  
 
         # Step 1: Get all categories (committees)
         try:
