@@ -305,7 +305,9 @@ if __name__ == "__main__":
         print(f"  1. Run tests: pipenv run pytest -sv tests/{test_module}.py")
         print("     (They will fail with NotImplementedError — that's expected!)")
         print("  2. Implement Site.scrape() to make tests pass")
-        print("  3. Run tests again — VCR auto-records HTTP cassettes on first passing run")
+        print(
+            "  3. Run tests again — VCR auto-records HTTP cassettes on first passing run"
+        )
         print("  4. Subsequent runs replay from cassettes (fast, no network needed)")
 
     except FileExistsError as e:

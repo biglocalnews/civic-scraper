@@ -45,19 +45,24 @@ def test_scrape_defaults(civic_scraper_dir, set_default_env):
     assert len(assets) == 1, "Should find exactly 1 asset"
 
     # Verify result type
-    assert hasattr(assets, '__iter__'), "Assets should be iterable"
+    assert hasattr(assets, "__iter__"), "Assets should be iterable"
 
     # Verify first asset has required fields
     asset = assets[0]
     assert asset.url.startswith("https://"), "URL should be absolute"
-    assert asset.asset_type in ["agenda", "minutes", "other"], "Asset type should be recognized"
-    assert isinstance(asset.meeting_date, datetime.datetime), "Meeting date should be datetime"
+    assert asset.asset_type in [
+        "agenda",
+        "minutes",
+        "other",
+    ], "Asset type should be recognized"
+    assert isinstance(
+        asset.meeting_date, datetime.datetime
+    ), "Meeting date should be datetime"
 
 
 @pytest.mark.vcr()
 def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
-    """Test scraping with specific date range.
-    """
+    """Test scraping with specific date range."""
     site = DtpScraperSite("https://finetownny.gov/categories/")
     start_date = "2026-01-01"  # Same as test meeting date
     end_date = "2026-02-05"

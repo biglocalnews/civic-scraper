@@ -1,5 +1,5 @@
 """
-Tests for Digital TownPath utility functions.
+Tests for DigitalTowPath utility functions.
 
 Run with: pipenv run pytest -sv tests/test_dtp_scraper_utils.py
 """

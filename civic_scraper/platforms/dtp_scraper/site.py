@@ -1,9 +1,11 @@
 """
-Scraper for Digital TowPath NY sites (e.g. finetownny.gov)
+Scraper for DigitalTowPath sites (e.g. finetownny.gov)
 
 For more information on the platform, see:
-- https://www.digitaltownpath.com/ (main site)
+- https://digitaltowpathny.gov/ (main site)
 
+To add a new DigitalTowPath site, add its domain and jurisdiction
+metadata to the SITES dict below.
 """
 
 import logging
@@ -20,42 +22,46 @@ from . import utils
 
 logger = logging.getLogger(__name__)
 
-# Hardcoded constants for finetownny.gov
-PLACE = "fineny"
-PLACE_NAME = "Fine New York"
-STATE = "ny"
-
-# Hardcoding supported sites since I am only aware of finetownny.gov using this platform.
-# If we find more sites that use Digital TownPath, we can make this more dynamic.
-SUPPORTED_SITES = "finetownny.gov"
+# Jurisdiction metadata keyed by domain. To add a new DigitalTowPath site,
+# add its domain here and the scraper will pick it up automatically.
+SITES = {
+    "finetownny.gov": {
+        "place": "fineny",
+        "place_name": "Fine New York",
+        "state": "ny",
+    },
+}
 
 
 class Site(base.Site):
-    """Scraper for Digital TownPath sites (e.g. finetownny.gov)."""
+    """Scraper for DigitalTowPath sites (e.g. finetownny.gov)."""
 
     def __init__(self, base_url, cache=Cache()):
         """Initialize scraper.
 
         Args:
-            base_url (str): Base URL of the Digital TownPath site (e.g. https://finetownny.gov)
+            base_url (str): Base URL of the DigitalTowPath site (e.g. https://finetownny.gov)
             cache (Cache): Cache instance (default: new Cache())
 
         Currently only supports finetownny.gov, which is hardcoded in constants.
         """
 
-        if not self.can_scrape(base_url):
+        domain = urlparse(base_url).netloc
+        if domain not in SITES:
             raise ValueError(
-                f"Unsupported site: {base_url}. Supported sites: {SUPPORTED_SITES}"
+                f"Unsupported site: {base_url}. "
+                f"Supported domains: {', '.join(SITES)}"
             )
 
         super().__init__(base_url, cache=cache)
         self.base_url = base_url
         self.session = utils.create_session()
+        self._site_meta = SITES[domain]
 
     @staticmethod
     def can_scrape(url: str) -> bool:
         """Determine if site can be scraped by this scraper."""
-        return urlparse(url).netloc in SUPPORTED_SITES
+        return urlparse(url).netloc in SITES
 
     def scrape(self, start_date=None, end_date=None, cache=False, download=False):
         """Scrape the jurisdiction website for meeting documents.
@@ -69,7 +75,7 @@ class Site(base.Site):
         Returns:
             AssetCollection: Collection of Asset instances
 
-        The base URL should point to a Digital TownPath site root
+        The base URL should point to a DigitalTowPath site root
         (e.g. https://finetownny.gov). The scraper navigates from
         {base_url}/meetings/meetings/ to discover categories, meetings,
         and documents.
@@ -209,7 +215,7 @@ class Site(base.Site):
             doc_url = doc["url"]
 
             # Create meeting ID
-            meeting_id = f"{PLACE}-{meeting_date}-{detail_id}"
+            meeting_id = f"{self._site_meta['place']}-{meeting_date}-{detail_id}"
 
             # Create asset name
             asset_name = f"{meeting_details.get('meeting_title', 'Meeting')} - {doc_type.capitalize()}"
@@ -235,9 +241,9 @@ class Site(base.Site):
                 asset_type=doc_type,
                 asset_name=asset_name,
                 committee_name=meeting_details.get("committee_name") or category_name,
-                place=PLACE,
-                place_name=PLACE_NAME,
-                state_or_province=STATE,
+                place=self._site_meta["place"],
+                place_name=self._site_meta["place_name"],
+                state_or_province=self._site_meta["state"],
                 meeting_date=meeting_datetime,
                 meeting_id=meeting_id,
                 scraped_by=civic_scraper.__version__,
