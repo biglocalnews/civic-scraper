@@ -54,6 +54,7 @@ Base URL: {base_url}
 """
 
 import logging
+
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
@@ -73,6 +74,14 @@ class Site(base.Site):
         """
         super().__init__(base_url, cache=cache)
         self.base_url = base_url
+
+    @staticmethod
+    def can_scrape(url: str) -> bool:
+        """Determine if this scraper supports the given URL.
+
+        TODO: Implement domain detection for your platform.
+        """
+        return False
 
     def scrape(self, start_date: str, end_date: str, **kwargs) -> AssetCollection:
         """Scrape the jurisdiction website for meeting documents.
