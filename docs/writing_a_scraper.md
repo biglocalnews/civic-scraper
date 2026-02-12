@@ -370,6 +370,32 @@ pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_defaults
 git add tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
 ```
 
+### Pinning Dates to Cassette Recording Time
+
+Many scrapers default to "today" when no date range is provided. Since cassettes are recorded on a specific date, tests will break when run on a different day — the date filter won't match the cassette data.
+
+**Fix:** Pin `today_local_str()` to the date the cassettes were recorded using `unittest.mock.patch` and an `autouse` fixture:
+
+```python
+from unittest.mock import patch
+
+# Update this when cassettes are re-recorded
+_CASSETTE_DATE = "2026-02-11"
+
+@pytest.fixture(autouse=True)
+def _pin_today():
+    """Pin today_local_str() to the cassette recording date."""
+    with patch(
+        "civic_scraper.platforms.your_platform.site.today_local_str",
+        return_value=_CASSETTE_DATE,
+    ):
+        yield
+```
+
+The `autouse=True` means this fixture runs automatically for every test in the module — no need to pass it as an argument. Tests that pass explicit `start_date`/`end_date` are unaffected since they don't use the default.
+
+**When re-recording cassettes**, update `_CASSETTE_DATE` to match the new recording date.
+
 ---
 
 ## Common Patterns & Best Practices

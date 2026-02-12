@@ -102,9 +102,35 @@ Run with: pipenv run pytest -sv tests/{test_module}.py
 """
 
 import datetime
+from unittest.mock import patch
+
 import pytest
 
 from civic_scraper.platforms.{platform_name} import {class_name}
+
+# The VCR cassettes were recorded on this date. When scrape() is called
+# without explicit dates it defaults to "today", which must match the
+# cassette data. If cassettes are re-recorded, update this value.
+#
+# TODO: Set this to the date you first record the cassettes (YYYY-MM-DD).
+_CASSETTE_DATE = None  # ← e.g., "2026-02-11"
+
+
+@pytest.fixture(autouse=True)
+def _pin_today():
+    """Pin today_local_str() to the cassette recording date.
+
+    Without this, scrape() defaults to the real current date, which
+    won't match meetings in the cassettes and tests will fail.
+    """
+    if _CASSETTE_DATE is None:
+        yield  # No pinning until cassettes are recorded
+    else:
+        with patch(
+            "civic_scraper.platforms.{platform_name}.site.today_local_str",
+            return_value=_CASSETTE_DATE,
+        ):
+            yield
 
 
 @pytest.mark.vcr()
