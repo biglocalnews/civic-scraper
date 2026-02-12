@@ -4,9 +4,6 @@ Tests for DTP scraper
 Run with: pipenv run pytest -sv tests/test_dtp_scraper_site.py
 """
 
-import datetime
-from unittest.mock import patch
-
 import pytest
 
 from civic_scraper.platforms.dtp_scraper import DtpScraperSite
