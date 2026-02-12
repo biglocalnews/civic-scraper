@@ -8,6 +8,7 @@ import pytest
 
 from civic_scraper.platforms.dtp_scraper import DtpScraperSite
 
+
 @pytest.mark.vcr()
 def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
     """Test scraping with specific date range."""
