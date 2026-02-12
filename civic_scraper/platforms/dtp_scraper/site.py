@@ -74,7 +74,8 @@ class Site(base.Site):
         The base URL should point to a DigitalTowPath site root
         (e.g. https://finetownny.gov). The scraper navigates from
         {base_url}/meetings/meetings/ to discover categories, meetings,
-        and documents.
+        and documents. If this pattern doesn't hold up for future 
+        DTP sites, we'll need to modify this.
         """
         ac = AssetCollection()
         processed_details = set()  # Track meeting detail IDs to avoid duplicates
