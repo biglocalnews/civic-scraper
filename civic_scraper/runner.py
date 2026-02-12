@@ -104,3 +104,4 @@ class Runner:
         # then we can just iterate through all scrapers and call can_scrape on each
         if DtpScraperSite.can_scrape(url):
             return "DtpScraperSite"
+        raise ScraperError(f"No scraper found for {url}")
