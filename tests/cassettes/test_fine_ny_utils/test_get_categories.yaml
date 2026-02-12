@@ -3,13 +3,18 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
       Accept-Encoding:
       - gzip, deflate
+      Accept-Language:
+      - en-US,en;q=0.9
       Connection:
       - keep-alive
+      Upgrade-Insecure-Requests:
+      - '1'
       User-Agent:
-      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
+        Gecko) Chrome/131.0.0.0 Safari/537.36
     method: GET
     uri: https://finetownny.gov/meetings/meetings/
   response:
@@ -25,7 +30,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 11 Feb 2026 22:03:00 GMT
+      - Thu, 12 Feb 2026 15:55:01 GMT
       Location:
       - http://finetownny.gov/meetings/meetings
       Referrer-Policy:
@@ -66,13 +71,18 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
       Accept-Encoding:
       - gzip, deflate
+      Accept-Language:
+      - en-US,en;q=0.9
       Connection:
       - keep-alive
+      Upgrade-Insecure-Requests:
+      - '1'
       User-Agent:
-      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
+        Gecko) Chrome/131.0.0.0 Safari/537.36
     method: GET
     uri: http://finetownny.gov/meetings/meetings
   response:
@@ -87,7 +97,7 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Wed, 11 Feb 2026 22:03:00 GMT
+      - Thu, 12 Feb 2026 15:55:01 GMT
       Location:
       - https://finetownny.gov/meetings/meetings
       Server:
@@ -99,13 +109,18 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
       Accept-Encoding:
       - gzip, deflate
+      Accept-Language:
+      - en-US,en;q=0.9
       Connection:
       - keep-alive
+      Upgrade-Insecure-Requests:
+      - '1'
       User-Agent:
-      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
+        Gecko) Chrome/131.0.0.0 Safari/537.36
     method: GET
     uri: https://finetownny.gov/meetings/meetings
   response:
@@ -123,7 +138,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 11 Feb 2026 22:03:01 GMT
+      - Thu, 12 Feb 2026 15:55:02 GMT
       Location:
       - https://finetownny.gov/categories
       Referrer-Policy:
@@ -164,115 +179,378 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
       Accept-Encoding:
       - gzip, deflate
+      Accept-Language:
+      - en-US,en;q=0.9
       Connection:
       - keep-alive
+      Upgrade-Insecure-Requests:
+      - '1'
       User-Agent:
-      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
+        Gecko) Chrome/131.0.0.0 Safari/537.36
     method: GET
     uri: https://finetownny.gov/categories
   response:
     body:
-      string: !!binary |
-        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
+      string: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta http-equiv=\"X-UA-Compatible\"
+        content=\"IE=edge\">\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"/concrete/themes/atomik/css/skins/default.css?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\">
+        \   \n\n\t<meta property=\"og:site_name\" content=\"Town of Fine\">\n\t<meta
+        property=\"og:locale\" content=\"en_US\">\n\t<meta property=\"og:type\" content=\"website\">\n\t<meta
+        property=\"og:title\" content=\"Meeting Categories\">\n\t<meta property=\"og:url\"
+        content=\"https://finetownny.gov/categories\">\n\t\n<title>Meeting Categories
+        :: Town of Fine</title>\n\n<meta http-equiv=\"content-type\" content=\"text/html;
+        charset=UTF-8\">\n<meta name=\"generator\" content=\"Concrete CMS\">\n<script
+        type=\"text/javascript\">\n    var CCM_DISPATCHER_FILENAME = \"/index.php\";\n
+        \   var CCM_CID = 237;\n    var CCM_EDIT_MODE = false;\n    var CCM_ARRANGE_MODE
+        = false;\n    var CCM_IMAGE_PATH = \"/concrete/images\";\n    var CCM_APPLICATION_URL
+        = \"https://finetownny.gov\";\n    var CCM_REL = \"\";\n    var CCM_ACTIVE_LOCALE
+        = \"en_US\";\n    var CCM_USER_REGISTERED = false;\n</script>\n\n<style type=\"text/css\"
+        data-area-style-area-handle=\"Navigation\" data-block-style-block-id=\"560\"
+        data-style-set=\"61\">.ccm-custom-style-container.ccm-custom-style-navigation-560{background-image:
+        url(/application/files/9417/4957/2838/IMG_0110.JPG);background-repeat: no-repeat;background-size:
+        auto;background-position: }</style><style type=\"text/css\" data-area-style-area-handle=\"Main\"
+        data-style-set=\"50\">.ccm-custom-style-main{background-image: url(/application/files/2217/4641/1981/LAKE2.jpg);background-repeat:
+        no-repeat;background-size: auto;background-position: left top}</style>\n<link
+        href=\"/concrete/css/fontawesome/all.css?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\"
+        rel=\"stylesheet\" type=\"text/css\" media=\"all\">\n<script type=\"text/javascript\"
+        src=\"/concrete/js/jquery.js?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\"></script>\n<link
+        href=\"/packages/msv_cookie_consent/css/cookieconsent.css?ccm_nocache=8dd00b0eafd1c0b346c741b16e157f2e38e1e2a8\"
+        rel=\"stylesheet\" type=\"text/css\" media=\"all\">\n\n<link href=\"/application/files/cache/css/0a4860a04aa8b9c57741287bcc4eba13b4ada215.css?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\"
+        rel=\"stylesheet\" type=\"text/css\" media=\"all\" data-source=\"/packages/jl_dtp_adapt/blocks/page_title/templates/dtp_banner_welcome/view.css?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\">\n
+        \   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body>\n\n<div
+        class=\"theme-atomik ccm-page ccm-page-id-237 ccm-production-mode-development\">\n\n<div\nclass=\"ccm-custom-style-navigation\"\n>\n\n\n
+        \   <a href=\"#jump-past-navigation-518\"\n   class=\"visually-hidden-focusable
+        btn btn-dark position-absolute top-0 start-0 m-3 zindex-tooltip\" aria-label=\"Jump
+        past navigation bar\">\n    Jump past navigation</a>\n<div class=\"ccm-block-top-navigation-bar\"
+        aria-role=\"navigation\" aria-label=\"Primary navigation\" style=\"display:
+        none\" data-transparency=\"navbar\">\n    <nav class=\"navbar navbar-expand-lg
+        navbar-light fixed-top\">\n        <div class=\"container-fluid\">\n            <a
+        class=\"navbar-brand\" href=\"https://finetownny.gov/\" area-label=\"Site
+        logo with link to home page\">\n                Town of Fine            </a>\n\n
+        \                           <button class=\"navbar-toggler collapsed\" type=\"button\"
+        data-bs-toggle=\"collapse\" data-bs-target=\"#top-navigation-bar-518\" aria-controls=\"top-navigation-bar-518\"\n
+        \                       aria-expanded=\"false\" aria-label=\"Toggle Navigation\">\n
+        \                                       <span class=\"icon-bar\"></span>\n
+        \                   <span class=\"icon-bar\"></span>\n                    <span
+        class=\"icon-bar\"></span>\n                                    </button>\n
+        \               <div class=\"collapse navbar-collapse\" id=\"top-navigation-bar-518\">\n
+        \                                           <form method=\"get\" action=\"https://finetownny.gov/search\"
+        role=\"search\">\n                            <input class=\"form-control\"
+        type=\"search\" name=\"query\" placeholder=\"Search\" aria-label=\"Site search\">\n
+        \                           <button class=\"btn btn-light bg-white ms-2\"
+        type=\"submit\" value=\"Make search and open in linked page\" aria-label=\"Make
+        search and open in linked page\">\n                                <i class=\"fas
+        fa-search text-secondary\"></i>\n                            </button>\n                        </form>\n
+        \                                               <ul class=\"navbar-nav\">\n
+        \                                                               <li class=\"nav-item
+        dropdown\">\n                                                                                <a
+        class=\"nav-link dropdown-toggle\"\n                                           data-concrete-toggle=\"dropdown\"\n
+        \                                          target=\"_self\"\n                                           href=\"https://finetownny.gov/government\"\n
+        \                                          aria-haspopup=\"true\"\n                                           aria-expanded=\"false\"\n
+        \                                       >\n                                            Government
+        \                                       </a>\n                                        <ul
+        class=\"dropdown-menu\">\n                                                                                            <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/government/services\"\n
+        \                                                   >\n                                                        Services
+        \                                                   </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/government/officials\"\n
+        \                                                   >\n                                                        Officials
+        \                                                   </a>\n                                                                                                            <ul
+        class=\"l3-items\">\n                                                                                                                            <li
+        class=\"l3-item nav-item dropdown\">\n                                                                    <a\n
+        \                                                                           class=\"dropdown-item
+        l3-item\"\n                                                                            href=\"https://finetownny.gov/government/officials/boards-and-committees\"\n
+        \                                                                   >\n                                                                        Boards
+        & Committees                                                                    </a>\n
+        \                                                               </li>\n                                                                                                                        </ul>\n
+        \                                                                                                       </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/government/local-laws\"\n
+        \                                                   >\n                                                        Local
+        Laws                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/government/town-budgets\"\n
+        \                                                   >\n                                                        Town
+        Budgets                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/government/annual-financial-reports\"\n
+        \                                                   >\n                                                        Annual
+        Financial Reports                                                    </a>\n
+        \                                                                                                   </li>\n
+        \                                                                                       </ul>\n
+        \                                   </li>\n                                                                        <li
+        class=\"nav-item\">\n                                        <a\n                                                class=\"nav-link\"\n
+        \                                               target=\"_self\"\n                                                href=\"https://finetownny.gov/meetings\"\n
+        \                                       >\n                                            Meetings
+        \                                       </a>\n                                    </li>\n
+        \                                                                       <li
+        class=\"nav-item\">\n                                        <a\n                                                class=\"nav-link\"\n
+        \                                               target=\"_self\"\n                                                href=\"https://finetownny.gov/contact\"\n
+        \                                       >\n                                            Contact
+        \                                       </a>\n                                    </li>\n
+        \                                                                       <li
+        class=\"nav-item dropdown\">\n                                                                                <a
+        class=\"nav-link dropdown-toggle\"\n                                           data-concrete-toggle=\"dropdown\"\n
+        \                                          target=\"_self\"\n                                           href=\"https://finetownny.gov/departments\"\n
+        \                                          aria-haspopup=\"true\"\n                                           aria-expanded=\"false\"\n
+        \                                       >\n                                            Departments
+        \                                       </a>\n                                        <ul
+        class=\"dropdown-menu\">\n                                                                                            <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/departments/assessor\"\n
+        \                                                   >\n                                                        Assessor
+        \                                                   </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/departments/code-enforcement-officer\"\n
+        \                                                   >\n                                                        Code
+        Enforcement Officer                                                    </a>\n
+        \                                                                                                   </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/departments/court\"\n
+        \                                                   >\n                                                        Court
+        \                                                   </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/departments/highway\"\n
+        \                                                   >\n                                                        Highway
+        \                                                   </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/departments/town-clerk\"\n
+        \                                                   >\n                                                        Town
+        Clerk                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/departments/wanakena-sewer-district\"\n
+        \                                                   >\n                                                        Wanakena
+        Sewer District                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/departments/star-lake-water-dis\"\n
+        \                                                   >\n                                                        Star
+        Lake Water District                                                    </a>\n
+        \                                                                                                   </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/departments/oswegatchie-cemetery\"\n
+        \                                                   >\n                                                        Oswegatchie
+        Cemetery                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                       </ul>\n
+        \                                   </li>\n                                                                        <li
+        class=\"nav-item\">\n                                        <a\n                                                class=\"nav-link\"\n
+        \                                               target=\"_self\"\n                                                href=\"https://finetownny.gov/news-and-public-notices\"\n
+        \                                       >\n                                            News
+        &amp; Public Notices                                        </a>\n                                    </li>\n
+        \                                                                       <li
+        class=\"nav-item dropdown\">\n                                                                                <a
+        class=\"nav-link dropdown-toggle\"\n                                           data-concrete-toggle=\"dropdown\"\n
+        \                                          target=\"_self\"\n                                           href=\"https://finetownny.gov/community\"\n
+        \                                          aria-haspopup=\"true\"\n                                           aria-expanded=\"false\"\n
+        \                                       >\n                                            Community
+        \                                       </a>\n                                        <ul
+        class=\"dropdown-menu\">\n                                                                                            <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/community/calendar\"\n
+        \                                                   >\n                                                        Calendar
+        \                                                   </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/community/employee-handbook\"\n
+        \                                                   >\n                                                        Employee
+        Handbook                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/community/employment\"\n
+        \                                                   >\n                                                        Employment
+        \                                                   </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/community/community-center\"\n
+        \                                                   >\n                                                        Community
+        Center                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/community/links\"\n
+        \                                                   >\n                                                        Links
+        \                                                   </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/community/cf-arena\"\n
+        \                                                   >\n                                                        CF
+        Arena                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                               <li
+        class=\"l3-parent nav-item dropdown\">\n                                                    <a\n
+        \                                                           class=\"dropdown-item\"\n
+        \                                                           target=\"_self\"\n
+        \                                                           href=\"https://finetownny.gov/community/cf-golf-course\"\n
+        \                                                   >\n                                                        CF
+        Golf Course                                                    </a>\n                                                                                                    </li>\n
+        \                                                                                       </ul>\n
+        \                                   </li>\n                                                            </ul>\n
+        \                                       </div>\n                        </div>\n
+        \   </nav>\n</div>\n<a id=\"jump-past-navigation-518\" tabindex=\"-1\"></a>\n\n\n\n
+        \       <div class=\"ccm-custom-style-container ccm-custom-style-navigation-560
+        ccm-block-custom-template-dtp-banner-welcome dtp-banner-60 dtp-banner-mask-06\"\n
+        \           >\n    <div class=\"ccm-block-page-title dtp-banner text-center
+        \"  aria-label=\"Title banner.\">\n    <div class=\"dtp-size-maker\" aria-hidden=\"true\">\n
+        \       <h1 class=\"page-title dtp-page-title\"><span class=\"dtp-title-size\">Meeting
+        Categories</span></h1>    </div>\n        <div class=\"dtp-banner-text-position\">\n
+        \       <h1 class=\"page-title dtp-page-title\"><span class=\"dtp-title-size\">Meeting
+        Categories</span></h1>    </div>\n\n</div>\n\n\n\n    </div>\n</div>\n    <div
+        class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-sm-12\">\n
+        \               <div class=\"container\">\r\n    <div class=\"row\">\r\n        <div
+        class=\"col-12\">\r\n                    </div>\r\n    </div>\r\n</div>\r\n<div
+        class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-12\">\n
+        \           <h3>Select a Category</h3>\n                            <ul class=\"dtp-meeting-category-list
+        list-unstyled\">\n                                            <li>\n                            <a
+        href=\"https://finetownny.gov/meetings/meetings/CF%20Arena/2026\" class=\"dtp-meeting-category-link\"
+        aria-label=\"Open listing for CF Arena meetings\">\n                                CF
+        Arena                            </a>\n                        </li>\n                                                <li>\n
+        \                           <a href=\"https://finetownny.gov/meetings/meetings/CF%20Golf%20Course/2026\"
+        class=\"dtp-meeting-category-link\" aria-label=\"Open listing for CF Golf
+        Course meetings\">\n                                CF Golf Course                            </a>\n
+        \                       </li>\n                                                <li>\n
+        \                           <a href=\"https://finetownny.gov/meetings/meetings/CF%20Youth%20Commision/2026\"
+        class=\"dtp-meeting-category-link\" aria-label=\"Open listing for CF Youth
+        Commision meetings\">\n                                CF Youth Commision
+        \                           </a>\n                        </li>\n                                                <li>\n
+        \                           <a href=\"https://finetownny.gov/meetings/meetings/Town%20Board/2026\"
+        class=\"dtp-meeting-category-link\" aria-label=\"Open listing for Town Board
+        meetings\">\n                                Town Board                            </a>\n
+        \                       </li>\n                                        </ul>\n
+        \                       </div>\n    </div>\n</div>\n\n            </div>\n
+        \       </div>\n    </div>\n\n\n<footer>\n    <section class=\"mb-4\">\n        <div
+        class=\"container\">\n            <div class=\"row\">\n                <div
+        class=\"col-md-3\">\n                    \n\n    \n<div class=\"ccm-block-content\">\n
+        \   <div>4078 State Highway 3<br />\r\nStar Lake, NY 13690</div>\r\n\r\n<div>&nbsp;</div>\r\n\r\n<p><strong>Phone:</strong>
+        (315)-848-3121<br />\r\n<strong>Fax:</strong> (315)-848-3152<br />\r\n<strong>Email:&nbsp;</strong>
+        <a href=\"mailto:finetownclerk@gmail.com\">fineclerk@</a>finetownny.gov</p>\r\n</div>\n\n\n
+        \   \n<div id=\"ccm-block-social-links437\" class=\"ccm-block-social-links\">\n
+        \   <ul class=\"list-inline\">\n                <li class=\"list-inline-item\">\n
+        \               <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://www.facebook.com/profile.php?id=100023131395017\"\n
+        \                   aria-label=\"Facebook\"><i class=\"fab fa-facebook\" aria-hidden=\"true\"
+        title=\"Facebook\"></i></a>\n            </li>\n            </ul>\n</div>\n\n
+        \               </div>\n                <div class=\"col-md-2 col-6\">\n                    \n\n
+        \   <a href=\"#jump-past-navigation-78\"\n   class=\"visually-hidden-focusable
+        btn btn-dark position-absolute top-0 start-0 m-3 zindex-tooltip\" aria-label=\"Jump
+        past navigation bar\">\n    Jump past navigation</a>\n<ul class=\".nav-dtp-list
+        nestable_manual_nav\" aria-label=\"Navigation list\"><li class=\"\"><a href=\"https://finetownny.gov/\"
+        \ target=\"_self\" class=\"\">Home</a></li><li class=\"\"><a href=\"https://finetownny.gov/about\"
+        \ target=\"_self\" class=\"\">About</a></li><li class=\"\"><a href=\"https://finetownny.gov/government/services\"
+        \ target=\"_self\" class=\"\">Services</a></li><li class=\"\"><a href=\"https://finetownny.gov/about/terms-of-service\"
+        \ target=\"_self\" class=\"\">Terms of Service</a></li><li class=\"\"><a href=\"https://finetownny.gov/about/privacy-policy\"
+        \ target=\"_self\" class=\"\">Privacy Policy</a></li></ul><a id=\"jump-past-navigation-78\"
+        tabindex=\"-1\"></a>\n\n                </div>\n                <div class=\"col-md-2
+        col-6\">\n                                    </div>\n                <div
+        class=\"col-md-5 col-12\">\n                    <hr class=\"d-md-none\">\n
+        \                   \n                </div>\n            </div>\n        </div>\n
+        \   </section>\n    <section class=\"concrete-branding\">\n        <div class=\"container\">\n
+        \           <div class=\"row\">\n                <div class=\"col-md-6\">\n
+        \                   Built by <a href=\"https://digitaltowpathny.gov/\" aria-label=\"Link
+        to Digital Towpath Website. Opens in new tab.\" target=\"_blank\">Digital
+        Towpath</a></div>\n                <div class=\"col-md-6 text-md-end\">\n
+        \                   <a href=\"https://finetownny.gov/login\">Log in</a>                </div>\n
+        \           </div>\n        </div>\n    </section>\n</footer>\n\n\n</div>\n\n<script
+        id='aioa-adawidget' src='https://www.skynettechnologies.com/accessibility/js/all-in-one-accessibility-js-widget-minify.js?colorcode=&token=&position=bottom_right..'
+        async='true'></script>\n<script type=\"text/javascript\" src=\"/concrete/js/vue.js?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\"></script>\n<script
+        type=\"text/javascript\" src=\"/concrete/js/bootstrap.js?ccm_nocache=74ff7008cb9196c1b65f85f1d07be5d792727184\"></script>\n<script
+        type=\"text/javascript\" src=\"/concrete/js/moment.js?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\"></script>\n<script
+        type=\"text/javascript\" src=\"/ccm/assets/localization/moment/js\"></script>\n<script
+        type=\"text/javascript\" src=\"/packages/msv_cookie_consent/js/cookieconsent.umd.js?ccm_nocache=8dd00b0eafd1c0b346c741b16e157f2e38e1e2a8\"></script>\n
+        \   <script type=\"text/javascript\">\n        window.addEventListener('load',
+        function () {\n                if (window.matchMedia && window.matchMedia('(prefers-color-scheme:
+        dark)').matches) { document.body.classList.toggle('cc--darkmode'); }                CookieConsent.run({\n
+        \                   disablePageInteraction: true,\n                    mode:
+        'opt-in',\n                    guiOptions: {\n                        consentModal:
+        {\n                            layout: 'box wide',\n                            position:
+        'bottom center'\n                        },\n                        preferencesModal:
+        {\n                            layout: 'box',\n                            position:
+        'left'\n                        }\n                    },\n\n                    categories:
+        {\n                        necessary: {\n                            enabled:
+        true,  // this category is enabled by default\n                            readOnly:
+        true  // this category cannot be disabled\n                        }\n                                                                    },\n\n
+        \                   language: {\n                        default: 'en',\n
+        \                       translations: {\n                            en: {\n
+        \                               consentModal: {\n                                    title:
+        \"How to bake Cookies with Consent\",\n                                    description:
+        \"<p>Configure the cookie consent message and scripts at \\/dashboard\\/cookie_consent.<\\/p>\\r\\n\\r\\n<p>Any
+        tracking scripts that would normally be in \\/dashboard\\/system\\/seo\\/codes
+        need to be moved into the cookie consent.<\\/p>\",\n                                    acceptAllBtn:
+        'Accept all',\n                                    acceptNecessaryBtn: 'Reject
+        all',\n                                    showPreferencesBtn: 'Manage cookie
+        preferences'\n                                },\n                                preferencesModal:
+        {\n                                    title: 'Manage cookie preferences',\n
+        \                                   acceptAllBtn: 'Accept all',\n                                    acceptNecessaryBtn:
+        'Reject all',\n                                    savePreferencesBtn: 'Accept
+        current selection',\n                                    closeIconLabel: 'Close',\n
+        \                                   sections: [\n                                        \n
+        \                                       {\n                                            title:
+        'Strictly Necessary cookies',\n                                            description:
+        'These cookies are essential for the proper functioning of the website and
+        cannot be disabled.',\n                                            linkedCategory:
+        'necessary'\n                                        }\n                                                                                \n
+        \                                                                           ]\n
+        \                               }\n                            }\n                        }\n
+        \                   }\n                })\n            }\n        );\n    </script>\n\n\n<script
+        type=\"text/javascript\" src=\"/concrete/themes/atomik/main.js\"></script>\n\n</body>\n</html>\n"
     headers:
       Cache-Control:
       - no-cache, private
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Wed, 11 Feb 2026 22:03:01 GMT
+      - Thu, 12 Feb 2026 15:55:02 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
@@ -307,6 +585,8 @@ interactions:
       - Epic regex.
       X-XSS-Protection:
       - 1; mode=block
+      content-length:
+      - '34344'
     status:
       code: 200
       message: OK

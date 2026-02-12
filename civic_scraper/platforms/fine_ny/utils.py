@@ -5,6 +5,7 @@ These functions are testable components of the scraping logic.
 """
 
 import logging
+import time
 from datetime import datetime
 from urllib.parse import urljoin
 
@@ -20,32 +21,69 @@ DETAIL_PATH = "/meetings/detail/"
 # Supported asset types (matching civic_scraper.base.constants.SUPPORTED_ASSET_TYPES)
 SUPPORTED_ASSET_TYPES = ["agenda", "minutes", "other"]
 
+# Polite delay between requests (seconds)
+REQUEST_DELAY = 1.0
 
-def fetch_page(url):
+
+def create_session():
+    """Create a requests.Session with realistic browser headers.
+
+    Using a session maintains cookies across requests and reuses
+    TCP connections, which looks more like a real browser and is
+    more polite to the server.
+
+    Returns:
+        requests.Session: Configured session
+    """
+    session = requests.Session()
+    session.headers.update({
+        'User-Agent': (
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+            'AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/131.0.0.0 Safari/537.36'
+        ),
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+    })
+    return session
+
+
+def fetch_page(url, session=None, referer=None):
     """Fetch a page and return BeautifulSoup object.
 
     Args:
         url (str): URL to fetch
+        session (requests.Session): Session to use (creates one if not provided)
+        referer (str): Referer URL to send (mimics browser navigation)
 
     Returns:
-        BeautifulSoup: Parsed HTML or None if request fails
+        BeautifulSoup: Parsed HTML
 
     Raises:
         requests.RequestException: If request fails
     """
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-    }
-    response = requests.get(url, headers=headers, timeout=30)
+    if session is None:
+        session = create_session()
+
+    headers = {}
+    if referer:
+        headers['Referer'] = referer
+
+    time.sleep(REQUEST_DELAY)
+    response = session.get(url, headers=headers, timeout=30)
     response.raise_for_status()
     return BeautifulSoup(response.text, 'html.parser')
 
 
-def get_categories(base_url):
+def get_categories(base_url, session=None):
     """Get list of meeting categories (committees).
 
     Args:
         base_url (str): Base URL (e.g., https://finetownny.gov/meetings)
+        session (requests.Session): Optional session for connection reuse
 
     Returns:
         list: List of dicts with 'name' and 'url' keys
@@ -58,7 +96,7 @@ def get_categories(base_url):
         ]
     """
     url = urljoin(base_url, CATEGORIES_PATH)
-    soup = fetch_page(url)
+    soup = fetch_page(url, session=session)
 
     categories = []
     # Find all category links
@@ -76,16 +114,18 @@ def get_categories(base_url):
     return categories
 
 
-def get_meetings_for_category_year(url):
+def get_meetings_for_category_year(url, session=None):
     """Get list of meetings for a specific category and year.
 
     Args:
         url (str): Category year URL (e.g., .../meetings/Town%20Board/2026)
+        session (requests.Session): Optional session for connection reuse
 
     Returns:
-        list: List of dicts with 'title', 'url', and 'detail_id' keys
+        tuple: (list of meeting dicts, BeautifulSoup) — soup is returned so
+            callers can extract other-year links without a second request.
 
-    Example:
+    Example meetings:
         [
             {
                 'title': 'February 11, 2026: February Regular Town Board Meeting',
@@ -95,7 +135,7 @@ def get_meetings_for_category_year(url):
             ...
         ]
     """
-    soup = fetch_page(url)
+    soup = fetch_page(url, session=session)
 
     meetings = []
     # Find all meeting links in the current year
@@ -113,14 +153,17 @@ def get_meetings_for_category_year(url):
                 'detail_id': detail_id
             })
 
-    return meetings
+    return meetings, soup
 
 
-def get_other_years(url):
-    """Get links to other years for a category.
+def get_other_years_from_soup(soup):
+    """Get links to other years from an already-fetched category page.
+
+    This avoids a second HTTP request to the same page. Pass the soup
+    returned by get_meetings_for_category_year().
 
     Args:
-        url (str): Category page URL
+        soup (BeautifulSoup): Parsed category page HTML
 
     Returns:
         list: List of dicts with 'year' and 'url' keys
@@ -132,10 +175,7 @@ def get_other_years(url):
             ...
         ]
     """
-    soup = fetch_page(url)
-
     years = []
-    # Find other years section
     year_links = soup.find_all('a', class_='dtp-meeting-year')
 
     for link in year_links:
@@ -150,11 +190,12 @@ def get_other_years(url):
     return years
 
 
-def get_meeting_details(detail_url):
+def get_meeting_details(detail_url, session=None):
     """Extract meeting details from a meeting detail page.
 
     Args:
         detail_url (str): Meeting detail page URL
+        session (requests.Session): Optional session for connection reuse
 
     Returns:
         dict: Meeting details including metadata and documents
@@ -178,7 +219,7 @@ def get_meeting_details(detail_url):
             ]
         }
     """
-    soup = fetch_page(detail_url)
+    soup = fetch_page(detail_url, session=session)
 
     # Extract committee name
     committee_elem = soup.find(class_='dtp-meeting-category')

@@ -19,6 +19,11 @@ import pytest
 
 
 @pytest.fixture(scope="module")
+def vcr_config():
+    return {"decode_compressed_response": True}
+
+
+@pytest.fixture(scope="module")
 def vcr_cassette_dir(request):
     mod_name = request.module.__name__.split("tests.")[-1]
     return os.path.join("tests/cassettes", mod_name)

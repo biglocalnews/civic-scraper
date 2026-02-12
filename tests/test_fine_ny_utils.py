@@ -184,19 +184,24 @@ def test_get_categories():
 @pytest.mark.vcr()
 def test_get_meetings_for_category_year():
     url = "https://finetownny.gov/meetings/meetings/Town%20Board/2026"
-    meetings = utils.get_meetings_for_category_year(url)
+    meetings, soup = utils.get_meetings_for_category_year(url)
     assert len(meetings) > 0
     for meeting in meetings:
         assert "title" in meeting
         assert "url" in meeting
         assert "detail_id" in meeting
         assert meeting["detail_id"].isdigit()
+    # soup is returned for reuse by get_other_years_from_soup
+    assert soup is not None
 
 
 @pytest.mark.vcr()
-def test_get_other_years():
+def test_get_other_years_from_soup():
+    # First fetch the page to get the soup (reuses the same cassette as meetings test)
     url = "https://finetownny.gov/meetings/meetings/Town%20Board/2026"
-    years = utils.get_other_years(url)
+    _meetings, soup = utils.get_meetings_for_category_year(url)
+    # Now extract other years from the already-fetched soup
+    years = utils.get_other_years_from_soup(soup)
     # Should have at least one other year
     assert len(years) > 0
     for year_info in years:

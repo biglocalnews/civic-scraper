@@ -6,7 +6,6 @@ Base URL: https://finetownny.gov/categories
 
 import logging
 from datetime import datetime
-import requests
 
 import civic_scraper
 from civic_scraper import base
@@ -37,6 +36,7 @@ class Site(base.Site):
         """
         super().__init__(BASE_MEETINGS_URL, cache=cache)
         self.base_url = BASE_MEETINGS_URL
+        self.session = utils.create_session()
 
     def scrape(self, start_date=None, end_date=None, cache=False, download=False):
         """Scrape the jurisdiction website for meeting documents.
@@ -99,7 +99,7 @@ class Site(base.Site):
 
         # Step 1: Get all categories (committees)
         try:
-            categories = utils.get_categories(self.base_url)
+            categories = utils.get_categories(self.base_url, session=self.session)
             logger.info(f"Found {len(categories)} categories")
         except Exception as e:
             logger.error(f"Failed to fetch categories: {e}")
@@ -125,9 +125,11 @@ class Site(base.Site):
                         continue
                     processed_urls.add(current_url)
 
-                    # Get meetings for this category/year
+                    # Get meetings and soup in one request
                     try:
-                        meetings = utils.get_meetings_for_category_year(current_url)
+                        meetings, soup = utils.get_meetings_for_category_year(
+                            current_url, session=self.session
+                        )
                         logger.debug(f"Found {len(meetings)} meetings at {current_url}")
                     except Exception as e:
                         logger.warning(f"Failed to fetch meetings for {current_url}: {e}")
@@ -151,15 +153,15 @@ class Site(base.Site):
                             logger.warning(f"Failed to process meeting {meeting['detail_id']}: {e}")
                             continue
 
-                    # Get other years for this category
+                    # Extract other years from the same soup (no extra request)
                     try:
-                        other_years = utils.get_other_years(current_url)
+                        other_years = utils.get_other_years_from_soup(soup)
                         for year_info in other_years:
                             year_url = year_info['url']
                             if year_url not in processed_urls:
                                 meetings_to_process.append((year_url, category_name))
                     except Exception as e:
-                        logger.debug(f"Failed to fetch other years for {current_url}: {e}")
+                        logger.debug(f"Failed to extract other years for {current_url}: {e}")
                         continue
 
             except Exception as e:
@@ -186,7 +188,7 @@ class Site(base.Site):
         detail_id = meeting['detail_id']
 
         # Fetch meeting details
-        meeting_details = utils.get_meeting_details(detail_url)
+        meeting_details = utils.get_meeting_details(detail_url, session=self.session)
 
         # Check if meeting date is in range
         meeting_date = meeting_details.get('meeting_date')
@@ -219,14 +221,11 @@ class Site(base.Site):
             # Create asset name
             asset_name = f"{meeting_details.get('meeting_title', 'Meeting')} - {doc_type.capitalize()}"
 
-            # Get file metadata
+            # Get file metadata via session (reuses cookies/headers)
             content_type = None
             content_length = None
             try:
-                headers = {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                }
-                response = requests.head(doc_url, headers=headers, allow_redirects=True, timeout=10)
+                response = self.session.head(doc_url, allow_redirects=True, timeout=10)
                 content_type = response.headers.get('content-type')
                 content_length = response.headers.get('content-length')
             except Exception as e:

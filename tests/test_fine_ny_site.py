@@ -41,7 +41,7 @@ def test_scrape_defaults(civic_scraper_dir, set_default_env):
     site = FineNySite("https://finetownny.gov/categories/")
     assets = site.scrape()
 
-    # Based on VCR recording on Feb. 11, 2026, there should be exactly 1 asset
+    # Based on VCR recording on Feb. 12, 2026, there should be exactly 1 asset
     assert len(assets) == 1, "Should find exactly 1 asset"
 
     # Verify result type
@@ -64,7 +64,7 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
 
     assets = site.scrape(start_date=start_date, end_date=end_date)
 
-    # Based on VCR recording on Feb. 11, 2026, there should be exactly 2 assets
+    # Based on VCR recording on Feb. 12, 2026, there should be exactly 2 assets
     assert len(assets) == 2, "Should find exactly 2 assets in the date range"
 
 

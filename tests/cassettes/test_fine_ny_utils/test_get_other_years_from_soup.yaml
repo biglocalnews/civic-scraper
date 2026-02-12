@@ -16,23 +16,23 @@ interactions:
       - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
         Gecko) Chrome/131.0.0.0 Safari/537.36
     method: GET
-    uri: https://finetownny.gov/meetings/detail/30
+    uri: https://finetownny.gov/meetings/meetings/Town%20Board/2026
   response:
     body:
       string: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta http-equiv=\"X-UA-Compatible\"
         content=\"IE=edge\">\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"/concrete/themes/atomik/css/skins/default.css?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\">
         \   \n\n\t<meta property=\"og:site_name\" content=\"Town of Fine\">\n\t<meta
         property=\"og:locale\" content=\"en_US\">\n\t<meta property=\"og:type\" content=\"website\">\n\t<meta
-        property=\"og:title\" content=\"Meeting Detail\">\n\t<meta property=\"og:url\"
-        content=\"https://finetownny.gov/meetings/detail\">\n\t\n<title>Meeting Detail</title>\n\n<meta
-        http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n<meta name=\"generator\"
-        content=\"Concrete CMS\">\n<script type=\"text/javascript\">\n    var CCM_DISPATCHER_FILENAME
-        = \"/index.php\";\n    var CCM_CID = 239;\n    var CCM_EDIT_MODE = false;\n
-        \   var CCM_ARRANGE_MODE = false;\n    var CCM_IMAGE_PATH = \"/concrete/images\";\n
-        \   var CCM_APPLICATION_URL = \"https://finetownny.gov\";\n    var CCM_REL
-        = \"\";\n    var CCM_ACTIVE_LOCALE = \"en_US\";\n    var CCM_USER_REGISTERED
-        = false;\n</script>\n\n<style type=\"text/css\" data-area-style-area-handle=\"Navigation\"
-        data-block-style-block-id=\"560\" data-style-set=\"61\">.ccm-custom-style-container.ccm-custom-style-navigation-560{background-image:
+        property=\"og:title\" content=\"Meetings\">\n\t<meta property=\"og:url\" content=\"https://finetownny.gov/meetings\">\n\t\n<title>Meetings
+        :: Town of Fine</title>\n\n<meta http-equiv=\"content-type\" content=\"text/html;
+        charset=UTF-8\">\n<meta name=\"generator\" content=\"Concrete CMS\">\n<script
+        type=\"text/javascript\">\n    var CCM_DISPATCHER_FILENAME = \"/index.php\";\n
+        \   var CCM_CID = 238;\n    var CCM_EDIT_MODE = false;\n    var CCM_ARRANGE_MODE
+        = false;\n    var CCM_IMAGE_PATH = \"/concrete/images\";\n    var CCM_APPLICATION_URL
+        = \"https://finetownny.gov\";\n    var CCM_REL = \"\";\n    var CCM_ACTIVE_LOCALE
+        = \"en_US\";\n    var CCM_USER_REGISTERED = false;\n</script>\n\n<style type=\"text/css\"
+        data-area-style-area-handle=\"Navigation\" data-block-style-block-id=\"560\"
+        data-style-set=\"61\">.ccm-custom-style-container.ccm-custom-style-navigation-560{background-image:
         url(/application/files/9417/4957/2838/IMG_0110.JPG);background-repeat: no-repeat;background-size:
         auto;background-position: }</style><style type=\"text/css\" data-area-style-area-handle=\"Main\"
         data-style-set=\"50\">.ccm-custom-style-main{background-image: url(/application/files/2217/4641/1981/LAKE2.jpg);background-repeat:
@@ -44,7 +44,7 @@ interactions:
         rel=\"stylesheet\" type=\"text/css\" media=\"all\">\n\n<link href=\"/application/files/cache/css/0a4860a04aa8b9c57741287bcc4eba13b4ada215.css?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\"
         rel=\"stylesheet\" type=\"text/css\" media=\"all\" data-source=\"/packages/jl_dtp_adapt/blocks/page_title/templates/dtp_banner_welcome/view.css?ccm_nocache=9e3f25cd1e0a85e50dc581de69c67589964be034\">\n
         \   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body>\n\n<div
-        class=\"theme-atomik ccm-page ccm-page-id-239 ccm-production-mode-development\">\n\n<div\nclass=\"ccm-custom-style-navigation\"\n>\n\n\n
+        class=\"theme-atomik ccm-page ccm-page-id-238 ccm-production-mode-development\">\n\n<div\nclass=\"ccm-custom-style-navigation\"\n>\n\n\n
         \   <a href=\"#jump-past-navigation-518\"\n   class=\"visually-hidden-focusable
         btn btn-dark position-absolute top-0 start-0 m-3 zindex-tooltip\" aria-label=\"Jump
         past navigation bar\">\n    Jump past navigation</a>\n<div class=\"ccm-block-top-navigation-bar\"
@@ -122,7 +122,7 @@ interactions:
         \                                                                                       </ul>\n
         \                                   </li>\n                                                                        <li
         class=\"nav-item\">\n                                        <a\n                                                class=\"nav-link
-        nav-path-selected\"\n                                                target=\"_self\"\n
+        active\"\n                                                target=\"_self\"\n
         \                                               href=\"https://finetownny.gov/meetings\"\n
         \                                       >\n                                            Meetings
         \                                       </a>\n                                    </li>\n
@@ -266,39 +266,32 @@ interactions:
         ccm-block-custom-template-dtp-banner-welcome dtp-banner-60 dtp-banner-mask-06\"\n
         \           >\n    <div class=\"ccm-block-page-title dtp-banner text-center
         \"  aria-label=\"Title banner.\">\n    <div class=\"dtp-size-maker\" aria-hidden=\"true\">\n
-        \       <h1 class=\"page-title dtp-page-title\"><span class=\"dtp-title-size\">Meeting
-        Detail</span></h1>    </div>\n        <div class=\"dtp-banner-text-position\">\n
-        \       <h1 class=\"page-title dtp-page-title\"><span class=\"dtp-title-size\">Meeting
-        Detail</span></h1>    </div>\n\n</div>\n\n\n\n    </div>\n</div>\n    <div
-        class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-sm-12\">\n
-        \                   <div class=\"container\">\n        <div class=\"row\">\n
-        \           <div class=\"col-12\">\n                <h2 class=\"title dtp-meeting-category\">Town
-        Board</h2><h3 class=\"dtp-meeting-title\">February Regular Town Board Meeting</h3>
-        \               <p>\n                    <i class=\"fa fas fa-calendar-alt\"></i>\n
-        \                   <time datetime=\"2026-02-11\">February 11, 2026, 6:30
-        pm</time>\n                </p>\n            </div>\n        </div>\n\n        <div
-        class=\"row\">\n            <div class=\"col-12\">\n                <p>\n
-        \                   <div class=\"dtp-meeting-venue\">Municipal Office Building</div>\n
-        \                   <div class=\"dtp-meeting-address1\">4078 State Highway
-        3</div>\n                                        <div class=\"dtp-meeting-zipcode\">Star
-        Lake, NY 13690</div>\n                </p>\n            </div>\n        </div>\n\n
-        \       <div class=\"row\">\n            <div class=\"col-12 dtp-meeting-description\">\n
-        \                           </div>\n        </div>\n\n        <div class=\"row\">\n
-        \           <div class=\"col-12\">\n                <h3 class=\"dtp-meeting-agenda\">Agenda</h3>
-        \                       <div>\n                            <a aria-label=\"Download
-        the agenda\" href=\"https://finetownny.gov/application/files/4217/7074/8004/board_packet.pdf\"
-        target=\"_blank\"> <i class=\"fa fa-download\"></i> &nbsp;board packet.pdf</a>
-        \                       </div>\n                                    </div>\n
-        \       </div>\n        <div class=\"row\">\n            <div class=\"col-12\">\n
-        \               <h3 class=\"dtp-meeting-minutes\">Minutes</h3>                        <div
-        class=\"alert alert-warning\">\n                            Meeting minutes
-        pending.                        </div>\n                                    </div>\n
-        \       </div>\n        <div class=\"row\">\n            <div class=\"col-12\">\n
-        \                           </div>\n        </div>\n\n    </div>\n                </div>\n
-        \       </div>\n    </div>\n\n\n<footer>\n    <section class=\"mb-4\">\n        <div
-        class=\"container\">\n            <div class=\"row\">\n                <div
-        class=\"col-md-3\">\n                    \n\n    \n<div class=\"ccm-block-content\">\n
-        \   <div>4078 State Highway 3<br />\r\nStar Lake, NY 13690</div>\r\n\r\n<div>&nbsp;</div>\r\n\r\n<p><strong>Phone:</strong>
+        \       <h1 class=\"page-title dtp-page-title\"><span class=\"dtp-title-size\">Meetings</span></h1>
+        \   </div>\n        <div class=\"dtp-banner-text-position\">\n        <h1
+        class=\"page-title dtp-page-title\"><span class=\"dtp-title-size\">Meetings</span></h1>
+        \   </div>\n\n</div>\n\n\n\n    </div>\n</div>\n    <div class=\"container\">\n
+        \       <div class=\"row\">\n            <div class=\"col-sm-12\">\n                <div
+        class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-12\">\n
+        \           <h2 class=\"title dtp-meeting-category\">Town Board</h2>        </div>\n
+        \   </div>\n    <div class=\"row\">\n        <div class=\"col-12 col-md-6\">\n
+        \           <h3>Meetings - 2026</h3>                            <ul class=\"dtp-meetings-list
+        list-unstyled\">\n                                            <li>\n                            <a
+        aria-label=\"Link to meeting details page\" href=\"https://finetownny.gov/meetings/detail/30\">February
+        11, 2026: February Regular Town Board Meeting</a>\n                                                    </li>\n
+        \                                               <li>\n                            <a
+        aria-label=\"Link to meeting details page\" href=\"https://finetownny.gov/meetings/detail/29\">January
+        14, 2026: January Organizational & Regular Meeting</a>\n                                                    </li>\n
+        \                                       </ul>\n                \n        </div>\n
+        \       <div class=\"col-12 col-md-6\">\n            <h3>Other Years</h3>
+        \               <ul class=\"dtp-meeting-other-years list-unstyled\">\n                                            <li>\n
+        \                           <a aria-label=\"Link to meeting year\" href=\"https://finetownny.gov/meetings/meetings/Town
+        Board/2025\" class=\"dtp-meeting-year\">\n                                2025
+        \                           </a>\n                        </li>\n                                        </ul>\n
+        \                       </div>\n    </div>\n</div>\n            </div>\n        </div>\n
+        \   </div>\n\n\n<footer>\n    <section class=\"mb-4\">\n        <div class=\"container\">\n
+        \           <div class=\"row\">\n                <div class=\"col-md-3\">\n
+        \                   \n\n    \n<div class=\"ccm-block-content\">\n    <div>4078
+        State Highway 3<br />\r\nStar Lake, NY 13690</div>\r\n\r\n<div>&nbsp;</div>\r\n\r\n<p><strong>Phone:</strong>
         (315)-848-3121<br />\r\n<strong>Fax:</strong> (315)-848-3152<br />\r\n<strong>Email:&nbsp;</strong>
         <a href=\"mailto:finetownclerk@gmail.com\">fineclerk@</a>finetownny.gov</p>\r\n</div>\n\n\n
         \   \n<div id=\"ccm-block-social-links437\" class=\"ccm-block-social-links\">\n
@@ -383,7 +376,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Thu, 12 Feb 2026 15:55:07 GMT
+      - Thu, 12 Feb 2026 15:55:05 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
@@ -419,7 +412,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '34874'
+      - '34508'
     status:
       code: 200
       message: OK
