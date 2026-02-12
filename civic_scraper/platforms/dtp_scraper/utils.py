@@ -35,18 +35,20 @@ def create_session():
         requests.Session: Configured session
     """
     session = requests.Session()
-    session.headers.update({
-        'User-Agent': (
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-            'AppleWebKit/537.36 (KHTML, like Gecko) '
-            'Chrome/131.0.0.0 Safari/537.36'
-        ),
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-    })
+    session.headers.update(
+        {
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/131.0.0.0 Safari/537.36"
+            ),
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Encoding": "gzip, deflate",
+            "Connection": "keep-alive",
+            "Upgrade-Insecure-Requests": "1",
+        }
+    )
     return session
 
 
@@ -69,12 +71,12 @@ def fetch_page(url, session=None, referer=None):
 
     headers = {}
     if referer:
-        headers['Referer'] = referer
+        headers["Referer"] = referer
 
     time.sleep(REQUEST_DELAY)
     response = session.get(url, headers=headers, timeout=30)
     response.raise_for_status()
-    return BeautifulSoup(response.text, 'html.parser')
+    return BeautifulSoup(response.text, "html.parser")
 
 
 def get_categories(base_url, session=None):
@@ -99,16 +101,13 @@ def get_categories(base_url, session=None):
 
     categories = []
     # Find all category links
-    links = soup.find_all('a', class_='dtp-meeting-category-link')
+    links = soup.find_all("a", class_="dtp-meeting-category-link")
 
     for link in links:
         name = link.get_text(strip=True)
-        href = link.get('href')
+        href = link.get("href")
         if href:
-            categories.append({
-                'name': name,
-                'url': href
-            })
+            categories.append({"name": name, "url": href})
 
     return categories
 
@@ -138,19 +137,15 @@ def get_meetings_for_category_year(url, session=None):
 
     meetings = []
     # Find all meeting links in the current year
-    links = soup.find_all('a', {'aria-label': 'Link to meeting details page'})
+    links = soup.find_all("a", {"aria-label": "Link to meeting details page"})
 
     for link in links:
-        href = link.get('href')
-        if href and '/meetings/detail/' in href:
+        href = link.get("href")
+        if href and "/meetings/detail/" in href:
             # Extract detail_id from URL
-            detail_id = href.split('/meetings/detail/')[-1].rstrip('/')
+            detail_id = href.split("/meetings/detail/")[-1].rstrip("/")
             title = link.get_text(strip=True)
-            meetings.append({
-                'title': title,
-                'url': href,
-                'detail_id': detail_id
-            })
+            meetings.append({"title": title, "url": href, "detail_id": detail_id})
 
     return meetings, soup
 
@@ -175,16 +170,13 @@ def get_other_years_from_soup(soup):
         ]
     """
     years = []
-    year_links = soup.find_all('a', class_='dtp-meeting-year')
+    year_links = soup.find_all("a", class_="dtp-meeting-year")
 
     for link in year_links:
         year = link.get_text(strip=True)
-        href = link.get('href')
+        href = link.get("href")
         if href:
-            years.append({
-                'year': year,
-                'url': href
-            })
+            years.append({"year": year, "url": href})
 
     return years
 
@@ -221,55 +213,55 @@ def get_meeting_details(detail_url, session=None):
     soup = fetch_page(detail_url, session=session)
 
     # Extract committee name
-    committee_elem = soup.find(class_='dtp-meeting-category')
+    committee_elem = soup.find(class_="dtp-meeting-category")
     committee_name = committee_elem.get_text(strip=True) if committee_elem else None
 
     # Extract meeting title
-    title_elem = soup.find(class_='dtp-meeting-title')
+    title_elem = soup.find(class_="dtp-meeting-title")
     meeting_title = title_elem.get_text(strip=True) if title_elem else None
 
     # Extract meeting date and time from <time> element
-    time_elem = soup.find('time')
+    time_elem = soup.find("time")
     meeting_date = None
     meeting_time = None
     if time_elem:
-        datetime_attr = time_elem.get('datetime')
+        datetime_attr = time_elem.get("datetime")
         if datetime_attr:
             try:
-                meeting_date = datetime.strptime(datetime_attr, '%Y-%m-%d').date()
+                meeting_date = datetime.strptime(datetime_attr, "%Y-%m-%d").date()
             except ValueError:
                 logger.warning(f"Could not parse date: {datetime_attr}")
 
         # Extract time from text content (e.g., "February 11, 2026, 6:30 pm")
         time_text = time_elem.get_text(strip=True)
         # Extract the time portion (after the last comma)
-        if ',' in time_text:
-            parts = time_text.split(',')
+        if "," in time_text:
+            parts = time_text.split(",")
             if len(parts) >= 2:
                 meeting_time = parts[-1].strip()
 
     # Extract venue info
-    venue_elem = soup.find(class_='dtp-meeting-venue')
+    venue_elem = soup.find(class_="dtp-meeting-venue")
     venue = venue_elem.get_text(strip=True) if venue_elem else None
 
-    address_elem = soup.find(class_='dtp-meeting-address1')
+    address_elem = soup.find(class_="dtp-meeting-address1")
     address = address_elem.get_text(strip=True) if address_elem else None
 
-    zipcode_elem = soup.find(class_='dtp-meeting-zipcode')
+    zipcode_elem = soup.find(class_="dtp-meeting-zipcode")
     zipcode = zipcode_elem.get_text(strip=True) if zipcode_elem else None
 
     # Extract documents (agendas and minutes)
     documents = _extract_documents(soup)
 
     return {
-        'committee_name': committee_name,
-        'meeting_title': meeting_title,
-        'meeting_date': meeting_date,
-        'meeting_time': meeting_time,
-        'venue': venue,
-        'address': address,
-        'zipcode': zipcode,
-        'documents': documents
+        "committee_name": committee_name,
+        "meeting_title": meeting_title,
+        "meeting_date": meeting_date,
+        "meeting_time": meeting_time,
+        "venue": venue,
+        "address": address,
+        "zipcode": zipcode,
+        "documents": documents,
     }
 
 
@@ -285,36 +277,44 @@ def _extract_documents(soup):
     documents = []
 
     # Find agenda section
-    agenda_header = soup.find('h3', class_='dtp-meeting-agenda')
+    agenda_header = soup.find("h3", class_="dtp-meeting-agenda")
     if agenda_header:
         # Find document links in the agenda section
         agenda_section = agenda_header.find_parent()
         if agenda_section:
-            agenda_links = agenda_section.find_all('a', href=True)
+            agenda_links = agenda_section.find_all("a", href=True)
             for link in agenda_links:
-                href = link.get('href')
-                if href and (href.endswith('.pdf') or 'application/pdf' in link.get('title', '')):
-                    documents.append({
-                        'type': 'agenda',
-                        'url': href,
-                        'name': link.get_text(strip=True)
-                    })
+                href = link.get("href")
+                if href and (
+                    href.endswith(".pdf") or "application/pdf" in link.get("title", "")
+                ):
+                    documents.append(
+                        {
+                            "type": "agenda",
+                            "url": href,
+                            "name": link.get_text(strip=True),
+                        }
+                    )
 
     # Find minutes section
-    minutes_header = soup.find('h3', class_='dtp-meeting-minutes')
+    minutes_header = soup.find("h3", class_="dtp-meeting-minutes")
     if minutes_header:
         # Find document links in the minutes section
         minutes_section = minutes_header.find_parent()
         if minutes_section:
-            minutes_links = minutes_section.find_all('a', href=True)
+            minutes_links = minutes_section.find_all("a", href=True)
             for link in minutes_links:
-                href = link.get('href')
-                if href and (href.endswith('.pdf') or 'application/pdf' in link.get('title', '')):
-                    documents.append({
-                        'type': 'minutes',
-                        'url': href,
-                        'name': link.get_text(strip=True)
-                    })
+                href = link.get("href")
+                if href and (
+                    href.endswith(".pdf") or "application/pdf" in link.get("title", "")
+                ):
+                    documents.append(
+                        {
+                            "type": "minutes",
+                            "url": href,
+                            "name": link.get_text(strip=True),
+                        }
+                    )
 
     return documents
 
@@ -331,7 +331,7 @@ def parse_meeting_datetime(date_str, time_str):
     """
     if isinstance(date_str, str):
         try:
-            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+            date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
         except ValueError:
             return None
     else:
@@ -340,11 +340,11 @@ def parse_meeting_datetime(date_str, time_str):
     # Parse time if available
     if time_str:
         try:
-            time_obj = datetime.strptime(time_str, '%I:%M %p').time()
+            time_obj = datetime.strptime(time_str, "%I:%M %p").time()
         except ValueError:
             # Try other formats
             try:
-                time_obj = datetime.strptime(time_str, '%I:%M%p').time()
+                time_obj = datetime.strptime(time_str, "%I:%M%p").time()
             except ValueError:
                 logger.warning(f"Could not parse time: {time_str}")
                 time_obj = None
@@ -366,4 +366,4 @@ def extract_detail_id_from_url(url):
     Returns:
         str: Detail ID (e.g., "30")
     """
-    return url.split('/meetings/detail/')[-1].rstrip('/')
+    return url.split("/meetings/detail/")[-1].rstrip("/")

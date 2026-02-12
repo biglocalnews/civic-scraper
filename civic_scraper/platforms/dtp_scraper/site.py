@@ -1,5 +1,9 @@
 """
-Scraper for Digital TownPath sites (e.g. finetownny.gov)
+Scraper for Digital TowPath NY sites (e.g. finetownny.gov)
+
+For more information on the platform, see:
+- https://www.digitaltownpath.com/ (main site)
+
 """
 
 import logging
@@ -25,6 +29,7 @@ STATE = "ny"
 # If we find more sites that use Digital TownPath, we can make this more dynamic.
 SUPPORTED_SITES = "finetownny.gov"
 
+
 class Site(base.Site):
     """Scraper for Digital TownPath sites (e.g. finetownny.gov)."""
 
@@ -39,8 +44,10 @@ class Site(base.Site):
         """
 
         if not self.can_scrape(base_url):
-            raise ValueError(f"Unsupported site: {base_url}. Supported sites: {SUPPORTED_SITES}")
-        
+            raise ValueError(
+                f"Unsupported site: {base_url}. Supported sites: {SUPPORTED_SITES}"
+            )
+
         super().__init__(base_url, cache=cache)
         self.base_url = base_url
         self.session = utils.create_session()
@@ -85,12 +92,12 @@ class Site(base.Site):
 
         # Step 2: For each category, fetch all meetings across all years in the date range
         for category in categories:
-            category_name = category['name']
+            category_name = category["name"]
             logger.info(f"Processing category: {category_name}")
 
             try:
                 # Start with the current year from the category URL
-                category_url = category['url']
+                category_url = category["url"]
                 meetings_to_process = [(category_url, category_name)]
                 processed_urls = set()
 
@@ -110,14 +117,16 @@ class Site(base.Site):
                         )
                         logger.debug(f"Found {len(meetings)} meetings at {current_url}")
                     except Exception as e:
-                        logger.warning(f"Failed to fetch meetings for {current_url}: {e}")
+                        logger.warning(
+                            f"Failed to fetch meetings for {current_url}: {e}"
+                        )
                         continue
 
                     # Process each meeting
                     for meeting in meetings:
-                        if meeting['detail_id'] in processed_details:
+                        if meeting["detail_id"] in processed_details:
                             continue
-                        processed_details.add(meeting['detail_id'])
+                        processed_details.add(meeting["detail_id"])
                         try:
                             asset_count = self._process_meeting(
                                 meeting,
@@ -126,20 +135,26 @@ class Site(base.Site):
                                 end_date,
                                 ac,
                             )
-                            logger.debug(f"Added {asset_count} assets from meeting {meeting['detail_id']}")
+                            logger.debug(
+                                f"Added {asset_count} assets from meeting {meeting['detail_id']}"
+                            )
                         except Exception as e:
-                            logger.warning(f"Failed to process meeting {meeting['detail_id']}: {e}")
+                            logger.warning(
+                                f"Failed to process meeting {meeting['detail_id']}: {e}"
+                            )
                             continue
 
                     # Extract other years from the same soup (no extra request)
                     try:
                         other_years = utils.get_other_years_from_soup(soup)
                         for year_info in other_years:
-                            year_url = year_info['url']
+                            year_url = year_info["url"]
                             if year_url not in processed_urls:
                                 meetings_to_process.append((year_url, category_name))
                     except Exception as e:
-                        logger.debug(f"Failed to extract other years for {current_url}: {e}")
+                        logger.debug(
+                            f"Failed to extract other years for {current_url}: {e}"
+                        )
                         continue
 
             except Exception as e:
@@ -162,22 +177,22 @@ class Site(base.Site):
         Returns:
             int: Number of assets added
         """
-        detail_url = meeting['url']
-        detail_id = meeting['detail_id']
+        detail_url = meeting["url"]
+        detail_id = meeting["detail_id"]
 
         # Fetch meeting details
         meeting_details = utils.get_meeting_details(detail_url, session=self.session)
 
         # Check if meeting date is in range
-        meeting_date = meeting_details.get('meeting_date')
+        meeting_date = meeting_details.get("meeting_date")
         if not meeting_date:
             logger.warning(f"No meeting date for {detail_id}")
             return 0
 
         # Parse dates for comparison
         try:
-            start_dt = datetime.strptime(start_date, '%Y-%m-%d').date()
-            end_dt = datetime.strptime(end_date, '%Y-%m-%d').date()
+            start_dt = datetime.strptime(start_date, "%Y-%m-%d").date()
+            end_dt = datetime.strptime(end_date, "%Y-%m-%d").date()
         except ValueError:
             logger.error(f"Invalid date format: {start_date} or {end_date}")
             return 0
@@ -189,9 +204,9 @@ class Site(base.Site):
         asset_count = 0
 
         # Create an asset for each document (agenda, minutes)
-        for doc in meeting_details.get('documents', []):
-            doc_type = doc['type']
-            doc_url = doc['url']
+        for doc in meeting_details.get("documents", []):
+            doc_type = doc["type"]
+            doc_url = doc["url"]
 
             # Create meeting ID
             meeting_id = f"{PLACE}-{meeting_date}-{detail_id}"
@@ -204,15 +219,14 @@ class Site(base.Site):
             content_length = None
             try:
                 response = self.session.head(doc_url, allow_redirects=True, timeout=10)
-                content_type = response.headers.get('content-type')
-                content_length = response.headers.get('content-length')
+                content_type = response.headers.get("content-type")
+                content_length = response.headers.get("content-length")
             except Exception as e:
                 logger.warning(f"Failed to get headers for {doc_url}: {e}")
 
             # Create datetime object for meeting
             meeting_datetime = utils.parse_meeting_datetime(
-                meeting_date,
-                meeting_details.get('meeting_time')
+                meeting_date, meeting_details.get("meeting_time")
             )
 
             # Create asset
@@ -220,7 +234,7 @@ class Site(base.Site):
                 url=doc_url,
                 asset_type=doc_type,
                 asset_name=asset_name,
-                committee_name=meeting_details.get('committee_name') or category_name,
+                committee_name=meeting_details.get("committee_name") or category_name,
                 place=PLACE,
                 place_name=PLACE_NAME,
                 state_or_province=STATE,
