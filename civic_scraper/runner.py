@@ -4,6 +4,7 @@ import re
 
 from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
+from civic_scraper.platforms import DtpScraperSite
 
 logger = logging.getLogger(__name__)
 
@@ -99,7 +100,7 @@ class Runner:
     def _get_site_class_name(self, url):
         if re.search(r"(civicplus|AgendaCenter)", url):
             return "CivicPlusSite"
-        # TODO - Eventually might be good to allow an explicit
-        # --platform flag to be set.
-        if re.search(r"finetownny\.gov", url):
+        # TODO: Discuss whether we want to elevate this pattern for all scrapers
+        # then we can just iterate through all scrapers and call can_scrape on each
+        if DtpScraperSite.can_scrape(url):
             return "DtpScraperSite"

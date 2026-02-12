@@ -4,6 +4,7 @@ Scraper for Digital TownPath sites (e.g. finetownny.gov)
 
 import logging
 from datetime import datetime
+from urllib.parse import urlparse
 
 import civic_scraper
 from civic_scraper import base
@@ -20,6 +21,9 @@ PLACE = "fineny"
 PLACE_NAME = "Fine New York"
 STATE = "ny"
 
+# Hardcoding supported sites since I am only aware of finetownny.gov using this platform.
+# If we find more sites that use Digital TownPath, we can make this more dynamic.
+SUPPORTED_SITES = "finetownny.gov"
 
 class Site(base.Site):
     """Scraper for Digital TownPath sites (e.g. finetownny.gov)."""
@@ -30,10 +34,21 @@ class Site(base.Site):
         Args:
             base_url (str): Base URL of the Digital TownPath site (e.g. https://finetownny.gov)
             cache (Cache): Cache instance (default: new Cache())
+
+        Currently only supports finetownny.gov, which is hardcoded in constants.
         """
+
+        if not self.can_scrape(base_url):
+            raise ValueError(f"Unsupported site: {base_url}. Supported sites: {SUPPORTED_SITES}")
+        
         super().__init__(base_url, cache=cache)
         self.base_url = base_url
         self.session = utils.create_session()
+
+    @staticmethod
+    def can_scrape(url: str) -> bool:
+        """Determine if site can be scraped by this scraper."""
+        return urlparse(url).netloc in SUPPORTED_SITES
 
     def scrape(self, start_date=None, end_date=None, cache=False, download=False):
         """Scrape the jurisdiction website for meeting documents.

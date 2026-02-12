@@ -14,7 +14,6 @@ from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
-BASE_URL = "https://finetownny.gov"
 CATEGORIES_PATH = "/meetings/meetings/"
 DETAIL_PATH = "/meetings/detail/"
 
