@@ -85,7 +85,9 @@ class Site(base.Site):
             logger.warning("Caching not implemented.")
         # NOTE: Each scraper should not re-implement downloading assets, as this is a core function of the runner. The scraper should just return the URLs and metadata, and the runner should handle downloading.
         if "download" in kwargs:
-            logger.warning("scrape(download=...) not implemented. Runner should handle downloading.")  
+            logger.warning(
+                "scrape(download=...) not implemented. Runner should handle downloading."
+            )
 
         # Step 1: Get all categories (committees)
         try:
