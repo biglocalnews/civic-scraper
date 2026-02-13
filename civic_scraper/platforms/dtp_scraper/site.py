@@ -28,6 +28,11 @@ SITES = {
         "place_name": "Fine New York",
         "state": "ny",
     },
+    "www.woodstockny.gov": {
+        "place": "woodstockny",
+        "place_name": "Woodstock New York",
+        "state": "ny",
+    }
 }
 
 
