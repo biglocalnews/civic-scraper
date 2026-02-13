@@ -1,18 +1,18 @@
 """
 Tests for DTP scraper
 
-Run with: pipenv run pytest -sv tests/test_dtp_scraper_site.py
+Run with: pipenv run pytest -sv tests/test_digital_tow_path_site.py
 """
 
 import pytest
 
-from civic_scraper.platforms.dtp_scraper import DtpScraperSite
+from civic_scraper.platforms.digital_tow_path import DigitalTowPathSite
 
 
 @pytest.mark.vcr()
 def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
     """Test scraping with specific date range."""
-    site = DtpScraperSite("https://finetownny.gov/categories/")
+    site = DigitalTowPathSite("https://finetownny.gov/categories/")
     start_date = "2026-01-01"  # Same as test meeting date
     end_date = "2026-02-05"
 
@@ -24,7 +24,7 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
 
 def test_site_initialization():
     """Test Site can be initialized."""
-    site = DtpScraperSite("https://finetownny.gov/categories/")
+    site = DigitalTowPathSite("https://finetownny.gov/categories/")
 
     # DTP scraper uses whatever base URL is passed in
     assert site.base_url == "https://finetownny.gov/categories/"
@@ -32,13 +32,13 @@ def test_site_initialization():
 
 
 def test_can_scrape_supported():
-    assert DtpScraperSite.can_scrape("https://finetownny.gov/categories/") is True
+    assert DigitalTowPathSite.can_scrape("https://finetownny.gov/categories/") is True
 
 
 def test_can_scrape_unsupported():
-    assert DtpScraperSite.can_scrape("https://example.com/meetings") is False
+    assert DigitalTowPathSite.can_scrape("https://example.com/meetings") is False
 
 
 def test_unsupported_domain_raises():
     with pytest.raises(ValueError, match="Unsupported site"):
-        DtpScraperSite("https://example.com/meetings")
+        DigitalTowPathSite("https://example.com/meetings")

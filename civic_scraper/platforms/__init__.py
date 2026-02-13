@@ -3,4 +3,4 @@ from .civic_plus.site import Site as CivicPlusSite
 from .granicus.site import GranicusSite
 from .legistar.site import Site as LegistarSite
 from .primegov.site import PrimeGovSite
-from .dtp_scraper.site import Site as DtpScraperSite
+from .digital_tow_path.site import Site as DigitalTowPathSite

@@ -4,7 +4,7 @@ import re
 
 from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.platforms import DtpScraperSite
+from civic_scraper.platforms import DigitalTowPathSite
 
 logger = logging.getLogger(__name__)
 
@@ -102,6 +102,6 @@ class Runner:
             return "CivicPlusSite"
         # TODO: Discuss whether we want to elevate this pattern for all scrapers
         # then we can just iterate through all scrapers and call can_scrape on each
-        if DtpScraperSite.can_scrape(url):
-            return "DtpScraperSite"
+        if DigitalTowPathSite.can_scrape(url):
+            return "DigitalTowPathSite"
         raise ScraperError(f"No scraper found for {url}")

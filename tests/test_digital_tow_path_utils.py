@@ -1,7 +1,7 @@
 """
 Tests for DigitalTowPath utility functions.
 
-Run with: pipenv run pytest -sv tests/test_dtp_scraper_utils.py
+Run with: pipenv run pytest -sv tests/test_digital_tow_path_utils.py
 """
 
 import datetime
@@ -9,7 +9,7 @@ import datetime
 import pytest
 from bs4 import BeautifulSoup
 
-from civic_scraper.platforms.dtp_scraper import utils
+from civic_scraper.platforms.digital_tow_path import utils
 
 
 # --- Pure function tests (no HTTP) ---

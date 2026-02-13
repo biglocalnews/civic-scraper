@@ -524,7 +524,7 @@ Here's how the Digital TownPath scraper was registered:
 
 **1. Export in `platforms/__init__.py`:**
 ```python
-from .dtp_scraper.site import Site as DtpScraperSite
+from .digital_tow_path.site import Site as DigitalTowPathSite
 ```
 
 **2. `can_scrape()` on the Site class:**
@@ -540,10 +540,10 @@ def can_scrape(url: str) -> bool:
 
 **3. Detect in `runner.py`:**
 ```python
-from civic_scraper.platforms import DtpScraperSite
+from civic_scraper.platforms import DigitalTowPathSite
 
-if DtpScraperSite.can_scrape(url):
-    return "DtpScraperSite"
+if DigitalTowPathSite.can_scrape(url):
+    return "DigitalTowPathSite"
 ```
 
 **4. Users can now do:**
