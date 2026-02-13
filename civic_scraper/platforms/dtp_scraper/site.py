@@ -12,7 +12,7 @@ import logging
 from datetime import datetime
 from urllib.parse import urlparse
 
-import civic_scraper
+
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
@@ -254,7 +254,7 @@ class Site(base.Site):
                 state_or_province=self._site_meta["state"],
                 meeting_date=meeting_datetime,
                 meeting_id=meeting_id,
-                scraped_by=civic_scraper.__version__,
+                scraped_by=f"civic-scraper_{civic_scraper.__version__}",
                 content_type=content_type,
                 content_length=content_length,
             )

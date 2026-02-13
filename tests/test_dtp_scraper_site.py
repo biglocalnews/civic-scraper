@@ -16,7 +16,7 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
     start_date = "2026-01-01"  # Same as test meeting date
     end_date = "2026-02-05"
 
-    assets = site.scrape(start_date=start_date, end_date=end_date)
+    assets = site.scrape(start_date, end_date)
 
     # Based on VCR recording on Feb. 12, 2026, there should be exactly 2 assets
     assert len(assets) == 2, "Should find exactly 2 assets in the date range"
