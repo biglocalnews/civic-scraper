@@ -270,46 +270,41 @@ def _extract_documents(soup):
         list: List of dicts with 'type', 'url', 'name' keys
     """
     documents = []
+    seen_urls = set()
 
-    # Find agenda section
-    agenda_header = soup.find("h3", class_="dtp-meeting-agenda")
-    if agenda_header:
-        # Find document links in the agenda section
-        agenda_section = agenda_header.find_parent()
-        if agenda_section:
-            agenda_links = agenda_section.find_all("a", href=True)
-            for link in agenda_links:
-                href = link.get("href")
-                if href and (
-                    href.endswith(".pdf") or "application/pdf" in link.get("title", "")
-                ):
-                    documents.append(
-                        {
-                            "type": "agenda",
-                            "url": href,
-                            "name": link.get_text(strip=True),
-                        }
-                    )
+    section_types = [
+        ("dtp-meeting-agenda", "agenda"),
+        ("dtp-meeting-minutes", "minutes"),
+    ]
 
-    # Find minutes section
-    minutes_header = soup.find("h3", class_="dtp-meeting-minutes")
-    if minutes_header:
-        # Find document links in the minutes section
-        minutes_section = minutes_header.find_parent()
-        if minutes_section:
-            minutes_links = minutes_section.find_all("a", href=True)
-            for link in minutes_links:
+    for css_class, doc_type in section_types:
+        header = soup.find("h3", class_=css_class)
+        if not header:
+            continue
+        # Collect sibling elements after the header until the next h3
+        for sibling in header.next_siblings:
+            if sibling.name == "h3":
+                break
+            if sibling.name == "a":
+                links = [sibling]
+            elif hasattr(sibling, "find_all"):
+                links = sibling.find_all("a", href=True)
+            else:
+                continue
+            for link in links:
                 href = link.get("href")
-                if href and (
-                    href.endswith(".pdf") or "application/pdf" in link.get("title", "")
-                ):
-                    documents.append(
-                        {
-                            "type": "minutes",
-                            "url": href,
-                            "name": link.get_text(strip=True),
-                        }
-                    )
+                if not href:
+                    continue
+                if href.lower().endswith(".pdf") or "application/pdf" in link.get("title", ""):
+                    if href not in seen_urls:
+                        seen_urls.add(href)
+                        documents.append(
+                            {
+                                "type": doc_type,
+                                "url": href,
+                                "name": link.get_text(strip=True),
+                            }
+                        )
 
     return documents
 

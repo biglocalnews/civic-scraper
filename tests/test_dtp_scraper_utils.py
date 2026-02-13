@@ -130,7 +130,7 @@ class TestExtractDocuments:
         soup = BeautifulSoup(html, "html.parser")
         docs = utils._extract_documents(soup)
         assert len(docs) == 1
-        assert docs[0]["url"].endswith(".pdf")
+        assert docs[0]["url"].lower().endswith(".pdf")
 
     def test_multiple_agendas(self):
         html = """
@@ -145,12 +145,8 @@ class TestExtractDocuments:
         assert len(docs) == 2
         assert all(d["type"] == "agenda" for d in docs)
 
-    def test_shared_parent_causes_duplicates(self):
-        """Documents: when agenda and minutes share the same parent, links get double-counted.
-
-        This test documents the current behavior. If _extract_documents is
-        refactored to fix this, update this test accordingly.
-        """
+    def test_shared_parent_no_duplicates(self):
+        """Links are scoped to their section and deduplicated by URL."""
         html = """
         <div>
             <h3 class="dtp-meeting-agenda">Agenda</h3>
@@ -161,10 +157,11 @@ class TestExtractDocuments:
         """
         soup = BeautifulSoup(html, "html.parser")
         docs = utils._extract_documents(soup)
-        # Both sections share <div> as parent, so find_parent() returns
-        # the same element for both. All PDF links get counted in each section.
-        # This is the current (buggy) behavior — more docs than expected
-        assert len(docs) > 2
+        assert len(docs) == 2
+        assert docs[0]["type"] == "agenda"
+        assert docs[0]["url"] == "https://example.com/doc.pdf"
+        assert docs[1]["type"] == "minutes"
+        assert docs[1]["url"] == "https://example.com/minutes.pdf"
 
 
 # --- VCR-based tests (use recorded HTTP cassettes) ---
@@ -229,4 +226,4 @@ def test_get_meeting_details_with_documents():
     assert len(details["documents"]) > 0
     for doc in details["documents"]:
         assert doc["type"] in ("agenda", "minutes")
-        assert doc["url"].endswith(".pdf")
+        assert doc["url"].lower().endswith(".pdf")
