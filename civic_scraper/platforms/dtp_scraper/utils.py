@@ -281,7 +281,7 @@ def _extract_documents(soup):
             for link in agenda_links:
                 href = link.get("href")
                 if href and (
-                    href.endswith(".pdf") or "application/pdf" in link.get("title", "")
+                    href.lower().endswith(".pdf") or "application/pdf" in link.get("title", "")
                 ):
                     documents.append(
                         {
@@ -301,7 +301,7 @@ def _extract_documents(soup):
             for link in minutes_links:
                 href = link.get("href")
                 if href and (
-                    href.endswith(".pdf") or "application/pdf" in link.get("title", "")
+                    href.lower().endswith(".pdf") or "application/pdf" in link.get("title", "")
                 ):
                     documents.append(
                         {

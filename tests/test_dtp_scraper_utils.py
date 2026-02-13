@@ -130,7 +130,7 @@ class TestExtractDocuments:
         soup = BeautifulSoup(html, "html.parser")
         docs = utils._extract_documents(soup)
         assert len(docs) == 1
-        assert docs[0]["url"].endswith(".pdf")
+        assert docs[0]["url"].lower().endswith(".pdf")
 
     def test_multiple_agendas(self):
         html = """
@@ -229,4 +229,4 @@ def test_get_meeting_details_with_documents():
     assert len(details["documents"]) > 0
     for doc in details["documents"]:
         assert doc["type"] in ("agenda", "minutes")
-        assert doc["url"].endswith(".pdf")
+        assert doc["url"].lower().endswith(".pdf")
