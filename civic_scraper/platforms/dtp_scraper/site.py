@@ -14,6 +14,7 @@ from urllib.parse import urlparse
 
 
 from civic_scraper import base
+import civic_scraper
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
 from . import utils
