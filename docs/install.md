@@ -5,19 +5,19 @@
 Install the library from the Python Package Index.
 
 ```
-pipenv install civic-scraper
+uv add civic-scraper
 ```
 
 Upon installation, you should have access to the {code}`civic-scraper` tool on the command line:
 
 ```bash
-pipenv run civic-scraper --help
+uv run civic-scraper --help
 ```
 
 ... and start scraping from the command line:
 
 ```bash
-pipenv run civic-scraper scrape --download --url http://nc-nashcounty.civicplus.com/AgendaCenter
+uv run civic-scraper scrape --download --url http://nc-nashcounty.civicplus.com/AgendaCenter
 ```
 
 Or in a script:

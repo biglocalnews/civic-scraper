@@ -59,8 +59,8 @@ endef
 # Python helpers
 #
 
-PIPENV := pipenv run
-PYTHON := $(PIPENV) python -W ignore
+UV := uv run
+PYTHON := $(UV) python -W ignore
 
 #
 # Tests
@@ -68,12 +68,20 @@ PYTHON := $(PIPENV) python -W ignore
 
 lint: ## run the linter
 	$(call banner,        💅 Linting code 💅)
-	@$(PIPENV) flake8 ./
+	@$(UV) flake8 ./
 
 
 test: ## run all tests
 	$(call banner,       🤖 Running tests 🤖)
-	@$(PIPENV) pytest -sv
+	@$(UV) pytest -sv
+
+
+test-all: ## run tests across Python 3.9, 3.10, 3.11
+	$(call banner,  🤖 Running tests (all versions) 🤖)
+	@for version in 3.9 3.10 3.11; do \
+		echo "\n$(CYAN)━━━ Python $$version ━━━$(RESET_COLOR)"; \
+		uv run --python $$version pytest -sv || exit 1; \
+	done
 
 #
 # Releases
@@ -81,13 +89,12 @@ test: ## run all tests
 
 check-release: ## check release for potential errors
 	$(call banner,      🔎 Checking release 🔎)
-	@$(PIPENV) twine check dist/*
+	@$(UV) twine check dist/*
 
 
 build-release: ## builds source and wheel package
 	$(call banner,      📦 Building release 📦)
-	@$(PYTHON) setup.py sdist
-	@$(PYTHON) setup.py bdist_wheel
+	@$(UV) python -m build
 	@ls -l dist
 
 #
@@ -96,12 +103,12 @@ build-release: ## builds source and wheel package
 
 serve-docs: ## start the documentation test server
 	$(call banner,         📃 Serving docs 📃)
-	cd docs && $(PIPENV) make livehtml;
+	cd docs && $(UV) make livehtml;
 
 
 test-docs: ## build the docs as html
 	$(call banner,        📃 Building docs 📃)
-	cd docs && $(PIPENV) make html;
+	cd docs && $(UV) make html;
 
 #
 # Extras
@@ -109,7 +116,7 @@ test-docs: ## build the docs as html
 
 format: ## automatically format Python code with black
 	$(call banner,       🪥 Cleaning code 🪥)
-	@$(PIPENV) black .
+	@$(UV) black .
 
 
 help: ## Show this help. Example: make help
@@ -129,5 +136,6 @@ help: ## Show this help. Example: make help
         run \
         serve-docs \
         test \
+        test-all \
         test-docs \
         test-release

@@ -96,7 +96,7 @@ class Site(base.Site):
 TEST_TEMPLATE = '''"""
 Tests for {platform_name} scraper
 
-Run with: pipenv run pytest -sv tests/{test_module}.py
+Run with: uv run pytest -sv tests/{test_module}.py
 """
 
 import datetime
@@ -238,7 +238,7 @@ if __name__ == "__main__":
         print(f"  {files['cassettes_dir']}/")
         print()
         print("Next steps:")
-        print(f"  1. Run tests: pipenv run pytest -sv tests/{test_module}.py")
+        print(f"  1. Run tests: uv run pytest -sv tests/{test_module}.py")
         print("     (They will fail with NotImplementedError — that's expected!)")
         print("  2. Implement Site.scrape() to make tests pass")
         print(

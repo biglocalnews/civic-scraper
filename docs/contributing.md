@@ -49,12 +49,11 @@ articles, and such.
 Our [official docs] use reStructuredText and Sphinx. To contribute documentation without completing the full repo setup (only required for code logic):
 
 1. Fork and clone this repo
-2. Create a simple virtual environment: `python3 -m venv civic-scraper-env` 
-3. Activate your new virtual env: `source civic-scraper-env/bin/activate`
-4. Install requirements for documentation: `pip install -r docs/requirements.txt`
-5. Create a branch for your doc updates and start writing!
+2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
+3. Install doc dependencies: `uv sync --group docs`
+4. Create a branch for your doc updates and start writing!
    - Use `make serve-docs` command to run a Sphinx server locally that displays doc pages and allows auto reloading of pages in browser when changes are made to a file.
-6. Create a GitHub Pull Request once you're ready to send us your changes
+5. Create a GitHub Pull Request once you're ready to send us your changes
 
 ### Fix Bugs
 
@@ -67,11 +66,9 @@ Look through the GitHub issues for features. Anything tagged with "enhancement" 
 
 ## Get Started!
 
-Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` for local development. 
+Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` for local development.
 
-Note: While there are many ways to setup a virtual environment in Python, we recommend using Pipenv in order to keep your setup aligned with the continuous deployment configuration.
-
-### Fork and clone the `civic-scraper` repo 
+### Fork and clone the `civic-scraper` repo
 
 1. Fork the `civic-scraper` repo on GitHub.
 
@@ -81,26 +78,19 @@ Note: While there are many ways to setup a virtual environment in Python, we rec
    $ git clone git@github.com:your_name_here/civic-scraper.git
    ```
 
-### Prep your development environment 
+### Prep your development environment
 
-3. Make sure you have Python 3.9 installed: 
+3. Make sure you have Python 3.9 installed:
     - You can check this by running:
 
     ```bash
     python3 --version
     ```
 
-4. Install `pipenv` (if you don't have it already):
+4. Install [uv](https://docs.astral.sh/uv/getting-started/installation/):
 
    ```bash
-   pip install pipenv
-   ```
-
-   Or, if you use Homebrew (recommended):
-
-   ```bash
-   brew install pipx
-   pipx install pipenv
+   curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 
 ### Create your virtual environment & install dependencies
@@ -108,26 +98,12 @@ Note: While there are many ways to setup a virtual environment in Python, we rec
 5. In the root of the project directory, run
 
    ```bash
-   pipenv install --dev
+   uv sync
    ```
 
-💡 Pro Tips
+   This creates a virtual environment and installs all dependencies.
 
-- If you ever get weird errors when setting up your virtual environment, try removing and recreating it: 
-
-   ```bash
-   pipenv --rm
-   pipenv install --dev
-   ```
-- To install a new package:
-
-   ```bash
-   pipenv install package-name
-   ```
-
-   - Add `--dev` to the above if the new package is just for development (like pytest)
-
-## Making changes 
+## Making changes
 
 6. Create a branch for local development on your fork:
 
@@ -141,22 +117,22 @@ Note: While there are many ways to setup a virtual environment in Python, we rec
 
 When you're done making changes, you'll want to check that your changes pass linting requirements (using flake8) and the tests, including testing other Python versions.
 
-7. Run style checks on everything in `civic_scraper/` and `tests/`: 
-   
+7. Run style checks on everything in `civic_scraper/` and `tests/`:
+
    ```bash
-   pipenv run flake8 civic_scraper tests
+   uv run flake8 civic_scraper tests
    ```
 
-8. Run tests: 
+8. Run tests:
 
    ```bash
-   pipenv run pytest
+   uv run pytest
    ```
 
 9. Check formatting using
 
    ```bash
-   pipenv run flake8
+   uv run flake8
    ```
 
 10. Commit your changes and push your branch to GitHub:

@@ -1,7 +1,7 @@
 """
 Tests for DTP scraper
 
-Run with: pipenv run pytest -sv tests/test_dtp_scraper_site.py
+Run with: uv run pytest -sv tests/test_dtp_scraper_site.py
 """
 
 import pytest
