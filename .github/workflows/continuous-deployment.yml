@@ -19,7 +19,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Install Python
-        run: uv python install 3.9
+        run: uv python install 3.11
 
       - id: install
         name: Install Python dependencies
@@ -27,7 +27,7 @@ jobs:
 
       - id: lint
         name: Lint
-        run: uv run flake8 ./
+        run: uv run pre-commit run --all-files
 
   test-docs:
     name: Test Sphinx build
@@ -47,7 +47,7 @@ jobs:
 
       - id: build
         name: Build documentation
-        run: cd docs && uv run make html
+        run: cd docs && uv run --group docs sphinx-build -b html -d _build/doctrees . _build/html
 
       - id: save
         name: Save artifact
