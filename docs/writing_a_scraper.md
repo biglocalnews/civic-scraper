@@ -106,12 +106,12 @@ Results are returned as an `AssetCollection`—a sequence of `Asset` objects rep
 from civic_scraper.base.asset import AssetCollection, Asset
 
 # Assets contain metadata:
-asset.url              # Full URL to document
-asset.asset_type       # 'agenda', 'minutes', etc.
-asset.meeting_date     # datetime object
-asset.committee_name   # Board/committee name
-asset.content_type     # 'application/pdf', etc.
-asset.content_length   # File size in bytes
+asset.url  # Full URL to document
+asset.asset_type  # 'agenda', 'minutes', etc.
+asset.meeting_date  # datetime object
+asset.committee_name  # Board/committee name
+asset.content_type  # 'application/pdf', etc.
+asset.content_length  # File size in bytes
 
 # Each asset can be downloaded:
 asset.download("/path/to/directory")
@@ -309,7 +309,7 @@ This makes tests **fast**, **reproducible**, and **doesn't hammer the government
 
 ### Key Test Fixtures (Available in conftest.py)
 
-```python
+```
 civic_scraper_dir      # Temp directory for cache (~/.civic-scraper)
 set_default_env        # Sets CIVIC_SCRAPER_DIR env var to civic_scraper_dir
 @pytest.mark.vcr()     # Records/plays HTTP interactions from cassettes/
@@ -397,6 +397,7 @@ full_url = urljoin(self.base_url, relative_url)
 ```python
 import datetime
 
+
 def parse_meeting_date(date_str):
     """Try multiple date formats."""
     formats = ["%m/%d/%Y", "%Y-%m-%d", "%B %d, %Y"]
@@ -428,7 +429,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def scrape(self, ...):
+
+def scrape(self, start_date, end_date):
     logger.info(f"Scraping {self.base_url}")
     response = requests.get(url)
     logger.debug(f"Response status: {response.status_code}")
@@ -468,6 +470,7 @@ from urllib.parse import urlparse
 
 SUPPORTED_DOMAINS = ["your-platform-domain.com"]
 
+
 class Site(base.Site):
     @staticmethod
     def can_scrape(url: str) -> bool:
@@ -482,6 +485,7 @@ The `Runner` class in `civic_scraper/runner.py` routes URLs to the right scraper
 ```python
 # civic_scraper/runner.py
 from civic_scraper.platforms import YourPlatformSite
+
 
 def _get_site_class_name(self, url):
     if re.search(r"(civicplus|AgendaCenter)", url):
@@ -530,8 +534,9 @@ from .digital_tow_path.site import Site as DigitalTowPathSite
 **2. `can_scrape()` on the Site class:**
 ```python
 SITES = {
-    "finetownny.gov": { ... },
+    "finetownny.gov": {...},
 }
+
 
 @staticmethod
 def can_scrape(url: str) -> bool:

@@ -31,7 +31,6 @@ PYTHON API:
 import argparse
 from pathlib import Path
 
-
 # Templates for generated files
 
 INIT_TEMPLATE = """from .site import Site as {class_name}
