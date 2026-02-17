@@ -103,12 +103,12 @@ build-release: ## builds source and wheel package
 
 serve-docs: ## start the documentation test server
 	$(call banner,         📃 Serving docs 📃)
-	cd docs && $(UV) make livehtml;
+	cd docs && uv run --group docs sphinx-autobuild -b html -d _build/doctrees . _build/html
 
 
 test-docs: ## build the docs as html
 	$(call banner,        📃 Building docs 📃)
-	cd docs && $(UV) make html;
+	cd docs && uv run --group docs sphinx-build -b html -d _build/doctrees . _build/html
 
 #
 # Extras
