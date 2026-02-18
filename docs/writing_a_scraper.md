@@ -524,7 +524,7 @@ You should see logging output from your scraper (if you added logging).
 
 ### Example: Registering DTP Scraper
 
-Here's how the Digital TownPath scraper was registered:
+Here's how the Digital Tow Path scraper was registered:
 
 **1. Export in `platforms/__init__.py`:**
 ```python
