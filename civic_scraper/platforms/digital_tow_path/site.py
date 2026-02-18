@@ -37,7 +37,7 @@ SITES = {
 }
 
 
-class Site(base.Site):
+class DigitalTowPathSite(base.Site):
     """Scraper for DigitalTowPath sites (e.g. finetownny.gov)."""
 
     def __init__(self, base_url, cache=Cache()):
