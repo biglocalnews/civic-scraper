@@ -1,3 +1,3 @@
-from .site import Site as DigitalTowPathSite
+from .site import DigitalTowPathSite
 
 __all__ = ["DigitalTowPathSite"]
