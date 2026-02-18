@@ -76,6 +76,9 @@ def scrape(start_date, end_date, download, cache, url, urls_file):
     """Scrape one or more government sites."""
     cache_path = os.environ.get("CIVIC_SCRAPER_DIR", DEFAULT_USER_HOME)
     runner = Runner(cache_path=cache_path)
+    # TODO - Do not pass download to scrapers. Runner already downloads
+    # assets after scraping, so this isScrapers should just return asset
+    # URLs and metadata. Refactor in a future PR.
     kwargs = {
         "start_date": start_date,
         "end_date": end_date,

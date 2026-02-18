@@ -82,15 +82,19 @@ All scrapers inherit from `base.Site` and implement a `scrape()` method.
 
 **Required:**
 - Inherit from `civic_scraper.base.Site`
-- Implement `scrape(start_date=None, end_date=None, cache=False, download=False)` method
+- Implement `scrape(start_date, end_date, **kwargs)` method
 - Return an `AssetCollection` instance
 
 **What `scrape()` should do:**
-1. Accept optional `start_date` and `end_date` (YYYY-MM-DD format)
+1. Accept `start_date` and `end_date` as required positional arguments (YYYY-MM-DD format). Accept `**kwargs` so the Runner can pass extra keyword arguments without erroring.
 2. Fetch meeting data from the government website
 3. Extract metadata for each meeting document (URL, date, type, etc.)
 4. Create `Asset` instances for each document found
 5. Return all assets as an `AssetCollection`
+
+**What `scrape()` should NOT do:**
+- Download files (the Runner handles that)
+- Cache HTML artifacts (the Runner handles that)
 
 **Refer to the scaffolded code** in your platform directory (`site.py`) for the actual implementation pattern. Look at existing platforms like `civic_scraper/platforms/civic_plus/site.py` for reference implementations.
 
@@ -149,7 +153,6 @@ civic_scraper/platforms/your_jurisdiction/
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.utils import today_local_str
 
 # For HTTP requests:
 import requests
@@ -175,11 +178,6 @@ Asset types are defined in `civic_scraper/base/constants.py`. Common ones:
 ### Dates and Time Handling
 
 ```python
-from civic_scraper.utils import today_local_str
-
-# Get today's date in YYYY-MM-DD format
-today = today_local_str()  # "2024-01-15"
-
 # Convert strings to datetime objects:
 meeting_date = datetime.datetime.strptime("2024-01-15", "%Y-%m-%d")
 
@@ -238,7 +236,7 @@ pipenv run pytest -sv tests/test_your_jurisdiction_site.py
 
 Expected output:
 ```
-FAILED tests/test_your_jurisdiction_site.py::test_scrape_defaults - NotImplementedError: Scraper not yet implemented
+FAILED tests/test_your_jurisdiction_site.py::test_scrape_with_date_range - NotImplementedError: Scraper not yet implemented
 ```
 
 This failure is good because it means:
@@ -329,7 +327,7 @@ pipenv run pytest -sv
 pipenv run pytest -sv tests/test_your_jurisdiction_site.py
 
 # Run a single test
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_defaults
+pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_with_date_range
 
 # First run after implementing scrape(): Records HTTP interactions to cassettes/ (requires internet)
 # Subsequent runs: Uses recorded cassettes (fast, no network required)
@@ -341,7 +339,7 @@ Cassettes are stored as YAML files in `tests/cassettes/test_your_jurisdiction_si
 
 ```bash
 # View a cassette
-cat tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+cat tests/cassettes/test_your_jurisdiction_site/test_scrape_with_date_range.yaml
 
 # Shows structure like:
 # - request:
@@ -361,13 +359,13 @@ If the website changes and your scraper breaks:
 
 ```bash
 # Delete the cassette to force re-recording
-rm tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+rm tests/cassettes/test_your_jurisdiction_site/test_scrape_with_date_range.yaml
 
 # Re-run the test (it will record fresh HTTP interactions)
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_defaults
+pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_with_date_range
 
 # Commit the new cassette to git
-git add tests/cassettes/test_your_jurisdiction_site/test_scrape_defaults.yaml
+git add tests/cassettes/test_your_jurisdiction_site/test_scrape_with_date_range.yaml
 ```
 
 ---
@@ -460,27 +458,39 @@ Your Site class must be exported with a name matching the pattern `{Platform}Sit
 - Civic Plus → `CivicPlusSite`
 - Your Platform → `YourPlatformSite`
 
-### Step 2: Register URL Pattern in Runner
+### Step 2: Implement `can_scrape()` on Your Site Class
 
-The `Runner` class in `civic_scraper/runner.py` uses URL pattern matching to determine which scraper to invoke. Add a detection rule for your platform:
+Each scraper defines a static `can_scrape(url)` method that returns `True` if it knows how to scrape the given URL. The scaffold generates a stub that returns `False`. You can implement it with a known allow-list of domains, like the example below, or use other custom logic to determine if it's scrapable:
+
+```python
+# civic_scraper/platforms/your_platform/site.py
+from urllib.parse import urlparse
+
+SUPPORTED_DOMAINS = ["your-platform-domain.com"]
+
+class Site(base.Site):
+    @staticmethod
+    def can_scrape(url: str) -> bool:
+        """Determine if this scraper supports the given URL."""
+        return urlparse(url).netloc in SUPPORTED_DOMAINS
+```
+
+### Step 3: Register Your Scraper in the Runner
+
+The `Runner` class in `civic_scraper/runner.py` routes URLs to the right scraper. Import your Site class and add a `can_scrape()` check:
 
 ```python
 # civic_scraper/runner.py
+from civic_scraper.platforms import YourPlatformSite
+
 def _get_site_class_name(self, url):
     if re.search(r"(civicplus|AgendaCenter)", url):
         return "CivicPlusSite"
-    if re.search(r"(your-platform-domain|your-platform-pattern)", url):  # ← Add this
+    if YourPlatformSite.can_scrape(url):  # ← Add this
         return "YourPlatformSite"
-    # Add more platforms as needed
-    raise ScraperError(f"Unknown platform for URL: {url}")
 ```
 
-The key steps:
-1. **Identify the URL pattern** for your platform (e.g., domain name, path structure)
-2. **Add a regex check** to detect that pattern
-3. **Return the class name** that matches your exported Site class (step 1)
-
-### Step 3: Test with the CLI
+### Step 4: Test with the CLI
 
 Once registered, users can invoke your scraper via:
 
@@ -495,11 +505,10 @@ civic-scraper scrape --urls-file sites.csv
 civic-scraper scrape --url https://your-platform-domain.com/ \
     --start-date 2024-01-01 \
     --end-date 2024-01-31 \
-    --download \
-    --cache
+    --download
 ```
 
-### Step 4: Verify Integration
+### Step 5: Verify Integration
 
 Test that the CLI correctly routes to your scraper:
 
@@ -509,55 +518,37 @@ pipenv run python -m civic_scraper.cli scrape --url https://your-platform-domain
 
 You should see logging output from your scraper (if you added logging).
 
-### Example: Registering Civic Plus
+### Example: Registering DTP Scraper
 
-Here's how Civic Plus was registered:
+Here's how the Digital Tow Path scraper was registered:
 
-**1. Export in `__init__.py`:**
+**1. Export in `platforms/__init__.py`:**
 ```python
-from .civic_plus.site import Site as CivicPlusSite
+from .digital_tow_path.site import Site as DigitalTowPathSite
 ```
 
-**2. Detect in `runner.py`:**
+**2. `can_scrape()` on the Site class:**
 ```python
-if re.search(r"(civicplus|AgendaCenter)", url):
-    return "CivicPlusSite"
+SITES = {
+    "finetownny.gov": { ... },
+}
+
+@staticmethod
+def can_scrape(url: str) -> bool:
+    return urlparse(url).netloc in SITES
 ```
 
-**3. Users can now do:**
+**3. Detect in `runner.py`:**
+```python
+from civic_scraper.platforms import DigitalTowPathSite
+
+if DigitalTowPathSite.can_scrape(url):
+    return "DigitalTowPathSite"
+```
+
+**4. Users can now do:**
 ```bash
-civic-scraper scrape --url https://ca-sacramento.civicplus.com/
-```
-
-### Tips for URL Pattern Matching
-
-- **Be specific**: Use domain names or unique path patterns to avoid false positives
-- **Test multiple URLs**: Ensure your regex works for all variations of your platform's URLs
-- **Document the pattern**: Add a comment explaining what URLs your pattern matches
-- **Consider case-insensitivity**: Use `re.search()` with lowercase or `(?i)` flag if needed
-
-Example patterns:
-```python
-# Exact domain match
-r"(myplatform\.com)"
-
-# Subdomain pattern
-r"([\w-]+\.myplatform\.com)"
-
-# Path-based detection
-r"(/path/to/platform)"
-
-# Case-insensitive
-r"(?i)(myplatform|MY_PLATFORM)"
-```
-
-### Handling Multiple URL Patterns
-
-Some platforms may have different URL structures. Add all variations:
-
-```python
-if re.search(r"(pattern1|pattern2|pattern3)", url):
-    return "YourPlatformSite"
+civic-scraper scrape --url https://finetownny.gov/categories/
 ```
 
 ---

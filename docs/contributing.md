@@ -139,7 +139,7 @@ Note: While there are many ways to setup a virtual environment in Python, we rec
 
 ### Check your changes
 
-When you're done making changes, you'll want to check that your changes pass linting requirements (using flake8) and the tests, including testing other Python versions (using tox).
+When you're done making changes, you'll want to check that your changes pass linting requirements (using flake8) and the tests, including testing other Python versions.
 
 7. Run style checks on everything in `civic_scraper/` and `tests/`: 
    

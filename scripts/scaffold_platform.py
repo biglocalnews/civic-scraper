@@ -14,12 +14,7 @@ files needed to start implementing a scraper:
 USAGE:
 From the command line:
 
-  python scripts/scaffold_platform.py \
-    --platform your_jurisdiction \
-    --url https://your-jurisdiction-gov.com/meetings
-
-The --url should be the web page that lists the meetings (not the bare
-domain). It works with or without a trailing slash.
+  python scripts/scaffold_platform.py --platform your_jurisdiction
 
 This creates:
   civic_scraper/platforms/your_jurisdiction/__init__.py
@@ -30,10 +25,7 @@ This creates:
 PYTHON API:
   from scripts.scaffold_platform import scaffold_platform
 
-  scaffold_platform(
-      platform_name="your_jurisdiction",
-      base_url="https://your-jurisdiction-gov.com/meetings"
-  )
+  scaffold_platform(platform_name="your_jurisdiction")
 """
 
 import argparse
@@ -49,11 +41,10 @@ __all__ = ["{class_name}"]
 
 SITE_TEMPLATE = '''"""
 Scraper for {platform_name}
-
-Base URL: {base_url}
 """
 
 import logging
+
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
@@ -74,17 +65,26 @@ class Site(base.Site):
         super().__init__(base_url, cache=cache)
         self.base_url = base_url
 
-    def scrape(self, start_date=None, end_date=None, cache=False, download=False):
+    @staticmethod
+    def can_scrape(url: str) -> bool:
+        """Determine if this scraper supports the given URL.
+
+        TODO: Implement domain detection for your platform.
+        """
+        return False
+
+    def scrape(self, start_date: str, end_date: str, **kwargs) -> AssetCollection:
         """Scrape the jurisdiction website for meeting documents.
 
         Args:
-            start_date (str): YYYY-MM-DD format (default: today)
-            end_date (str): YYYY-MM-DD format (default: today)
-            cache (bool): Cache raw HTML (default: False)
-            download (bool): Download PDF/doc files (default: False)
+            start_date (str): YYYY-MM-DD format (required)
+            end_date (str): YYYY-MM-DD format (required)
 
         Returns:
             AssetCollection: Collection of Asset instances
+
+        Note: Do NOT implement download or caching logic here.
+        The Runner handles those concerns after scrape() returns.
         """
         # TODO: Implement scraper logic
         # 1. Fetch data from the website
@@ -100,52 +100,26 @@ Run with: pipenv run pytest -sv tests/{test_module}.py
 """
 
 import datetime
+
 import pytest
 
 from civic_scraper.platforms.{platform_name} import {class_name}
 
 
 @pytest.mark.vcr()
-def test_scrape_defaults(civic_scraper_dir, set_default_env):
-    """Test basic scraping functionality with defaults.
+def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
+    """Test scraping with specific date range.
 
     On first run: VCR records HTTP interactions to cassette
     On subsequent runs: VCR replays mocked responses
 
-    TODO: Update the expected count based on what's actually on the website.
-    Inspect {base_url} to count how many documents you expect to find,
-    then replace the assertion below with the exact number.
-    """
-    site = {class_name}("{base_url}")
-    assets = site.scrape()
-
-    # TODO: Replace EXPECTED_COUNT with the number of documents you expect to find.
-    # Visit {base_url} in a browser to count agendas/minutes on the page.
-    EXPECTED_COUNT = None  # ← Set this to an integer (e.g., 3)
-    assert EXPECTED_COUNT is not None, "Set EXPECTED_COUNT to the number of documents on the page"
-    assert len(assets) == EXPECTED_COUNT
-
-    # Verify result type
-    assert hasattr(assets, '__iter__'), "Assets should be iterable"
-
-    # Verify first asset has required fields
-    asset = assets[0]
-    assert asset.url.startswith("https://"), "URL should be absolute"
-    assert asset.asset_type in ["agenda", "minutes", "other"], "Asset type should be recognized"
-    assert isinstance(asset.meeting_date, datetime.datetime), "Meeting date should be datetime"
-
-
-@pytest.mark.vcr()
-def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
-    """Test scraping with specific date range.
-
     TODO: Adjust dates and expected count based on your target website.
     """
-    site = {class_name}("{base_url}")
+    site = {class_name}("https://example.gov/meetings")
     start_date = "2024-01-01"
     end_date = "2024-01-31"
 
-    assets = site.scrape(start_date=start_date, end_date=end_date)
+    assets = site.scrape(start_date, end_date)
 
     # TODO: Replace EXPECTED_COUNT with the expected count for this date range.
     EXPECTED_COUNT = None  # ← Set this to an integer
@@ -156,10 +130,10 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
 @pytest.mark.vcr()
 def test_site_initialization():
     """Test Site can be initialized."""
-    site = {class_name}("{base_url}")
+    site = {class_name}("https://example.gov/meetings")
 
-    assert site.base_url == "{base_url}"
-    assert site.url == "{base_url}"
+    assert site.base_url == "https://example.gov/meetings"
+    assert site.url == "https://example.gov/meetings"
 '''
 
 
@@ -169,12 +143,11 @@ def platform_to_class_name(platform_name):
     return "".join(word.capitalize() for word in parts) + "Site"
 
 
-def scaffold_platform(platform_name, base_url, repo_root=None):
+def scaffold_platform(platform_name, repo_root=None):
     """Generate scaffolding for a new platform scraper.
 
     Args:
         platform_name (str): Platform name, lowercase with underscores (e.g., 'your_jurisdiction')
-        base_url (str): Base URL of the jurisdiction website
         repo_root (str): Root of the repository (default: current directory)
 
     Returns:
@@ -184,9 +157,6 @@ def scaffold_platform(platform_name, base_url, repo_root=None):
         repo_root = Path.cwd()
     else:
         repo_root = Path(repo_root)
-
-    # Normalize URL: strip trailing slash(es)
-    base_url = base_url.rstrip("/")
 
     # Validate platform name
     if not platform_name.replace("_", "").isalnum():
@@ -218,7 +188,7 @@ def scaffold_platform(platform_name, base_url, repo_root=None):
         f.write(init_content)
 
     # Generate site.py
-    site_content = SITE_TEMPLATE.format(platform_name=platform_name, base_url=base_url)
+    site_content = SITE_TEMPLATE.format(platform_name=platform_name)
     with open(site_file, "w") as f:
         f.write(site_content)
 
@@ -227,7 +197,6 @@ def scaffold_platform(platform_name, base_url, repo_root=None):
         platform_name=platform_name,
         class_name=class_name,
         test_module=test_module,
-        base_url=base_url,
     )
     with open(test_file, "w") as f:
         f.write(test_content)
@@ -250,16 +219,11 @@ if __name__ == "__main__":
         required=True,
         help="Platform name (lowercase with underscores, e.g., your_jurisdiction)",
     )
-    parser.add_argument(
-        "--url",
-        required=True,
-        help="URL of the meetings page (e.g., https://your-jurisdiction-gov.com/meetings)",
-    )
 
     args = parser.parse_args()
 
     try:
-        files = scaffold_platform(platform_name=args.platform, base_url=args.url)
+        files = scaffold_platform(platform_name=args.platform)
 
         class_name = platform_to_class_name(args.platform)
         test_module = f"test_{args.platform}_site"
@@ -277,7 +241,9 @@ if __name__ == "__main__":
         print(f"  1. Run tests: pipenv run pytest -sv tests/{test_module}.py")
         print("     (They will fail with NotImplementedError — that's expected!)")
         print("  2. Implement Site.scrape() to make tests pass")
-        print("  3. Run tests again — VCR auto-records HTTP cassettes on first passing run")
+        print(
+            "  3. Run tests again — VCR auto-records HTTP cassettes on first passing run"
+        )
         print("  4. Subsequent runs replay from cassettes (fast, no network needed)")
 
     except FileExistsError as e:
