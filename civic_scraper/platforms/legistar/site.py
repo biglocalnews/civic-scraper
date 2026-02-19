@@ -23,10 +23,9 @@ class Site(base.Site):
             "meeting_location_info": "Meeting Location",
         },
         cache=Cache(),
-        parser_kls=None,
         timezone=None,
     ):
-        super().__init__(base_url, cache, parser_kls)
+        super().__init__(base_url, cache)
         self.legistar_instance = urlparse(base_url).netloc.split(".")[0]
         self.timezone = timezone
         self.event_info_keys = event_info_keys

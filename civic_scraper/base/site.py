@@ -11,17 +11,13 @@ class Site:
         base_url (int): URL to a government agency site
         cache (Cache instance): Optional Cache instance
             (default: ".civic-scraper" in user home dir)
-        parser_kls (class): Optional parser class to extract
-            data from government agency websites.
 
     """
 
-    def __init__(self, base_url, cache=Cache(), parser_kls=None):
+    def __init__(self, base_url, cache=Cache()):
         self.runtime = datetime.datetime.utcnow().date()
         self.url = base_url
         self.cache = cache
-        if parser_kls:
-            self.parser_kls = parser_kls
 
     def scrape(self, *args, **kwargs) -> AssetCollection:
         """
