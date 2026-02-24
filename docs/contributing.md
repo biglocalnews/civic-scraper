@@ -49,7 +49,7 @@ articles, and such.
 Our [official docs] use reStructuredText and Sphinx. To contribute documentation without completing the full repo setup (only required for code logic):
 
 1. Fork and clone this repo
-2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
+2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) for Python project and package management
 3. Install doc dependencies: `uv sync --group docs`
 4. Create a branch for your doc updates and start writing!
    - Use `make serve-docs` command to run a Sphinx server locally that displays doc pages and allows auto reloading of pages in browser when changes are made to a file.
@@ -87,7 +87,7 @@ Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` f
     python3 --version
     ```
 
-4. Install [uv](https://docs.astral.sh/uv/getting-started/installation/):
+4. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) for Python project and package management
 
    ```bash
    curl -LsSf https://astral.sh/uv/install.sh | sh
