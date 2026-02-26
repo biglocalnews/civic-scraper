@@ -97,6 +97,14 @@ Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` f
 
    This creates a virtual environment and installs all dependencies.
 
+6. Install the pre-commit hooks:
+
+   ```bash
+   uv run pre-commit install
+   ```
+
+   This ensures your code is automatically checked for formatting and linting issues before each commit.
+
 ## Making changes
 
 5. Create a branch for local development on your fork:
@@ -109,21 +117,17 @@ Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` f
 
 ### Check your changes
 
-When you're done making changes, you'll want to check that your changes pass linting requirements (using flake8) and the tests, including testing other Python versions.
+When you're done making changes, you'll want to check that your changes pass linting and formatting requirements and the tests, including testing other Python versions.
 
-7. Auto-format code with black:
-
-   ```bash
-   make format
-   ```
-
-8. Run style checks:
+7. Run all pre-commit checks:
 
    ```bash
-   make lint
+   uv run pre-commit run --all-files
    ```
 
-9. Run tests:
+   This runs black (formatting), isort (import sorting), flake8 (linting), and other checks.
+
+8. Run tests:
 
    ```bash
    make test
@@ -135,7 +139,7 @@ When you're done making changes, you'll want to check that your changes pass lin
    make test-all
    ```
 
-10. Commit your changes and push your branch to GitHub:
+9. Commit your changes and push your branch to GitHub:
 
    ```
    $ git add .
@@ -155,7 +159,7 @@ Before you submit a pull request, check that it meets these guidelines:
    and include necessary updates. For example, new classes, methods
    and functions should be documented.
 3. The pull request should work for Python version 3.9 or higher. Check
-   <https://travis-ci.com/github/biglocalnews/civic-scraper/pull_requests>
-   and make sure that the tests pass for all supported Python versions.
+   the GitHub Actions workflow on your pull request to make sure that the
+   tests pass for all supported Python versions.
 
 [official docs]: https://civic-scraper.readthedocs.io/en/latest/?badge=latest

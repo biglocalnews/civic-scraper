@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from .conftest import read_fixture
-
 from civic_scraper.platforms.civic_plus.parser import Parser
+
+from .conftest import read_fixture
 
 
 def test_parse_all(search_results_html):

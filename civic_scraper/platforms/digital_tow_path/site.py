@@ -12,11 +12,11 @@ import logging
 from datetime import datetime
 from urllib.parse import urlparse
 
-
-from civic_scraper import base
 import civic_scraper
+from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
+
 from . import utils
 
 logger = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ SITES = {
         "place": "woodstockny",
         "place_name": "Woodstock New York",
         "state": "ny",
-    }
+    },
 }
 
 
