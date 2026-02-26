@@ -9,7 +9,7 @@ import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.utils import parse_date, dtz_to_dt, mb_to_bytes, today_local_str
+from civic_scraper.utils import dtz_to_dt, mb_to_bytes, parse_date, today_local_str
 
 
 class Site(base.Site):

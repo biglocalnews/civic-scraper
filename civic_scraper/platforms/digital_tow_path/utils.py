@@ -295,7 +295,9 @@ def _extract_documents(soup):
                 href = link.get("href")
                 if not href:
                     continue
-                if href.lower().endswith(".pdf") or "application/pdf" in link.get("title", ""):
+                if href.lower().endswith(".pdf") or "application/pdf" in link.get(
+                    "title", ""
+                ):
                     if href not in seen_urls:
                         seen_urls.add(href)
                         documents.append(

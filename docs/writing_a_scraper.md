@@ -106,12 +106,12 @@ Results are returned as an `AssetCollection`—a sequence of `Asset` objects rep
 from civic_scraper.base.asset import AssetCollection, Asset
 
 # Assets contain metadata:
-asset.url              # Full URL to document
-asset.asset_type       # 'agenda', 'minutes', etc.
-asset.meeting_date     # datetime object
-asset.committee_name   # Board/committee name
-asset.content_type     # 'application/pdf', etc.
-asset.content_length   # File size in bytes
+asset.url  # Full URL to document
+asset.asset_type  # 'agenda', 'minutes', etc.
+asset.meeting_date  # datetime object
+asset.committee_name  # Board/committee name
+asset.content_type  # 'application/pdf', etc.
+asset.content_length  # File size in bytes
 
 # Each asset can be downloaded:
 asset.download("/path/to/directory")
@@ -229,7 +229,7 @@ The scaffold script already created `tests/test_your_jurisdiction_site.py` with 
 Run them to see them fail (expected):
 
 ```bash
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py
+uv run pytest -sv tests/test_your_jurisdiction_site.py
 ```
 
 **Tests will FAIL** with `NotImplementedError: Scraper not yet implemented`. This is correct! ✓
@@ -268,7 +268,7 @@ __all__ = ["YourJurisdictionSite"]
 Now run all your tests:
 
 ```bash
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py
+uv run pytest -sv tests/test_your_jurisdiction_site.py
 ```
 
 **All tests should PASS**. ✓
@@ -309,7 +309,7 @@ This makes tests **fast**, **reproducible**, and **doesn't hammer the government
 
 ### Key Test Fixtures (Available in conftest.py)
 
-```python
+```
 civic_scraper_dir      # Temp directory for cache (~/.civic-scraper)
 set_default_env        # Sets CIVIC_SCRAPER_DIR env var to civic_scraper_dir
 @pytest.mark.vcr()     # Records/plays HTTP interactions from cassettes/
@@ -321,13 +321,13 @@ Always use `civic_scraper_dir` and `set_default_env` fixtures in your tests to e
 
 ```bash
 # Run all tests
-pipenv run pytest -sv
+uv run pytest -sv
 
 # Run only Your Jurisdiction tests
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py
+uv run pytest -sv tests/test_your_jurisdiction_site.py
 
 # Run a single test
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_with_date_range
+uv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_with_date_range
 
 # First run after implementing scrape(): Records HTTP interactions to cassettes/ (requires internet)
 # Subsequent runs: Uses recorded cassettes (fast, no network required)
@@ -362,7 +362,7 @@ If the website changes and your scraper breaks:
 rm tests/cassettes/test_your_jurisdiction_site/test_scrape_with_date_range.yaml
 
 # Re-run the test (it will record fresh HTTP interactions)
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_with_date_range
+uv run pytest -sv tests/test_your_jurisdiction_site.py::test_scrape_with_date_range
 
 # Commit the new cassette to git
 git add tests/cassettes/test_your_jurisdiction_site/test_scrape_with_date_range.yaml
@@ -397,6 +397,7 @@ full_url = urljoin(self.base_url, relative_url)
 ```python
 import datetime
 
+
 def parse_meeting_date(date_str):
     """Try multiple date formats."""
     formats = ["%m/%d/%Y", "%Y-%m-%d", "%B %d, %Y"]
@@ -428,7 +429,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def scrape(self, ...):
+
+def scrape(self, start_date, end_date):
     logger.info(f"Scraping {self.base_url}")
     response = requests.get(url)
     logger.debug(f"Response status: {response.status_code}")
@@ -468,6 +470,7 @@ from urllib.parse import urlparse
 
 SUPPORTED_DOMAINS = ["your-platform-domain.com"]
 
+
 class Site(base.Site):
     @staticmethod
     def can_scrape(url: str) -> bool:
@@ -482,6 +485,7 @@ The `Runner` class in `civic_scraper/runner.py` routes URLs to the right scraper
 ```python
 # civic_scraper/runner.py
 from civic_scraper.platforms import YourPlatformSite
+
 
 def _get_site_class_name(self, url):
     if re.search(r"(civicplus|AgendaCenter)", url):
@@ -513,7 +517,7 @@ civic-scraper scrape --url https://your-platform-domain.com/ \
 Test that the CLI correctly routes to your scraper:
 
 ```bash
-pipenv run python -m civic_scraper.cli scrape --url https://your-platform-domain.com/
+uv run python -m civic_scraper.cli scrape --url https://your-platform-domain.com/
 ```
 
 You should see logging output from your scraper (if you added logging).
@@ -530,8 +534,9 @@ from .digital_tow_path.site import Site as DigitalTowPathSite
 **2. `can_scrape()` on the Site class:**
 ```python
 SITES = {
-    "finetownny.gov": { ... },
+    "finetownny.gov": {...},
 }
+
 
 @staticmethod
 def can_scrape(url: str) -> bool:
@@ -559,10 +564,10 @@ civic-scraper scrape --url https://finetownny.gov/categories/
 
 ```bash
 # Check code style (flake8)
-pipenv run flake8 civic_scraper/platforms/your_jurisdiction/
+uv run flake8 civic_scraper/platforms/your_jurisdiction/
 
 # Auto-format code (black)
-pipenv run black civic_scraper/platforms/your_jurisdiction/
+uv run black civic_scraper/platforms/your_jurisdiction/
 ```
 
 ### Code Style Rules
@@ -579,12 +584,11 @@ pipenv run black civic_scraper/platforms/your_jurisdiction/
 
 ### "ModuleNotFoundError: No module named 'civic_scraper'"
 
-Make sure you're in a pipenv shell:
+Make sure dependencies are installed:
 
 ```bash
 cd /workspaces/civic-scraper
-pipenv install --dev
-pipenv shell
+uv sync
 ```
 
 ### "Website returns 403 Forbidden"
@@ -599,7 +603,7 @@ This usually means the HTML changed. Regenerate the cassette:
 
 ```bash
 rm tests/cassettes/test_your_jurisdiction_site/*.yaml
-pipenv run pytest -sv tests/test_your_jurisdiction_site.py
+uv run pytest -sv tests/test_your_jurisdiction_site.py
 ```
 
 ### "BeautifulSoup doesn't find elements I see in browser"
@@ -613,7 +617,7 @@ The page might load JavaScript after initial load. Try:
 
 ## What's Next?
 
-- **Run existing tests**: `pipenv run pytest -sv tests/test_civic_plus_site.py`
+- **Run existing tests**: `uv run pytest -sv tests/test_civic_plus_site.py`
 - **Review Civic Plus implementation**: Look at `civic_scraper/platforms/civic_plus/` as a full example
 - **Check Asset class**: `civic_scraper/base/asset.py` for all available fields
 - **See all constants**: `civic_scraper/base/constants.py` for asset types and more

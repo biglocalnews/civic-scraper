@@ -11,7 +11,6 @@ from bs4 import BeautifulSoup
 
 from civic_scraper.platforms.digital_tow_path import utils
 
-
 # --- Pure function tests (no HTTP) ---
 
 
