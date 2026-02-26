@@ -80,14 +80,8 @@ Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` f
 
 ### Prep your development environment
 
-3. Make sure you have Python 3.9 installed:
-    - You can check this by running:
 
-    ```bash
-    python3 --version
-    ```
-
-4. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) for Python project and package management
+3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) for Python project and package management
 
    ```bash
    curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -95,7 +89,7 @@ Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` f
 
 ### Create your virtual environment & install dependencies
 
-5. In the root of the project directory, run
+4. In the root of the project directory, run
 
    ```bash
    uv sync
@@ -113,19 +107,19 @@ Ready to contribute a bug fix or feature? Here's how to set up `civic-scraper` f
 
 ## Making changes
 
-7. Create a branch for local development on your fork:
+5. Create a branch for local development on your fork:
 
    ```
    $ git checkout -b name-of-your-bugfix-or-feature
    ```
 
-8. Make your changes and be sure to add/update tests!
+6. Make your changes and be sure to add/update tests!
 
 ### Check your changes
 
 When you're done making changes, you'll want to check that your changes pass linting and formatting requirements and the tests, including testing other Python versions.
 
-8. Run all pre-commit checks:
+7. Run all pre-commit checks:
 
    ```bash
    uv run pre-commit run --all-files
@@ -133,13 +127,19 @@ When you're done making changes, you'll want to check that your changes pass lin
 
    This runs black (formatting), isort (import sorting), flake8 (linting), and other checks.
 
-9. Run tests:
+8. Run tests:
 
    ```bash
-   uv run pytest
+   make test
    ```
 
-10. Commit your changes and push your branch to GitHub:
+   To run tests across all supported Python versions (3.9, 3.10, 3.11):
+
+   ```bash
+   make test-all
+   ```
+
+9. Commit your changes and push your branch to GitHub:
 
    ```
    $ git add .
