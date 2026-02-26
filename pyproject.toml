@@ -43,8 +43,8 @@ Tracker = "https://github.com/biglocalnews/civic-scraper/issues"
 dev = [
     "black",
     "build",
-    "bumpversion",
     "flake8",
+    "flake8-pyproject",
     "isort",
     "pre-commit",
     "pytest",
@@ -60,6 +60,16 @@ docs = [
     "sphinx-autobuild==2024.10.3",
     "sphinx-rtd-theme==3.0.2",
     "myst-parser==3.0.1",
+]
+
+[tool.flake8]
+max-line-length = 999
+exclude = [".venv", ".tox", ".eggs", "build", "dist"]
+per-file-ignores = [
+    "civic_scraper/base/__init__.py:F401",
+    "civic_scraper/platforms/__init__.py:F401",
+    "tests/test_civic_plus_site.py:E501",
+    "tests/legistar_site.py:E402",
 ]
 
 [tool.setuptools_scm]

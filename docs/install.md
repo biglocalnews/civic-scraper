@@ -6,7 +6,7 @@
 
 Install the library from the Python Package Index.
 
-We like to use[uv](https://docs.astral.sh/uv/getting-started/installation/) for Python project and package management, bit `pip`
+We like to use [uv](https://docs.astral.sh/uv/getting-started/installation/) for Python project and package management, but `pip`
 is the most common way to install Python packages. We'll describe
 the `uv` setup steps and the `pip` ones. Steps might look a little
 bit different if you use another package installer, like `pipenv`.

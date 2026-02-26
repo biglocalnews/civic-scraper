@@ -40,6 +40,7 @@ repos:
     hooks:
     -   id: flake8
         exclude: ^tests/fixtures/
+        additional_dependencies: [flake8-pyproject]
 
 -   repo: https://github.com/asottile/pyupgrade
     rev: v3.19.1
