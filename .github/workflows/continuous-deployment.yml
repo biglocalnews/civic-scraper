@@ -92,6 +92,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -101,7 +103,7 @@ jobs:
 
       - id: install
         name: Install Python dependencies
-        run: uv sync
+        run: uv sync --frozen
 
       - id: build
         name: Build release
