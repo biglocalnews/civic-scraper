@@ -20,11 +20,13 @@ Note the number of the latest release. Click the "Draft a new release" button in
 
 ## 3. Create a new tag
 
-Think about how big your changes are and decide if you're a major, minor or patch release.
+Think about how big your changes are and decide if you're making a major, minor, or patch release.
 
-All version numbers should feature three numbers separated by the periods, like `1.0.1`. If you're making a major release that isn't backwards compatible, the latest release’s first number should go up by one. If you're making a minor release by adding a feature or major a large change, the second number should go up. If you're only fixing bugs or making small changes, the third number should go up.
+Version numbers follow [Semantic Versioning](https://semver.org). If you're making a major release that isn't backwards compatible, increment the first number. For a minor release (new feature or large change), increment the second. For bug fixes or small changes, increment the third.
 
-If you're unsure, review the standards defined at [semver.org](https://semver.org) to help make a decision. In the end don't worry about it too much. Our version numbers don't need to be perfect. They just need to be three numbers separated by periods.
+Pre-production releases can append a suffix such as `-preview`, `-alpha`, or `-beta` (e.g., `1.0.0-preview`). This signals a major milestone while making clear the release is not yet stable or production-ready.
+
+**Note:** This project uses [`setuptools-scm`](https://setuptools-scm.readthedocs.io/), which derives the package version automatically from the git tag you create here — no manual version bumping required.
 
 Once you've settled on the number for your new release, click on the "Choose a tag" pull down.
 
