@@ -108,6 +108,8 @@ jobs:
       - id: build
         name: Build release
         run: make build-release
+        env:
+          SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.ref_name }}
 
       - id: check
         name: Check release
