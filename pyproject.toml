@@ -74,6 +74,7 @@ per-file-ignores = [
 ]
 
 [tool.setuptools_scm]
+local_scheme = "no-local-version"
 
 [tool.setuptools.packages.find]
 include = ["civic_scraper*"]
