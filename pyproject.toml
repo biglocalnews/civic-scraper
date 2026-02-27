@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "civic-scraper"
+dynamic = ["version"]
+description = "Tools for downloading agendas, minutes and other documents produced by local government"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+authors = [{ name = "Serdar Tumgoren", email = "zstumgoren@gmail.com" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "beautifulsoup4",
+    "click",
+    "click-option-group",
+    "feedparser",
+    "requests",
+    "demjson3",
+    "scraper-legistar==0.0.2",
+]
+
+[project.scripts]
+civic-scraper = "civic_scraper.cli:cli"
+
+[project.urls]
+Documentation = "https://civic-scraper.readthedocs.io"
+Maintainer = "https://github.com/biglocalnews"
+Source = "https://github.com/biglocalnews/civic-scraper"
+Tracker = "https://github.com/biglocalnews/civic-scraper/issues"
+
+[dependency-groups]
+dev = [
+    "black",
+    "build",
+    "flake8",
+    "flake8-pyproject",
+    "isort",
+    "pre-commit",
+    "pytest",
+    "pytest-vcr",
+    "pytz",
+    "setuptools-scm>=8",
+    "twine",
+    "typing-extensions",
+    "vcrpy>=6.0",
+]
+docs = [
+    "sphinx==7.4",
+    "sphinx-autobuild==2024.10.3",
+    "sphinx-rtd-theme==3.0.2",
+    "myst-parser==3.0.1",
+]
+
+[tool.flake8]
+max-line-length = 999
+exclude = [".venv", ".tox", ".eggs", "build", "dist"]
+per-file-ignores = [
+    "civic_scraper/base/__init__.py:F401",
+    "civic_scraper/platforms/__init__.py:F401",
+    "tests/test_civic_plus_site.py:E501",
+    "tests/legistar_site.py:E402",
+]
+
+[tool.setuptools_scm]
+
+[tool.setuptools.packages.find]
+include = ["civic_scraper*"]

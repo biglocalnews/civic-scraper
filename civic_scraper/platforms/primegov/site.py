@@ -1,6 +1,7 @@
 import re
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
+
 from requests import Session
 
 import civic_scraper

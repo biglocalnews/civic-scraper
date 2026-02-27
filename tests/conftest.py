@@ -18,6 +18,17 @@ import pytest
 # vcr_log.setLevel(logging.INFO)
 
 
+@pytest.fixture(autouse=True)
+def _no_sleep(monkeypatch):
+    """Skip time.sleep() during tests so VCR replays don't wait."""
+    monkeypatch.setattr("time.sleep", lambda _: None)
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {"decode_compressed_response": True}
+
+
 @pytest.fixture(scope="module")
 def vcr_cassette_dir(request):
     mod_name = request.module.__name__.split("tests.")[-1]
@@ -99,7 +110,7 @@ def asset_inputs():
             "meeting_time": None,
             "place": "nashcounty",
             "place_name": "Nash County",
-            "scraped_by": "civic-scraper_0.1.0",
+            "scraped_by": "civic-scraper_1.0.0-preview",
             "state_or_province": "nc",
             "url": "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Minutes/_05042020-381",
         },
@@ -114,7 +125,7 @@ def asset_inputs():
             "meeting_time": None,
             "place": "nashcounty",
             "place_name": "Nash County",
-            "scraped_by": "civic-scraper_0.1.0",
+            "scraped_by": "civic-scraper_1.0.0-preview",
             "state_or_province": "nc",
             "url": "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05042020-381",
         },

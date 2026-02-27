@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
+import civic_scraper
 from civic_scraper.base.cache import Cache
 from civic_scraper.platforms import CivicPlusSite
 
@@ -37,7 +38,7 @@ def test_scrape_defaults():
     assert agenda.meeting_date == datetime.datetime(2020, 5, 5)
     assert agenda.meeting_time is None
     assert agenda.meeting_id == "civicplus_nc-nashcounty_05052020-382"
-    assert agenda.scraped_by == "civic-scraper_0.1.0"
+    assert agenda.scraped_by == f"civic-scraper_{civic_scraper.__version__}"
     assert agenda.content_type == "application/pdf"
     assert agenda.content_length == "19536"
     # Check that assets are in the correct date range

@@ -15,21 +15,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pipenv
-        run: pipx install pipenv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
-          cache: "pipenv"
+      - name: Install Python
+        run: uv python install 3.11
 
-      - id: pipenv-install
+      - id: install
         name: Install Python dependencies
-        run: pipenv install --dev --python `which python`
+        run: uv sync
 
       - id: lint
         name: Lint
-        run: pipenv run flake8 ./
+        run: uv run pre-commit run --all-files
 
   test-docs:
     name: Test Sphinx build
@@ -38,17 +36,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install Python
+        run: uv python install 3.9
 
       - name: Install requirements
-        run: pip install -r docs/requirements.txt 
+        run: uv sync --group docs
 
       - id: build
         name: Build documentation
-        run: cd docs && make html
+        run: cd docs && uv run --group docs sphinx-build -b html -d _build/doctrees . _build/html
 
       - id: save
         name: Save artifact
@@ -69,29 +68,22 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pipenv
-        run: pipx install pipenv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python }}
-          cache: "pipenv"
-      
+      - name: Install Python
+        run: uv python install ${{ matrix.python }}
+
       - name: Show Python path and version
-        run: |
-          echo "Python path: $(which python)"
-          python --version
+        run: uv run python --version
 
-      - id: pipenv-install
+      - id: install
         name: Install Python dependencies
-        run: pipenv --python $(which python) install --dev
+        run: uv sync
 
-      - name: List installed packages
-        run: pipenv run pip freeze
-      
       - id: run
         name: Run tests
-        run: pipenv run pytest -sv
+        run: uv run pytest -sv
 
   test-build:
     name: Build Python package
@@ -101,25 +93,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pipenv
-        run: pipx install pipenv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-          cache: 'pipenv'
+      - name: Install Python
+        run: uv python install 3.10
 
-      - id: pipenv-install
+      - id: install
         name: Install Python dependencies
-        run: |
-          pipenv install --dev --python `which python`
-          pipenv run pip install tomli
+        run: uv sync
 
       - id: build
         name: Build release
-        run: |
-          pipenv run pip install setuptools-scm>=8.1.0 --force-reinstall --upgrade
-          make build-release
+        run: make build-release
 
       - id: check
         name: Check release

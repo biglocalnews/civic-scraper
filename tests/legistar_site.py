@@ -1,7 +1,8 @@
 import logging
 import sys
-import urllib3
 from pathlib import Path
+
+import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 

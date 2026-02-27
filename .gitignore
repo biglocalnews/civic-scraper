@@ -11,3 +11,6 @@ _data/
 .vscode
 .eggs/
 civic-scraper-env/
+
+# jake-convention
+scratch

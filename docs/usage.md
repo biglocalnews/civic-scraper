@@ -33,7 +33,7 @@ URLs for one or more agencies of interest. Alternatively, you may want
 to review our lists of known [Civic Plus sites] or [Legistar sites] to
 see if any agencies in your area use one of these platforms.
 
-In addition to Civic Plus and Legistar, *civic-scraper* currently supports 
+In addition to Civic Plus and Legistar, *civic-scraper* currently supports
 Civic Clerk, Granicus and PrimeGov.
 
 If your target agency uses one of these [platforms], you should be able to scrape the
@@ -358,7 +358,7 @@ The generated file contains the following information:
 
 - `meeting_id` (*str*) - A unique meeting ID assigned to the record.
 
-- `scraped_by` (*str*) - Version of *civic-scraper* that produced the asset. Ex: `civicplus_v0.1.0`
+- `scraped_by` (*str*) - Version of *civic-scraper* that produced the asset. Ex: `civic-scraper_0.3.0`
 
 - `content_type` (*str*) - The [MIME type] of the asset. Ex: `application/pdf`
 
