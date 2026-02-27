@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 
 
 class Site(base.Site):
-    def __init__(self, base_url, cache=Cache(), parser_kls=Parser, place_name=None):
-        super().__init__(base_url, cache=cache, parser_kls=parser_kls)
+    def __init__(self, base_url, cache=Cache(), place_name=None):
+        super().__init__(base_url, cache=cache)
         self.base_url = base_url
         self.subdomain = urlparse(base_url).netloc.split(".")[0]
         self.place_name = place_name
@@ -67,7 +67,7 @@ class Site(base.Site):
             )
             self.cache.write(cache_path, raw_html)
             logger.info(f"Cached search results page HTML: {cache_path}")
-        file_metadata = self.parser_kls(raw_html).parse()
+        file_metadata = Parser(raw_html).parse()
         assets = self._build_asset_collection(file_metadata)
         if download:
             asset_dir = Path(self.cache.path, "assets")
