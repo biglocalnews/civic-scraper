@@ -109,7 +109,9 @@ jobs:
         name: Build release
         run: make build-release
         env:
-          SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.ref_name }}
+          # Use the tag name for tagged releases; fall back to 0.0.0 for PRs/branches
+          # (github.ref_name is e.g. "240/merge" for PRs, which is not a valid version)
+          SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.ref_type == 'tag' && github.ref_name || '0.0.0' }}
 
       - id: check
         name: Check release

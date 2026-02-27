@@ -75,9 +75,6 @@ per-file-ignores = [
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
-# fallback_version is used when setuptools-scm cannot determine a valid version
-# (e.g., during PR merge runs where the git ref is refs/pull/<number>/merge)
-fallback_version = "0.0.0"
 
 [tool.setuptools.packages.find]
 include = ["civic_scraper*"]
