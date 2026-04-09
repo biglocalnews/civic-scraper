@@ -113,9 +113,7 @@ class Site(base.Site):
         # Search URLs follow the below pattern
         # /Search/?term=&CIDs=all&startDate=12/17/2020&endDate=12/18/2020&dateRange=&dateSelector=
         search_url = self.url.rstrip("/") + "/Search/"
-        response = requests.get(
-            search_url, params=params, timeout=self.timeout
-        )
+        response = requests.get(search_url, params=params, timeout=self.timeout)
         return response.url, response.text
 
     def _convert_date(self, date_str):

@@ -75,8 +75,6 @@ class GranicusSite(base.Site):
             for asset in ac:
                 if asset.url:
                     dir_str = str(asset_dir)
-                    asset.download(
-                        target_dir=dir_str, session=session, timeout=timeout
-                    )
+                    asset.download(target_dir=dir_str, session=session, timeout=timeout)
 
         return ac

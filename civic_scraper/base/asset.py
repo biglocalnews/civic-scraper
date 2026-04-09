@@ -85,13 +85,9 @@ class Asset:
             file_extension,
         )
         if session:
-            response = session.get(
-                self.url, allow_redirects=True, timeout=timeout
-            )
+            response = session.get(self.url, allow_redirects=True, timeout=timeout)
         else:
-            response = requests.get(
-                self.url, allow_redirects=True, timeout=timeout
-            )
+            response = requests.get(self.url, allow_redirects=True, timeout=timeout)
         full_path = os.path.join(target_dir, file_name)
         with open(full_path, "wb") as outfile:
             outfile.write(response.content)
