@@ -91,7 +91,7 @@ class DigitalTowPathSite(base.Site):
             logger.error(f"Invalid date format: {start_date} or {end_date}")
             return AssetCollection()
 
-        # Use caller-supplied timeout if given; fall back to existing defaults.
+        # Use caller-supplied timeout if given; preserve previously hardcoded values otherwise.
         scrape_timeout = timeout if timeout is not None else 30
         head_timeout = timeout if timeout is not None else 10
 
