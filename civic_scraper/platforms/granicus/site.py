@@ -53,7 +53,7 @@ class GranicusSite(base.Site):
         }
         return Asset(**e)
 
-    def scrape(self, download=True):
+    def scrape(self, download=True, timeout=None):
         session = Session()
         session.headers.update(
             {
@@ -61,7 +61,7 @@ class GranicusSite(base.Site):
             }
         )
 
-        response = session.get(self.url)
+        response = session.get(self.url, timeout=timeout)
         parsed_rss = feedparser.parse(response.text)
 
         ac = AssetCollection()
@@ -75,6 +75,8 @@ class GranicusSite(base.Site):
             for asset in ac:
                 if asset.url:
                     dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=session)
+                    asset.download(
+                        target_dir=dir_str, session=session, timeout=timeout
+                    )
 
         return ac

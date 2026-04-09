@@ -33,6 +33,7 @@ class Runner:
         site_urls=[],
         cache=False,
         download=False,
+        timeout=None,
     ):
         """Scrape file metadata and assets for a list of agency sites.
 
@@ -75,6 +76,7 @@ class Runner:
                 start_date,
                 end_date,
                 cache=cache,
+                timeout=timeout,
             )
             asset_collection.extend(_collection)
         metadata_file = asset_collection.to_csv(cache_obj.metadata_files_path)
@@ -87,7 +89,7 @@ class Runner:
             for asset in asset_collection:
                 # TODO: Add error-handling here
                 logger.info(f"\t{asset.url}")
-                asset.download(cache_obj.assets_path)
+                asset.download(cache_obj.assets_path, timeout=timeout)
                 download_counter += 1
         return asset_collection
 

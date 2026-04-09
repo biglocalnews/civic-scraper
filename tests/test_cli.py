@@ -100,6 +100,7 @@ def test_cli_store_csv_urls(runner_class, civic_scraper_dir):
         "end_date": "2020-05-05",
         "cache": True,
         "download": True,
+        "timeout": None,
         "site_urls": [
             "http://nc-nashcounty.civicplus.com/AgendaCenter",
             "https://wi-columbus.civicplus.com/AgendaCenter",
@@ -107,3 +108,27 @@ def test_cli_store_csv_urls(runner_class, civic_scraper_dir):
     }
     runner_instance = runner_class.return_value
     runner_instance.scrape.assert_called_once_with(**kwargs)
+
+
+@patch("civic_scraper.cli.Runner")
+@pytest.mark.usefixtures("set_default_env")
+def test_cli_timeout_option(runner_class, civic_scraper_dir):
+    "CLI --timeout should be passed through to Runner.scrape"
+    cli_runner = CliRunner()
+    cli_runner.invoke(
+        cli.cli,
+        [
+            "scrape",
+            "--start-date",
+            "2020-05-05",
+            "--end-date",
+            "2020-05-05",
+            "--timeout",
+            "30",
+            "--url",
+            "http://nc-nashcounty.civicplus.com/AgendaCenter",
+        ],
+    )
+    runner_instance = runner_class.return_value
+    _, _, kwargs = runner_instance.scrape.mock_calls[0]
+    assert kwargs["timeout"] == 30

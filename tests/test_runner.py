@@ -23,6 +23,7 @@ def test_runner_site_scrape(civic_scraper_dir, one_site_url):
             "2020-12-01",
             "2020-12-01",
             cache=False,
+            timeout=None,
         )
 
 
@@ -52,6 +53,7 @@ def test_runner_site_cache(cache_mock, get_site_mock, civic_scraper_dir, one_sit
         "2012-12-01",
         "2012-12-01",
         cache=True,
+        timeout=None,
     )
 
 
@@ -80,6 +82,7 @@ def test_runner_no_download_via_site(
         "2012-12-01",
         "2012-12-01",
         cache=True,
+        timeout=None,
     )
     # AssetCollection is instantiated and to_csv called by default
     asset_collection.assert_called_once()
@@ -109,4 +112,29 @@ def test_runner_downloads_assets(asset_collection, asset_mock, civic_scraper_dir
     # Check Asset.download is called on each asset
     assets_dir = str(Path(civic_scraper_dir).joinpath("assets"))
     for mock_asset in mock_assets:
-        mock_asset.download.assert_called_once_with(assets_dir)
+        mock_asset.download.assert_called_once_with(assets_dir, timeout=None)
+
+
+@patch("civic_scraper.runner.AssetCollection")
+@pytest.mark.usefixtures("set_default_env")
+def test_runner_passes_timeout(asset_collection, civic_scraper_dir, one_site_url):
+    "Runner should pass timeout to site.scrape and asset.download"
+    site_class = MagicMock(name="CivicPlusSite")
+    to_patch = "civic_scraper.runner.Runner._get_site_class"
+    mock_asset = MagicMock()
+    with patch(to_patch) as mock_method:
+        mock_method.return_value = site_class
+        site_instance = site_class.return_value
+        site_instance.scrape.return_value = [mock_asset]
+        ac_instance = asset_collection.return_value
+        ac_instance.__iter__ = Mock(return_value=iter([mock_asset]))
+        r = Runner(civic_scraper_dir)
+        r.scrape("2020-12-01", "2020-12-01", one_site_url, download=True, timeout=30)
+        site_instance.scrape.assert_called_once_with(
+            "2020-12-01",
+            "2020-12-01",
+            cache=False,
+            timeout=30,
+        )
+        assets_dir = str(Path(civic_scraper_dir).joinpath("assets"))
+        mock_asset.download.assert_called_once_with(assets_dir, timeout=30)

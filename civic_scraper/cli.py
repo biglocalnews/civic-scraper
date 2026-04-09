@@ -61,6 +61,13 @@ def cli():
         " environment variable"
     ),
 )
+@click.option(
+    "-t",
+    "--timeout",
+    default=None,
+    type=int,
+    help="Timeout in seconds for HTTP requests. By default, no timeout.",
+)
 @optgroup.group(
     "Site sources",
     cls=RequiredMutuallyExclusiveOptionGroup,
@@ -72,7 +79,7 @@ def cli():
     type=click.File("r"),
     help="CSV containing a 'url' field for target sites.",
 )
-def scrape(start_date, end_date, download, cache, url, urls_file):
+def scrape(start_date, end_date, download, cache, timeout, url, urls_file):
     """Scrape one or more government sites."""
     cache_path = os.environ.get("CIVIC_SCRAPER_DIR", DEFAULT_USER_HOME)
     runner = Runner(cache_path=cache_path)
@@ -84,6 +91,7 @@ def scrape(start_date, end_date, download, cache, url, urls_file):
         "end_date": end_date,
         "cache": cache,
         "download": download,
+        "timeout": timeout,
     }
     if url:
         kwargs["site_urls"] = [url]

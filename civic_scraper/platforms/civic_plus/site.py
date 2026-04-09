@@ -41,7 +41,9 @@ class Site(base.Site):
         download=False,
         file_size=None,
         asset_list=None,
+        timeout=None,
     ):
+        self.timeout = timeout
         """Scrape a government website for metadata and/or docs.
 
         Args:
@@ -75,7 +77,7 @@ class Site(base.Site):
             for asset in assets:
                 if self._skippable(asset, file_size, asset_list):
                     continue
-                asset.download(str(asset_dir))
+                asset.download(str(asset_dir), timeout=self.timeout)
         return assets
 
     def _skippable(self, asset, file_size, asset_list):
@@ -111,7 +113,9 @@ class Site(base.Site):
         # Search URLs follow the below pattern
         # /Search/?term=&CIDs=all&startDate=12/17/2020&endDate=12/18/2020&dateRange=&dateSelector=
         search_url = self.url.rstrip("/") + "/Search/"
-        response = requests.get(search_url, params=params)
+        response = requests.get(
+            search_url, params=params, timeout=self.timeout
+        )
         return response.url, response.text
 
     def _convert_date(self, date_str):
@@ -147,7 +151,9 @@ class Site(base.Site):
             }
             # TODO: Add conditional here to short-circuit
             # header request based on method option
-            headers = requests.head(url, allow_redirects=True).headers
+            headers = requests.head(
+                url, allow_redirects=True, timeout=self.timeout
+            ).headers
             asset_args.update(
                 {
                     "content_type": headers["content-type"],

@@ -72,7 +72,8 @@ class PrimeGovSite(base.Site):
         match = re.match(pattern, self.url)
         return f"primegov_{match.group(1)}_{object_id}"
 
-    def scrape(self, start_date=None, end_date=None):
+    def scrape(self, start_date=None, end_date=None, timeout=None):
+        self.timeout = timeout
 
         # API requires both start and end dates
         if not start_date or not end_date:
@@ -80,7 +81,8 @@ class PrimeGovSite(base.Site):
             end_date = datetime.today().strftime("%m/%d/%Y")
 
         response = self.session.get(
-            f"{self.base_url}/api/meeting/search?from={start_date}&to={end_date}"
+            f"{self.base_url}/api/meeting/search?from={start_date}&to={end_date}",
+            timeout=self.timeout,
         )
 
         ac = AssetCollection()

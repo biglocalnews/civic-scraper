@@ -38,7 +38,9 @@ class Site(base.Site):
         download=False,
         file_size=None,
         asset_list=["Agenda", "Minutes"],
+        timeout=None,
     ):
+        self.timeout = timeout
         """Scrape a government website for metadata and/or docs.
         Args:
             start_date (str): YYYY-MM-DD (default: current day)
@@ -89,11 +91,19 @@ class Site(base.Site):
             for asset in ac:
                 if asset.url:
                     dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=webscraper)
+                    asset.download(
+                        target_dir=dir_str,
+                        session=webscraper,
+                        timeout=self.timeout,
+                    )
         return ac
 
     def _add_file_meta(self, asset):
-        headers = requests.head(asset.url, allow_redirects=True).headers
+        # Note: LegistarEventsScraper (third-party) does not accept a timeout;
+        # only our own requests.head() call is covered here.
+        headers = requests.head(
+            asset.url, allow_redirects=True, timeout=self.timeout
+        ).headers
         asset.content_type = headers["content-type"]
         asset.content_length = headers["content-length"]
 
