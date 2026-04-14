@@ -15,7 +15,6 @@ from urllib.parse import urlparse
 import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
-from civic_scraper.base.cache import Cache
 
 from . import utils
 
@@ -40,7 +39,7 @@ SITES = {
 class DigitalTowPathSite(base.Site):
     """Scraper for DigitalTowPath sites (e.g. finetownny.gov)."""
 
-    def __init__(self, base_url, cache=Cache()):
+    def __init__(self, base_url, cache=None):
         """Initialize scraper.
 
         Args:
@@ -65,7 +64,9 @@ class DigitalTowPathSite(base.Site):
         """Determine if site can be scraped by this scraper."""
         return urlparse(url).netloc in SITES
 
-    def scrape(self, start_date: str, end_date: str, **kwargs) -> AssetCollection:
+    def scrape(
+        self, start_date: str, end_date: str, timeout: int = None, **kwargs
+    ) -> AssetCollection:
         """Scrape the jurisdiction website for meeting documents.
 
         Args:
@@ -89,6 +90,10 @@ class DigitalTowPathSite(base.Site):
             logger.error(f"Invalid date format: {start_date} or {end_date}")
             return AssetCollection()
 
+        # Use caller-supplied timeout if given; preserve previously hardcoded values otherwise.
+        scrape_timeout = timeout if timeout is not None else 30
+        head_timeout = timeout if timeout is not None else 10
+
         ac = AssetCollection()
         processed_details = set()  # Track meeting detail IDs to avoid duplicates
 
@@ -106,7 +111,9 @@ class DigitalTowPathSite(base.Site):
 
         # Step 1: Get all categories (committees)
         try:
-            categories = utils.get_categories(self.base_url, session=self.session)
+            categories = utils.get_categories(
+                self.base_url, session=self.session, timeout=scrape_timeout
+            )
             logger.info(f"Found {len(categories)} categories")
         except Exception as e:
             logger.error(f"Failed to fetch categories: {e}")
@@ -135,7 +142,9 @@ class DigitalTowPathSite(base.Site):
                     # Get meetings and soup in one request
                     try:
                         meetings, soup = utils.get_meetings_for_category_year(
-                            current_url, session=self.session
+                            current_url,
+                            session=self.session,
+                            timeout=scrape_timeout,
                         )
                         logger.debug(f"Found {len(meetings)} meetings at {current_url}")
                     except Exception as e:
@@ -156,6 +165,8 @@ class DigitalTowPathSite(base.Site):
                                 start_dt,
                                 end_dt,
                                 ac,
+                                scrape_timeout=scrape_timeout,
+                                head_timeout=head_timeout,
                             )
                             logger.debug(
                                 f"Added {asset_count} assets from meeting {meeting['detail_id']}"
@@ -186,7 +197,16 @@ class DigitalTowPathSite(base.Site):
         logger.info(f"Scraping complete. Found {len(ac)} total assets")
         return ac
 
-    def _process_meeting(self, meeting, category_name, start_dt, end_dt, ac):
+    def _process_meeting(
+        self,
+        meeting,
+        category_name,
+        start_dt,
+        end_dt,
+        ac,
+        scrape_timeout=30,
+        head_timeout=10,
+    ):
         """Process a single meeting and add assets to collection.
 
         Args:
@@ -203,7 +223,9 @@ class DigitalTowPathSite(base.Site):
         detail_id = meeting["detail_id"]
 
         # Fetch meeting details
-        meeting_details = utils.get_meeting_details(detail_url, session=self.session)
+        meeting_details = utils.get_meeting_details(
+            detail_url, session=self.session, timeout=scrape_timeout
+        )
 
         # Check if meeting date is in range
         meeting_date = meeting_details.get("meeting_date")
@@ -233,7 +255,9 @@ class DigitalTowPathSite(base.Site):
             content_type = None
             content_length = None
             try:
-                response = self.session.head(doc_url, allow_redirects=True, timeout=10)
+                response = self.session.head(
+                    doc_url, allow_redirects=True, timeout=head_timeout
+                )
                 content_type = response.headers.get("content-type")
                 content_length = response.headers.get("content-length")
             except Exception as e:

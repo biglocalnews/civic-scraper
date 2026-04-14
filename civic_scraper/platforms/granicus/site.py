@@ -12,12 +12,12 @@ from civic_scraper.base.cache import Cache
 
 
 class GranicusSite(base.Site):
-    def __init__(self, rss_url, place=None, state_or_province=None, cache=Cache()):
+    def __init__(self, rss_url, place=None, state_or_province=None, cache=None):
         self.url = rss_url
         self.granicus_instance = urlparse(rss_url).netloc.split(".")[0]
         self.place = place
         self.state_or_province = state_or_province
-        self.cache = cache
+        self.cache = cache if cache is not None else Cache()
 
     def create_asset(self, entry):
         asset_name = entry["title"]
@@ -53,7 +53,7 @@ class GranicusSite(base.Site):
         }
         return Asset(**e)
 
-    def scrape(self, download=True):
+    def scrape(self, download=True, timeout=None):
         session = Session()
         session.headers.update(
             {
@@ -61,7 +61,7 @@ class GranicusSite(base.Site):
             }
         )
 
-        response = session.get(self.url)
+        response = session.get(self.url, timeout=timeout)
         parsed_rss = feedparser.parse(response.text)
 
         ac = AssetCollection()
@@ -75,6 +75,6 @@ class GranicusSite(base.Site):
             for asset in ac:
                 if asset.url:
                     dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=session)
+                    asset.download(target_dir=dir_str, session=session, timeout=timeout)
 
         return ac
