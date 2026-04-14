@@ -12,10 +12,14 @@ except PackageNotFoundError:
 # Capture the current git commit for traceability in dev/editable installs.
 # Falls back to "unknown" when git isn't available (e.g. installed from PyPI).
 try:
-    __git_commit__ = subprocess.check_output(
-        ["git", "rev-parse", "--short", "HEAD"],
-        cwd=os.path.dirname(__file__),
-        stderr=subprocess.DEVNULL,
-    ).decode().strip()
+    __git_commit__ = (
+        subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=os.path.dirname(__file__),
+            stderr=subprocess.DEVNULL,
+        )
+        .decode()
+        .strip()
+    )
 except Exception:
     __git_commit__ = "unknown"
