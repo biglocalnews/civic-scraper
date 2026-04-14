@@ -15,14 +15,14 @@ from civic_scraper.base.cache import Cache
 
 
 class CivicClerkSite(base.Site):
-    def __init__(self, url, place=None, state_or_province=None, cache=Cache()):
+    def __init__(self, url, place=None, state_or_province=None, cache=None):
 
         self.url = url
         self.base_url = "https://" + urlparse(url).netloc
         self.civicclerk_instance = urlparse(url).netloc.split(".")[0]
         self.place = place
         self.state_or_province = state_or_province
-        self.cache = cache
+        self.cache = cache if cache is not None else Cache()
 
         self.session = Session()
         self.session.headers["User-Agent"] = (

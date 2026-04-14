@@ -15,7 +15,6 @@ from urllib.parse import urlparse
 import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
-from civic_scraper.base.cache import Cache
 
 from . import utils
 
@@ -40,7 +39,7 @@ SITES = {
 class DigitalTowPathSite(base.Site):
     """Scraper for DigitalTowPath sites (e.g. finetownny.gov)."""
 
-    def __init__(self, base_url, cache=Cache()):
+    def __init__(self, base_url, cache=None):
         """Initialize scraper.
 
         Args:

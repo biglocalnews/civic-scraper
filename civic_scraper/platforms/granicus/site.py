@@ -12,12 +12,12 @@ from civic_scraper.base.cache import Cache
 
 
 class GranicusSite(base.Site):
-    def __init__(self, rss_url, place=None, state_or_province=None, cache=Cache()):
+    def __init__(self, rss_url, place=None, state_or_province=None, cache=None):
         self.url = rss_url
         self.granicus_instance = urlparse(rss_url).netloc.split(".")[0]
         self.place = place
         self.state_or_province = state_or_province
-        self.cache = cache
+        self.cache = cache if cache is not None else Cache()
 
     def create_asset(self, entry):
         asset_name = entry["title"]
