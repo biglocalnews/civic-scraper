@@ -30,7 +30,7 @@ class Runner:
         self,
         start_date,
         end_date,
-        site_urls=[],
+        site_urls=None,
         cache=False,
         download=False,
         timeout=None,
@@ -60,6 +60,7 @@ class Runner:
         Returns:
             AssetCollection instance
         """
+        site_urls = site_urls or []
         asset_collection = AssetCollection()
         cache_obj = Cache(self.cache_path)
         logger.info(

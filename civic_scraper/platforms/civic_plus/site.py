@@ -42,7 +42,6 @@ class Site(base.Site):
         asset_list=None,
         timeout=None,
     ):
-        self.timeout = timeout
         """Scrape a government website for metadata and/or docs.
 
         Args:
@@ -57,6 +56,7 @@ class Site(base.Site):
         Returns:
             AssetCollection: A sequence of Asset instances
         """
+        self.timeout = timeout
         today = today_local_str()
         start = start_date or today
         end = end_date or today

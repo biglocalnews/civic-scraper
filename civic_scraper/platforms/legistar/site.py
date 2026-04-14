@@ -36,10 +36,9 @@ class Site(base.Site):
         end_date=None,
         download=False,
         file_size=None,
-        asset_list=["Agenda", "Minutes"],
+        asset_list=None,
         timeout=None,
     ):
-        self.timeout = timeout
         """Scrape a government website for metadata and/or docs.
         Args:
             start_date (str): YYYY-MM-DD (default: current day)
@@ -51,6 +50,8 @@ class Site(base.Site):
         Returns:
             AssetCollection: A sequence of Asset instances
         """
+        self.timeout = timeout
+        asset_list = asset_list if asset_list is not None else ["Agenda", "Minutes"]
         # Use current day as default
         today = today_local_str()
         start_date = start_date or today
