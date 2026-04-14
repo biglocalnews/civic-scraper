@@ -375,9 +375,9 @@ You can {ref}`customize this location <customize-cache-dir>` by setting
 the {code}`CIVIC_SCRAPER_DIR` environment variable.
 
 [civicplus agenda center]: https://www.civicplus.com/civicengage/civicengage/features
-[Legistar sites]: https://docs.google.com/spreadsheets/d/1YVn5C0nN_aAITIBGMhNiulnLpF5eo5fF6gpZTQ4oWU8/edit?usp=sharing
+[Legistar sites]: list of sites
 [platforms]: https://github.com/biglocalnews/civic-scraper/tree/master/civic_scraper/platforms
 [examples folder on github]: https://github.com/biglocalnews/civic-scraper/tree/master/examples
-[Civic Plus sites]: https://docs.google.com/spreadsheets/d/e/2PACX-1vQaa2mt0aXGN-gMT1LHgYzDbzrxwF1aQBKCkY5QMoUGlAbFVrv47FaMwPdiISx-kdedTY8_6fiJ0Vi3/pubhtml
-[known sites for the civic plus platform]: https://docs.google.com/spreadsheets/d/e/2PACX-1vQaa2mt0aXGN-gMT1LHgYzDbzrxwF1aQBKCkY5QMoUGlAbFVrv47FaMwPdiISx-kdedTY8_6fiJ0Vi3/pubhtml
+[Civic Plus sites]: list of sites
+[known sites for the civic plus platform]: list of sites
 [mime type]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
