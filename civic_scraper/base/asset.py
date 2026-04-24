@@ -72,24 +72,39 @@ class Asset:
             target_dir (str): target directory name
 
         Returns:
-            Full path to downloaded file
+            Full path to downloaded file, or None if download fails
         """
-        Path(target_dir).mkdir(parents=True, exist_ok=True)
-        file_extension = mimetypes.guess_extension(self.content_type)
-        file_name = "{}_{}{}".format(
-            # meeting id reflects date and numeric identifier
-            self.meeting_id,
-            self.asset_type,
-            file_extension,
-        )
-        if session:
-            response = session.get(self.url, allow_redirects=True)
-        else:
-            response = requests.get(self.url, allow_redirects=True)
-        full_path = os.path.join(target_dir, file_name)
-        with open(full_path, "wb") as outfile:
-            outfile.write(response.content)
-        return full_path
+        try:
+            Path(target_dir).mkdir(parents=True, exist_ok=True)
+
+            if self.content_type:
+                file_extension = mimetypes.guess_extension(self.content_type) or ".pdf"
+            else:
+                file_extension = ""
+
+            file_name = "{}_{}{}".format(
+                # meeting id reflects date and numeric identifier
+                self.meeting_id,
+                self.asset_type,
+                file_extension,
+            )
+
+            if session:
+                response = session.get(self.url, allow_redirects=True)
+            else:
+                response = requests.get(self.url, allow_redirects=True)
+
+            response.raise_for_status()
+
+            full_path = os.path.join(target_dir, file_name)
+            with open(full_path, "wb") as outfile:
+                outfile.write(response.content)
+            return full_path
+        except Exception as e:
+            import logging
+
+            logging.getLogger(__name__).error(f"Failed to download {self.url}: {e}")
+            return None
 
 
 class AssetCollection(list):

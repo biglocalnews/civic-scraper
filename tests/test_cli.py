@@ -99,7 +99,6 @@ def test_cli_store_csv_urls(runner_class, civic_scraper_dir):
         "start_date": "2020-05-05",
         "end_date": "2020-05-05",
         "cache": True,
-        "download": True,
         "site_urls": [
             "http://nc-nashcounty.civicplus.com/AgendaCenter",
             "https://wi-columbus.civicplus.com/AgendaCenter",

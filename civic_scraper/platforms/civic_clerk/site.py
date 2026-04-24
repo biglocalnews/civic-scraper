@@ -1,7 +1,6 @@
 import html
 import re
 from datetime import datetime
-from pathlib import Path
 from urllib.parse import urlparse
 
 import demjson3 as demjson
@@ -206,7 +205,7 @@ class CivicClerkSite(base.Site):
                 + ";GB|20;12|PAGERONCLICK3|PBN;"
             )
 
-    def scrape(self, download=True):
+    def scrape(self):
 
         ac = AssetCollection()
 
@@ -228,13 +227,5 @@ class CivicClerkSite(base.Site):
                 ]
                 for a in assets:
                     ac.append(a)
-
-        if download:
-            asset_dir = Path(self.cache.path, "assets")
-            asset_dir.mkdir(parents=True, exist_ok=True)
-            for asset in ac:
-                if asset.url:
-                    dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=self.session)
 
         return ac

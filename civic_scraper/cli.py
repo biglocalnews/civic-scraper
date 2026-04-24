@@ -83,11 +83,13 @@ def scrape(start_date, end_date, download, cache, url, urls_file):
         "start_date": start_date,
         "end_date": end_date,
         "cache": cache,
-        "download": download,
     }
     if url:
         kwargs["site_urls"] = [url]
     else:
         reader = csv.DictReader(urls_file.readlines())
         kwargs["site_urls"] = [row["url"] for row in reader]
-    runner.scrape(**kwargs)
+
+    assets = runner.scrape(**kwargs)
+    if download:
+        runner.download_assets(assets)
