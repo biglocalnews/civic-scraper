@@ -1,5 +1,4 @@
 import re
-from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 import requests
@@ -9,7 +8,7 @@ import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.utils import dtz_to_dt, mb_to_bytes, parse_date, today_local_str
+from civic_scraper.utils import dtz_to_dt, parse_date, today_local_str
 
 
 class Site(base.Site):
@@ -35,7 +34,6 @@ class Site(base.Site):
         self,
         start_date=None,
         end_date=None,
-        download=False,
         file_size=None,
         asset_list=["Agenda", "Minutes"],
     ):
@@ -78,18 +76,9 @@ class Site(base.Site):
                 except TypeError:
                     continue
                 # Apply date and other filters
-                if self._skippable(
-                    asset, start_date, end_date, file_size=file_size, download=download
-                ):
+                if self._skippable(asset, start_date, end_date, file_size=file_size):
                     continue
                 ac.append(asset)
-        if download:
-            asset_dir = Path(self.cache.path, "assets")
-            asset_dir.mkdir(parents=True, exist_ok=True)
-            for asset in ac:
-                if asset.url:
-                    dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=webscraper)
         return ac
 
     def _add_file_meta(self, asset):
@@ -160,7 +149,7 @@ class Site(base.Site):
         except (KeyError, TypeError):
             return event["Name"]
 
-    def _skippable(self, asset, start_date, end_date, file_size=None, download=False):
+    def _skippable(self, asset, start_date, end_date, file_size=None):
         start = parse_date(start_date)
         end = parse_date(end_date)
         # Use a generic (non-timezone aware) date for filtering
@@ -175,11 +164,6 @@ class Site(base.Site):
         if not start <= meeting_date <= end:
             return True
         # Add Content Type and Length when download specified
-        if download:
+        if False:
             self._add_file_meta(asset)
-        # if file_size and download are given, then check byte count
-        if file_size and download:
-            max_bytes = mb_to_bytes(file_size)
-            if float(asset.content_length) > max_bytes:
-                return True
         return False

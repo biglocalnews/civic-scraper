@@ -1,7 +1,6 @@
 import datetime
 import logging
 import re
-from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -38,7 +37,6 @@ class Site(base.Site):
         start_date=None,
         end_date=None,
         cache=False,
-        download=False,
         file_size=None,
         asset_list=None,
     ):
@@ -69,13 +67,6 @@ class Site(base.Site):
             logger.info(f"Cached search results page HTML: {cache_path}")
         file_metadata = self.parser_kls(raw_html).parse()
         assets = self._build_asset_collection(file_metadata)
-        if download:
-            asset_dir = Path(self.cache.path, "assets")
-            asset_dir.mkdir(parents=True, exist_ok=True)
-            for asset in assets:
-                if self._skippable(asset, file_size, asset_list):
-                    continue
-                asset.download(str(asset_dir))
         return assets
 
     def _skippable(self, asset, file_size, asset_list):

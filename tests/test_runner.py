@@ -73,7 +73,7 @@ def test_runner_no_download_via_site(
     site_instance.scrape.return_value = [Mock(name="AssetCollection")]
     start_date = end_date = "2012-12-01"
     r = Runner(civic_scraper_dir)
-    r.scrape(start_date, end_date, site_urls=one_site_url, cache=True, download=True)
+    r.scrape(start_date, end_date, site_urls=one_site_url, cache=True)
     # Cache class is instantiated with default civic scraper dir
     # The site instance is told to perform caching
     site_instance.scrape.assert_called_once_with(
@@ -102,7 +102,8 @@ def test_runner_downloads_assets(asset_collection, asset_mock, civic_scraper_dir
     mock_assets = [MagicMock(), MagicMock()]
     ac_instance.__iter__ = Mock(return_value=iter(mock_assets))
     r = Runner(civic_scraper_dir)
-    r.scrape(start_date, end_date, site_urls=[url], download=True)
+    assets = r.scrape(start_date, end_date, site_urls=[url])
+    r.download_assets(assets)
     # Check AssetCollection is instantiated and to_csv called by default
     asset_collection.assert_called_once()
     ac_instance.to_csv.assert_called_once()

@@ -1,12 +1,19 @@
 import importlib
 import logging
 import re
+from typing import Optional
 
 from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
 from civic_scraper.platforms import DigitalTowPathSite
 
 logger = logging.getLogger(__name__)
+
+
+class DownloadResult:
+    def __init__(self):
+        self.successful = []
+        self.failed = []
 
 
 class ScraperError(Exception):
@@ -79,17 +86,43 @@ class Runner:
             asset_collection.extend(_collection)
         metadata_file = asset_collection.to_csv(cache_obj.metadata_files_path)
         logger.info(f"Wrote asset metadata CSV: {metadata_file}")
-        if download:
-            download_counter = 0
-            logger.info(
-                f"Downloading {len(asset_collection)} file asset(s) to {cache_obj.assets_path}..."
-            )
-            for asset in asset_collection:
-                # TODO: Add error-handling here
-                logger.info(f"\t{asset.url}")
-                asset.download(cache_obj.assets_path)
-                download_counter += 1
         return asset_collection
+
+    def download_assets(
+        self,
+        assets: AssetCollection,
+        target_dir: Optional[str] = None,
+        file_size_limit: Optional[float] = None,
+        asset_types: Optional[list[str]] = None,
+    ) -> DownloadResult:
+        """Download assets with filtering and error handling."""
+        if not target_dir:
+            cache_obj = Cache(self.cache_path)
+            target_dir = cache_obj.assets_path
+
+        result = DownloadResult()
+
+        logger.info(f"Evaluating {len(assets)} asset(s) for download...")
+        for asset in assets:
+            if asset_types and asset.asset_type not in asset_types:
+                continue
+
+            if file_size_limit is not None and asset.content_length:
+                try:
+                    size_mb = int(asset.content_length) / (1024 * 1024)
+                    if size_mb > file_size_limit:
+                        continue
+                except ValueError:
+                    pass
+
+            logger.info(f"	Downloading {asset.url}")
+            download_path = asset.download(target_dir)
+            if download_path:
+                result.successful.append(asset)
+            else:
+                result.failed.append(asset)
+
+        return result
 
     def _get_site_class(self, url):
         class_name = self._get_site_class_name(url)

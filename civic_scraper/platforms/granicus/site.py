@@ -1,5 +1,4 @@
 from datetime import datetime
-from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 import feedparser
@@ -53,7 +52,7 @@ class GranicusSite(base.Site):
         }
         return Asset(**e)
 
-    def scrape(self, download=True):
+    def scrape(self):
         session = Session()
         session.headers.update(
             {
@@ -68,13 +67,5 @@ class GranicusSite(base.Site):
         assets = [self.create_asset(e) for e in parsed_rss["entries"]]
         for a in assets:
             ac.append(a)
-
-        if download:
-            asset_dir = Path(self.cache.path, "assets")
-            asset_dir.mkdir(parents=True, exist_ok=True)
-            for asset in ac:
-                if asset.url:
-                    dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=session)
 
         return ac
