@@ -394,6 +394,7 @@ dev = [
     { name = "vcrpy", version = "8.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
 ]
 docs = [
+    { name = "lxml" },
     { name = "myst-parser" },
     { name = "sphinx" },
     { name = "sphinx-autobuild" },
@@ -428,6 +429,7 @@ dev = [
     { name = "vcrpy", specifier = ">=6.0" },
 ]
 docs = [
+    { name = "lxml" },
     { name = "myst-parser", specifier = "==3.0.1" },
     { name = "sphinx", specifier = "==7.4" },
     { name = "sphinx-autobuild", specifier = "==2024.10.3" },

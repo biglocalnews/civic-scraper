@@ -16,10 +16,11 @@ class Site:
 
     """
 
-    def __init__(self, base_url, cache=Cache(), parser_kls=None):
-        self.runtime = datetime.datetime.utcnow().date()
+    def __init__(self, base_url, cache=None, parser_kls=None):
+        self.runtime = datetime.datetime.now(datetime.timezone.utc).date()
         self.url = base_url
-        self.cache = cache
+        self.cache = cache if cache is not None else Cache()
+        self.timeout = None
         if parser_kls:
             self.parser_kls = parser_kls
 

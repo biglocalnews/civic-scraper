@@ -15,14 +15,14 @@ from civic_scraper.base.cache import Cache
 
 
 class CivicClerkSite(base.Site):
-    def __init__(self, url, place=None, state_or_province=None, cache=Cache()):
+    def __init__(self, url, place=None, state_or_province=None, cache=None):
 
         self.url = url
         self.base_url = "https://" + urlparse(url).netloc
         self.civicclerk_instance = urlparse(url).netloc.split(".")[0]
         self.place = place
         self.state_or_province = state_or_province
-        self.cache = cache
+        self.cache = cache if cache is not None else Cache()
 
         self.session = Session()
         self.session.headers["User-Agent"] = (
@@ -74,7 +74,7 @@ class CivicClerkSite(base.Site):
 
         event_frame_url = self.base_url + event_frame.attrib["src"]
 
-        frame_response = self.session.get(event_frame_url)
+        frame_response = self.session.get(event_frame_url, timeout=self.timeout)
         frame_tree = lxml.html.fromstring(frame_response.text)
         frame_has_table = True if frame_tree.xpath("//table") else False
 
@@ -123,7 +123,7 @@ class CivicClerkSite(base.Site):
 
     def _paginate(self, callback_id):
 
-        response = self.session.get(self.url)
+        response = self.session.get(self.url, timeout=self.timeout)
 
         tree = lxml.html.fromstring(response.text)
 
@@ -182,7 +182,7 @@ class CivicClerkSite(base.Site):
 
         while item_keys != previous_item_keys:
 
-            response = self.session.post(self.url, payload)
+            response = self.session.post(self.url, payload, timeout=self.timeout)
             previous_item_keys = item_keys
 
             data_str = re.match(r".*?/\*DX\*/\((?P<body>.*)\)", response.text).group(
@@ -206,7 +206,8 @@ class CivicClerkSite(base.Site):
                 + ";GB|20;12|PAGERONCLICK3|PBN;"
             )
 
-    def scrape(self, download=True):
+    def scrape(self, download=True, timeout=None):
+        self.timeout = timeout
 
         ac = AssetCollection()
 
@@ -217,7 +218,7 @@ class CivicClerkSite(base.Site):
             meeting_id_num, meeting_id = self.get_meeting_id(event)
 
             event_url = f"{self.base_url}/Web/DocumentFrame.aspx?id={meeting_id_num}&mod=-1&player_tab=-2"
-            event_response = self.session.get(event_url)
+            event_response = self.session.get(event_url, timeout=self.timeout)
 
             agenda_items = self.get_agenda_items(event_response.text)
 
@@ -235,6 +236,10 @@ class CivicClerkSite(base.Site):
             for asset in ac:
                 if asset.url:
                     dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=self.session)
+                    asset.download(
+                        target_dir=dir_str,
+                        session=self.session,
+                        timeout=self.timeout,
+                    )
 
         return ac

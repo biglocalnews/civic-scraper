@@ -48,7 +48,7 @@ def create_session():
     return session
 
 
-def fetch_page(url, session=None, referer=None):
+def fetch_page(url, session=None, referer=None, timeout=30):
     """Fetch a page and return BeautifulSoup object.
 
     Args:
@@ -70,12 +70,12 @@ def fetch_page(url, session=None, referer=None):
         headers["Referer"] = referer
 
     time.sleep(REQUEST_DELAY)
-    response = session.get(url, headers=headers, timeout=30)
+    response = session.get(url, headers=headers, timeout=timeout)
     response.raise_for_status()
     return BeautifulSoup(response.text, "html.parser")
 
 
-def get_categories(base_url, session=None):
+def get_categories(base_url, session=None, timeout=30):
     """Get list of meeting categories (committees).
 
     Args:
@@ -93,7 +93,7 @@ def get_categories(base_url, session=None):
         ]
     """
     url = urljoin(base_url, CATEGORIES_PATH)
-    soup = fetch_page(url, session=session)
+    soup = fetch_page(url, session=session, timeout=timeout)
 
     categories = []
     # Find all category links
@@ -108,7 +108,7 @@ def get_categories(base_url, session=None):
     return categories
 
 
-def get_meetings_for_category_year(url, session=None):
+def get_meetings_for_category_year(url, session=None, timeout=30):
     """Get list of meetings for a specific category and year.
 
     Args:
@@ -129,7 +129,7 @@ def get_meetings_for_category_year(url, session=None):
             ...
         ]
     """
-    soup = fetch_page(url, session=session)
+    soup = fetch_page(url, session=session, timeout=timeout)
 
     meetings = []
     # Find all meeting links in the current year
@@ -176,7 +176,7 @@ def get_other_years_from_soup(soup):
     return years
 
 
-def get_meeting_details(detail_url, session=None):
+def get_meeting_details(detail_url, session=None, timeout=30):
     """Extract meeting details from a meeting detail page.
 
     Args:
@@ -205,7 +205,7 @@ def get_meeting_details(detail_url, session=None):
             ]
         }
     """
-    soup = fetch_page(detail_url, session=session)
+    soup = fetch_page(detail_url, session=session, timeout=timeout)
 
     # Extract committee name
     committee_elem = soup.find(class_="dtp-meeting-category")

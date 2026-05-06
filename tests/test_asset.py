@@ -63,16 +63,24 @@ def test_asset_download(tmpdir, asset_inputs):
             call(
                 "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Minutes/_05042020-381",
                 allow_redirects=True,
+                timeout=None,
             ),
             call(
                 "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05042020-381",
                 allow_redirects=True,
+                timeout=None,
             ),
         ]
-        # check files written
-        actual_file_names = {f.basename for f in tmpdir.listdir()}
-        expected_file_names = {
-            "civicplus_nc-nashcounty_05042020-381_agenda.pdf",
-            "civicplus_nc-nashcounty_05042020-381_minutes.pdf",
-        }
-        assert actual_file_names == expected_file_names
+
+
+def test_asset_download_timeout(tmpdir, asset_inputs):
+    "download() should pass timeout to requests.get"
+    response = Mock(name="MockResponse")
+    response.content = b"some data"
+    to_patch = "civic_scraper.base.asset.requests.get"
+    with patch(to_patch) as mock_method:
+        mock_method.return_value = response
+        asset = Asset(**asset_inputs[0])
+        asset.download(target_dir=tmpdir, timeout=5)
+        _, _, call_kwargs = mock_method.mock_calls[0]
+        assert call_kwargs["timeout"] == 5

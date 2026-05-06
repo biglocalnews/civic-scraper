@@ -64,12 +64,14 @@ class Asset:
     def __repr__(self):
         return f"Asset({self.url})"
 
-    def download(self, target_dir, session=None):
+    def download(self, target_dir, session=None, timeout=None):
         """
         Downloads an asset to a target directory.
 
         Args:
             target_dir (str): target directory name
+            session: optional requests.Session to reuse
+            timeout (int or float): optional timeout in seconds for the HTTP request
 
         Returns:
             Full path to downloaded file
@@ -83,9 +85,9 @@ class Asset:
             file_extension,
         )
         if session:
-            response = session.get(self.url, allow_redirects=True)
+            response = session.get(self.url, allow_redirects=True, timeout=timeout)
         else:
-            response = requests.get(self.url, allow_redirects=True)
+            response = requests.get(self.url, allow_redirects=True, timeout=timeout)
         full_path = os.path.join(target_dir, file_name)
         with open(full_path, "wb") as outfile:
             outfile.write(response.content)
@@ -120,7 +122,7 @@ class AssetCollection(list):
             "content_type",
             "content_length",
         ]
-        tstamp = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M")
+        tstamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M")
         file_name = f"civic_scraper_assets_meta_{tstamp}z.csv"
         path = os.path.join(target_dir, file_name)
         rows = [asset.__dict__ for asset in self]

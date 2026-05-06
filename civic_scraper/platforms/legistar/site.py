@@ -8,7 +8,6 @@ from legistar.events import LegistarEventsScraper
 import civic_scraper
 from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
-from civic_scraper.base.cache import Cache
 from civic_scraper.utils import dtz_to_dt, mb_to_bytes, parse_date, today_local_str
 
 
@@ -22,7 +21,7 @@ class Site(base.Site):
             "meeting_time_info": "Meeting Time",
             "meeting_location_info": "Meeting Location",
         },
-        cache=Cache(),
+        cache=None,
         parser_kls=None,
         timezone=None,
     ):
@@ -37,7 +36,8 @@ class Site(base.Site):
         end_date=None,
         download=False,
         file_size=None,
-        asset_list=["Agenda", "Minutes"],
+        asset_list=None,
+        timeout=None,
     ):
         """Scrape a government website for metadata and/or docs.
         Args:
@@ -50,6 +50,8 @@ class Site(base.Site):
         Returns:
             AssetCollection: A sequence of Asset instances
         """
+        self.timeout = timeout
+        asset_list = asset_list if asset_list is not None else ["Agenda", "Minutes"]
         # Use current day as default
         today = today_local_str()
         start_date = start_date or today
@@ -89,11 +91,19 @@ class Site(base.Site):
             for asset in ac:
                 if asset.url:
                     dir_str = str(asset_dir)
-                    asset.download(target_dir=dir_str, session=webscraper)
+                    asset.download(
+                        target_dir=dir_str,
+                        session=webscraper,
+                        timeout=self.timeout,
+                    )
         return ac
 
     def _add_file_meta(self, asset):
-        headers = requests.head(asset.url, allow_redirects=True).headers
+        # Note: LegistarEventsScraper (third-party) does not accept a timeout;
+        # only our own requests.head() call is covered here.
+        headers = requests.head(
+            asset.url, allow_redirects=True, timeout=self.timeout
+        ).headers
         asset.content_type = headers["content-type"]
         asset.content_length = headers["content-length"]
 
