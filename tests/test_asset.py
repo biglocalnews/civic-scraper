@@ -61,12 +61,14 @@ def test_asset_download(tmpdir, asset_inputs):
             asset.download(target_dir=tmpdir)
         assert mock_method.mock_calls == [
             call(
-                "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Minutes/_05042020-381",
+                "http://nc-nashcounty.civicplus.com/AgendaCenter"
+                "/ViewFile/Minutes/_05042020-381",
                 allow_redirects=True,
                 timeout=None,
             ),
             call(
-                "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05042020-381",
+                "http://nc-nashcounty.civicplus.com/AgendaCenter"
+                "/ViewFile/Agenda/_05042020-381",
                 allow_redirects=True,
                 timeout=None,
             ),

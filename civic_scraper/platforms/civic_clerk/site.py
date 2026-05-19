@@ -26,7 +26,8 @@ class CivicClerkSite(base.Site):
 
         self.session = Session()
         self.session.headers["User-Agent"] = (
-            "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
+            "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
         )
 
         # Raise an error if a request gets a failing status code
@@ -108,7 +109,9 @@ class CivicClerkSite(base.Site):
         callback_id = "aspxroundpanelCurrent$pnlDetails$grdEventsCurrent"
         for page in self._paginate(callback_id):
             events = page.xpath(
-                "//table[@id='aspxroundpanelCurrent_pnlDetails_grdEventsCurrent_DXMainTable']/tr[@class='dxgvDataRow_CustomThemeModerno']"
+                "//table[@id='aspxroundpanelCurrent_pnlDetails"
+                "_grdEventsCurrent_DXMainTable']"
+                "/tr[@class='dxgvDataRow_CustomThemeModerno']"
             )
             yield from events
 
@@ -117,7 +120,9 @@ class CivicClerkSite(base.Site):
         callback_id = "aspxroundpanelRecent2$ASPxPanel4$grdEventsRecent2"
         for page in self._paginate(callback_id):
             events = page.xpath(
-                "//table[@id='aspxroundpanelRecent2_ASPxPanel4_grdEventsRecent2_DXMainTable']/tr[@class='dxgvDataRow_CustomThemeModerno']"
+                "//table[@id='aspxroundpanelRecent2_ASPxPanel4"
+                "_grdEventsRecent2_DXMainTable']"
+                "/tr[@class='dxgvDataRow_CustomThemeModerno']"
             )
             yield from events
 
@@ -150,10 +155,12 @@ class CivicClerkSite(base.Site):
         # it's basically a post request with a 'PBN' argument. But,
         # we also have to pass around the callback state that
         # the endpoint expects
+        xpath_tmpl = (
+            "//script[contains(text(),"
+            " \"var dxo = new ASPxClientGridView('{}');\")]/text()"
+        )
         (event_callback_source,) = tree.xpath(
-            """//script[contains(text(), "var dxo = new ASPxClientGridView('{}');")]/text()""".format(
-                callback_id.replace("$", "_")
-            )
+            xpath_tmpl.format(callback_id.replace("$", "_"))
         )
 
         callback_state = demjson.decode(
@@ -217,7 +224,10 @@ class CivicClerkSite(base.Site):
             meeting_datetime = datetime.strptime(str_datetime, "%m/%d/%Y %I:%M %p")
             meeting_id_num, meeting_id = self.get_meeting_id(event)
 
-            event_url = f"{self.base_url}/Web/DocumentFrame.aspx?id={meeting_id_num}&mod=-1&player_tab=-2"
+            event_url = (
+                f"{self.base_url}/Web/DocumentFrame.aspx"
+                f"?id={meeting_id_num}&mod=-1&player_tab=-2"
+            )
             event_response = self.session.get(event_url, timeout=self.timeout)
 
             agenda_items = self.get_agenda_items(event_response.text)

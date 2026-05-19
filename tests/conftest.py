@@ -13,7 +13,8 @@ import pytest
 #  https://vcrpy.readthedocs.io/en/latest/debugging.html
 # import vcr
 # import logging
-# logging.basicConfig() # you need to initialize logging, otherwise you will not see anything from vcrpy
+# logging.basicConfig()  # you need to initialize logging, otherwise
+#                         # you will not see anything from vcrpy
 # vcr_log = logging.getLogger("vcr")
 # vcr_log.setLevel(logging.INFO)
 
@@ -112,7 +113,10 @@ def asset_inputs():
             "place_name": "Nash County",
             "scraped_by": "civic-scraper_1.0.0-preview",
             "state_or_province": "nc",
-            "url": "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Minutes/_05042020-381",
+            "url": (
+                "http://nc-nashcounty.civicplus.com/AgendaCenter"
+                "/ViewFile/Minutes/_05042020-381"
+            ),
         },
         {
             "asset_name": "May 4, 2020 Regular Meeting Agenda",
@@ -127,6 +131,9 @@ def asset_inputs():
             "place_name": "Nash County",
             "scraped_by": "civic-scraper_1.0.0-preview",
             "state_or_province": "nc",
-            "url": "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05042020-381",
+            "url": (
+                "http://nc-nashcounty.civicplus.com/AgendaCenter"
+                "/ViewFile/Agenda/_05042020-381"
+            ),
         },
     ]

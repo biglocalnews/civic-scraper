@@ -122,7 +122,9 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
 
     # TODO: Replace EXPECTED_COUNT with the expected count for this date range.
     EXPECTED_COUNT = None  # ← Set this to an integer
-    assert EXPECTED_COUNT is not None, "Set EXPECTED_COUNT to the number of documents in the date range"
+    assert EXPECTED_COUNT is not None, (
+        "Set EXPECTED_COUNT to the number of documents in the date range"
+    )
     assert len(assets) == EXPECTED_COUNT
 
 
@@ -146,7 +148,8 @@ def scaffold_platform(platform_name, repo_root=None):
     """Generate scaffolding for a new platform scraper.
 
     Args:
-        platform_name (str): Platform name, lowercase with underscores (e.g., 'your_jurisdiction')
+        platform_name (str): Platform name, lowercase with underscores
+            (e.g., 'your_jurisdiction')
         repo_root (str): Root of the repository (default: current directory)
 
     Returns:
@@ -241,7 +244,8 @@ if __name__ == "__main__":
         print("     (They will fail with NotImplementedError — that's expected!)")
         print("  2. Implement Site.scrape() to make tests pass")
         print(
-            "  3. Run tests again — VCR auto-records HTTP cassettes on first passing run"
+            "  3. Run tests again"
+            " — VCR auto-records HTTP cassettes on first passing run"
         )
         print("  4. Subsequent runs replay from cassettes (fast, no network needed)")
 

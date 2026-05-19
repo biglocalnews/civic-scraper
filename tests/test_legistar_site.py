@@ -52,9 +52,9 @@ def test_scrape_defaults():
         for asset in assets
         if asset.url.endswith("M=A&ID=957429&GUID=46C2C864-A1FF-4749-8B19-4915F2A65AF9")
     ][0]
-    assert (
-        agenda.url
-        == "https://nashville.legistar.com/View.ashx?M=A&ID=957429&GUID=46C2C864-A1FF-4749-8B19-4915F2A65AF9"
+    assert agenda.url == (
+        "https://nashville.legistar.com/View.ashx"
+        "?M=A&ID=957429&GUID=46C2C864-A1FF-4749-8B19-4915F2A65AF9"
     )
     assert agenda.committee_name == "Budget and Finance Committee"
     assert agenda.asset_type == "agenda"

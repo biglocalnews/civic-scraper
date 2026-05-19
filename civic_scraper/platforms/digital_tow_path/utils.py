@@ -87,8 +87,14 @@ def get_categories(base_url, session=None, timeout=30):
 
     Example:
         [
-            {'name': 'Town Board', 'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2026'},
-            {'name': 'CF Arena', 'url': 'https://finetownny.gov/meetings/meetings/CF%20Arena/2026'},
+            {
+                'name': 'Town Board',
+                'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2026'
+            },
+            {
+                'name': 'CF Arena',
+                'url': 'https://finetownny.gov/meetings/meetings/CF%20Arena/2026'
+            },
             ...
         ]
     """
@@ -159,8 +165,14 @@ def get_other_years_from_soup(soup):
 
     Example:
         [
-            {'year': '2025', 'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2025'},
-            {'year': '2024', 'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2024'},
+            {
+                'year': '2025',
+                'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2025'
+            },
+            {
+                'year': '2024',
+                'url': 'https://finetownny.gov/meetings/meetings/Town%20Board/2024'
+            },
             ...
         ]
     """

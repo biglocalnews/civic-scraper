@@ -24,9 +24,8 @@ def test_scrape_defaults():
     agenda = [asset for asset in assets if asset.url.endswith("Agenda/_05052020-382")][
         0
     ]
-    assert (
-        agenda.url
-        == "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05052020-382"
+    assert agenda.url == (
+        "http://nc-nashcounty.civicplus.com/AgendaCenter/ViewFile/Agenda/_05052020-382"
     )
     assert agenda.committee_name == "Board of Commissioners"
     assert (

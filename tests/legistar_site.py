@@ -1,16 +1,10 @@
 import logging
-import sys
-from pathlib import Path
 
 import urllib3
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-PROJECT_ROOT = str(Path(__file__).resolve().parent.parent)
-sys.path.append(PROJECT_ROOT)
-
 from civic_scraper.platforms import LegistarSite
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 logging.basicConfig(level="DEBUG")
 
 legistar_sites = [
