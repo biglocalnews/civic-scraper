@@ -64,14 +64,9 @@ docs = [
 ]
 
 [tool.flake8]
-max-line-length = 999
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
 exclude = [".venv", ".tox", ".eggs", "build", "dist"]
-per-file-ignores = [
-    "civic_scraper/base/__init__.py:F401",
-    "civic_scraper/platforms/__init__.py:F401",
-    "tests/test_civic_plus_site.py:E501",
-    "tests/legistar_site.py:E402",
-]
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"

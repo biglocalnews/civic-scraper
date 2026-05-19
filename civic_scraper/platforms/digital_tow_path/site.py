@@ -43,7 +43,8 @@ class DigitalTowPathSite(base.Site):
         """Initialize scraper.
 
         Args:
-            base_url (str): Base URL of the DigitalTowPath site (e.g. https://finetownny.gov)
+            base_url (str): Base URL of the DigitalTowPath site
+                (e.g. https://finetownny.gov)
             cache (Cache): Cache instance (default: new Cache())
         """
 
@@ -90,23 +91,26 @@ class DigitalTowPathSite(base.Site):
             logger.error(f"Invalid date format: {start_date} or {end_date}")
             return AssetCollection()
 
-        # Use caller-supplied timeout if given; preserve previously hardcoded values otherwise.
+        # Use caller-supplied timeout if given; preserve previously hardcoded
+        # values otherwise.
         scrape_timeout = timeout if timeout is not None else 30
         head_timeout = timeout if timeout is not None else 10
 
         ac = AssetCollection()
         processed_details = set()  # Track meeting detail IDs to avoid duplicates
 
-        # NOTE: Caching implementation needs to be rethought. It is only specific to the CLI,
-        # so each scraper should not be implementing things like determining cache paths
+        # NOTE: Caching implementation needs to be rethought. It is only
+        # specific to the CLI, so each scraper should not be implementing
+        # things like determining cache paths
         if "cache" in kwargs:
             logger.warning("Caching not implemented.")
-        # NOTE: Each scraper should not re-implement downloading assets, as this is a core
-        # function of the runner. The scraper should just return the URLs and metadata, and
-        # the runner should handle downloading.
+        # NOTE: Each scraper should not re-implement downloading assets, as
+        # this is a core function of the runner. The scraper should just
+        # return the URLs and metadata, and the runner should handle downloading.
         if "download" in kwargs:
             logger.warning(
-                "scrape(download=...) not implemented. Runner should handle downloading."
+                "scrape(download=...) not implemented."
+                " Runner should handle downloading."
             )
 
         # Step 1: Get all categories (committees)
@@ -119,7 +123,8 @@ class DigitalTowPathSite(base.Site):
             logger.error(f"Failed to fetch categories: {e}")
             return ac
 
-        # Step 2: For each category, fetch all meetings across all years in the date range
+        # Step 2: For each category, fetch all meetings across all years
+        # in the date range
         for category in categories:
             category_name = category["name"]
             logger.info(f"Processing category: {category_name}")
@@ -169,7 +174,8 @@ class DigitalTowPathSite(base.Site):
                                 head_timeout=head_timeout,
                             )
                             logger.debug(
-                                f"Added {asset_count} assets from meeting {meeting['detail_id']}"
+                                f"Added {asset_count} assets from meeting "
+                                f"{meeting['detail_id']}"
                             )
                         except Exception as e:
                             logger.warning(
@@ -248,7 +254,10 @@ class DigitalTowPathSite(base.Site):
             meeting_id = f"{self._site_meta['place']}-{meeting_date}-{detail_id}"
 
             # Create asset name
-            asset_name = f"{meeting_details.get('meeting_title', 'Meeting')} - {doc_type.capitalize()}"
+            asset_name = (
+                f"{meeting_details.get('meeting_title', 'Meeting')}"
+                f" - {doc_type.capitalize()}"
+            )
 
             # TODO: HEAD-per-document is slow and arguably a Runner/download-time
             # concern. Consider moving to base Asset or Runner layer.

@@ -52,7 +52,8 @@ class Runner:
             site_urls (list): List of site URLs
             cache (bool): Optionally cache intermediate file artificats such as HTML
                 (default: False)
-            download (bool): Optionally download file assets such as agendas (default: False)
+            download (bool): Optionally download file assets such as agendas
+                (default: False)
 
         Outputs:
             Metadata CSV listing file assets for given sites and params.
@@ -85,7 +86,8 @@ class Runner:
         if download:
             download_counter = 0
             logger.info(
-                f"Downloading {len(asset_collection)} file asset(s) to {cache_obj.assets_path}..."
+                f"Downloading {len(asset_collection)} file asset(s) "
+                f"to {cache_obj.assets_path}..."
             )
             for asset in asset_collection:
                 # TODO: Add error-handling here

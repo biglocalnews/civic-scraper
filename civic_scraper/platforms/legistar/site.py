@@ -74,7 +74,8 @@ class Site(base.Site):
         for event in events:
             meeting_meta = self._extract_meeting_meta(event, webscraper)
             for asset_type in asset_list:
-                # Skip if a dictionary containing 'url' key is not present for the given asset type
+                # Skip if a dictionary containing 'url' key is not present
+                # for the given asset type
                 try:
                     asset = self._create_asset(event, meeting_meta, asset_type)
                 except TypeError:

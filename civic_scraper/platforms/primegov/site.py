@@ -11,10 +11,12 @@ from civic_scraper.base.cache import Cache
 
 
 class PrimeGovSite(base.Site):
-    """For each Primegov site, there seems to be multiple API endpoints that can be queried:
+    """For each Primegov site, there seems to be multiple API endpoints
+    that can be queried:
     1. (GET) https://[city].primegov.com/api/meeting/search?from=[m/d/y]&to=[m/d/y]
     2. (GET) https://[city].primegov.com/v2/PublicPortal/ListUpcomingMeetings
-    2. (GET) https://[city].primegov.com/v2/PublicPortal/ListArchivedMeetings?year=[year]
+    2. (GET) https://[city].primegov.com/v2/PublicPortal/ListArchivedMeetings
+             ?year=[year]
     3. (POST) https://[city].primegov.com/api/search?
     """
 
@@ -29,7 +31,8 @@ class PrimeGovSite(base.Site):
 
         self.session = Session()
         self.session.headers["User-Agent"] = (
-            "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
+            "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
         )
 
         # Raise an error if a request gets a failing status code

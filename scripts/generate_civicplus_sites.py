@@ -6,12 +6,13 @@ VERSION: 2020-08-29
 DESCRIPTION:
 
 Given a csv of CivicPlus Agenda Center endpoints, check to see if each endpoint
-contains assets that it would be possible to scrape. Add each endpoint with valid assets and
-associated metadata to a csv.
+contains assets that it would be possible to scrape. Add each endpoint with valid assets
+and associated metadata to a csv.
 
 NOTE: Avoid overwriting previous versions of the csv produced by this file, since it is
-necessary to hand-key values in order to make them human-readable and to correctly categorize
-each endpoint. By default, this script appends new rows if a csv with the same path exists.
+necessary to hand-key values in order to make them human-readable and to correctly
+categorize each endpoint. By default, this script appends new rows if a csv with the
+same path exists.
 
 USAGE: From the command line,
 
