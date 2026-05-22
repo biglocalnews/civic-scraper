@@ -16,6 +16,14 @@ from .parser import Parser
 logger = logging.getLogger(__name__)
 
 
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    )
+}
+
+
 class Site(base.Site):
     def __init__(self, base_url, cache=None, parser_kls=Parser, place_name=None):
         super().__init__(base_url, cache=cache, parser_kls=parser_kls)
@@ -25,6 +33,8 @@ class Site(base.Site):
         self.state_or_province = self._get_asset_metadata(
             r"(?<=//)\w{2}(?=-)", base_url
         )
+        self.session = requests.Session()
+        self.session.headers.update(HEADERS)
 
     @property
     def place(self):
@@ -112,7 +122,7 @@ class Site(base.Site):
         # Search URLs follow the below pattern
         # /Search/?term=&CIDs=all&startDate=12/17/2020&endDate=12/18/2020&dateRange=&dateSelector=
         search_url = self.url.rstrip("/") + "/Search/"
-        response = requests.get(search_url, params=params, timeout=self.timeout)
+        response = self.session.get(search_url, params=params, timeout=self.timeout)
         return response.url, response.text
 
     def _convert_date(self, date_str):
@@ -148,13 +158,13 @@ class Site(base.Site):
             }
             # TODO: Add conditional here to short-circuit
             # header request based on method option
-            headers = requests.head(
+            response_headers = self.session.head(
                 url, allow_redirects=True, timeout=self.timeout
             ).headers
             asset_args.update(
                 {
-                    "content_type": headers["content-type"],
-                    "content_length": headers.get("content-length", -1),
+                    "content_type": response_headers["content-type"],
+                    "content_length": response_headers.get("content-length", -1),
                 }
             )
             assets.append(Asset(**asset_args))
