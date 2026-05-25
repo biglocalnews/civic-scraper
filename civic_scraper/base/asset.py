@@ -12,7 +12,8 @@ class Asset:
     Args:
         url (str): URL to download an asset.
         asset_name (str): Title of an asset. Ex:  City Council Regular Meeting
-        committee_name (str): Name of committee that generated the asset. Ex: City Council
+        committee_name (str): Name of committee that generated the asset.
+            Ex: City Council
         place (str): Name of place associated with the asset.
             Lowercase with spaces and punctuation removed. Ex: menlopark
         place_name (str): Human-readable place name. Ex: Menlo Park
@@ -24,7 +25,8 @@ class Asset:
         meeting_id (str): Unique meeting ID. For example, cominbation of scraper type,
             subdomain and numeric ID or date. Ex: civicplus-nc-nashcounty-05052020-382
         scraped_by (str): civic_scraper.__version__
-        content_type (str): File type of the asset as given by HTTP headers. Ex: 'application/pdf'
+        content_type (str): File type of the asset as given by HTTP headers.
+            Ex: 'application/pdf'
         content_length (str): Asset size in bytes
 
     Public methods:

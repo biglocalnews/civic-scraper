@@ -43,7 +43,8 @@ def test_extract_all_asset_types_for_meeting(search_results_html):
 
 
 def test_parse_alameda():
-    "Parser should extract all items on page for Alameda WD, which uses a different page structure"
+    """Parser should extract all items on page for Alameda WD,
+    which uses a different page structure."""
     html = read_fixture("civplus_alameda_water.html")
     parser = Parser(html)
     data = parser.parse()
