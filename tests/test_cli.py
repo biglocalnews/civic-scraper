@@ -132,3 +132,55 @@ def test_cli_timeout_option(runner_class, civic_scraper_dir):
     runner_instance = runner_class.return_value
     _, _, kwargs = runner_instance.scrape.mock_calls[0]
     assert kwargs["timeout"] == 30
+
+
+@patch("civic_scraper.cli.Runner")
+@pytest.mark.usefixtures("set_default_env")
+def test_cli_scraper_option(runner_class, civic_scraper_dir):
+    "CLI --platform should be passed through to Runner.scrape"
+    cli_runner = CliRunner()
+    cli_runner.invoke(
+        cli.cli,
+        [
+            "scrape",
+            "--start-date",
+            "2020-05-05",
+            "--end-date",
+            "2020-05-05",
+            "--platform",
+            "digital-tow-path",
+            "--url",
+            "https://townhope.digitaltowpath.org:10310/content",
+        ],
+    )
+    runner_instance = runner_class.return_value
+    _, _, kwargs = runner_instance.scrape.mock_calls[0]
+    assert kwargs["platform"] == "digital-tow-path"
+
+
+@patch("civic_scraper.cli.Runner")
+@pytest.mark.usefixtures("set_default_env")
+def test_cli_csv_platform_column(runner_class, civic_scraper_dir):
+    "CSV 'platform' column should be passed as per-URL platform dicts to Runner.scrape"
+    cli_runner = CliRunner()
+    cli_runner.invoke(
+        cli.cli,
+        [
+            "scrape",
+            "--start-date",
+            "2020-05-05",
+            "--end-date",
+            "2020-05-05",
+            "--urls-file",
+            path_to_test_dir_file("fixtures/url_input_with_platform.csv"),
+        ],
+    )
+    runner_instance = runner_class.return_value
+    _, _, kwargs = runner_instance.scrape.mock_calls[0]
+    assert kwargs["site_urls"] == [
+        {"url": "https://finetownny.gov/categories/", "platform": "digital-tow-path"},
+        {
+            "url": "http://nc-nashcounty.civicplus.com/AgendaCenter",
+            "platform": "civic-plus",
+        },
+    ]
