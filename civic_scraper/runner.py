@@ -4,9 +4,17 @@ import re
 
 from civic_scraper.base.asset import AssetCollection
 from civic_scraper.base.cache import Cache
-from civic_scraper.platforms import DigitalTowPathSite
 
 logger = logging.getLogger(__name__)
+
+PLATFORMS = {
+    "civic-clerk": "CivicClerkSite",
+    "civic-plus": "CivicPlusSite",
+    "digital-tow-path": "DigitalTowPathSite",
+    "granicus": "GranicusSite",
+    "legistar": "LegistarSite",
+    "primegov": "PrimeGovSite",
+}
 
 
 class ScraperError(Exception):
@@ -34,6 +42,7 @@ class Runner:
         cache=False,
         download=False,
         timeout=None,
+        platform=None,
     ):
         """Scrape file metadata and assets for a list of agency sites.
 
@@ -49,10 +58,16 @@ class Runner:
 
             start_date (str): Start date of scrape (YYYY-MM-DD)
             end_date (str): End date of scrape (YYYY-MM-DD)
-            site_urls (list): List of site URLs
+            site_urls (list): List of site URLs as strings, or dicts with a
+                ``url`` key and an optional ``platform`` key to override
+                auto-detection per entry.
             cache (bool): Optionally cache intermediate file artificats such as HTML
                 (default: False)
             download (bool): Optionally download file assets such as agendas (default: False)
+            timeout (int): Timeout in seconds for HTTP requests (default: None)
+            platform (str): Force a specific platform for all URLs instead of
+                auto-detecting from the URL. Overrides any per-entry ``platform``
+                value in ``site_urls``. Must be a key in ``PLATFORMS``.
 
         Outputs:
             Metadata CSV listing file assets for given sites and params.
@@ -66,8 +81,18 @@ class Runner:
         logger.info(
             f"Scraping {len(site_urls)} site(s) from {start_date} to {end_date}..."
         )
-        for url in site_urls:
-            SiteClass = self._get_site_class(url)
+        for entry in site_urls:
+            if isinstance(entry, dict):
+                url = entry.get("url")
+                if not url:
+                    raise ScraperError(
+                        "site_urls entries must be URL strings or dicts with a non-empty 'url' key"
+                    )
+                effective_platform = platform or entry.get("platform") or None
+            else:
+                url = entry
+                effective_platform = platform
+            SiteClass = self._get_site_class(url, platform=effective_platform)
             kwargs = {}
             if cache:
                 kwargs["cache"] = cache_obj
@@ -94,17 +119,21 @@ class Runner:
                 download_counter += 1
         return asset_collection
 
-    def _get_site_class(self, url):
-        class_name = self._get_site_class_name(url)
+    def _get_site_class(self, url, platform=None):
+        class_name = self._get_site_class_name(url, platform=platform)
         target_module = "civic_scraper.platforms"
         mod = importlib.import_module(target_module)
         return getattr(mod, class_name)
 
-    def _get_site_class_name(self, url):
+    def _get_site_class_name(self, url, platform=None):
+        if platform:
+            platform_key = str(platform).strip().lower()
+            try:
+                return PLATFORMS[platform_key]
+            except KeyError:
+                raise ScraperError(
+                    f"Unknown platform: {platform}. Must be one of: {', '.join(PLATFORMS)}"
+                )
         if re.search(r"(civicplus|AgendaCenter)", url):
             return "CivicPlusSite"
-        # TODO: Discuss whether we want to elevate this pattern for all scrapers
-        # then we can just iterate through all scrapers and call can_scrape on each
-        if DigitalTowPathSite.can_scrape(url):
-            return "DigitalTowPathSite"
         raise ScraperError(f"No scraper found for {url}")

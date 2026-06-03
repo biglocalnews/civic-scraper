@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from civic_scraper.runner import Runner
+from civic_scraper.runner import Runner, ScraperError
 
 
 @pytest.mark.usefixtures("set_default_env")
@@ -138,3 +138,70 @@ def test_runner_passes_timeout(asset_collection, civic_scraper_dir, one_site_url
         )
         assets_dir = str(Path(civic_scraper_dir).joinpath("assets"))
         mock_asset.download.assert_called_once_with(assets_dir, timeout=30)
+
+
+@pytest.mark.usefixtures("set_default_env")
+def test_runner_passes_forced_scraper(civic_scraper_dir, one_site_url):
+    site_class = MagicMock(name="DigitalTowPathSite")
+    to_patch = "civic_scraper.runner.Runner._get_site_class"
+    with patch(to_patch) as mock_method:
+        mock_method.return_value = site_class
+        start_date = end_date = "2020-12-01"
+        r = Runner(civic_scraper_dir)
+        r.scrape(
+            start_date,
+            end_date,
+            one_site_url,
+            platform="digital-tow-path",
+        )
+        mock_method.assert_called_once_with(
+            "http://nc-nashcounty.civicplus.com/AgendaCenter",
+            platform="digital-tow-path",
+        )
+
+
+def test_runner_get_site_class_name_forced_scraper():
+    r = Runner()
+    assert (
+        r._get_site_class_name(
+            "https://example.com",
+            platform="digital-tow-path",
+        )
+        == "DigitalTowPathSite"
+    )
+
+
+def test_runner_get_site_class_name_unknown_url_raises():
+    r = Runner()
+    with pytest.raises(ScraperError, match="No scraper found for https://example.com"):
+        r._get_site_class_name("https://example.com")
+
+
+def test_runner_get_site_class_name_unknown_scraper_raises():
+    r = Runner()
+    with pytest.raises(ScraperError, match="Unknown platform: bad-name"):
+        r._get_site_class_name("https://example.com", platform="bad-name")
+
+
+def test_runner_per_url_platform_from_dict(civic_scraper_dir):
+    "site_urls dicts with a 'platform' key should override auto-detection per URL"
+    site_class = MagicMock(name="DigitalTowPathSite")
+    site_class.return_value.scrape.return_value = []
+    to_patch = "civic_scraper.runner.Runner._get_site_class"
+    with patch(to_patch) as mock_get_class:
+        mock_get_class.return_value = site_class
+        r = Runner(civic_scraper_dir)
+        r.scrape(
+            "2020-12-01",
+            "2020-12-01",
+            site_urls=[
+                {
+                    "url": "https://finetownny.gov/categories/",
+                    "platform": "digital-tow-path",
+                }
+            ],
+        )
+        mock_get_class.assert_called_once_with(
+            "https://finetownny.gov/categories/",
+            platform="digital-tow-path",
+        )

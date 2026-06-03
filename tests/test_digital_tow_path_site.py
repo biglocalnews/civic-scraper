@@ -20,6 +20,13 @@ def test_scrape_with_date_range(civic_scraper_dir, set_default_env):
 
     # Based on VCR recording on Feb. 12, 2026, there should be exactly 2 assets
     assert len(assets) == 2, "Should find exactly 2 assets in the date range"
+    assert all(asset.place is None for asset in assets)
+    assert all(asset.place_name is None for asset in assets)
+    assert all(asset.state_or_province is None for asset in assets)
+    assert all(
+        asset.meeting_id.startswith("digitaltowpath_finetownny-gov_")
+        for asset in assets
+    )
 
 
 def test_site_initialization():
@@ -31,14 +38,6 @@ def test_site_initialization():
     assert site.url == "https://finetownny.gov/categories/"
 
 
-def test_can_scrape_supported():
-    assert DigitalTowPathSite.can_scrape("https://finetownny.gov/categories/") is True
-
-
-def test_can_scrape_unsupported():
-    assert DigitalTowPathSite.can_scrape("https://example.com/meetings") is False
-
-
-def test_unsupported_domain_raises():
-    with pytest.raises(ValueError, match="Unsupported site"):
-        DigitalTowPathSite("https://example.com/meetings")
+def test_site_initialization_does_not_require_known_domain():
+    site = DigitalTowPathSite("https://example.com/meetings")
+    assert site.base_url == "https://example.com/meetings"

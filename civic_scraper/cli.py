@@ -5,7 +5,7 @@ import os
 import click
 from click_option_group import RequiredMutuallyExclusiveOptionGroup, optgroup
 
-from civic_scraper.runner import Runner
+from civic_scraper.runner import PLATFORMS, Runner
 from civic_scraper.utils import default_user_home, today_local_str
 
 TODAY = today_local_str()
@@ -68,18 +68,23 @@ def cli():
     type=int,
     help="Timeout in seconds for HTTP requests. By default, no timeout.",
 )
+@click.option(
+    "--platform",
+    type=click.Choice(list(PLATFORMS.keys()), case_sensitive=False),
+    help="Force a specific platform instead of auto-detecting from the URL.",
+)
 @optgroup.group(
     "Site sources",
     cls=RequiredMutuallyExclusiveOptionGroup,
     help="Site URLs must be supplied on the command line or via CSV file.",
 )
-@optgroup.option("--url", help="Base URL for a single site to scraper.")
+@optgroup.option("--url", help="Base URL for a single site to scrape.")
 @optgroup.option(
     "--urls-file",
     type=click.File("r"),
-    help="CSV containing a 'url' field for target sites.",
+    help="CSV containing a 'url' field for target sites. An optional 'platform' column overrides auto-detection per row.",
 )
-def scrape(start_date, end_date, download, cache, timeout, url, urls_file):
+def scrape(start_date, end_date, download, cache, timeout, platform, url, urls_file):
     """Scrape one or more government sites."""
     cache_path = os.environ.get("CIVIC_SCRAPER_DIR", DEFAULT_USER_HOME)
     runner = Runner(cache_path=cache_path)
@@ -93,9 +98,18 @@ def scrape(start_date, end_date, download, cache, timeout, url, urls_file):
         "download": download,
         "timeout": timeout,
     }
+    if platform:
+        kwargs["platform"] = platform
     if url:
         kwargs["site_urls"] = [url]
     else:
         reader = csv.DictReader(urls_file.readlines())
-        kwargs["site_urls"] = [row["url"] for row in reader]
+        rows = list(reader)
+        if "platform" in (reader.fieldnames or []):
+            kwargs["site_urls"] = [
+                {"url": row["url"].strip(), "platform": row["platform"] or None}
+                for row in rows
+            ]
+        else:
+            kwargs["site_urls"] = [row["url"] for row in rows]
     runner.scrape(**kwargs)
