@@ -83,7 +83,11 @@ class Runner:
         )
         for entry in site_urls:
             if isinstance(entry, dict):
-                url = entry["url"]
+                url = entry.get("url")
+                if not url:
+                    raise ScraperError(
+                        "site_urls entries must be URL strings or dicts with a non-empty 'url' key"
+                    )
                 effective_platform = platform or entry.get("platform") or None
             else:
                 url = entry
@@ -123,10 +127,13 @@ class Runner:
 
     def _get_site_class_name(self, url, platform=None):
         if platform:
+            platform_key = str(platform).strip().lower()
             try:
-                return PLATFORMS[platform]
+                return PLATFORMS[platform_key]
             except KeyError:
-                raise ScraperError(f"Unknown platform: {platform}")
+                raise ScraperError(
+                    f"Unknown platform: {platform}. Must be one of: {', '.join(PLATFORMS)}"
+                )
         if re.search(r"(civicplus|AgendaCenter)", url):
             return "CivicPlusSite"
         raise ScraperError(f"No scraper found for {url}")

@@ -107,7 +107,8 @@ def scrape(start_date, end_date, download, cache, timeout, platform, url, urls_f
         rows = list(reader)
         if "platform" in (reader.fieldnames or []):
             kwargs["site_urls"] = [
-                {"url": row["url"], "platform": row["platform"] or None} for row in rows
+                {"url": row["url"].strip(), "platform": row["platform"] or None}
+                for row in rows
             ]
         else:
             kwargs["site_urls"] = [row["url"] for row in rows]
