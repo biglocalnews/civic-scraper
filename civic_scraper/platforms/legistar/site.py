@@ -47,7 +47,12 @@ class Site(base.Site):
             download (bool): Download file assets such as PDFs (default: False)
             file_size (float): Max size in Megabytes of file assets to download
             asset_list (list): Optional list of SUPPORTED_ASSET_TYPES to
-                to limit items to be scraped (e.g. agenda, minutes). (default: [])
+                limit items to be scraped (e.g. agenda, minutes).
+                (default: ["Agenda", "Minutes"])
+            timeout (int): Timeout in seconds for HTTP requests (default: None)
+            fetch_file_meta (bool): Populate content_type and content_length via
+                HEAD request for each asset without downloading. Implied when
+                download=True. (default: False)
         Returns:
             AssetCollection: A sequence of Asset instances
         """
@@ -144,8 +149,6 @@ class Site(base.Site):
             meeting_datetime = " ".join((date_info, "12:00 AM"))
 
         meeting_time = scraper.toTime(meeting_datetime)
-
-        # use regex to match pattern #/#/#; raise warning if no match
 
         # get event ID
         if type(event[scraper.event_info_key]) is dict:
