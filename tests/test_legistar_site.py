@@ -187,7 +187,7 @@ def test_multiyear_scrape(tmpdir):
     assert len(assets) == 4
 
 
-@pytest.mark.vcr("test_scrape_download_true.yaml")
+@pytest.mark.vcr()
 @patch("civic_scraper.platforms.legistar.site.requests.head")
 def test_scrape_fetch_file_meta(mock_head):
     "fetch_file_meta=True should populate content_type and content_length without downloading files"

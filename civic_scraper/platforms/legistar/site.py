@@ -116,7 +116,7 @@ class Site(base.Site):
             asset.url, allow_redirects=True, timeout=self.timeout
         ).headers
         asset.content_type = headers.get("content-type")
-        asset.content_length = headers.get("content-length", -1)
+        asset.content_length = headers.get("content-length", "-1")
 
     def _create_asset(self, event, meeting_meta, asset_type):
         name_bits = [self._event_name(event)]
