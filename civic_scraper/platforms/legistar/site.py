@@ -180,7 +180,13 @@ class Site(base.Site):
             return event["Name"]
 
     def _skippable(
-        self, asset, start_date, end_date, file_size=None, download=False, fetch_file_meta=False
+        self,
+        asset,
+        start_date,
+        end_date,
+        file_size=None,
+        download=False,
+        fetch_file_meta=False,
     ):
         start = parse_date(start_date)
         end = parse_date(end_date)
