@@ -1,5 +1,5 @@
 import datetime
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 import pytz
@@ -66,7 +66,7 @@ def test_scrape_defaults():
         datetime.datetime(2022, 4, 18, 17, 0)
     )
     assert expected_dtz == agenda.meeting_time
-    # Content Type and Length are only captured if download flag is True
+    # Content Type and Length are only captured with download=True or fetch_file_meta=True
     assert agenda.content_type is None
     assert agenda.content_length is None
 
@@ -185,3 +185,28 @@ def test_multiyear_scrape(tmpdir):
     site = LegistarSite(url, **config)
     assets = site.scrape(start_date=start_date, end_date=end_date)
     assert len(assets) == 4
+
+
+@pytest.mark.vcr("test_scrape_download_true.yaml")
+@patch("civic_scraper.platforms.legistar.site.requests.head")
+def test_scrape_fetch_file_meta(mock_head):
+    "fetch_file_meta=True should populate content_type and content_length without downloading files"
+    mock_response = MagicMock()
+    mock_response.headers.get.side_effect = lambda key, default=None: {
+        "content-type": "application/pdf",
+        "content-length": "453581",
+    }.get(key, default)
+    mock_head.return_value = mock_response
+
+    url = "https://nashville.legistar.com/Calendar.aspx"
+    config = {"timezone": "US/Central"}
+    scrape_date = "2022-04-05"
+    site = LegistarSite(url, **config)
+    assets = site.scrape(
+        start_date=scrape_date, end_date=scrape_date, fetch_file_meta=True
+    )
+    assert len(assets) == 2
+    assert mock_head.call_count == 2
+    for asset in assets:
+        assert asset.content_type == "application/pdf"
+        assert asset.content_length == "453581"
