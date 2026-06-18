@@ -38,6 +38,7 @@ class Site(base.Site):
         file_size=None,
         asset_list=None,
         timeout=None,
+        fetch_file_meta=False,
     ):
         """Scrape a government website for metadata and/or docs.
         Args:
@@ -46,7 +47,12 @@ class Site(base.Site):
             download (bool): Download file assets such as PDFs (default: False)
             file_size (float): Max size in Megabytes of file assets to download
             asset_list (list): Optional list of SUPPORTED_ASSET_TYPES to
-                to limit items to be scraped (e.g. agenda, minutes). (default: [])
+                limit items to be scraped (e.g. agenda, minutes).
+                (default: ["Agenda", "Minutes"])
+            timeout (int): Timeout in seconds for HTTP requests (default: None)
+            fetch_file_meta (bool): Populate content_type and content_length via
+                HEAD request for each asset without downloading. Implied when
+                download=True. (default: False)
         Returns:
             AssetCollection: A sequence of Asset instances
         """
@@ -81,7 +87,12 @@ class Site(base.Site):
                     continue
                 # Apply date and other filters
                 if self._skippable(
-                    asset, start_date, end_date, file_size=file_size, download=download
+                    asset,
+                    start_date,
+                    end_date,
+                    file_size=file_size,
+                    download=download,
+                    fetch_file_meta=fetch_file_meta,
                 ):
                     continue
                 ac.append(asset)
@@ -104,8 +115,8 @@ class Site(base.Site):
         headers = requests.head(
             asset.url, allow_redirects=True, timeout=self.timeout
         ).headers
-        asset.content_type = headers["content-type"]
-        asset.content_length = headers["content-length"]
+        asset.content_type = headers.get("content-type")
+        asset.content_length = headers.get("content-length", "-1")
 
     def _create_asset(self, event, meeting_meta, asset_type):
         name_bits = [self._event_name(event)]
@@ -139,8 +150,6 @@ class Site(base.Site):
 
         meeting_time = scraper.toTime(meeting_datetime)
 
-        # use regex to match pattern #/#/#; raise warning if no match
-
         # get event ID
         if type(event[scraper.event_info_key]) is dict:
             url = detail_info["url"]
@@ -170,7 +179,15 @@ class Site(base.Site):
         except (KeyError, TypeError):
             return event["Name"]
 
-    def _skippable(self, asset, start_date, end_date, file_size=None, download=False):
+    def _skippable(
+        self,
+        asset,
+        start_date,
+        end_date,
+        file_size=None,
+        download=False,
+        fetch_file_meta=False,
+    ):
         start = parse_date(start_date)
         end = parse_date(end_date)
         # Use a generic (non-timezone aware) date for filtering
@@ -184,8 +201,8 @@ class Site(base.Site):
         # Skip if meeting date isn't between/equal to start and end dates
         if not start <= meeting_date <= end:
             return True
-        # Add Content Type and Length when download specified
-        if download:
+        # Add Content Type and Length when download or fetch_file_meta specified
+        if download or fetch_file_meta:
             self._add_file_meta(asset)
         # if file_size and download are given, then check byte count
         if file_size and download:
